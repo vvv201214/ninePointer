@@ -1,0 +1,174 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+.rightside_maindiv{
+   display: flex;
+   flex-direction: column;
+   
+}
+.ul_class{
+    display: flex;
+   flex-direction: row;
+   border-bottom: 2px solid black;
+}
+.component_li{
+    margin: 5px;
+    padding: 2px;
+    padding-left: 6px;
+    padding-right: 6px;
+    font-size: 18px;
+    font-weight: bold;
+    color: red;
+}
+.Ac_btn{
+    background-color: #428BCA;
+    color: white;
+    border-radius: 15px;
+    width: 25%;
+    font-weight: bold;
+    min-height: 30px;
+    margin: 4px;
+    font-size: 16px;
+
+}
+.grid_1{
+   width: 100%;
+    min-height: 30vh;
+    background: rgb(255, 255, 255);
+
+}
+.grid1_span{
+    font-size: 16px;
+    font-weight: bold;
+    color: #187498;
+    padding-left: 6px;
+    
+}
+.grid1_table{
+    width: 100%;
+    border: none;
+    
+}
+.grid1_ul{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    border-bottom: 2px solid black;
+    border: none;
+    list-style: none;
+   
+}
+.grid1_li{
+    margin: 2px;
+    padding: 2px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    border: none;
+   
+}
+.grid_2{
+    margin-top: 2rem;
+    min-height: 30vh;
+    background: rgb(255, 255, 255);
+}
+.grid2_span{
+    font-size: 16px;
+    font-weight: bold;
+    color: #187498;
+    padding-left: 6px;
+}
+.grid2_ul{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    border-bottom: 2px solid black;
+    list-style: none;
+}
+.grid2_li{
+    margin: 5px;
+    padding: 2px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    display: flex;
+   align-items: center;
+
+}
+.grid2_th {
+    width: 9vw;
+    overflow: hidden;
+    text-align: center;
+    border-bottom: 2px solid black;
+   
+}
+.grid2_td{
+    width: 9vw;
+    overflow: hidden;
+    text-align: center;
+    border-bottom: 2px solid black;
+    font-size: 14px;
+    font-weight: bold;
+
+}
+.grid1_table{
+    width: 100%;
+    border: none;
+}
+  
+.form_popup{
+    width: auto;
+}
+.Ac_form{
+    margin-left: 10px;
+    margin-right: 10px;
+    padding: 5px;
+    font-size: 16px;
+    font-weight: bold;
+
+}
+.Ac_forminput{
+    width: 90%;
+    margin-left: 10px;
+    margin-right: 10px;
+    padding: 5px;
+}
+.ACform_tbn{
+    margin: 10px;
+    width: 3rem;
+    height: 2rem;
+    background-color: blueviolet;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    border: none;
+
+}
+.BS_btn{
+    width: fit-content;
+    position: relative;
+    right: -80%;
+    width: 3rem;
+    background-color: #4184F3;
+    border-radius: 7px;font-weight: bold;
+    color: white;
+}
+.Sell_btn{
+    background-color: #Df514C;
+   color: white;
+}
+.active{
+    color:#187498;
+}
+
+.data_tr{
+    display: flex;
+    justify-content: space-around;
+    border: none;
+}
+.data_td{
+    border: none;
+    text-align: center;
+}

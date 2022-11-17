@@ -1,0 +1,23 @@
+.navbar{
+    display: flex;
+   
+    list-style: none;
+    height: 2rem;
+    align-items: center;
+    gap: 20px;
+}
+ul{
+    border-bottom: 2px solid black;
+
+}
+li > a{
+    margin-left: 3px;
+    font-size: 16px;
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+    
+    
+}
+.active{
+    font-weight: 600;
+}

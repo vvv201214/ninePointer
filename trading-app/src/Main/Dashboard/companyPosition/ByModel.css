@@ -1,0 +1,200 @@
+body.active-modal {
+    overflow-y: hidden;
+}
+
+.btn-modal {
+    padding: 10px 20px;
+    display: block;
+    /* margin: 100px auto 0; */
+    font-size: 18px;
+}
+
+.modal, .overlay {
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: fixed;
+    
+}
+
+.overlay {
+    background: rgba(49,49,49,0.8);
+}
+.modal-content {
+    width: 100vw;
+    max-height: 100% ;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    line-height: 1.4;
+    background: #f1f1f1;
+    padding: 14px 28px;
+    border-radius: 3px;
+    max-width: 600px;
+    min-width: 300px;
+    
+}
+.Form_head{
+    margin-top: 3rem;
+  
+}
+/* .close-modal {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 5px 7px;
+} */
+.container_One{
+    display: flex;
+}
+.container_two{
+    max-height: 30vh;
+    margin: 1rem;
+}
+.form_inputContain{
+    display: flex;
+    justify-content: space-around;
+
+}
+.form_checkbox{
+    margin: 10px;
+    margin-left: 30%;
+    max-height: 10vh;
+    display: flex;
+    justify-content: space-evenly;
+    
+}
+
+.container_three{
+    display: flex;
+   flex-direction: row;
+   margin: 5px;
+    
+}
+.btnRadio1{
+    width: 1rem;
+   margin-top: 5px;
+   margin-right: 9px;
+   margin-left: auto;
+    padding: 5px;
+}
+.btnRadio{
+    width: 1rem;
+   margin-top: 5px;
+   margin-right: 12px;
+   margin-left:10px;
+    
+}
+.btnRadio2{
+    width: 1rem;
+    margin-top: 5px;
+    margin-right: 12px;
+    margin-left:10px;
+  
+    
+}
+.sellButton{
+    background-color: #Df514C;
+
+}
+.amobtn {
+    border-bottom:1px solid black ;
+    width: 10rem;
+    height: 2rem;
+    font-size: 16px;
+    font-weight: bold;
+}
+.bsInput{
+    width: 4rem;
+    height: 20px;
+    margin: 4px;
+    padding: 2px;
+   
+}
+.bsBtn{
+    border: none;
+    font-weight: bold;
+    border-bottom:1px solid black ;
+    width: 5rem;
+    height: 2rem;
+    font-size: 16px;
+    font-weight: bold;
+
+}
+.bsLabel{
+    font-weight: bold;
+    margin: 3px;
+    
+}
+.form_button{
+    margin: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    
+
+
+}
+.bsButton1{
+    background-color:rgb(78, 78, 225);
+    color:#f1f1f1;
+    border: none;
+    font-weight: bold;
+    border-bottom:1px solid black ;
+    width: 5rem;
+    height: 2rem;
+    font-size: 16px;
+    font-weight: bold;
+    margin-right: 8rem;
+}
+.bsButton1_cancel{
+    background-color:rgb(148, 148, 148);
+    color:#f1f1f1;
+    border: none;
+    font-weight: bold;
+    border-bottom:1px solid black ;
+    width: 5rem;
+    height: 2rem;
+    font-size: 16px;
+    font-weight: bold;
+    
+}
+
+
+
+.btn-modal{
+   
+    width: auto;
+    border-radius: 15px;
+    height: 30px;
+    font-size: 14px;
+    font-weight: bold;
+    margin-left:5px;
+    margin-right:5px;
+    border: none;
+    
+}
+.By_btn{
+    background-color:rgb(78, 78, 225);
+    color: #f1f1f1;
+    border: none;
+    
+
+}
+.form_btnRagAMO{
+   
+    display: flex;
+    justify-content: center;
+    margin: 10px;
+    padding: 10px;
+}
+.companyPosition_BSbtn{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
