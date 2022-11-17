@@ -1,0 +1,9 @@
+.main{
+    display: flex;
+}
+.left_Side_comp{
+    flex: .20;
+}
+.right_Side_comp{
+    flex: .80;
+}
