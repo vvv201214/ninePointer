@@ -53,28 +53,32 @@ function Tradingparameters(){
 
                         <div className="grid_1">
                             <span className="grid1_span">Active Trading Parameters</span>
-                            <ul className="grid1_ul grid2_ul">
-                                <li className="grid1_li">Created On</li>
-                                <li className="grid1_li">Variety</li>
-                                <li className="grid1_li">Exchange</li>
-                                <li className="grid1_li">Order Type</li>
-                                <li className="grid1_li">Validity</li>
-                                <li className="grid1_li">Status</li>
-                                <li className="grid1_li">Last Modified On</li>
+                            <table className="grid1_table">
+                            <tr className="grid2_tr">
+                                <th className="grid2_th">Created On</th>
+                                <th className="grid2_th">Variety</th>
+                                <th className="grid2_th">Exchange</th>
+                                <th className="grid2_th">Order Type</th>
+                                <th className="grid2_th">Validity</th>
+                                <th className="grid2_th">Status</th>
+                                <th className="grid2_th">Last Modified On</th>
                                 
-                            </ul>
+                            </tr>
+                            </table>
                         </div>
 
                         <div className="grid_2">
                             <span className="grid2_span">Inactive Trading Parameters</span>
-                            <ul className="grid1_ul grid2_ul">
-                                <li className="grid1_li">Broker</li>
-                                <li className="grid1_li">Account ID</li>
-                                <li className="grid1_li">Account Name</li>
-                                <li className="grid1_li">API Key</li>
-                                <li className="grid1_li">API Secret</li>
-                                <li className="grid1_li">Status</li>
-                            </ul>
+                            <table className="grid1_table">
+                                <tr className="grid2_tr">
+                                    <th className="grid2_th">Broker</th>
+                                    <th className="grid2_th">Account ID</th>
+                                    <th className="grid2_th">Account Name</th>
+                                    <th className="grid2_th">API Key</th>
+                                    <th className="grid2_th">API Secret</th>
+                                    <th className="grid2_th">Status</th>
+                                </tr>
+                            </table>
                         </div>
                     </div>
                 </div>

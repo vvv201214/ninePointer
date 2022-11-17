@@ -1,56 +1,6 @@
 import React from "react";
-import { useState } from "react";
-// import './CompanyPosition.css';
-import ByModal from '../companyPosition/ByModal';
-import SellModel from "../companyPosition/SellModel";
-import { useEffect } from 'react';
-import axios from "axios"
 
-function TraderPositionTable({ socket }) {
-
-    const isTradersTrade = true;
-    const [tradeData, setTradeData] = useState([]);
-    const [marketData, setMarketData] = useState([]);
-    let date = new Date();
-    useEffect(() => {
-        axios.get("http://localhost:5000/readInstrumentDetails")
-            .then((res) => {
-                let dataArr = (res.data).filter((elem) => {
-                    return (elem.createdOn).includes(`${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`) && elem.status === "Active"
-                })
-                setTradeData(dataArr)
-            })
-        console.log("hii");
-
-        axios.get("http://localhost:5000/ws")
-
-        .then((res)=>{
-            console.log("vijay", (res.data)[0].last_price);
-        })
-        socket.on("tick",(data)=>{
-            console.log(data);
-            setMarketData(data);
-
-        })
-        
-        console.log(marketData);
-        // tradeData.map((elem, index)=>{
-        //     for(let property in marketData[index]){
-        //         if(property === "last_price" || property === "change"){
-        //             elem[property] = marketData[index][property]
-        //         }
-        //     }
-        // })
-        console.log(tradeData);
-        // setTradeData([...tradeData])
-    },[])
-
-    useEffect(()=>{
-        return ()=>{
-            console.log('closing');
-            socket.close();
-        }
-    },[])
+function TradersPosition(){
     return(
         <div>
             <div className="main_Container">
@@ -65,24 +15,7 @@ function TraderPositionTable({ socket }) {
                                     <th className="grid2_th">LTP</th>
                                     <th className="grid2_th">%Change</th>
                                     <th className="grid2_th">Action</th>
-                                </tr>
-
-                                {tradeData.map((elem, index)=>{
-                                let updatedMarketData = marketData.filter((subElem)=>{
-                                    return elem.instrumentToken === subElem.instrument_token;
-                                })
-                                // setMarketData(updatedMarketData)
-                                return(
-                                        <tr className="grid2_tr" key={elem.uId}>
-                                            <td className="grid1_td">{elem.createdOn}</td>
-                                            <td className="grid1_td">{elem.symbol}</td>
-                                            <td className="grid1_td">{updatedMarketData[0]?.last_price}</td>
-                                            <td className="grid1_td">{updatedMarketData[0]?.change.toFixed(2)}</td>
-                                            <td className="grid1_td"><ByModal marketData={marketData} uIdProps={elem.uId} isTradersTrade={true}/></td>
-                                            <td className="grid1_td"><SellModel marketData={marketData} uIdProps={elem.uId} isTradersTrade={true}/></td>
-                                        </tr>
-                                    )
-                                })} 
+                                </tr> 
                             </table>
                         </div>
                         <div className="grid_2">
@@ -133,4 +66,4 @@ function TraderPositionTable({ socket }) {
         </div>
     )
 }
-export default TraderPositionTable;
+export default TradersPosition;

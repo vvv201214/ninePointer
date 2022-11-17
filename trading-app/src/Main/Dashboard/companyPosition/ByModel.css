@@ -39,6 +39,7 @@ body.active-modal {
     
 }
 .Form_head{
+    margin-top: 3rem;
   
 }
 /* .close-modal {
@@ -70,9 +71,8 @@ body.active-modal {
 
 .container_three{
     display: flex;
-   flex-direction: column;
+   flex-direction: row;
    margin: 5px;
-   
     
 }
 .btnRadio1{
@@ -192,4 +192,9 @@ body.active-modal {
     justify-content: center;
     margin: 10px;
     padding: 10px;
+}
+.companyPosition_BSbtn{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 }

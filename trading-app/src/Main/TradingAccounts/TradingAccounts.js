@@ -106,52 +106,56 @@ function TradingAccounts() {
 
                         <div className="grid_1">
                             <span className="grid1_span">Active Company Trading Accounts</span>
-                            <ul className="grid1_ul grid2_ul">
-                                <li className="grid1_li">Broker</li>
-                                <li className="grid1_li">Account ID</li>
-                                <li className="grid1_li">Account Name</li>
-                                <li className="grid1_li">API Key</li>
-                                <li className="grid1_li">API Secret</li>
-                                <li className="grid1_li">Status</li>
-                            </ul>
+                            <table className="grid1_table">
+                            <tr className="grid2_tr">
+                                <th className="grid2_th">Broker</th>
+                                <th className="grid2_th">Account ID</th>
+                                <th className="grid2_th">Account Name</th>
+                                <th className="grid2_th">API Key</th>
+                                <th className="grid2_th">API Secret</th>
+                                <th className="grid2_th">Status</th>
+                            </tr>
                             {activeData.map((elem)=>{
                                 return(
-                                <ul className="grid1_ul grid2_ul" key={elem.uId} >
-                                    <li className="grid1_li">{elem.brokerName}</li>
-                                    <li className="grid1_li">{elem.accountId}</li>
-                                    <li className="grid1_li">{elem.accountName}</li>
-                                    <li className="grid1_li">{elem.apiKey}</li>
-                                    <li className="grid1_li">{elem.apiSecret}</li>
-                                    <li className="grid1_li">{elem.status}</li>
-                                </ul>
+                                <tr className="grid2_tr" key={elem.uId} >
+                                    <td className="grid2_td">{elem.brokerName}</td>
+                                    <td className="grid2_td">{elem.accountId}</td>
+                                    <td className="grid2_td">{elem.accountName}</td>
+                                    <td className="grid2_td">{elem.apiKey}</td>
+                                    <td className="grid2_td">{elem.apiSecret}</td>
+                                    <td className="grid2_td">{elem.status}</td>
+                                </tr>
                                 )
                                 })
                             }
+                            </table>
                         </div>
 
                         <div className="grid_2">
                             <span className="grid2_span">Inactive Company Trading Accounts</span>
-                            <ul className="grid1_ul grid2_ul">
-                                <li className="grid1_li">Broker</li>
-                                <li className="grid1_li">Account ID</li>
-                                <li className="grid1_li">Account Name</li>
-                                <li className="grid1_li">API Key</li>
-                                <li className="grid1_li">API Secret</li>
-                                <li className="grid1_li">Status</li>
-                            </ul>
+                            <table className="grid1_table">
+                            <tr className="grid2_tr">
+                                <th className="grid2_th">Broker</th>
+                                <th className="grid2_th">Account ID</th>
+                                <th className="grid2_th">Account Name</th>
+                                <th className="grid2_th">API Key</th>
+                                <th className="grid2_th">API Secret</th>
+                                <th className="grid2_th">Status</th>
+                            </tr>
                             {inactiveData.map((elem) =>{
                                 return(
-                                <ul className="grid1_ul grid2_ul" key={elem.uId} >
-                                    <li className="grid1_li">{elem.brokerName}</li>
-                                    <li className="grid1_li">{elem.accountId}</li>
-                                    <li className="grid1_li">{elem.accountName}</li>
-                                    <li className="grid1_li">{elem.apiKey}</li>
-                                    <li className="grid1_li">{elem.apiSecret}</li>
-                                    <li className="grid1_li">{elem.status}</li>
-                                </ul>
+                                <tr className="grid2_tr" key={elem.uId} >
+                                    <td className="grid2_td">{elem.brokerName}</td>
+                                    <td className="grid2_td">{elem.accountId}</td>
+                                    <td className="grid2_td">{elem.accountName}</td>
+                                    <td className="grid2_td">{elem.apiKey}</td>
+                                    <td className="grid2_td">{elem.apiSecret}</td>
+                                    <td className="grid2_td">{elem.status}</td>
+                                </tr>
                                 )
                                 })
                             }
+                            </table>
                         </div>
 
 

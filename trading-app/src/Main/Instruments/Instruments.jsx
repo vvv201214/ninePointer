@@ -106,57 +106,60 @@ function Instruments() {
 
                         <div className="grid_1">
                             <span className="grid1_span">Active Instruments</span>
-                            <ul className="grid1_ul grid2_ul">
-                                <li className="grid1_li">Created On</li>
-                                <li className="grid1_li">Instrument</li>
-                                <li className="grid1_li">Exchange</li>
-                                <li className="grid1_li">Symbol</li>
-                                <li className="grid1_li">Lot Size</li>
-                                <li className="grid1_li">Status</li>
-                                <li className="grid1_li">Last Modified</li>
-                            </ul>
-
+                            <table className="grid1_table">
+                            <tr className="grid2_tr">
+                                <th className="grid2_th">Created On</th>
+                                <th className="grid2_th">Instrument</th>
+                                <th className="grid2_th">Exchange</th>
+                                <th className="grid2_th">Symbol</th>
+                                <th className="grid2_th">Lot Size</th>
+                                <th className="grid2_th">Status</th>
+                                <th className="grid2_th">Last Modified</th>
+                            </tr>
                             {
                                 activeData.map((elem) => {
                                     return (
-                                        <ul className="grid1_ul">
-                                            <li className="grid1_li">{elem.createdOn}</li>
-                                            <li className="grid1_li">{elem.instrument}</li>
-                                            <li className="grid1_li">{elem.exchange}</li>
-                                            <li className="grid1_li">{elem.symbol}</li>
-                                            <li className="grid1_li">{elem.lotSize}</li>
-                                            <li className="grid1_li">{elem.status}</li>
-                                            <li className="grid1_li">{elem.lastModified}</li>
-                                        </ul>
+                                        <tr className="grid2_tr">
+                                            <td className="grid2_td">{elem.createdOn}</td>
+                                            <td className="grid2_td">{elem.instrument}</td>
+                                            <td className="grid2_td">{elem.exchange}</td>
+                                            <td className="grid2_td">{elem.symbol}</td>
+                                            <td className="grid2_td">{elem.lotSize}</td>
+                                            <td className="grid2_td">{elem.status}</td>
+                                            <td className="grid2_td">{elem.lastModified}</td>
+                                        </tr>
                                     )
                                 })
                             }
+                            </table>
                         </div>
                         <div className="grid_2">
                             <span className="grid2_span">Inactive Instruments</span>
-                            <ul className="grid1_ul grid2_ul">
-                                <li className="grid1_li">Created On</li>
-                                <li className="grid1_li">Instrument</li>
-                                <li className="grid1_li">Exchange</li>
-                                <li className="grid1_li">Symbol</li>
-                                <li className="grid1_li">Lot Size</li>
-                                <li className="grid1_li">Status</li>
-                                <li className="grid1_li">Last Modified</li>
-                            </ul>
+                            <table className="grid1_table">
+                            <tr className="grid2_tr">
+                                <th className="grid2_th">Created On</th>
+                                <th className="grid2_th">Instrument</th>
+                                <th className="grid2_th">Exchange</th>
+                                <th className="grid2_th">Symbol</th>
+                                <th className="grid2_th">Lot Size</th>
+                                <th className="grid2_th">Status</th>
+                                <th className="grid2_th">Last Modified</th>
+                            </tr>
                             {inactiveData.map((elem) => {
                                 return (
-                                    <ul className="grid2_ul">
-                                        <li className="grid2_li">{elem.createdOn}</li>
-                                        <li className="grid2_li">{elem.instrument}</li>
-                                        <li className="grid2_li">{elem.exchange}</li>
-                                        <li className="grid2_li">{elem.symbol}</li>
-                                        <li className="grid2_li">{elem.lotSize}</li>
-                                        <li className="grid2_li">{elem.status}</li>
-                                        <li className="grid2_li">{elem.lastModified}</li>
-                                    </ul>
+                                    <tr className="grid2_tr">
+                                        <td className="grid2_td">{elem.createdOn}</td>
+                                        <td className="grid2_td">{elem.instrument}</td>
+                                        <td className="grid2_td">{elem.exchange}</td>
+                                        <td className="grid2_td">{elem.symbol}</td>
+                                        <td className="grid2_td">{elem.lotSize}</td>
+                                        <td className="grid2_td">{elem.status}</td>
+                                        <td className="grid2_td">{elem.lastModified}</td>
+                                    </tr>
                                 )
                             })
                             }
+                            </table>
                         </div>
                     </div>
                 </div>

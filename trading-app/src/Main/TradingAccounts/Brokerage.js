@@ -121,39 +121,41 @@ function Brokerage() {
 
                         <div className="grid_1">
                             <span className="grid1_span">Brokerage Details</span>
-                            <ul className="grid1_ul grid2_ul">
-                                <li className="grid1_li">Broker</li>
-                                <li className="grid1_li">Transaction</li>
-                                <li className="grid1_li">Type</li>
-                                <li className="grid1_li">Exchange</li>
-                                <li className="grid1_li">Brokerage Charge</li>
-                                <li className="grid1_li">Exchange Charge</li>
-                                <li className="grid1_li">GST</li>
-                                <li className="grid1_li">SEBI Charges</li>
-                                <li className="grid1_li">Stamp Duty Charges</li>
-                                <li className="grid1_li">SST</li>
-                                <li className="grid1_li">CTT</li>
-                                <li className="grid1_li">DP Charges</li>
-                            </ul>
+                            <table className="grid1_table">
+                                <tr className="grid2_tr">
+                                <th className="grid2_th">Broker</th>
+                                <th className="grid2_th">Transaction</th>
+                                <th className="grid2_th">Type</th>
+                                <th className="grid2_th">Exchange</th>
+                                <th className="grid2_th">Brokerage Charge</th>
+                                <th className="grid2_th">Exchange Charge</th>
+                                <th className="grid2_th">GST</th>
+                                <th className="grid2_th">SEBI Charges</th>
+                                <th className="grid2_th">Stamp Duty Charges</th>
+                                <th className="grid2_th">SST</th>
+                                <th className="grid2_th">CTT</th>
+                                <th className="grid2_th">DP Charges</th>
+                            </tr>
                             {data.map((elem)=>{
                                 return(
-                                <ul className="grid1_ul grid2_ul">
-                                    <li className="grid1_li">{elem.brokerName}</li>
-                                    <li className="grid1_li">{elem.transaction}</li>
-                                    <li className="grid1_li">{elem.type}</li>
-                                    <li className="grid1_li">{elem.exchange}</li>
-                                    <li className="grid1_li">{elem.brokerageCharge}</li>
-                                    <li className="grid1_li">{elem.exchangeCharge}</li>
-                                    <li className="grid1_li">{elem.gst}</li>
-                                    <li className="grid1_li">{elem.sebiCharge}</li>
-                                    <li className="grid1_li">{elem.stampDuty}</li>
-                                    <li className="grid1_li">{elem.sst}</li>
-                                    <li className="grid1_li">{elem.ctt}</li>
-                                    <li className="grid1_li">{elem.dpCharge}</li>
-                                </ul>
+                                    <tr className="grid2_tr">
+                                    <td className="grid2_td">{elem.brokerName}</td>
+                                    <td className="grid2_td">{elem.transaction}</td>
+                                    <td className="grid2_td">{elem.type}</td>
+                                    <td className="grid2_td">{elem.exchange}</td>
+                                    <td className="grid2_td">{elem.brokerageCharge}</td>
+                                    <td className="grid2_td">{elem.exchangeCharge}</td>
+                                    <td className="grid2_td">{elem.gst}</td>
+                                    <td className="grid2_td">{elem.sebiCharge}</td>
+                                    <td className="grid2_td">{elem.stampDuty}</td>
+                                    <td className="grid2_td">{elem.sst}</td>
+                                    <td className="grid2_td">{elem.ctt}</td>
+                                    <td className="grid2_td">{elem.dpCharge}</td>
+                                </tr>
                                 )
                                 })
                             }
+                            </table>
                         </div>
                     </div>
 

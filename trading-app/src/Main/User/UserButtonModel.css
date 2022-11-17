@@ -1,5 +1,5 @@
 body.active-modal {
-    overflow-y: hidden;
+    
 }
 
 .modal, .overlay {
@@ -34,11 +34,14 @@ body.active-modal {
 
 .UserMainFormModel{
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(4, 1fr);
+    position: relative;
+    top: 2rem;
 }
 .userModelform{
    font-size: 18px;
    font-weight: bold;
+   
 }
 
 .userModelforminput{
@@ -47,4 +50,9 @@ body.active-modal {
     border: 1px solid #ccc;
     border-radius: 4px;
     margin: 2px;
+}
+.userCancelbtn{
+    position: relative;
+    top: 5rem;
+    left:30%;
 }

@@ -80,7 +80,7 @@
     color: #187498;
     padding-left: 6px;
 }
-/* .grid2_ul{
+.grid2_ul{
     display: flex;
     flex-direction: row;
     justify-content: space-around;
@@ -93,8 +93,31 @@
     font-size: 18px;
     font-weight: bold;
     text-align: center;
+    display: flex;
+   align-items: center;
 
-} */
+}
+.grid2_th {
+    width: 9vw;
+    overflow: hidden;
+    text-align: center;
+    border-bottom: 2px solid black;
+   
+}
+.grid2_td{
+    width: 9vw;
+    overflow: hidden;
+    text-align: center;
+    border-bottom: 2px solid black;
+    font-size: 14px;
+    font-weight: bold;
+
+}
+.grid1_table{
+    width: 100%;
+    border: none;
+}
+  
 .form_popup{
     width: auto;
 }

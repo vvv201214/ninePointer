@@ -32,21 +32,23 @@ function Users(){
 
                         <div className="grid_1">
                             <span className="grid1_span">User Details</span>
-                            <ul className="grid1_ul grid2_ul">
-                                <li className="grid1_li">Name</li>
-                                <li className="grid1_li">Designation</li>
-                                <li className="grid1_li">Email ID</li>
-                                <li className="grid1_li">Mobile No.</li>
-                                <li className="grid1_li">Degree</li>
-                                <li className="grid1_li">DOB</li>
-                                <li className="grid1_li">Gender</li>
-                                <li className="grid1_li">Trading Exp.</li>
-                                <li className="grid1_li">Location</li>
-                                <li className="grid1_li">Last Occupation</li>
-                                <li className="grid1_li">Date of Joining</li>
-                                <li className="grid1_li">Role</li>
-                                <li className="grid1_li">Status</li>
-                            </ul>
+                            <table className="grid1_table">
+                                <tr className="grid2_tr">
+                                <th className="grid2_th">Name</th>
+                                <th className="grid2_th">Designation</th>
+                                <th className="grid2_th">Email ID</th>
+                                <th className="grid2_th">Mobile No.</th>
+                                <th className="grid2_th">Degree</th>
+                                <th className="grid2_th">DOB</th>
+                                <th className="grid2_th">Gender</th>
+                                <th className="grid2_th">Trading Exp.</th>
+                                <th className="grid2_th">Location</th>
+                                <th className="grid2_th">Last Occupation</th>
+                                <th className="grid2_th">Date of Joining</th>
+                                <th className="grid2_th">Role</th>
+                                <th className="grid2_th">Status</th>
+                            </tr>
+                            </table>
                         </div>
                     </div>
                 </div>

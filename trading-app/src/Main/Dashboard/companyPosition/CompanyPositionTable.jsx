@@ -52,6 +52,7 @@ function CompanyPositionTable({ socket }) {
         }
     },[])
 
+
     return (
         <div>
             <div className="main_Container">
@@ -59,67 +60,74 @@ function CompanyPositionTable({ socket }) {
                     <div className="rightside_maindiv">
                         <div className="grid_1">
                             <span className="grid1_span">Instruments Details</span>
-                            <span className="grid1_ul"></span>
-                            <ul className="grid1_ul grid2_ul">
-                                <li className="grid1_li">Trading Date</li>
-                                <li className="grid1_li">Instrument</li>
-                                <li className="grid1_li">LTP</li>
-                                <li className="grid1_li">%Change</li>
-                                <li className="grid1_li">Action</li>
-                                
-                            </ul>
+                            <table className="grid1_table">
+                            <tr className="grid2_tr">
+                                    <th className="grid2_th">Trading Date</th>
+                                    <th className="grid2_th">Instrument</th>
+                                    <th className="grid2_th">LTP</th>
+                                    <th className="grid2_th">%Change</th>
+                                    <th className="grid2_th">Action</th> 
+                            </tr>
                             {tradeData.map((elem, index)=>{
                                 let updatedMarketData = marketData.filter((subElem)=>{
                                     return elem.instrumentToken === subElem.instrument_token;
                                 })
                                 // setMarketData(updatedMarketData)
                                 return(
-                                        <ul className="grid1_ul">
-                                            <li className="grid1_li">{elem.createdOn}</li>
-                                            <li className="grid1_li">{elem.symbol}</li>
-                                            <li className="grid1_li">{updatedMarketData[0]?.last_price}</li>
-                                            <li className="grid1_li">{updatedMarketData[0]?.change.toFixed(2)}</li>
-                                            <li className="grid1_li"><ByModal marketData={marketData} uIdProps={elem.uId} isTradersTrade={false}/></li>
-                                            <li className="grid1_li"><SellModel marketData={marketData} uIdProps={elem.uId} isTradersTrade={false}/></li>
-                                        </ul>
+                                    <tr className="grid1_table">
+                                            <td className="grid2_td">{elem.createdOn}</td>
+                                            <td className="grid2_td">{elem.symbol}</td>
+                                            <td className="grid2_td">{updatedMarketData[0]?.last_price}</td>
+                                            <td className="grid2_td">{updatedMarketData[0]?.change.toFixed(2)}</td>
+                                            <td className="grid2_th companyPosition_BSbtn2"><div className="companyPosition_BSbtn">
+                                            <ByModal marketData={marketData} uIdProps={elem.uId} isTradersTrade={false}/>
+                                            <SellModel marketData={marketData} uIdProps={elem.uId} isTradersTrade={false}/></div></td>
+                                    </tr>
                                     )
                                 })} 
+                            </table>
                         </div>
                         <div className="grid_2">
                             <span className="grid2_span">Overall PNL-Company</span>
-                            <ul className="grid2_ul">
-                                <li className="grid2_li">Product</li>
-                                <li className="grid2_li">Instruments</li>
-                                <li className="grid2_li">Quantity</li>
-                                <li className="grid2_li">Average Price</li>
-                                <li className="grid2_li">LTP</li>
-                                <li className="grid2_li">P&L</li>
-                                <li className="grid2_li">%Change</li>
-                            </ul>
+                            <table className="grid1_table">
+                            <tr className="grid2_tr">
+                                <th className="grid2_th">Product</th>
+                                <th className="grid2_th">Instruments</th>
+                                <th className="grid2_th">Quantity</th>
+                                <th className="grid2_th">Average Price</th>
+                                <th className="grid2_th">LTP</th>
+                                <th className="grid2_th">P&L</th>
+                                <th className="grid2_th">%Change</th>
+                            </tr>
+                            </table>
                         </div>
                         <div className="grid_2">
                             <span className="grid2_span">Running PNL-Company</span>
-                            <ul className="grid2_ul">
-                                <li className="grid2_li">Product</li>
-                                <li className="grid2_li">Instruments</li>
-                                <li className="grid2_li">Quantity</li>
-                                <li className="grid2_li">Average Price</li>
-                                <li className="grid2_li">LTP</li>
-                                <li className="grid2_li">P&L</li>
-                                <li className="grid2_li">%Change</li>
-                            </ul>
+                            <table className="grid1_table">
+                            <tr className="grid2_tr">
+                                <th className="grid2_th">Product</th>
+                                <th className="grid2_th">Instruments</th>
+                                <th className="grid2_th">Quantity</th>
+                                <th className="grid2_th">Average Price</th>
+                                <th className="grid2_th">LTP</th>
+                                <th className="grid2_th">P&L</th>
+                                <th className="grid2_th">%Change</th>
+                            </tr>
+                            </table>
                         </div>
                         <div className="grid_2">
                             <span className="grid2_span">Closed Trades PNL-Company</span>
-                            <ul className="grid2_ul">
-                                <li className="grid2_li">Product</li>
-                                <li className="grid2_li">Instruments</li>
-                                <li className="grid2_li">Quantity</li>
-                                <li className="grid2_li">Average Price</li>
-                                <li className="grid2_li">LTP</li>
-                                <li className="grid2_li">P&L</li>
-                                <li className="grid2_li">%Change</li>
-                            </ul>
+                            <table className="grid1_table">
+                                <tr className="grid2_tr">
+                                    <th className="grid2_th">Product</th>
+                                    <th className="grid2_th">Instruments</th>
+                                    <th className="grid2_th">Quantity</th>
+                                    <th className="grid2_th">Average Price</th>
+                                    <th className="grid2_th">LTP</th>
+                                    <th className="grid2_th">P&L</th>
+                                    <th className="grid2_th">%Change</th>
+                                </tr>
+                            </table>
                         </div>
                     </div>
            

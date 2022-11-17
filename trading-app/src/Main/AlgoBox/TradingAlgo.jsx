@@ -112,34 +112,36 @@ function TradingAlgo(){
 
                         <div className="grid_1">
                             <span className="grid1_span">Trading Algos</span>
-                            <ul className="grid1_ul grid2_ul">
-                                <li className="grid1_li">Created On</li>
-                                <li className="grid1_li">Algo Name</li>
-                                <li className="grid1_li">Transaction Change</li>
-                                <li className="grid1_li">Instrument Change</li>
-                                <li className="grid1_li">Exchange Change</li>
-                                <li className="grid1_li">Product Change</li>
-                                <li className="grid1_li">Lot Multipler</li>
-                                <li className="grid1_li">Trading Account</li>
-                                <li className="grid1_li">Status</li>
-                            </ul>
+                            <table className="grid1_table">
+                                <tr className="grid2_tr">
+                                    <th className="grid2_th">Created On</th>
+                                    <th className="grid2_th">Algo Name</th>
+                                    <th className="grid2_th">Transaction Change</th>
+                                    <th className="grid2_th">Instrument Change</th>
+                                    <th className="grid2_th">Exchange Change</th>
+                                    <th className="grid2_th">Product Change</th>
+                                    <th className="grid2_th">Lot Multipler</th>
+                                    <th className="grid2_th">Trading Account</th>
+                                    <th className="grid2_th">Status</th>
+                                </tr>
                             {
                                 data.map((elem)=>{
                                     return(
-                                        <ul key={elem.uId} className="grid1_ul grid2_ul">
-                                            <li className="grid1_li">{elem.createdOn}</li>
-                                            <li className="grid1_li">{elem.algoName}</li>
-                                            <li className="grid1_li">{elem.transactionChange}</li>
-                                            <li className="grid1_li">{elem.instrumentChange}</li>
-                                            <li className="grid1_li">{elem.exchangeChange}</li>
-                                            <li className="grid1_li">{elem.productChange}</li>
-                                            <li className="grid1_li">{elem.lotMultipler}</li>
-                                            <li className="grid1_li">{elem.tradingAccount}</li>
-                                            <li className="grid1_li">{elem.status}</li>
-                                        </ul>
+                                        <tr className="grid2_tr" key={elem.uId}>
+                                            <td className="grid2_td">{elem.createdOn}</td>
+                                            <td className="grid2_td">{elem.algoName}</td>
+                                            <td className="grid2_td">{elem.transactionChange}</td>
+                                            <td className="grid2_td">{elem.instrumentChange}</td>
+                                            <td className="grid2_td">{elem.exchangeChange}</td>
+                                            <td className="grid2_td">{elem.productChange}</td>
+                                            <td className="grid2_td">{elem.lotMultipler}</td>
+                                            <td className="grid2_td">{elem.tradingAccount}</td>
+                                            <td className="grid2_td">{elem.status}</td>
+                                        </tr>
                                     )
                                 })
                             }
+                            </table>
                         </div>
                     </div>
 

@@ -12,16 +12,18 @@ function Roles(){
                         <RoleButtonModel/>
                         <div className="grid_1">
                             <span className="grid1_span">User Roles</span>
-                            <ul className="grid1_ul grid2_ul">
-                                <li className="grid1_li">Created On</li>
-                                <li className="grid1_li">Role Name</li>
-                                <li className="grid1_li">Instruments</li>
-                                <li className="grid1_li">Trading Account</li>
-                                <li className="grid1_li">API Parameters</li>
-                                <li className="grid1_li">Users</li>
-                                <li className="grid1_li">AlgoBox</li>
-                                <li className="grid1_li">Reports</li>
-                            </ul>
+                            <table className="grid1_table">
+                                <tr className="grid2_tr">
+                                <th className="grid2_th">Created On</th>
+                                <th className="grid2_th">Role Name</th>
+                                <th className="grid2_th">Instruments</th>
+                                <th className="grid2_th">Trading Account</th>
+                                <th className="grid2_th">API Parameters</th>
+                                <th className="grid2_th">Users</th>
+                                <th className="grid2_th">AlgoBox</th>
+                                <th className="grid2_th">Reports</th>
+                            </tr>
+                            </table>
                         </div>
                     </div>
                 </div>

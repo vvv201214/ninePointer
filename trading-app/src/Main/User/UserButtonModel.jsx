@@ -79,7 +79,6 @@ async function formbtn(e) {
         <div className="modal">
           <div onClick={toggleModal} className="overlay"></div>
           <div className="modal-content">
-
           <form className="UserMainFormModel">
             <label className="userModelform" htmlFor="">Name</label>
             <input type="text" className="userModelforminput" onChange={(e) => { { formstate.Name = e.target.value } }}/>
@@ -116,7 +115,7 @@ async function formbtn(e) {
                 <option value="Active">Active</option>
             </select> 
         </form>
-        <button className="ACform_tbn" onClick={formbtn}>OK</button> <button className="bsButton1_cancel" onClick={toggleModal}>CLOSE</button>
+        <button className="ACform_tbn userCancelbtn" onClick={formbtn}>OK</button> <button className="bsButton1_cancel userCancelbtn" onClick={toggleModal}>CLOSE</button>
            
           </div>
         </div>

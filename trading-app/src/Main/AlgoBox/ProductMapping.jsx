@@ -87,29 +87,30 @@ function ProductMapping(){
 
                         <div className="grid_1">
                             <span className="grid1_span">Product Mapping</span>
-                            <ul className="grid1_ul grid2_ul">
-                                <li className="grid1_li">Created On</li>
-                                <li className="grid1_li">Product Name (Incoming)</li>
-                                <li className="grid1_li">Incoming Product Code</li>
-                                <li className="grid1_li">Product Name (Outgoing)</li>
-                                <li className="grid1_li">Outgoing Product Code</li>
-                                <li className="grid1_li">Status</li>
-                            </ul>
+                            <table className="grid1_table">
+                                <tr className="grid2_tr">
+                                <th className="grid2_th">Created On</th>
+                                <th className="grid2_th">Product Name (Incoming)</th>
+                                <th className="grid2_th">Incoming Product Code</th>
+                                <th className="grid2_th">Product Name (Outgoing)</th>
+                                <th className="grid2_th">Outgoing Product Code</th>
+                                <th className="grid2_th">Status</th>
+                            </tr>
                             {
                                 data.map((elem)=>{
                                     return(
-                                        <ul key={elem.uId} className="grid1_ul grid2_ul">
-                                            <li className="grid1_li">{elem.createdOn}</li>
-                                            <li className="grid1_li">{elem.ProductNameIncoming}</li>
-                                            <li className="grid1_li">{elem.IncomingProductCode}</li>
-                                            <li className="grid1_li">{elem.ProductNameOutgoing}</li>
-                                            <li className="grid1_li">{elem.OutgoingProductCode}</li>
-                                            <li className="grid1_li">{elem.status}</li>
-                                        </ul>
+                                        <tr className="grid2_tr" key={elem.uId} >
+                                            <td className="grid2_td">{elem.createdOn}</td>
+                                            <td className="grid2_td">{elem.ProductNameIncoming}</td>
+                                            <td className="grid2_td">{elem.IncomingProductCode}</td>
+                                            <td className="grid2_td">{elem.ProductNameOutgoing}</td>
+                                            <td className="grid2_td">{elem.OutgoingProductCode}</td>
+                                            <td className="grid2_td">{elem.status}</td>
+                                        </tr>
                                     )
                                 })
                             }
-                            
+                            </table>
                         </div>
                     </div>
 

@@ -23,6 +23,7 @@ import Tradingparameters from './TradingAccounts/Tradingparameters';
 import UserMain from './User/UserMain';
 import Users from './User/Users';
 import Roles from './User/Roles';
+import TraderPosition from './Dashboard/tradersPosition/TradersPosition';
 export default function Main() {
   return (
     <>

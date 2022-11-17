@@ -87,28 +87,30 @@ function ExchangeMapping(){
 
                         <div className="grid_1">
                             <span className="grid1_span">Exchange Mapping</span>
-                            <ul className="grid1_ul grid2_ul">
-                                <li className="grid1_li">Created On</li>
-                                <li className="grid1_li">Exchange Name (Incoming)</li>
-                                <li className="grid1_li">Incoming Exchange Code</li>
-                                <li className="grid1_li">Exchange Name (Outgoing)</li>
-                                <li className="grid1_li">Outgoing Instrument Code</li>
-                                <li className="grid1_li">Status</li>
-                            </ul>
+                            <table className="grid1_table">
+                                <tr className="grid2_tr">
+                                <th className="grid2_th">Created On</th>
+                                <th className="grid2_th">Exchange Name (Incoming)</th>
+                                <th className="grid2_th">Incoming Exchange Code</th>
+                                <th className="grid2_th">Exchange Name (Outgoing)</th>
+                                <th className="grid2_th">Outgoing Instrument Code</th>
+                                <th className="grid2_th">Status</th>
+                            </tr>
                             {
                                 data.map((elem)=>{
                                     return(
-                                        <ul key={elem.uId} className="grid1_ul grid2_ul">
-                                            <li className="grid1_li">{elem.createdOn}</li>
-                                            <li className="grid1_li">{elem.ExchangeNameIncoming}</li>
-                                            <li className="grid1_li">{elem.IncomingExchangeCode}</li>
-                                            <li className="grid1_li">{elem.ExchangeNameOutgoing}</li>
-                                            <li className="grid1_li">{elem.OutgoingInstrumentCode}</li>
-                                            <li className="grid1_li">{elem.status}</li>
-                                        </ul>
+                                        <tr className="grid2_tr" key={elem.uId} >
+                                            <td className="grid2_td">{elem.createdOn}</td>
+                                            <td className="grid2_td">{elem.ExchangeNameIncoming}</td>
+                                            <td className="grid2_td">{elem.IncomingExchangeCode}</td>
+                                            <td className="grid2_td">{elem.ExchangeNameOutgoing}</td>
+                                            <td className="grid2_td">{elem.OutgoingInstrumentCode}</td>
+                                            <td className="grid2_td">{elem.status}</td>
+                                        </tr>
                                     )
                                 })
                             }
+                            </table>
                         </div>
                     </div>
 

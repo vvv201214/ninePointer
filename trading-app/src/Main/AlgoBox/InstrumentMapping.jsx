@@ -86,28 +86,30 @@ function InstrumentMapping(){
 
                         <div className="grid_1">
                             <span className="grid1_span">Instrument Mapping</span>
-                            <ul className="grid1_ul grid2_ul">
-                                <li className="grid1_li">Created On</li>
-                                <li className="grid1_li">Instrument Name (Incoming)</li>
-                                <li className="grid1_li">Incoming Instrument Code</li>
-                                <li className="grid1_li">Instrument Name (Outgoing)</li>
-                                <li className="grid1_li">Outgoing Instrument Code</li>
-                                <li className="grid1_li">Status</li>
-                            </ul>
+                            <table className="grid1_table">
+                                <tr className="grid2_tr">
+                                    <th className="grid2_th">Created On</th>
+                                    <th className="grid2_th">Instrument Name (Incoming)</th>
+                                    <th className="grid2_th">Incoming Instrument Code</th>
+                                    <th className="grid2_th">Instrument Name (Outgoing)</th>
+                                    <th className="grid2_th">Outgoing Instrument Code</th>
+                                    <th className="grid2_th">Status</th>
+                                </tr>
                             {
                                 data.map((elem)=>{
                                     return(
-                                        <ul key={elem.uId} className="grid1_ul grid2_ul">
-                                            <li className="grid1_li">{elem.createdOn}</li>
-                                            <li className="grid1_li">{elem.InstrumentNameIncoming}</li>
-                                            <li className="grid1_li">{elem.IncomingInstrumentCode}</li>
-                                            <li className="grid1_li">{elem.InstrumentNameOutgoing}</li>
-                                            <li className="grid1_li">{elem.OutgoingInstrumentCode}</li>
-                                            <li className="grid1_li">{elem.status}</li>
-                                        </ul>
+                                        <tr className="grid2_tr" key={elem.uId}>
+                                            <td className="grid2_td">{elem.createdOn}</td>
+                                            <td className="grid2_td">{elem.InstrumentNameIncoming}</td>
+                                            <td className="grid2_td">{elem.IncomingInstrumentCode}</td>
+                                            <td className="grid2_td">{elem.InstrumentNameOutgoing}</td>
+                                            <td className="grid2_td">{elem.OutgoingInstrumentCode}</td>
+                                            <td className="grid2_td">{elem.status}</td>
+                                        </tr>
                                     )
                                 })
-                            }                            
+                            }        
+                            </table>                    
                         </div>
                     </div>
 

@@ -98,48 +98,52 @@ function TradingARToken() {
 
                         <div className="grid_1">
                             <span className="grid1_span">Active Access & Request Token</span>
-                            <ul className="grid1_ul grid2_ul">
-                                <li className="grid1_li">Account ID</li>
-                                <li className="grid1_li">Access Token</li>
-                                <li className="grid1_li">Request Token</li>
-                                <li className="grid1_li">Status</li>
-                                <li className="grid1_li">Generated On</li>
-                            </ul>
+                            <table className="grid1_table">
+                            <tr className="grid2_tr">
+                                <th className="grid2_th">Account ID</th>
+                                <th className="grid2_th">Access Token</th>
+                                <th className="grid2_th">Request Token</th>
+                                <th className="grid2_th">Status</th>
+                                <th className="grid2_th">Generated On</th>
+                            </tr>
                             {activeData.map((elem)=>{
                                 return(
-                                <ul className="grid1_ul grid2_ul" key={elem.uId}>
-                                    <li className="grid1_li">{elem.accountId}</li>
-                                    <li className="grid1_li">{elem.accessToken}</li>
-                                    <li className="grid1_li">{elem.requestToken}</li>
-                                    <li className="grid1_li">{elem.status}</li>
-                                    <li className="grid1_li">{elem.generatedOn}</li>
-                                </ul>
+                                <tr className="grid2_tr" key={elem.uId}>
+                                    <td className="grid2_td">{elem.accountId}</td>
+                                    <td className="grid2_td">{elem.accessToken}</td>
+                                    <td className="grid2_td">{elem.requestToken}</td>
+                                    <td className="grid2_td">{elem.status}</td>
+                                    <td className="grid2_td">{elem.generatedOn}</td>
+                                </tr>
                                     )
                                 })
                             }
+                            </table>
                         </div>
                         </div>
                         <div className="grid_2">
                             <span className="grid2_span">Expired Access & Request Token</span>
-                                <ul className="grid1_ul grid2_ul">
-                                    <li className="grid1_li">Account ID</li>
-                                    <li className="grid1_li">Access Token</li>
-                                    <li className="grid1_li">Request Token</li>
-                                    <li className="grid1_li">Status</li>
-                                    <li className="grid1_li">Generated On</li>
-                                </ul>
+                            <table className="grid1_table">
+                                <tr className="grid2_tr">
+                                    <th className="grid2_th">Account ID</th>
+                                    <th className="grid2_th">Access Token</th>
+                                    <th className="grid2_th">Request Token</th>
+                                    <th className="grid2_th">Status</th>
+                                    <th className="grid2_th">Generated On</th>
+                                </tr>
                                     {inactiveData.map((elem)=>{
                                         return(
-                                            <ul className="grid1_ul grid2_ul" key={elem.uId}>
-                                                <li className="grid1_li">{elem.accountId}</li>
-                                                <li className="grid1_li">{elem.accessToken}</li>
-                                                <li className="grid1_li">{elem.requestToken}</li>
-                                                <li className="grid1_li">{elem.status}</li>
-                                                <li className="grid1_li">{elem.generatedOn}</li>
-                                            </ul>
+                                            <tr className="grid2_tr" key={elem.uId}>
+                                                <td className="grid2_td">{elem.accountId}</td>
+                                                <td className="grid2_td">{elem.accessToken}</td>
+                                                <td className="grid2_td">{elem.requestToken}</td>
+                                                <td className="grid2_td">{elem.status}</td>
+                                                <td className="grid2_td">{elem.generatedOn}</td>
+                                            </tr>
                                             )
                                         })
                                     }
+                                </table>
                         </div>
                     </div>
                 </div>

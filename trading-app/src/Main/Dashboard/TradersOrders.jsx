@@ -19,30 +19,32 @@ function TradersOrders(){
                     <div className="rightside_maindiv">
                         <div className="grid_1">
                             <span className="grid1_span">Today's Trades</span>
-                                <ul className="grid2_ul">
-                                    <li className="grid2_li">Timestamp</li>
-                                    <li className="grid2_li">OrderID</li>
-                                    <li className="grid2_li">Type</li>
-                                    <li className="grid2_li">Instrument</li>
-                                    <li className="grid2_li">Product</li>
-                                    <li className="grid2_li">Quantity</li>
-                                    <li className="grid2_li">Avg.Price</li>
-                                    <li className="grid2_li">Status</li>
-                                </ul> 
+                            <table className="grid1_table">
+                                <tr className="grid2_tr">
+                                    <th className="grid2_th">Timestamp</th>
+                                    <th className="grid2_th">OrderID</th>
+                                    <th className="grid2_th">Type</th>
+                                    <th className="grid2_th">Instrument</th>
+                                    <th className="grid2_th">Product</th>
+                                    <th className="grid2_th">Quantity</th>
+                                    <th className="grid2_th">Avg.Price</th>
+                                    <th className="grid2_th">Status</th>
+                                </tr> 
                                 {data.map((elem)=>{
                                     return(
-                                        <ul className="grid2_ul" key={elem.guid}>
-                                            <li className="grid2_li">{elem.order_timestamp}</li>
-                                            <li className="grid2_li">{elem.order_id}</li>
-                                            <li className="grid2_li">{elem.buyOrSell}</li>
-                                            <li className="grid2_li">{elem.symbol}</li>
-                                            <li className="grid2_li">{elem.Product}</li>
-                                            <li className="grid2_li">{elem.Quantity}</li>
-                                            <li className="grid2_li">{elem.average_price}</li>
-                                            <li className="grid2_li">{elem.status}</li>
-                                        </ul> 
+                                        <tr className="grid2_tr" key={elem.guid}>
+                                            <td className="grid2_td">{elem.order_timestamp}</td>
+                                            <td className="grid2_td">{elem.order_id}</td>
+                                            <td className="grid2_td">{elem.buyOrSell}</td>
+                                            <td className="grid2_td">{elem.symbol}</td>
+                                            <td className="grid2_td">{elem.Product}</td>
+                                            <td className="grid2_td">{elem.Quantity}</td>
+                                            <td className="grid2_td">{elem.average_price}</td>
+                                            <td className="grid2_td">{elem.status}</td>
+                                        </tr> 
                                     )
                                 })}        
+                            </table> 
                         </div>
                     </div>
                 </div>

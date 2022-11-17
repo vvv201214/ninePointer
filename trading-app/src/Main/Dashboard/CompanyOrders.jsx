@@ -19,36 +19,32 @@ function CompanyOrders(){
                     <div className="rightside_maindiv">
                         <div className="grid_1">
                             <span className="grid1_span">Today's Trades</span>
-                            <table>
-                                <thead>
-                                    <tr className="grid2_ul">
-                                        <th className="grid2_li">Timestamp</th>
-                                        <th className="grid2_li">Type</th>
-                                        <th className="grid2_li">Instrument</th>
-                                        <th className="grid2_li">Product</th>
-                                        <th className="grid2_li">Quantity</th>
-                                        <th className="grid2_li">Avg.Price</th>
-                                        <th className="grid2_li">OrderID</th>
-                                        <th className="grid2_li">Status</th>
-                                    </tr> 
-                                </thead>
-                                <tbody>
-                                    {data.map((elem)=>{
-                                        return(
-                                            <tr className="grid2_ul" key={elem.guid}>
-                                                <td className="grid2_li">{elem.order_timestamp}</td>
-                                                <td className="grid2_li">{elem.transaction_type}</td>
-                                                <td className="grid2_li">{elem.tradingsymbol}</td>
-                                                <td className="grid2_li">{elem.product}</td>
-                                                <td className="grid2_li">{elem.quantity}</td>
-                                                <td className="grid2_li">{elem.average_price}</td>
-                                                <td className="grid2_li">{elem.order_id}</td>
-                                                <td className="grid2_li">{elem.status}</td>
-                                            </tr> 
-                                        )
-                                    })}  
-                                </tbody> 
-                            </table>          
+                            <table className="grid1_table">
+                                <tr className="grid2_tr">
+                                    <th className="grid2_th">Timestamp</th>
+                                    <th className="grid2_th">OrderID</th>
+                                    <th className="grid2_th">Type</th>
+                                    <th className="grid2_th">Instrument</th>
+                                    <th className="grid2_th">Product</th>
+                                    <th className="grid2_th">Quantity</th>
+                                    <th className="grid2_th">Avg.Price</th>
+                                    <th className="grid2_th">Status</th>
+                                </tr> 
+                                {data.map((elem)=>{
+                                    return(
+                                        <tr className="grid2_tr" key={elem.guid}>
+                                            <td className="grid2_td">{elem.order_timestamp}</td>
+                                            <td className="grid2_td">{elem.order_id}</td>
+                                            <td className="grid2_td">{elem.transaction_type}</td>
+                                            <td className="grid2_td">{elem.tradingsymbol}</td>
+                                            <td className="grid2_td">{elem.product}</td>
+                                            <td className="grid2_td">{elem.quantity}</td>
+                                            <td className="grid2_td">{elem.average_price}</td>
+                                            <td className="grid2_td">{elem.status}</td>
+                                        </tr> 
+                                    )
+                                })}        
+                            </table> 
                         </div>
                     </div>
                 </div>

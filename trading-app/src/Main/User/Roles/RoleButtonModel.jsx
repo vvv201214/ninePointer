@@ -58,7 +58,7 @@ function formbtn(e) {
             <label htmlFor="" className="userModelform">Reports</label>
             <input type="text" className="userModelforminput" onChange={(e) => { { formstate.reports = e.target.value } }} />
         </form>
-        <button className="ACform_tbn" onClick={formbtn}>OK</button> <button className="bsButton1_cancel" onClick={toggleModal}>CLOSE</button>
+        <button className="ACform_tbn userCancelbtn" onClick={formbtn}>OK</button> <button className="bsButton1_cancel userCancelbtn" onClick={toggleModal}>CLOSE</button>
            
           </div>
         </div>
