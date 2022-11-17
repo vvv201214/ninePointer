@@ -59,20 +59,15 @@ img{
 .sidebar_items:has(> a.active){
     background-color:#5479FC;
    
-    
 }
 .active{
-    color:#ffffff;
+    color:#187498;
 }
 .navbar{
     display: flex;
     list-style: none;
     border-bottom: 2px solid black;
 }
-/* li:has(> a.active){
-    color: #5479FC;
-   
-} */
 a{
     text-decoration: none;
     color: rgb(0, 0, 0);
@@ -82,7 +77,6 @@ a{
     margin-left: 5px;
     font-weight: bold;
 }
-
 
 .sidebar_item {
     margin-top: 7rem;
