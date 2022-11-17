@@ -1,11 +1,18 @@
 import React, { useState } from "react";
 import "./RoleButtonModel.css";
+import { useEffect } from "react";
+import uniqid from "uniqid";
+import axios from "axios";
 
 export default function RoleButtonModel() {
+  let uId = uniqid();
+  let date = new Date();
+  let createdOn = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`
+  let lastModified = createdOn;
+  let createdBy = "prateek"
+
   const [modal, setModal] = useState(false);
   const [formstate, setformstate] = useState({
-
-    createdOn: "",
     roleName:"",
     instruments:"",
     tradingAccount:"",
@@ -15,10 +22,34 @@ export default function RoleButtonModel() {
     reports:"",
 });
 
-function formbtn(e) {
+async function formbtn(e) {
     e.preventDefault();
     setformstate(formstate);
     console.log(formstate)
+
+    const {roleName, instruments, tradingAccount, APIParameters, users, algoBox, reports} = formstate;
+
+    const res = await fetch("http://localhost:5000/everyonerole", {
+        method: "POST",
+        headers: {
+            "content-type" : "application/json"
+        },
+        body: JSON.stringify({
+          roleName, instruments, tradingAccount, APIParameters, users, algoBox, reports, uId, createdBy, createdOn, lastModified
+        })
+    });
+    
+    const data = await res.json();
+    console.log(data);
+    if(data.status === 422 || data.error || !data){
+        window.alert(data.error);
+        console.log("invalid entry");
+    }else{
+        window.alert("entry succesfull");
+        console.log("entry succesfull");
+    }
+    // reRender ? setReRender(false) : setReRender(true)
+
     setModal(!modal);
 
 }
@@ -41,8 +72,6 @@ function formbtn(e) {
           <div onClick={toggleModal} className="overlay"></div>
           <div className="modal-content">
           <form className="UserMainFormModel">
-            <label className="userModelform" htmlFor="">Created On</label>
-            <input type="text" className="userModelforminput" onChange={(e) => { { formstate.createdOn = e.target.value } }}/>
             <label className="userModelform" htmlFor="">Role Name</label>
             <input type="text" className="userModelforminput" onChange={(e) => { { formstate.roleName = (e.target.value).toUpperCase() } }}/>
             <label className="userModelform" htmlFor="">Instruments</label>

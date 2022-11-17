@@ -9,7 +9,7 @@ import axios from "axios"
 function TradingARToken() {
     let uId = uniqid();
     let date = new Date();
-    let generatedOn = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
+    let generatedOn = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`
     let lastModified = generatedOn;
     let createdBy = "prateek"
 
@@ -28,14 +28,17 @@ function TradingARToken() {
         .then((res)=>{
             let data = res.data;
             let active = data.filter((elem)=>{
-                
+                // console.log(elem.createdOn, createdOn);
                 return (elem.generatedOn).includes(`${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`) && elem.status === "Active"
             })
             setActiveData(active);
             console.log(active);
 
-            let inActive = data.filter((elem)=>{
-                return !(elem.generatedOn).includes(`${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`) || (elem.status) === "Inactive"
+            let inActive = data.filter((elem) => {
+                if (elem.status === "Active" && !(elem.generatedOn).includes(`${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`)) {
+                    elem.status = "Inactive"
+                }
+                return elem.status === "Inactive"
             })
             setInactiveData(inActive);
         })

@@ -204,12 +204,12 @@ export default function ByModal({marketData, uIdProps, isTradersTrade}) {
         console.log(dataResp);
         if(dataResp.status === 422 || dataResp.error || !dataResp){
             window.alert(dataResp.error);
-            console.log("invalid entry");
+            console.log("Failed to Trade");
         }else{
             console.log(dataResp); 
-            window.alert("entry succesfull");
+            window.alert("Trade succesfull");
             console.log("entry succesfull");
-        } 
+        }  
     }
 
 

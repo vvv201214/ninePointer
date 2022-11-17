@@ -104,7 +104,7 @@ function InstrumentMapping(){
                                             <td className="grid2_td">{elem.IncomingInstrumentCode}</td>
                                             <td className="grid2_td">{elem.InstrumentNameOutgoing}</td>
                                             <td className="grid2_td">{elem.OutgoingInstrumentCode}</td>
-                                            <td className="grid2_td">{elem.status}</td>
+                                            <td className="grid2_td">{elem.Status}</td>
                                         </tr>
                                     )
                                 })

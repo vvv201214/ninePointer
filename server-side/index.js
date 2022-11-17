@@ -29,6 +29,7 @@ app.use(require('./routes/TradingAccountAuth/brokerageAuth'));
 app.use(require('./routes/TradingAccountAuth/parameterAuth'));
 app.use(require('./routes/TradingAccountAuth/requestTokenAuth'));
 app.use(require('./routes/user/userDetailAuth'));
+app.use(require("./routes/user/everyoneRoleAuth"))
 require('./db/conn');
 
 const PORT = 5000;

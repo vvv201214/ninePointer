@@ -13,19 +13,20 @@ body {
     
 }
 .leftsidebar {
-    height: 150%;
+    min-height: 105%;
+    max-height: 150%;
     width: 100%;
     display: flex;
     flex-direction: column;
     margin-right: -1rem;
     background-color:#187498;
+    border-radius: 5px;
     
 }
 .userSidebar_div {
     margin-top: 20%;
     font-size: 20px;
-    font-weight: bold;
-    
+    font-weight: bold; 
 }
 img{
     height: 100px;
@@ -55,11 +56,23 @@ img{
    border: none;
    
 }
+.sidebar_items:has(> a.active){
+    background-color:#5479FC;
+   
+    
+}
+.active{
+    color:#ffffff;
+}
 .navbar{
     display: flex;
     list-style: none;
     border-bottom: 2px solid black;
 }
+/* li:has(> a.active){
+    color: #5479FC;
+   
+} */
 a{
     text-decoration: none;
     color: rgb(0, 0, 0);
@@ -72,17 +85,18 @@ a{
 
 
 .sidebar_item {
-    margin-top: 4rem;
+    margin-top: 7rem;
     text-align: center;
     background-color: #f6f6f6;
     padding-top: 10px;
     padding-bottom: 10px;
     width: auto;
-    height: auto;
+    min-height: 10%;
     border-radius: 20px;
     margin-left: 1rem;
     margin-right: 1rem;
     font-weight: bold;
+   
 }
 .right_side {
     display: flex;
@@ -92,21 +106,28 @@ a{
 }
 
 .User_header {
-    min-height: 10%;
+    min-height: 5%;
+    max-height: 15%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: #428BCA;
+    border-radius: 5px;
 }
 .header_para{
+    min-width: 40%;
+    max-width: 15%;
     min-height: 9%;
+    max-height: 15%;
     margin-left: 5px;
     font-size: 2rem;
+    padding: 12px;
     
 }
 .logo_btn{
     background-color:#5479FC;
-    width: fit-content;
+    min-width: 20%;
+    max-width: 50%;
     padding: 10px;
     font-size: large;
     font-weight: bold;

@@ -13,7 +13,7 @@ function TradingAlgo(){
 
     const [reRender, setReRender] = useState(true);
     const [data, setData] = useState([]);
-    const[formstate, setformstate] = useState({
+    const [formstate, setformstate] = useState({
         algoName: "",
         transactionChange : "",
         instrumentChange : "",
