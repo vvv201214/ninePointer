@@ -10,7 +10,7 @@ import axios from "axios";
 function TradingAccounts() {
     let uId = uniqid();
     let date = new Date();
-    let createdOn = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
+    let createdOn = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`
     let lastModified = createdOn;
     let createdBy = "prateek"
 
@@ -68,8 +68,11 @@ function TradingAccounts() {
             setActiveData(active);
             console.log(active);
 
-            let inActive = data.filter((elem)=>{
-                return !(elem.createdOn).includes(`${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`) || (elem.status) === "Inactive"
+            let inActive = data.filter((elem) => {
+                if (elem.status === "Active" && !(elem.createdOn).includes(`${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`)) {
+                    elem.status = "Inactive"
+                }
+                return elem.status === "Inactive"
             })
             setInactiveData(inActive);
         })
