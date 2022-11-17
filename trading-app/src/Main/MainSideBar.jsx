@@ -8,7 +8,7 @@ export default function MainSideBar() {
             <div className="userSidebar_div">
                 <img src="https://png.pngtree.com/png-vector/20190704/ourlarge/pngtree-businessman-user-avatar-free-vector-png-image_1538405.jpg" alt="" />
                 <h6 className="sidbar_h6">ADMIN</h6>
-                <div className="sidebar_items"><NavLink to="/" style={({isActive}) => isActive?{background:'#187498', color:'white'} :{color:'black'} }>Dashboard</NavLink></div>
+                <div className="sidebar_items"><NavLink to="/">Dashboard</NavLink></div>
                 <div className="sidebar_items"><NavLink to={"/instrument"}>Instruments</NavLink></div>
                 <div className="sidebar_items"><NavLink to={"/tradingAccount"}>Trading Accounts</NavLink></div>
                 <div className="sidebar_items"><NavLink to={"/user"}>Users</NavLink></div>

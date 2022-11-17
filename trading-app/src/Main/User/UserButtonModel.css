@@ -36,12 +36,13 @@ body.active-modal {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     position: relative;
-    top: 2rem;
+    top: 3rem;
+   
 }
 .userModelform{
    font-size: 18px;
    font-weight: bold;
-   
+  
 }
 
 .userModelforminput{
@@ -53,6 +54,6 @@ body.active-modal {
 }
 .userCancelbtn{
     position: relative;
-    top: 5rem;
+    top: 6rem;
     left:30%;
 }
