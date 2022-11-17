@@ -159,10 +159,6 @@
     background-color: #Df514C;
    color: white;
 }
-.active{
-    color:#187498;
-}
-
 .data_tr{
     display: flex;
     justify-content: space-around;
