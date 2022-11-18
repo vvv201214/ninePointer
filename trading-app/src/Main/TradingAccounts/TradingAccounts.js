@@ -6,6 +6,7 @@ import 'reactjs-popup/dist/index.css';
 import { useState } from "react";
 import uniqid from "uniqid";
 import axios from "axios";
+import Styles from "./TradingAccountsCSSFiles/TradingAccounts.module.css";
 
 function TradingAccounts() {
     let uId = uniqid();
@@ -26,12 +27,22 @@ function TradingAccounts() {
         APISecret : "",
         Status:""
     });
+    const [modal, setModal] = useState(false);
 
+    const toggleModal = () => {
+        setModal(!modal);
+    };
+    if (modal) {
+        document.body.classList.add('active-modal')
+    } else {
+        document.body.classList.remove('active-modal')
+    }
 
     async function formbtn(e){
         e.preventDefault();
         setformstate(formstate);
         console.log(formstate)
+        setModal(!modal);
         const {AccountID, Broker, AccountName, APIKey, APISecret, Status} = formstate;
 
         const res = await fetch("http://localhost:5000/account", {
@@ -84,29 +95,36 @@ function TradingAccounts() {
             <div className="main_Container">
                 <div className="right_side">
                     <div className="rightside_maindiv">
-                        <Popup trigger={<button className="Ac_btn">Add Company Trading Account</button>} open={open} closeOnDocumentClick onClose={formbtn}>
-                            <form>
-                                <label className="Ac_form" htmlFor="">Broker</label>
-                                <input type="text" className="Ac_forminput" onChange={(e)=>{{formstate.Broker = e.target.value}}} />
-                                <label className="Ac_form" htmlFor="">Account ID</label>
-                                <input type="text" className="Ac_forminput" onChange={(e)=>{{formstate.AccountID = e.target.value}}}/>
-                                <label className="Ac_form" htmlFor="">Acccount Name</label>
-                                <input type="text" className="Ac_forminput"  onChange={(e)=>{{formstate.AccountName = e.target.value}}} />
-                                <label className="Ac_form" htmlFor="">API Key</label>
-                                <input type="text" className="Ac_forminput"  onChange={(e)=>{{formstate.APIKey = e.target.value}}} />
-                                <label className="Ac_form"htmlFor="">API Secret</label>
-                                <input type="text" className="Ac_forminput"  onChange={(e)=>{{formstate.APISecret = e.target.value}}} />
-                                <label htmlFor="" className="Ac_form">Status</label>
-                                <select name="" id="" className="Ac_forminput" onChange={(e)=>{{formstate.Status = e.target.value}}}>
-                                    <option value=""></option>
-                                    <option value="Inactive">Inactive</option>
-                                    <option value="Active">Active</option>
-                                </select>                            
-                                <br />
-                                <button className="ACform_tbn" onClick={formbtn}>OK</button>
-                            </form>
-                        </Popup>
-
+                    <button onClick={toggleModal} className="Ac_btn">Add Company Trading Account</button>
+                        {modal && (
+                            <div className="modal">
+                                <div onClick={toggleModal} className="overlay"></div>
+                                <div className={Styles.modalContent}>
+                                    <div className={Styles.form_btn}>
+                                    <form className={Styles.main_instrument_form}>
+                                        <label className={Styles.Ac_form} htmlFor="">Broker</label>
+                                        <input type="text" className={Styles.Ac_forminput} onChange={(e)=>{{formstate.Broker = e.target.value}}} />
+                                        <label className={Styles.Ac_form} htmlFor="">Account ID</label>
+                                        <input type="text" className={Styles.Ac_forminput} onChange={(e)=>{{formstate.AccountID = e.target.value}}}/>
+                                        <label className={Styles.Ac_form} htmlFor="">Acccount Name</label>
+                                        <input type="text" className={Styles.Ac_forminput}  onChange={(e)=>{{formstate.AccountName = e.target.value}}} />
+                                        <label className={Styles.Ac_form} htmlFor="">API Key</label>
+                                        <input type="text" className={Styles.Ac_forminput}  onChange={(e)=>{{formstate.APIKey = e.target.value}}} />
+                                        <label className={Styles.Ac_form}htmlFor="">API Secret</label>
+                                        <input type="text" className={Styles.Ac_forminput}  onChange={(e)=>{{formstate.APISecret = e.target.value}}} />
+                                        <label htmlFor="" className={Styles.Ac_form}>Status</label>
+                                        <select name="" id="" className={Styles.Ac_forminput} onChange={(e)=>{{formstate.Status = e.target.value}}}>
+                                            <option value=""></option>
+                                            <option value="Inactive">Inactive</option>
+                                            <option value="Active">Active</option>
+                                        </select>                            
+                                        <br />
+                                        <button className={Styles.ACform_tbn} onClick={formbtn}>OK</button>
+                                    </form>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                         <div className="grid_1">
                             <span className="grid1_span">Active Company Trading Accounts</span>
                             <table className="grid1_table">
@@ -160,15 +178,33 @@ function TradingAccounts() {
                             }
                             </table>
                         </div>
-
-
                     </div>
-
                 </div>
-
             </div>
         </div>
     )
 }
 export default TradingAccounts;
 
+{/* <Popup trigger={<button className="Ac_btn">Add Company Trading Account</button>} open={open} closeOnDocumentClick onClose={formbtn}>
+<form>
+    <label className="Ac_form" htmlFor="">Broker</label>
+    <input type="text" className="Ac_forminput" onChange={(e)=>{{formstate.Broker = e.target.value}}} />
+    <label className="Ac_form" htmlFor="">Account ID</label>
+    <input type="text" className="Ac_forminput" onChange={(e)=>{{formstate.AccountID = e.target.value}}}/>
+    <label className="Ac_form" htmlFor="">Acccount Name</label>
+    <input type="text" className="Ac_forminput"  onChange={(e)=>{{formstate.AccountName = e.target.value}}} />
+    <label className="Ac_form" htmlFor="">API Key</label>
+    <input type="text" className="Ac_forminput"  onChange={(e)=>{{formstate.APIKey = e.target.value}}} />
+    <label className="Ac_form"htmlFor="">API Secret</label>
+    <input type="text" className="Ac_forminput"  onChange={(e)=>{{formstate.APISecret = e.target.value}}} />
+    <label htmlFor="" className="Ac_form">Status</label>
+    <select name="" id="" className="Ac_forminput" onChange={(e)=>{{formstate.Status = e.target.value}}}>
+        <option value=""></option>
+        <option value="Inactive">Inactive</option>
+        <option value="Active">Active</option>
+    </select>                            
+    <br />
+    <button className="ACform_tbn" onClick={formbtn}>OK</button>
+</form>
+</Popup> */}
