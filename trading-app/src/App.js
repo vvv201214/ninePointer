@@ -5,8 +5,8 @@ import LogInForm from "./initialForm/LogInForm";
 function App() {
   return (
     <>
-      <LogInForm />
-      {/* <Main/> */}
+      {/* <LogInForm /> */}
+      <Main/>
     </>
   );
 }
