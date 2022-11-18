@@ -74,12 +74,13 @@ function TraderPositionTable({ socket }) {
                                 // setMarketData(updatedMarketData)
                                 return(
                                         <tr className="grid2_tr" key={elem.uId}>
-                                            <td className="grid1_td">{elem.createdOn}</td>
-                                            <td className="grid1_td">{elem.symbol}</td>
-                                            <td className="grid1_td">{updatedMarketData[0]?.last_price}</td>
-                                            <td className="grid1_td">{updatedMarketData[0]?.change.toFixed(2)}</td>
-                                            <td className="grid1_td"><ByModal marketData={marketData} uIdProps={elem.uId} isTradersTrade={true}/></td>
-                                            <td className="grid1_td"><SellModel marketData={marketData} uIdProps={elem.uId} isTradersTrade={true}/></td>
+                                            <td className="grid2_td">{elem.createdOn}</td>
+                                            <td className="grid2_td">{elem.symbol}</td>
+                                            <td className="grid2_td">{updatedMarketData[0]?.last_price}</td>
+                                            <td className="grid2_td">{updatedMarketData[0]?.change.toFixed(2)}</td>
+                                            <td className="grid2_th companyPosition_BSbtn2"><div className="companyPosition_BSbtn">
+                                            <ByModal marketData={marketData} uIdProps={elem.uId} isTradersTrade={false}/>
+                                            <SellModel marketData={marketData} uIdProps={elem.uId} isTradersTrade={false}/></div></td>
                                         </tr>
                                     )
                                 })} 

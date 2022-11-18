@@ -7,19 +7,19 @@ export default function DashboardHeader() {
         <div className='all_headers'>
         <ul className='navbar'>
             <li>
-                <NavLink to={"/"}>Trader's Dashboard</NavLink>
+                <NavLink to={"/dashboard"}>Trader's Dashboard</NavLink>
             </li>
             <li>
-                <NavLink to={"/CompanyPosition"}>Company:Position</NavLink>
+                <NavLink to={"/dashboard/CompanyPosition"}>Company:Position</NavLink>
             </li>
             <li>
-                <NavLink to={"/TradersPosition"}>Traders:Position</NavLink>
+                <NavLink to={"/dashboard/TradersPosition"}>Traders:Position</NavLink>
             </li>
             <li>
-                <NavLink to={"/CompanyOrders"}>Company:Orders</NavLink>
+                <NavLink to={"/dashboard/CompanyOrders"}>Company:Orders</NavLink>
             </li>
             <li>
-                <NavLink to={"/TradersOrders"}>Traders:Orders</NavLink>
+                <NavLink to={"/dashboard/TradersOrders"}>Traders:Orders</NavLink>
             </li>
         </ul>
         <Outlet/>
