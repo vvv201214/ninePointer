@@ -3,6 +3,7 @@ const router = express.Router();
 require("../../db/conn");
 const UserDetail = require("../../models/User/userDetailSchema");
 const jwt = require("jsonwebtoken")
+const authentication = require("../../authentication/authentication")
 
 router.post("/login", async (req, res)=>{
     const {userId, pass} = req.body;
@@ -22,14 +23,19 @@ router.post("/login", async (req, res)=>{
     }else{
         const token = await userLogin.generateAuthToken();
         console.log(token);
-        // res.json(token);
-        res.cookie("jwtoken", token, {
-            expires: new Date(Date.now() + 25892000000),
-            httpOnly: true
-        });
-        res.status(201).json({massage : "user login succesfully"});
+        
+        // res.cookie("jwtoken", token, {
+        //     expires: new Date(Date.now() + 25892000000),
+        //     httpOnly: false
+        // });
+        res.json(token);
+        // res.status(201).json({massage : "user login succesfully"});
     }
 })
 
+router.get("/dashboard", authentication, (req, res)=>{
+    console.log("hello my about");
+    res.send(req.user);
+})
 
 module.exports = router;

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 import MainSideBar from './MainSideBar';
 import Brokerage from './TradingAccounts/Brokerage';
@@ -24,7 +24,38 @@ import UserMain from './User/UserMain';
 import Users from './User/Users';
 import Roles from './User/Roles';
 import TraderPosition from './Dashboard/tradersPosition/TradersPosition';
+import LogInForm from '../initialForm/LogInForm';
+
+
+
 export default function Main() {
+
+  const dashboardPage = async ()=>{
+    try{
+        const res = await fetch("http://localhost:5000/dashboard", {
+            method: "GET",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json"
+            },
+            credentials: "include"
+        });
+
+        const data = await res.json();
+        console.log(data);
+
+        if(!res.status === 200){
+            throw new Error(res.error);
+        }
+    } catch(err){
+
+    }
+}
+useEffect(()=>{
+    dashboardPage();
+}, [])
+
+
   return (
     <>
         <BrowserRouter>
@@ -34,6 +65,9 @@ export default function Main() {
             </div>
             <div className='right_Side_comp'>
                 <Routes>
+                    
+                    <Route path='/login' element={<LogInForm/>} />
+
                     <Route path='/tradingAccount' element={<TradingACMain/>}>
                         <Route path='/tradingAccount' element={<TradingAccounts/>}></Route>
                         <Route path='/tradingAccount/Tradingparameters' element={<Tradingparameters/>} />
@@ -65,15 +99,6 @@ export default function Main() {
                       <Route path='/user/roles' element={<Roles/>}></Route>
                     
                     </Route>
-    
-
-                    {/* <Route path='' element={}/> 
-                    <Route path='' element={}> 
-                    <Route path='/user/preDetails' element={<PreDataForUser />} />
-                    <Route path='/user/trade' element={<TradeWindow />}/>
-                    </Route>
-                    <Route path='' element={}/>  */}
-                    
                 </Routes>
             </div>
           </div>
