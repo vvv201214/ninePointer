@@ -1,5 +1,6 @@
 import React from 'react'
 import { useState } from 'react';
+import cookie from "js-cookie";
 import "./LoginStyle.css";
 
 export default function LogInForm() {
@@ -31,6 +32,10 @@ export default function LogInForm() {
             window.alert(data.error);
             console.log("invalid user details");
         }else{
+            // cookie.set("jwtoken", data, {
+            //     secure:true,
+            //     path:"/login"
+            // });
             window.alert("user login succesfull");
             console.log("entry succesfull");
         }

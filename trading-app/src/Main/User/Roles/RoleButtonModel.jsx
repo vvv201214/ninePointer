@@ -73,9 +73,9 @@ async function formbtn(e) {
           <div className="modal-content">
           <form className="UserMainFormModel">
             <label className="userModelform" htmlFor="">Role Name</label>
-            <input type="text" className="userModelforminput" onChange={(e) => { { formstate.roleName = (e.target.value).toUpperCase() } }}/>
+            <input type="text" className="userModelforminput" onChange={(e) => { { formstate.roleName = (e.target.value)} }}/>
             <label className="userModelform" htmlFor="">Instruments</label>
-            <input type="text" className="userModelforminput" onChange={(e) => { { formstate.instruments = e.target.value.toUpperCase() } }}/>
+            <input type="text" className="userModelforminput" onChange={(e) => { { formstate.instruments = e.target.value} }}/>
             <label htmlFor="" className="userModelform">Trading Account</label>
             <input type="text" className="userModelforminput" onChange={(e) => { { formstate.tradingAccount = e.target.value } }} />
             <label htmlFor="" className="userModelform">API Parameters</label>

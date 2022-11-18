@@ -4,6 +4,7 @@ const app = express();
 const dotenv = require('dotenv');
 const kiteConnect = require('./marketData/kiteConnect');
 const fetch = require('./marketData/placeOrder');
+const authentication = require("./authentication/authentication")
 
 dotenv.config({ path: './config.env' });
 
@@ -34,7 +35,7 @@ require('./db/conn');
 
 const PORT = 5000;
 
-app.get('/', (req, res) => {
+app.get('/check',authentication, (req, res) => {
   res.send('running');
 });
 app.listen(PORT);
