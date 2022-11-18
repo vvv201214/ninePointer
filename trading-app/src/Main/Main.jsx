@@ -30,30 +30,30 @@ import LogInForm from '../initialForm/LogInForm';
 
 export default function Main() {
 
-  const dashboardPage = async ()=>{
-    try{
-        const res = await fetch("http://localhost:5000/dashboard", {
-            method: "GET",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json"
-            },
-            credentials: "include"
-        });
+//   const dashboardPage = async ()=>{
+//     try{
+//         const res = await fetch("http://localhost:5000/dashboard", {
+//             method: "GET",
+//             headers: {
+//                 Accept: "application/json",
+//                 "Content-Type": "application/json"
+//             },
+//             credentials: "include"
+//         });
 
-        const data = await res.json();
-        console.log(data);
+//         const data = await res.json();
+//         console.log(data);
 
-        if(!res.status === 200){
-            throw new Error(res.error);
-        }
-    } catch(err){
+//         if(!res.status === 200){
+//             throw new Error(res.error);
+//         }
+//     } catch(err){
 
-    }
-}
-useEffect(()=>{
-    dashboardPage();
-}, [])
+//     }
+// }
+// useEffect(()=>{
+//     dashboardPage();
+// }, [])
 
 
   return (
@@ -66,7 +66,7 @@ useEffect(()=>{
             <div className='right_Side_comp'>
                 <Routes>
                     
-                    <Route path='/login' element={<LogInForm/>} />
+                    {/* <Route path='/login' element={<LogInForm/>} /> */}
 
                     <Route path='/tradingAccount' element={<TradingACMain/>}>
                         <Route path='/tradingAccount' element={<TradingAccounts/>}></Route>

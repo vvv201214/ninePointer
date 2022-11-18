@@ -5,6 +5,7 @@ const dotenv = require('dotenv');
 const kiteConnect = require('./marketData/kiteConnect');
 const fetch = require('./marketData/placeOrder');
 const authentication = require("./authentication/authentication")
+app.use(require("cookie-parser"));
 
 dotenv.config({ path: './config.env' });
 
@@ -12,7 +13,8 @@ console.log(kiteConnect);
 app.get('/ws', kiteConnect);
 app.get('/data', fetch);
 app.use(cors({
-  credentials:true
+  credentials:true,
+  origin: "http://localhost:3000"
 }));
 
 app.use(express.json());
@@ -37,8 +39,8 @@ require('./db/conn');
 
 const PORT = 5000;
 
-app.get('/check', authentication, (req, res) => {
-  // res.cookie("check", "12345")
-  res.send('running');
-});
+// app.get('/check', authentication, (req, res) => {
+//   // res.cookie("check", "12345")
+//   res.send('running');
+// });
 app.listen(PORT);
