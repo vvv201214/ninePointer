@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const jwt = require("jsonwebtoken")
 
 const userDetailSchema = new mongoose.Schema({
     status:{
@@ -67,8 +68,28 @@ const userDetailSchema = new mongoose.Schema({
     role:{
         type: String,
         required: true
-    }
+    },
+    tokens: [
+        {
+            token: {
+                type: String,
+                required: true
+            }
+        }
+    ]
 })
+
+// generating jwt token
+userDetailSchema.methods.generateAuthToken = async function(){
+    try{
+        let token = jwt.sign({_id: this._id}, process.env.SECRET_KEY);
+        this.tokens = this.tokens.concat({token: token});
+        await this.save();
+        return token;
+    } catch (err){
+        console.log(err);
+    }
+}
 
 const userPersonalDetail = mongoose.model("user-personal-detail", userDetailSchema);
 module.exports = userPersonalDetail;

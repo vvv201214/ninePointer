@@ -83,9 +83,9 @@ async function formbtn(e) {
             <label className="userModelform" htmlFor="">Name</label>
             <input type="text" className="userModelforminput" onChange={(e) => { { formstate.Name = e.target.value } }}/>
             <label className="userModelform" htmlFor="">Designation</label>
-            <input type="text" className="userModelforminput" onChange={(e) => { { formstate.Designation = (e.target.value).toUpperCase() } }}/>
+            <input type="text" className="userModelforminput" onChange={(e) => { { formstate.Designation = (e.target.value)} }}/>
             <label className="userModelform" htmlFor="">EmailID</label>
-            <input type="text" className="userModelforminput" onChange={(e) => { { formstate.EmailID = e.target.value.toUpperCase() } }}/>
+            <input type="text" className="userModelforminput" onChange={(e) => { { formstate.EmailID = e.target.value} }}/>
             <label htmlFor="" className="userModelform">MobileNo</label>
             <input type="text" className="userModelforminput" onChange={(e) => { { formstate.MobileNo = e.target.value } }} />
             <label htmlFor="" className="userModelform">Degree</label>
