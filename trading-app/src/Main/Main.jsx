@@ -80,11 +80,11 @@ useEffect(()=>{
                     </Route>
                   
                     <Route path='/' element={<DashboardMain/>}>
-                      <Route path='/' element={<TradersDashboard/>}></Route>
-                      <Route path='/CompanyPosition' element={<CompanyPosition/>}></Route>
-                      <Route path='/TradersPosition' element={<TradersPosition/>}></Route>
-                      <Route path='/CompanyOrders' element={<CompanyOrders/>}></Route>
-                      <Route path='/TradersOrders' element={<TradersOrders/>}></Route>
+                      <Route path='/dashboard' element={<TradersDashboard/>}></Route>
+                      <Route path='/dashboard/CompanyPosition' element={<CompanyPosition/>}></Route>
+                      <Route path='/dashboard/TradersPosition' element={<TradersPosition/>}></Route>
+                      <Route path='/dashboard/CompanyOrders' element={<CompanyOrders/>}></Route>
+                      <Route path='/dashboard/TradersOrders' element={<TradersOrders/>}></Route>
                     
                     </Route>
                       <Route path='/algobox' element={<AlgoMain/>}>

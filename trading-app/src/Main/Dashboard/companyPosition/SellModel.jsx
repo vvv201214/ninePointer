@@ -271,13 +271,12 @@ export default function SellModel({marketData, uIdProps, isTradersTrade}) {
                        </div>
                       
                        <div className="container_three">
-                           <label htmlFor="" className="bsLabel" >Validity</label>
-                           <span>
-                           <input type="radio" value="DAY" name="validity"  className="btnRadio2" onChange={(e) => { { Details.validity = e.target.value } }}/> Day</span>
+                           <label htmlFor="" className="bsLabel bslable1" >Validity</label>
+                           <span className="lable1_radiobtn"><input type="radio" value="DAY" name="validity"  className="btnRadio2" onChange={(e) => { { Details.validity = e.target.value } }}/> Day</span>
 
-                           <span><input type="radio" value="IMMEDIATE" name="validity" className="btnRadio2" onChange={(e) => { { Details.validity = e.target.value } }}/> Immediate  </span>
+                           <span className="lable1_radiobtn"><input type="radio" value="IMMEDIATE" name="validity" className="btnRadio2" onChange={(e) => { { Details.validity = e.target.value } }}/> Immediate  </span>
                           
-                           <span><input type="radio" value="MINUTES" name="validity" className="btnRadio2" onChange={(e) => { { Details.validity = e.target.value } }}/> Minutes </span>
+                           <span className="lable1_radiobtn"><input type="radio" value="MINUTES" name="validity" className="btnRadio2" onChange={(e) => { { Details.validity = e.target.value } }}/> Minutes </span>
                        </div>
 
 
@@ -309,18 +308,15 @@ export default function SellModel({marketData, uIdProps, isTradersTrade}) {
                             <input type="radio" value="SL" name="TriggerPrice" className="btnRadio1" onChange={(e) => { { Details.stopLoss = e.target.value } }}/> SL 
                             <input type="radio" value="SLM" name="TriggerPrice" className="btnRadio1" onChange={(e) => { { Details.stopLoss = e.target.value } }}/> SL-M
                             </div>
-
                         </div>
                        
                         <div className="container_three">
-                            <label htmlFor="" className="bsLabel" >Validity</label>
-                            <span>
-                            <input type="radio" value="DAY" name="validity"  className="btnRadio2" onChange={(e) => { { Details.validity = e.target.value } }} /> Day</span>
+                            <label htmlFor="" className="bsLabel bslable1" >Validity</label>
+                            <span className="lable1_radiobtn"><input type="radio" value="DAY" name="validity"  className="btnRadio2" onChange={(e) => { { Details.validity = e.target.value } }} /> Day</span>
 
-
-                            <span><input type="radio" value="IMMEDIATE" name="validity" className="btnRadio2" onChange={(e) => { { Details.validity = e.target.value } }}/> Immediate  </span>
+                            <span className="lable1_radiobtn"><input type="radio" value="IMMEDIATE" name="validity" className="btnRadio2" onChange={(e) => { { Details.validity = e.target.value } }}/> Immediate  </span>
                            
-                            <span><input type="radio" value="MINUTES" name="validity" className="btnRadio2" onChange={(e) => { { Details.validity = e.target.value } }}/> Minutes </span>
+                            <span className="lable1_radiobtn"><input type="radio" value="MINUTES" name="validity" className="btnRadio2" onChange={(e) => { { Details.validity = e.target.value } }}/> Minutes </span>
                         </div>
 
                         <div className="form_button">
