@@ -4,13 +4,16 @@ const app = express();
 const dotenv = require('dotenv');
 const kiteConnect = require('./marketData/kiteConnect');
 const fetch = require('./marketData/placeOrder');
+const authentication = require("./authentication/authentication")
 
 dotenv.config({ path: './config.env' });
 
 console.log(kiteConnect);
 app.get('/ws', kiteConnect);
 app.get('/data', fetch);
-app.use(cors());
+app.use(cors({
+  credentials:true
+}));
 
 app.use(express.json());
 
@@ -34,7 +37,8 @@ require('./db/conn');
 
 const PORT = 5000;
 
-app.get('/', (req, res) => {
+app.get('/check', authentication, (req, res) => {
+  // res.cookie("check", "12345")
   res.send('running');
 });
 app.listen(PORT);

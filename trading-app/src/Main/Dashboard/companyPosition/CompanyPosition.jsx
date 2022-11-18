@@ -14,20 +14,7 @@ function CompanyPosition() {
             console.log(socket.id);
             socket.emit("hi","ok")
         })
-        // socket.on("disconnect", ()=>{
-        //     console.log(socket.id);
-        // return ()=>{
-        //     console.log('closing');
-        //     socket.close();
-        // }
-        }, []);
-
-        // useEffect(()=>{
-        //     return ()=>{
-        //         console.log('closing');
-        //         socket.close();
-        //     }
-        // },[])
+    }, []);
 
     return (
         <div>

@@ -1,8 +1,11 @@
 import React from 'react'
 import { useState } from 'react';
+import cookie from "js-cookie";
 import "./LoginStyle.css";
+import {useHistory} from "react-router-dom";
 
 export default function LogInForm() {
+    const history = useHistory();
     const [userInfo, setUserInfo] = useState({
         userId : "",
         pass : ""
@@ -17,6 +20,7 @@ export default function LogInForm() {
 
         const res = await fetch("http://localhost:5000/login", {
             method: "POST",
+            withCredentials: true,
             headers: {
                 "content-type" : "application/json"
             },
@@ -31,8 +35,13 @@ export default function LogInForm() {
             window.alert(data.error);
             console.log("invalid user details");
         }else{
+            cookie.set("jwtoken", data, {
+                secure:true,
+                path:"/login"
+            });
             window.alert("user login succesfull");
             console.log("entry succesfull");
+            history.push("/")
         }
             
     }
