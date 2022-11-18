@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Popup from "reactjs-popup";
 import 'reactjs-popup/dist/index.css';
+import Styles from './InstrumentModel.module.css';
 import uniqid from "uniqid";
 import axios from "axios";
 
@@ -8,11 +9,12 @@ import axios from "axios";
 function Instruments() {
     let uId = uniqid();
     let date = new Date();
-    let createdOn = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`
-    let lastModified = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`;
+    let createdOn = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
+    let lastModified = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
 
     let createdBy = "prateek"
 
+    const [modal, setModal] = useState(false);
     const [activeData, setActiveData] = useState([]);
     const [inactiveData, setInActiveData] = useState([]);
     const [reRender, setReRender] = useState(true);
@@ -50,10 +52,24 @@ function Instruments() {
             })
     }, [reRender])
 
+    const toggleModal = () => {
+        setModal(!modal);
+    };
+    if (modal) {
+        document.body.classList.add('active-modal')
+    } else {
+        document.body.classList.remove('active-modal')
+    }
+
+
     async function formbtn(e) {
         e.preventDefault();
         setformstate(formstate);
         console.log(formstate)
+        setModal(!modal);
+
+
+
 
         const { Instrument, Exchange, Status, Symbole, LotSize } = formstate;
 
@@ -77,47 +93,82 @@ function Instruments() {
             console.log("entry succesfull");
         }
         reRender ? setReRender(false) : setReRender(true)
+
     }
     return (
         <div>
             <div className="main_Container">
                 <div className="right_side">
                     <div className="rightside_maindiv">
-                        <Popup trigger={<button className="Ac_btn">Create instrument</button>}>
-                            <form>
-                                <label className="Ac_form" htmlFor="">Instrument</label>
-                                <input type="text" className="Ac_forminput" onChange={(e) => { { formstate.Instrument = e.target.value } }} />
-                                <label className="Ac_form" htmlFor="">Exchange</label>
-                                <input type="text" className="Ac_forminput" onChange={(e) => { { formstate.Exchange = (e.target.value).toUpperCase() } }} />
-                                <label className="Ac_form" htmlFor="">Symbol</label>
-                                <input type="text" className="Ac_forminput" onChange={(e) => { { formstate.Symbole = e.target.value.toUpperCase() } }} />
-                                <label htmlFor="" className="Ac_form">Lot Size</label>
-                                <input type="text" className="Ac_forminput" onChange={(e) => { { formstate.LotSize = e.target.value } }} />
-                                <label htmlFor="" className="Ac_form">Status</label>
-                                <select name="" id="" className="Ac_forminput" onChange={(e) => { { formstate.Status = e.target.value } }}>
-                                    <option value=""></option>
-                                    <option value="Inactive">Inactive</option>
-                                    <option value="Active">Active</option>
-                                </select>
-
-                                <button className="ACform_tbn" onClick={formbtn}>OK</button>
-                            </form>
-                        </Popup>
-
+                        <button onClick={toggleModal} className="Ac_btn">Create instrument</button>
+                        {modal && (
+                            <div className="modal">
+                                <div onClick={toggleModal} className="overlay"></div>
+                                <div className={Styles.modalContent}>
+                                    <div className={Styles.form_btn}>
+                                        <form className={Styles.main_instrument_form}>
+                                            <label className={Styles.Ac_form} htmlFor="">Instrument</label>
+                                            <input type="text" className={Styles.Ac_forminput} onChange={(e) => { { formstate.Instrument = e.target.value } }} />
+                                            <label className={Styles.Ac_form} htmlFor="">Exchange</label>
+                                            <input type="text" className={Styles.Ac_forminput} onChange={(e) => { { formstate.Exchange = (e.target.value).toUpperCase() } }} />
+                                            <label className={Styles.Ac_form} htmlFor="">Symbol</label>
+                                            <input type="text" className={Styles.Ac_forminput} onChange={(e) => { { formstate.Symbole = e.target.value.toUpperCase() } }} />
+                                            <label htmlFor="" className={Styles.Ac_form}>Lot Size</label>
+                                            <input type="text" className={Styles.Ac_forminput} onChange={(e) => { { formstate.LotSize = e.target.value } }} />
+                                            <label htmlFor="" className={Styles.Ac_form}>Status</label>
+                                            <select name="" id="" className={Styles.Ac_forminput} onChange={(e) => { { formstate.Status = e.target.value } }}>
+                                                <option value=""></option>
+                                                <option value="Inactive">Inactive</option>
+                                                <option value="Active">Active</option>
+                                            </select>
+                                            <button className={Styles.ACform_tbn} onClick={formbtn}>OK</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                         <div className="grid_1">
                             <span className="grid1_span">Active Instruments</span>
                             <table className="grid1_table">
-                            <tr className="grid2_tr">
-                                <th className="grid2_th">Created On</th>
-                                <th className="grid2_th">Instrument</th>
-                                <th className="grid2_th">Exchange</th>
-                                <th className="grid2_th">Symbol</th>
-                                <th className="grid2_th">Lot Size</th>
-                                <th className="grid2_th">Status</th>
-                                <th className="grid2_th">Last Modified</th>
-                            </tr>
-                            {
-                                activeData.map((elem) => {
+                                <tr className="grid2_tr">
+                                    <th className="grid2_th">Created On</th>
+                                    <th className="grid2_th">Instrument</th>
+                                    <th className="grid2_th">Exchange</th>
+                                    <th className="grid2_th">Symbol</th>
+                                    <th className="grid2_th">Lot Size</th>
+                                    <th className="grid2_th">Status</th>
+                                    <th className="grid2_th">Last Modified</th>
+                                </tr>
+                                {
+                                    activeData.map((elem) => {
+                                        return (
+                                            <tr className="grid2_tr">
+                                                <td className="grid2_td">{elem.createdOn}</td>
+                                                <td className="grid2_td">{elem.instrument}</td>
+                                                <td className="grid2_td">{elem.exchange}</td>
+                                                <td className="grid2_td">{elem.symbol}</td>
+                                                <td className="grid2_td">{elem.lotSize}</td>
+                                                <td className="grid2_td">{elem.status}</td>
+                                                <td className="grid2_td">{elem.lastModified}</td>
+                                            </tr>
+                                        )
+                                    })
+                                }
+                            </table>
+                        </div>
+                        <div className="grid_2">
+                            <span className="grid2_span">Inactive Instruments</span>
+                            <table className="grid1_table">
+                                <tr className="grid2_tr">
+                                    <th className="grid2_th">Created On</th>
+                                    <th className="grid2_th">Instrument</th>
+                                    <th className="grid2_th">Exchange</th>
+                                    <th className="grid2_th">Symbol</th>
+                                    <th className="grid2_th">Lot Size</th>
+                                    <th className="grid2_th">Status</th>
+                                    <th className="grid2_th">Last Modified</th>
+                                </tr>
+                                {inactiveData.map((elem) => {
                                     return (
                                         <tr className="grid2_tr">
                                             <td className="grid2_td">{elem.createdOn}</td>
@@ -130,35 +181,7 @@ function Instruments() {
                                         </tr>
                                     )
                                 })
-                            }
-                            </table>
-                        </div>
-                        <div className="grid_2">
-                            <span className="grid2_span">Inactive Instruments</span>
-                            <table className="grid1_table">
-                            <tr className="grid2_tr">
-                                <th className="grid2_th">Created On</th>
-                                <th className="grid2_th">Instrument</th>
-                                <th className="grid2_th">Exchange</th>
-                                <th className="grid2_th">Symbol</th>
-                                <th className="grid2_th">Lot Size</th>
-                                <th className="grid2_th">Status</th>
-                                <th className="grid2_th">Last Modified</th>
-                            </tr>
-                            {inactiveData.map((elem) => {
-                                return (
-                                    <tr className="grid2_tr">
-                                        <td className="grid2_td">{elem.createdOn}</td>
-                                        <td className="grid2_td">{elem.instrument}</td>
-                                        <td className="grid2_td">{elem.exchange}</td>
-                                        <td className="grid2_td">{elem.symbol}</td>
-                                        <td className="grid2_td">{elem.lotSize}</td>
-                                        <td className="grid2_td">{elem.status}</td>
-                                        <td className="grid2_td">{elem.lastModified}</td>
-                                    </tr>
-                                )
-                            })
-                            }
+                                }
                             </table>
                         </div>
                     </div>
@@ -168,5 +191,7 @@ function Instruments() {
     )
 }
 export default Instruments;
+
+
 
 
