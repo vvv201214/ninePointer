@@ -69,8 +69,6 @@ export default function Routing() {
                             <Route path='/main/dashboard/CompanyOrders' element={<CompanyOrders/>}></Route>
                             <Route path='/main/dashboard/TradersOrders' element={<TradersOrders/>}></Route>
                         </Route>
-
-                        
                     </Route>
                 </Routes>
                 </div>
