@@ -62,7 +62,6 @@ function Tradingparameters(){
                                 <th className="grid2_th">Validity</th>
                                 <th className="grid2_th">Status</th>
                                 <th className="grid2_th">Last Modified On</th>
-                                
                             </tr>
                             </table>
                         </div>
