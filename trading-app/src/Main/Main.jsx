@@ -60,14 +60,14 @@ useEffect(()=>{
     <>
         <BrowserRouter>
         <div className='main'>
+        <Routes>
+        <Route path='/' element={<LogInForm/>} />
+        </Routes>
             <div className='left_Side_comp'>
                 <MainSideBar/>
             </div>
             <div className='right_Side_comp'>
                 <Routes>
-                    
-                    <Route path='/login' element={<LogInForm/>} />
-
                     <Route path='/tradingAccount' element={<TradingACMain/>}>
                         <Route path='/tradingAccount' element={<TradingAccounts/>}></Route>
                         <Route path='/tradingAccount/Tradingparameters' element={<Tradingparameters/>} />
@@ -79,7 +79,7 @@ useEffect(()=>{
                       <Route path='/Instrument' element={<Instruments/>}/>
                     </Route>
                   
-                    <Route path='/' element={<DashboardMain/>}>
+                    <Route path='/dashboard' element={<DashboardMain/>}>
                       <Route path='/dashboard' element={<TradersDashboard/>}></Route>
                       <Route path='/dashboard/CompanyPosition' element={<CompanyPosition/>}></Route>
                       <Route path='/dashboard/TradersPosition' element={<TradersPosition/>}></Route>

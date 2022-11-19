@@ -18,7 +18,6 @@
     position: fixed;
     
 }
-
 .overlay {
     background: rgba(49,49,49,0.8);
 }
@@ -38,10 +37,10 @@
     min-width: 300px;
     
 }
-.Form_head{
+/* .Form_head{
     margin-top: 3rem;
   
-}
+} */
 /* .close-modal {
     position: absolute;
     top: 10px;
