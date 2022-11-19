@@ -35,4 +35,6 @@ Some general guidelines
 
 Note- These are guidelines and not a iron clad framework. Feel free to add and modify folder structures and files as per your requirement keeping the end goal and code simplicity, readability and maintainability in mind.
 
+In view of the above template, please wrap the async functions as catchAsync(fn()) and send errors as createCustomError('This is an error message', errorCode)
+
 Happy coding!!
