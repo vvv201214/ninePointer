@@ -46,9 +46,10 @@ export default function NewMain() {
     <>
         <div className='left_Side_comp'>
             {info.role === "admin" ?
-            <MainSideBar/>
+            <MainSideBar name={info.name}/>
             :
-            <UserSideBar/> }
+            <UserSideBar name={info.name}/> }
+
             <Outlet/>
         </div>
     </>

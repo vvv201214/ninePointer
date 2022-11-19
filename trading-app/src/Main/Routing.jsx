@@ -26,6 +26,7 @@ import CompanyPosition from './Dashboard/companyPosition/CompanyPosition';
 import CompanyOrders from './Dashboard/CompanyOrders';
 import TradersOrders from './Dashboard/TradersOrders';
 import TradersPosition from './Dashboard/tradersPosition/TradersPosition';
+import "./Main.css"
 
 
 export default function Routing() {
@@ -33,12 +34,11 @@ export default function Routing() {
         <AuthContext>
             <BrowserRouter>
             <div className='main'>
-            <div className='right_Side_comp'>
                 <Routes>
                     <Route path='/' element={<LogInForm/>} />
-                    <Route path='/main' element={<NewMain/>}>
+                    <Route path='/main' element={<NewMain />}>
 
-                        <Route path='/main/tradingAccount' element={<TradingACMain/>}>
+                        <Route path='/main/tradingAccount' element={<TradingACMain/>} className="head">
                             <Route path='/main/tradingAccount' element={<TradingAccounts/>}></Route>
                             <Route path='/main/tradingAccount/Tradingparameters' element={<Tradingparameters/>} />
                             <Route path='/main/tradingAccount/brokerage' element={<Brokerage/>}></Route>
@@ -71,7 +71,6 @@ export default function Routing() {
                         </Route>
                     </Route>
                 </Routes>
-                </div>
                 </div>
             </BrowserRouter>
         </AuthContext>

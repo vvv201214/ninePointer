@@ -1,9 +1,7 @@
-.main{
-    display: flex;
-}
 .left_Side_comp{
-    flex: .20;
+    display: flex;
+    
 }
-.right_Side_comp{
-    flex: .80;
+.head{
+    /* position: absolute; */
 }
