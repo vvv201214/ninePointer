@@ -2,10 +2,10 @@ import React from 'react'
 import { useState } from 'react';
 import cookie from "js-cookie";
 import "./LoginStyle.css";
-import {useHistory} from "react-router-dom";
+//import {useHistory} from "react-router-dom";
 
 export default function LogInForm() {
-    const history = useHistory();
+   // const history = useHistory();
     const [userInfo, setUserInfo] = useState({
         userId : "",
         pass : ""
@@ -41,7 +41,7 @@ export default function LogInForm() {
             });
             window.alert("user login succesfull");
             console.log("entry succesfull");
-            history.push("/")
+           // history.push("/")
         }
             
     }
