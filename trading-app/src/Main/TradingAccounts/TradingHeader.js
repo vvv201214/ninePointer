@@ -6,16 +6,16 @@ export default function TradingHeader() {
     <>
         <ul className='navbar'>
             <li>
-                <NavLink to={"/tradingAccount"}>Accounts</NavLink>
+                <NavLink to={"/main/tradingAccount"}>Accounts</NavLink>
             </li>
             <li>
-                <NavLink to={"/tradingAccount/Tradingparameters"}>Trading Parameters</NavLink>
+                <NavLink to={"/main/tradingAccount/Tradingparameters"}>Trading Parameters</NavLink>
             </li>
             <li>
-                <NavLink to={"/tradingAccount/brokerage"}>Brokerage</NavLink>
+                <NavLink to={"/main/tradingAccount/brokerage"}>Brokerage</NavLink>
             </li>
             <li>
-                <NavLink to={"/tradingAccount/accessrequesttoken"}>Trading access request token</NavLink>
+                <NavLink to={"/main/tradingAccount/accessrequesttoken"}>Trading access request token</NavLink>
             </li>
         </ul>
         <Outlet/>

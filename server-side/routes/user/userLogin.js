@@ -24,18 +24,19 @@ router.post("/login", async (req, res)=>{
         const token = await userLogin.generateAuthToken();
         console.log(token);
         
-        // res.cookie("jwtoken", token, {
-        //     expires: new Date(Date.now() + 25892000000),
-        //     httpOnly: false
-        // });
-        res.json(token);
-        // res.status(201).json({massage : "user login succesfully"});
+        res.cookie("jwtoken", token, {
+            expires: new Date(Date.now() + 25892000000),
+            httpOnly: true
+        });
+        // res.json(token);
+        res.status(201).json({massage : "user login succesfully"});
     }
 })
 
-// router.get("/dashboard", authentication, (req, res)=>{
-//     console.log("hello my about");
-//     res.send(req.user);
-// })
+router.get("/dashboard", authentication, (req, res)=>{
+    console.log("hello my about");
+    res.send(req.user);
+})
+
 
 module.exports = router;

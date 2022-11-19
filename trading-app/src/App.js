@@ -1,12 +1,10 @@
 import './App.css';
-import Main from './Main/Main';
-import LogInForm from "./initialForm/LogInForm";
+import Routing from './Main/Routing';
 
 function App() {
   return (
     <>
-      <LogInForm />
-      {/* <Main/> */}
+      <Routing/>
     </>
   );
 }

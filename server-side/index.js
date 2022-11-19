@@ -1,11 +1,12 @@
 const express = require('express');
+const router = express.Router();
 const cors = require('cors');
 const app = express();
 const dotenv = require('dotenv');
 const kiteConnect = require('./marketData/kiteConnect');
 const fetch = require('./marketData/placeOrder');
 const authentication = require("./authentication/authentication")
-app.use(require("cookie-parser"));
+app.use(require("cookie-parser")());
 
 dotenv.config({ path: './config.env' });
 
@@ -39,8 +40,8 @@ require('./db/conn');
 
 const PORT = 5000;
 
-// app.get('/check', authentication, (req, res) => {
-//   // res.cookie("check", "12345")
-//   res.send('running');
-// });
+// router.get("/dashboard", authentication, (req, res)=>{
+//   console.log("hello my about");
+//   res.send(req.user);
+// })
 app.listen(PORT);
