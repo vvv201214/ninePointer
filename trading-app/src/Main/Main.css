@@ -1,9 +1,13 @@
-.main{
+.main_new{
     display: flex;
+    /* border: 10px solid black; */
 }
-.left_Side_comp{
-    flex: .20;
+
+.main_content_new{
+    flex: .75;
+    /* border: 1px solid red; */
 }
-.right_Side_comp{
-    flex: .80;
+.sidebar_new{
+    flex: .25;
+    /* border: 1px solid purple; */
 }

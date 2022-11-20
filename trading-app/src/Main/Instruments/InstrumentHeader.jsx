@@ -6,7 +6,7 @@ export default function InstrumentHeader() {
     <>
         <ul className='navbar'>
             <li>
-                <NavLink to={"/Instrument"}>Instruments</NavLink>
+                <NavLink to={"/main/instrument"}>Instruments</NavLink>
             </li>
         </ul>
         <Outlet/>
