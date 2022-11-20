@@ -30,13 +30,14 @@ import "./Main.css"
 
 
 export default function Routing() {
+    const [details, setDetails] = useState({});
   return (
         <AuthContext>
             <BrowserRouter>
             <div className='main'>
                 <Routes>
                     <Route path='/' element={<LogInForm/>} />
-                    <Route path='/main' element={<NewMain />}>
+                    <Route path='/main' element={<NewMain setter = {setDetails}/>}>
 
                         <Route path='/main/tradingAccount' element={<TradingACMain/>} className="head">
                             <Route path='/main/tradingAccount' element={<TradingAccounts/>}></Route>
@@ -67,7 +68,7 @@ export default function Routing() {
                             <Route path='/main/dashboard/CompanyPosition' element={<CompanyPosition/>}></Route>
                             <Route path='/main/dashboard/TradersPosition' element={<TradersPosition/>}></Route>
                             <Route path='/main/dashboard/CompanyOrders' element={<CompanyOrders/>}></Route>
-                            <Route path='/main/dashboard/TradersOrders' element={<TradersOrders/>}></Route>
+                            <Route path='/main/dashboard/TradersOrders' element={<TradersOrders info={details}/>}></Route>
                         </Route>
                     </Route>
                 </Routes>
