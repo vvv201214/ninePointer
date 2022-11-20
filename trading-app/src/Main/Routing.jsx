@@ -50,7 +50,6 @@ export default function Routing() {
                             <Route path='/main/instrument' element={<Instruments/>}/>
                         </Route>
 
-
                         <Route path='/main/algobox' element={<AlgoMain/>}>
                         <Route path='/main/algobox' element={<TradingAlgo/>}></Route>
                         <Route path='/main/algobox/InstrumentMapping' element={<InstrumentMapping/>}></Route>
