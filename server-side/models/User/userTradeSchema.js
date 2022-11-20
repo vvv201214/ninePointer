@@ -74,6 +74,10 @@ const userTradeSchema = new mongoose.Schema({
     },
     traderId:{
         type: String,
+    },
+    userId:{
+        type: String,
+        required: true        
     }
 })
 
