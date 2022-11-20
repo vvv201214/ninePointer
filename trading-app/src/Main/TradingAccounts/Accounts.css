@@ -5,6 +5,8 @@
 .rightside_maindiv{
    display: flex;
    flex-direction: column;
+   min-width: 100%;
+   max-width: 100%;
    
 }
 .ul_class{
@@ -33,9 +35,11 @@
 
 }
 .grid_1{
-   width: 100%;
+    width: 95%;
     min-height: 30vh;
     background: rgb(255, 255, 255);
+    margin-left: -4px;
+
 
 }
 .grid1_span{
@@ -71,6 +75,7 @@
 }
 .grid_2{
     margin-top: 2rem;
+    width: 100%;
     min-height: 30vh;
     background: rgb(255, 255, 255);
 }

@@ -2,8 +2,12 @@
     display: flex;
 }
 .left_Side_comp{
-    flex: .20;
+    width: 100%;
+   
 }
-.right_Side_comp{
-    flex: .80;
-}
+/* .right_Side_comp{
+    width: 80%;
+} */
+/* .test{
+    border: 2px solid rgb(47, 0, 128);
+} */

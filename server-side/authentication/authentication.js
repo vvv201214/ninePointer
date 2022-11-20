@@ -2,8 +2,12 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/User/userDetailSchema");
 
 const Authenticate = async (req, res, next)=>{
+    console.log("inside auth");
     try{
-        console.log("this is req ",req);
+        // console.log("this is req ",JSON.stringify(req));
+        console.log("this is cookies ",req.cookies);
+        console.log("this is something", req);
+
         const token = req.cookies.jwtoken;
         const verifyToken = jwt.verify(token, process.env.SECRET_KEY);
 

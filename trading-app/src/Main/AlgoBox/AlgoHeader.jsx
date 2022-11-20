@@ -6,16 +6,16 @@ export default function AlgoHeader() {
     <>
         <ul className='navbar'>
             <li>
-                <NavLink to={"/algobox"}>Trading Algos</NavLink>
+                <NavLink to={"/main/algobox"}>Trading Algos</NavLink>
             </li>
             <li>
-                <NavLink to={"/algobox/InstrumentMapping"}>Instrument Mapping</NavLink>
+                <NavLink to={"/main/algobox/InstrumentMapping"}>Instrument Mapping</NavLink>
             </li>
             <li>
-                <NavLink to={"/algobox/ExchangeMapping"}>Exchange Mapping</NavLink>
+                <NavLink to={"/main/algobox/ExchangeMapping"}>Exchange Mapping</NavLink>
             </li>
             <li>
-                <NavLink to={"/algobox/ProductMapping"}>Product Mapping</NavLink>
+                <NavLink to={"/main/algobox/ProductMapping"}>Product Mapping</NavLink>
             </li>
         </ul>
         <Outlet/>

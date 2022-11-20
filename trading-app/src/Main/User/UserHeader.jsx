@@ -6,10 +6,10 @@ export default function UserHeader(){
     <>
         <ul className='navbar'>
             <li>
-                <NavLink to={"/user"}>Users</NavLink>
+                <NavLink to={"/main/user"}>Users</NavLink>
             </li>
             <li>
-                <NavLink to={"/user/roles"}>Roles</NavLink>
+                <NavLink to={"/main/user/roles"}>Roles</NavLink>
             </li>
         </ul>
         <Outlet/>

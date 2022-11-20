@@ -3,7 +3,7 @@ import React from "react";
 function TradersPosition(){
     return(
         <div>
-            <div className="main_Container">
+            {/* <div className="main_Container"> */}
                 <div className="right_side">
                     <div className="rightside_maindiv">
                         <div className="grid_1">
@@ -63,7 +63,7 @@ function TradersPosition(){
                     </div>
                 </div>
             </div>
-        </div>
+        // </div>
     )
 }
 export default TradersPosition;
