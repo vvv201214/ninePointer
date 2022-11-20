@@ -1,10 +1,12 @@
 import React from 'react'
 import { useState } from 'react';
 import "./LoginStyle.css";
+
 import { useNavigate } from "react-router-dom";
 
 export default function LogInForm() {
     const navigate = useNavigate();
+
     const [userInfo, setUserInfo] = useState({
         userId : "",
         pass : ""
@@ -41,7 +43,9 @@ export default function LogInForm() {
             // });
             window.alert("user login succesfull");
             console.log("entry succesfull");
+
             navigate("/main");
+
         }
             
     }
