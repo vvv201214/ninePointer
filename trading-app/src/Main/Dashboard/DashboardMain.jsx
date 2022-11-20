@@ -1,29 +1,22 @@
 import React, { useContext } from "react";
 import { useEffect } from "react";
-import { NavLink } from "react-router-dom";
 import { userContext } from "../AuthContext";
 import DashboardHeader from "./DashboardHeader";
 
-function DashboardMain() {
+function DashboardMain(){
     const getDetails = useContext(userContext);
-    useEffect(() => {
-
+    useEffect(()=>{
         console.log(getDetails)
     }, [])
 
-    return (
-        <>   
-                <div className="right_side">
-                <div className="User_header">
-                    <h1 className="header_para">Hello Admin! Welcome Back</h1>
-                    <button className="logo_btn" >NINEPOINTER</button>
-                </div>
-                <div className="test"><DashboardHeader role={getDetails.userDetails.role} /></div> 
-                </div>
-
-          
-            
-        </>
+    return(
+        <div>
+            <div className="User_header">
+            <h1 className="header_para">{`Hello ${getDetails.userDetails.name}! Welcome Back`}</h1>
+                <button className="logo_btn" >NINEPOINTER</button>
+            </div>
+            <DashboardHeader role = {getDetails.userDetails.role}/>
+        </div>
     )
 }
 export default DashboardMain;

@@ -76,7 +76,11 @@ const userDetailSchema = new mongoose.Schema({
                 required: true
             }
         }
-    ]
+    ],
+    userId: {
+        type: String,
+              
+    }
 })
 
 // generating jwt token

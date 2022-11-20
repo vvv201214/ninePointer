@@ -5,12 +5,12 @@
 body {
     height: 100%;
     background-color: #d9d9d9;
+  
 }
+
 .main_Container {
-   display: flex;
-   width: 100%;
-   border: 1px solid red;
-   
+    display: flex;
+    
 }
 .leftsidebar {
     min-height: 105%;
@@ -27,7 +27,6 @@ body {
     margin-top: 20%;
     font-size: 20px;
     font-weight: bold; 
-
 }
 img{
     height: 100px;
@@ -80,6 +79,7 @@ a{
 }
 
 .sidebar_item {
+   position: relative;
     margin-top: 7rem;
     text-align: center;
     background-color: #f6f6f6;
@@ -96,26 +96,22 @@ a{
 .right_side {
     display: flex;
     flex-direction: column;
-    float: right;
-    min-width: 80vw;
+    min-width: 100%;
     min-height: 30vh;
-    max-height: 100vh;
-    margin-left: 10px;
-    border: 1px solid rgb(119, 255, 0);
 }
 
 .User_header {
-    width: 95%;
+    min-height: 5%;
+    max-height: 15%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: #428BCA;
     border-radius: 5px;
-    margin-left: 7px;
 }
 .header_para{
-    min-width: 40%;
-    max-width: 15%;
+    min-width: 50%;
+    max-width: 70%;
     min-height: 9%;
     max-height: 15%;
     margin-left: 5px;
@@ -135,7 +131,6 @@ a{
     border: none;
    
 }
-/* .livePrice_table{
+.livePrice_table{
     display: flex;
-} */
-
+}

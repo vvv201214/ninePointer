@@ -21,6 +21,3 @@ li > a{
 .active{
     font-weight: 600;
 }
-.test{
-    border: 1px solid red;
-}

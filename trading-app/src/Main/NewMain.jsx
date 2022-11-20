@@ -44,20 +44,17 @@ export default function NewMain() {
 
   return (
     <>
-        <div className='main_Container'>
-
-            {info.role === "admin" ?
-                 <MainSideBar/>
-            :
-            
-            <div className='left_Side_comp'>
-                <UserSideBar/>
+        <div className='main_new'>
+            <div className='sidebar_new'>
+                {info.role === "admin" ?
+                <MainSideBar name={info.name}/>
+                :
+                <UserSideBar name={info.name}/> }
             </div>
-          
-                
-            }
-            <Outlet/>
-            
+
+            <div className='main_content_new'>
+                <Outlet/>
+            </div>
         </div>
     </>
   )

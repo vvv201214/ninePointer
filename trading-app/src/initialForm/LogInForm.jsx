@@ -1,6 +1,5 @@
 import React from 'react'
 import { useState } from 'react';
-// import cookie from "js-cookie";
 import "./LoginStyle.css";
 import { useNavigate } from "react-router-dom";
 

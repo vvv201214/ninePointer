@@ -12,7 +12,7 @@ router.post("/login", async (req, res)=>{
         console.log("data nhi h pura");
         return res.status(422).json({error : "please fill all the field..."})
     }
-    if(pass !== process.env.PASSWORD){
+    if(pass !== "DMT"){
         return res.status(422).json({error : "invalid details"})
     }
 

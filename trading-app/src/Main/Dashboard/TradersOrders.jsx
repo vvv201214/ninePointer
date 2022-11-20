@@ -1,14 +1,19 @@
-import React from "react";
+import React, { useContext } from "react";
 import axios from "axios"
 import { useEffect, useState } from "react";
+import { userContext } from "../AuthContext";
 
 function TradersOrders(){
+    const getDetails = useContext(userContext);
 
     const [data, setData] = useState([]);
     useEffect(()=>{
         axios.get("http://localhost:5000/usertradedata")
         .then((res)=>{
-            setData(res.data);
+            let updated = (res.data).filter((elem)=>{
+                return getDetails.userDetails.email === elem.email;
+            })
+            setData(updated);
         })
     })
 
