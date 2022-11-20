@@ -1,14 +1,17 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./ByModel.css";
 import { useEffect } from 'react';
 import axios from "axios"
 import uniqid from "uniqid"
+import { userContext } from "../../AuthContext";
 
 export default function SellModel({marketData, uIdProps, isTradersTrade}) {
+    const getDetails = useContext(userContext);
     let uId = uniqid();
     let date = new Date();
     let createdOn = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
-    let createdBy = "prateek"
+    let createdBy = getDetails.userDetails.name;
+    let userId = getDetails.userDetails.email;
     let totalAmount = 0;
 
     const [bsBtn, setBsBtn] = useState(true)
@@ -199,7 +202,7 @@ export default function SellModel({marketData, uIdProps, isTradersTrade}) {
                 exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, 
                 TriggerPrice, stopLoss, variety, validity, uId, createdBy, createdOn,
                 last_price, realBuyOrSell, realSymbol, realQuantity, instrument,
-                realInstrument, apiKey, accessToken
+                realInstrument, apiKey, accessToken, userId
             })
         });
         // console.log

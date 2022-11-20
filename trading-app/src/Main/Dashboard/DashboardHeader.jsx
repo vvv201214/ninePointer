@@ -33,7 +33,7 @@ export default function DashboardHeader({role}) {
                     <NavLink to={"/dashboard/CompanyPosition"}>Company:Position</NavLink>
                 </li> */}
                 <li>
-                    <NavLink to={"/dashboard/TradersPosition"}>Traders:Position</NavLink>
+                    <NavLink to={"/main/dashboard/TradersPosition"}>Traders:Position</NavLink>
                 </li>
                 {/* <li>
                     <NavLink to={"/dashboard/CompanyOrders"}>Company:Orders</NavLink>

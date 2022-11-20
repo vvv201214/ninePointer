@@ -11,7 +11,7 @@ router.post("/placeorder", (async (req, res)=>{
 
     const {exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice,
          stopLoss, validity, variety, uId, createdBy, createdOn, last_price, realBuyOrSell,
-          realSymbol, realQuantity, instrument, realInstrument, apiKey, accessToken} = req.body;
+          realSymbol, realQuantity, instrument, realInstrument, apiKey, accessToken, userId} = req.body;
         console.log("this is req.body", req.body);
     const api_key = apiKey;
     const access_token = accessToken;
@@ -66,7 +66,7 @@ router.post("/placeorder", (async (req, res)=>{
                              order_timestamp , variety , validity , exchange , 
                               order_type , price , filled_quantity , pending_quantity 
                             , cancelled_quantity , guid , market_protection , disclosed_quantity , tradingsymbol 
-                            , placed_by
+                            , placed_by, userId
                         });
                 
                         orderid.save().then(()=>{
@@ -83,7 +83,7 @@ router.post("/placeorder", (async (req, res)=>{
                         console.log(instrument);
                         const userTradeData = new UserTradeData({order_id, status, uId, createdOn, 
                             createdBy, last_price, average_price, Quantity, symbol, Product, buyOrSell, 
-                            validity, variety, order_timestamp, order_type, exchange});
+                            validity, variety, order_timestamp, order_type, exchange, userId});
                 
                         console.log(instrument);
                         userTradeData.save().then(()=>{
@@ -106,7 +106,7 @@ router.post("/placeorder", (async (req, res)=>{
                             exchange_order_id , order_timestamp , variety , validity , exchange , 
                             exchange_timestamp , order_type , price , filled_quantity , pending_quantity 
                             , cancelled_quantity , guid , market_protection , disclosed_quantity , tradingsymbol 
-                            , placed_by
+                            , placed_by, userId
                         });
                 
                         orderid.save().then(()=>{
@@ -122,7 +122,7 @@ router.post("/placeorder", (async (req, res)=>{
                         }
                         const userTradeData = new UserTradeData({order_id, status, uId, createdOn, 
                             createdBy, last_price, average_price, Quantity, symbol, Product, buyOrSell, 
-                            validity, variety, order_timestamp, order_type, amount:(Quantity*last_price), exchange});
+                            validity, variety, order_timestamp, order_type, amount:(Quantity*last_price), exchange, userId});
                 
                         userTradeData.save().then(()=>{
                             res.status(201).json({massage : "Trade successfull"});

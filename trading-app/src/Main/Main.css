@@ -1,7 +1,13 @@
-.left_Side_comp{
+.main_new{
     display: flex;
-    
+    /* border: 10px solid black; */
 }
-.head{
-    /* position: absolute; */
+
+.main_content_new{
+    flex: .75;
+    /* border: 1px solid red; */
+}
+.sidebar_new{
+    flex: .25;
+    /* border: 1px solid purple; */
 }
