@@ -30,13 +30,14 @@ import "./Main.css"
 
 
 export default function Routing() {
+    const [details, setDetails] = useState({});
   return (
         <AuthContext>
             <BrowserRouter>
             <div className='main'>
                 <Routes>
                     <Route path='/' element={<LogInForm/>} />
-                    <Route path='/main' element={<NewMain />}>
+                    <Route path='/main' element={<NewMain setter = {setDetails}/>}>
 
                         <Route path='/main/tradingAccount' element={<TradingACMain/>} className="head">
                             <Route path='/main/tradingAccount' element={<TradingAccounts/>}></Route>
@@ -49,7 +50,6 @@ export default function Routing() {
                             <Route path='/main/instrument' element={<Instruments/>}/>
                         </Route>
 
-
                         <Route path='/main/algobox' element={<AlgoMain/>}>
                         <Route path='/main/algobox' element={<TradingAlgo/>}></Route>
                         <Route path='/main/algobox/InstrumentMapping' element={<InstrumentMapping/>}></Route>
@@ -58,17 +58,23 @@ export default function Routing() {
                         </Route>
                         
                         <Route path='/main/user' element={<UserMain/>}>
-                        <Route path='/main/user' element={<Users/>}></Route>
-                        <Route path='/main/user/roles' element={<Roles/>}></Route>
+                            <Route path='/main/user' element={<Users/>}></Route>
+                            <Route path='/main/user/roles' element={<Roles/>}></Route>
                         </Route>
 
+                        {details.role === "admin" ?
                         <Route path='/main/dashboard' element={<DashboardMain/>}>
                             <Route path='/main/dashboard' element={<TradersDashboard/>}></Route>
                             <Route path='/main/dashboard/CompanyPosition' element={<CompanyPosition/>}></Route>
                             <Route path='/main/dashboard/TradersPosition' element={<TradersPosition/>}></Route>
                             <Route path='/main/dashboard/CompanyOrders' element={<CompanyOrders/>}></Route>
-                            <Route path='/main/dashboard/TradersOrders' element={<TradersOrders/>}></Route>
+                            <Route path='/main/dashboard/TradersOrders' element={<TradersOrders info={details}/>}></Route>
                         </Route>
+                        :
+                        <Route path='/main/dashboard' element={<DashboardMain/>}>
+                            <Route path='/main/dashboard' element={<TradersPosition/>}></Route>
+                            <Route path='/main/dashboard/TradersOrders' element={<TradersOrders info={details}/>}></Route>
+                        </Route> }                        
                     </Route>
                 </Routes>
                 </div>

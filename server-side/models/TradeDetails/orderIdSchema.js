@@ -105,6 +105,10 @@ const orderIdSchema = new mongoose.Schema({
     placed_by:{
         type: String,
         required: true
+    },
+    userId:{
+        type: String,
+        required: true        
     }
 })
 

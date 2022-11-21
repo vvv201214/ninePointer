@@ -6,7 +6,8 @@ import UserSideBar from './UserSideBar';
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 
-export default function NewMain() {
+export default function NewMain({setter}) {
+    console.log("rendering")
     const setDetails = useContext(userContext);
     const [info, setInfo] = useState({});
     let data;
@@ -23,6 +24,7 @@ export default function NewMain() {
           });
   
           data = await res.json();
+          setter(data);
           setInfo(data)
           setDetails.setUserDetail(data);
         //   setter(data);
@@ -39,8 +41,8 @@ export default function NewMain() {
     useEffect(()=>{
         dashboardPage();
     }, [])
-  
-  
+
+
 
   return (
     <>
@@ -53,7 +55,7 @@ export default function NewMain() {
             </div>
 
             <div className='main_content_new'>
-                <Outlet/>
+                <Outlet info={info}/>
             </div>
         </div>
     </>
