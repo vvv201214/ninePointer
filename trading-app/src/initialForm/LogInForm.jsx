@@ -1,6 +1,5 @@
 import React from 'react'
 import { useState } from 'react';
-import cookie from "js-cookie";
 import "./LoginStyle.css";
 import { useNavigate } from "react-router-dom";
 
@@ -49,7 +48,7 @@ export default function LogInForm() {
   return (
     <>
         <div className="login_form">
-            <h4>Log in to your Account</h4>
+            <h4 className='login_heading'>Log in to your Account</h4>
             <form className='sub_login_form' onSubmit={logInButton}>
                 <input className='user_id' id='userID' placeholder='Enter Email ID' onChange={(e)=>{{userInfo.userId=e.target.value}}} type={"text"}/>
                 <br/><br/>
