@@ -84,7 +84,6 @@ function TradersOrders({info}){
                     </div>
                 </div>
             </div>
-
         </div>
     )
 }

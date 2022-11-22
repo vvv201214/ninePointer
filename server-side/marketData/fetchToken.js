@@ -19,8 +19,6 @@ const fetchData = async (getApiKey, getAccessToken) => {
     }
   });
 
-  // const instrumentCe = 'NFO:NIFTY22N1018050CE';
-  // const instrumentPe = 'NFO:NIFTY22N1718200CE';
   let url = `https://api.kite.trade/quote?${addUrl}`;
   // let url = `https://api.kite.trade/quote?i=NFO:NIFTY22N1718200CE`;
   const api_key = getApiKey;
@@ -33,12 +31,21 @@ const fetchData = async (getApiKey, getAccessToken) => {
       Authorization: auth,
     },
   };
-  const res = await axios.get(url, authOptions);
-  // console.log("its json data", JSON.stringify(res.data));
+  
+
   let arr = [];
-  for (instrument in res.data.data) {
-    arr.push(res.data.data[instrument].instrument_token);
+    try{
+      const res = await axios.get(url, authOptions);
+      for (instrument in res.data.data) {
+        arr.push(res.data.data[instrument].instrument_token);
+      }
+      return arr;
+
+    } catch (err){
+      return new Error(err);
   }
-  return arr;
+  // console.log("its json data", JSON.stringify(res.data));
+  
+
 };
 module.exports = fetchData;
