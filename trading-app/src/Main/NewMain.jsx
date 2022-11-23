@@ -54,7 +54,7 @@ export default function NewMain({setter}) {
                 <UserSideBar name={info.name}/> }
             </div>
 
-            <div className='main_content_new'>
+            <div className="main_content_new">
                 <Outlet info={info}/>
             </div>
         </div>
