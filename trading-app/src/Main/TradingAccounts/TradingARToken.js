@@ -103,13 +103,13 @@ function TradingARToken() {
                                     <div className={Styles.form_btn}>
                                         <form className={Styles.main_instrument_form}>
                                             <label className={Styles.Ac_form} htmlFor="">Account ID</label>
-                                            <input type="text" className={Styles.Ac_form} onChange={(e) => { { formstate.AccountID = e.target.value } }} />
+                                            <input type="text" className={Styles.Ac_forminput} onChange={(e) => { { formstate.AccountID = e.target.value } }} />
                                             <label className={Styles.Ac_form} htmlFor="">Account Token</label>
-                                            <input type="text" className={Styles.Ac_form} onChange={(e) => { { formstate.AccesToken = e.target.value } }} />
+                                            <input type="text" className={Styles.Ac_forminput} onChange={(e) => { { formstate.AccesToken = e.target.value } }} />
                                             <label className={Styles.Ac_form} htmlFor="">Request Token</label>
-                                            <input type="text" className={Styles.Ac_form} onChange={(e) => { { formstate.RequestToken = e.target.value } }} />
+                                            <input type="text" className={Styles.Ac_forminput} onChange={(e) => { { formstate.RequestToken = e.target.value } }} />
                                             <label htmlFor="" className={Styles.Ac_form}>Status</label>
-                                            <select name="" id="" className={Styles.Ac_form} onChange={(e) => { { formstate.Status = e.target.value } }}>
+                                            <select name="" id="" className={Styles.Ac_forminput} onChange={(e) => { { formstate.Status = e.target.value } }}>
                                                 <option value=""></option>
                                                 <option value="Inactive">Inactive</option>
                                                 <option value="Active">Active</option>
