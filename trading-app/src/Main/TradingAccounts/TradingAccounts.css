@@ -134,3 +134,8 @@ a{
 .livePrice_table{
     display: flex;
 }
+.Editbutton{
+    float: left;
+    font-size: 18px;
+    
+}
