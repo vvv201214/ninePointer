@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./RoleButtonModel.css";
+import Styles from "./RoleButtonModel.module.css";
 import { useEffect } from "react";
 import uniqid from "uniqid";
 import axios from "axios";
@@ -70,24 +70,24 @@ async function formbtn(e) {
       {modal && (
         <div className="modal">
           <div onClick={toggleModal} className="overlay"></div>
-          <div className="modal-content">
-          <form className="UserMainFormModel">
-            <label className="userModelform" htmlFor="">Role Name</label>
-            <input type="text" className="userModelforminput" onChange={(e) => { { formstate.roleName = (e.target.value)} }}/>
-            <label className="userModelform" htmlFor="">Instruments</label>
-            <input type="text" className="userModelforminput" onChange={(e) => { { formstate.instruments = e.target.value} }}/>
-            <label htmlFor="" className="userModelform">Trading Account</label>
-            <input type="text" className="userModelforminput" onChange={(e) => { { formstate.tradingAccount = e.target.value } }} />
-            <label htmlFor="" className="userModelform">API Parameters</label>
-            <input type="text" className="userModelforminput" onChange={(e) => { { formstate.APIParameters = e.target.value } }} />
-            <label htmlFor="" className="userModelform">Users</label>
-            <input type="text" className="userModelforminput" onChange={(e) => { { formstate.users = e.target.value } }} />
-            <label htmlFor="" className="userModelform">AlgoBox</label>
-            <input type="text" className="userModelforminput" onChange={(e) => { { formstate.algoBox = e.target.value } }} />
-            <label htmlFor="" className="userModelform">Reports</label>
-            <input type="text" className="userModelforminput" onChange={(e) => { { formstate.reports = e.target.value } }} />
+          <div className={Styles.modalContent}>
+          <form className={Styles.main_instrument_form}>
+            <label className={Styles.Ac_form} htmlFor="">Role Name</label>
+            <input type="text" className={Styles.Ac_forminput} onChange={(e) => { { formstate.roleName = (e.target.value)} }}/>
+            <label className={Styles.Ac_form} htmlFor="">Instruments</label>
+            <input type="text" className={Styles.Ac_forminput} onChange={(e) => { { formstate.instruments = e.target.value} }}/>
+            <label htmlFor="" className={Styles.Ac_form}>Trading Account</label>
+            <input type="text" className={Styles.Ac_forminput} onChange={(e) => { { formstate.tradingAccount = e.target.value } }} />
+            <label htmlFor="" className={Styles.Ac_form}>API Parameters</label>
+            <input type="text" className={Styles.Ac_forminput} onChange={(e) => { { formstate.APIParameters = e.target.value } }} />
+            <label htmlFor="" className={Styles.Ac_form}>Users</label>
+            <input type="text" className={Styles.Ac_forminput} onChange={(e) => { { formstate.users = e.target.value } }} />
+            <label htmlFor="" className={Styles.Ac_form}>AlgoBox</label>
+            <input type="text" className={Styles.Ac_forminput} onChange={(e) => { { formstate.algoBox = e.target.value } }} />
+            <label htmlFor="" className={Styles.Ac_form}>Reports</label>
+            <input type="text" className={Styles.Ac_forminput} onChange={(e) => { { formstate.reports = e.target.value } }} />
         </form>
-        <button className="ACform_tbn userCancelbtn" onClick={formbtn}>OK</button> <button className="bsButton1_cancel userCancelbtn" onClick={toggleModal}>CLOSE</button>
+        <button className={Styles.ACform_tbn} onClick={formbtn}>OK</button>
            
           </div>
         </div>

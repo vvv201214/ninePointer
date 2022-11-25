@@ -3,6 +3,7 @@ import Popup from "reactjs-popup";
 import 'reactjs-popup/dist/index.css';
 import uniqid from "uniqid";
 import axios from "axios"
+import Styles from "./AlgoModuleCSSFiles/TradingAlgo.module.css";
 
 function TradingAlgo(){
     let uId = uniqid();
@@ -24,6 +25,17 @@ function TradingAlgo(){
         tradingAccount:""
     });
 
+    const [modal, setModal] = useState(false);
+    const toggleModal = () => {
+        setModal(!modal);
+    };
+    if (modal) {
+        document.body.classList.add('active-modal')
+    } else {
+        document.body.classList.remove('active-modal')
+    }
+
+
     useEffect(()=>{
         axios.get("http://localhost:3000/readtradingAlgo")
         .then((res)=>{
@@ -36,6 +48,7 @@ function TradingAlgo(){
         e.preventDefault();
         setformstate(formstate);
         console.log(formstate)
+        setModal(!modal);
 
         const {algoName, transactionChange, instrumentChange, status, exchangeChange, lotMultipler, productChange, tradingAccount} = formstate;
 
@@ -61,54 +74,61 @@ function TradingAlgo(){
         reRender ? setReRender(false) : setReRender(true)
     }
 
-
     return(
         <div>
             <div className="main_Container">
                 <div className="right_side">
                     <div className="rightside_maindiv">
-                        <Popup trigger={<button className="Ac_btn">Create Trading Algo</button>}>
-                            <form>
-                                <label className="Ac_form" htmlFor="">Algo Name</label>
-                                <input type="text" className="Ac_forminput" onChange={(e)=>{{formstate.algoName = e.target.value}}} />
-                                <label htmlFor="" className="Ac_form">Transaction Change</label>
-                                <select name="" id="" className="Ac_forminput" onChange={(e)=>{{formstate.transactionChange = e.target.value}}}>
-                                    <option value=""></option>
-                                    <option value="TRUE">TRUE</option>
-                                    <option value="FALSE">FALSE</option>
-                                </select>
-                                <label htmlFor="" className="Ac_form">Instrument Change</label>
-                                <select name="" id="" className="Ac_forminput" onChange={(e)=>{{formstate.instrumentChange = e.target.value}}}>
-                                    <option value=""></option>
-                                    <option value="TRUE">TRUE</option>
-                                    <option value="FALSE">FALSE</option>
-                                </select>
-                                <label htmlFor="" className="Ac_form">Exchange Change</label>
-                                <select name="" id="" className="Ac_forminput" onChange={(e)=>{{formstate.exchangeChange = e.target.value}}}>
-                                    <option value=""></option>
-                                    <option value="TRUE">TRUE</option>
-                                    <option value="FALSE">FALSE</option>
-                                </select>
-                                <label htmlFor="" className="Ac_form">Product Change</label>
-                                <select name="" id="" className="Ac_forminput" onChange={(e)=>{{formstate.productChange = e.target.value}}}>
-                                    <option value=""></option>
-                                    <option value="TRUE">TRUE</option>
-                                    <option value="FALSE">FALSE</option>
-                                </select>
-                                <label htmlFor="" className="Ac_form">Lot Multipler</label>
-                                <input type="text" className="Ac_forminput" onChange={(e)=>{{formstate.lotMultipler = e.target.value}}} />
-                                <label htmlFor="" className="Ac_form">Trading Account</label>
-                                <input type="text" className="Ac_forminput" onChange={(e)=>{{formstate.tradingAccount = e.target.value}}} />
-                                <label htmlFor="" className="Ac_form">Status</label>
-                                <select name="" id="" className="Ac_forminput" onChange={(e)=>{{formstate.status = e.target.value}}}>
-                                    <option value=""></option>
-                                    <option value="Active">Active</option>
-                                    <option value="InActive">InActive</option>
-                                </select>
-                                <br />
-                                <button className="ACform_tbn" onClick={formbtn}>OK</button>
-                            </form>
-                        </Popup>
+                    <button onClick={toggleModal} className="Ac_btn">Create Trading Algo</button>
+                        {modal && (
+                            <div className="modal">
+                                <div onClick={toggleModal} className="overlay"></div>
+                                <div className={Styles.modalContent}>
+                                    <div className={Styles.form_btn}>
+                                        <form className={Styles.main_instrument_form}>
+                                            <label className={Styles.Ac_form} htmlFor="">Algo Name</label>
+                                            <input type="text" className={Styles.Ac_forminput} onChange={(e)=>{{formstate.algoName = e.target.value}}} />
+                                            <label htmlFor="" className={Styles.Ac_form}>Transaction Change</label>
+                                            <select name="" id="" className={Styles.Ac_forminput} onChange={(e)=>{{formstate.transactionChange = e.target.value}}}>
+                                                <option value=""></option>
+                                                <option value="TRUE">TRUE</option>
+                                                <option value="FALSE">FALSE</option>
+                                            </select>
+                                            <label htmlFor="" className={Styles.Ac_form}>Instrument Change</label>
+                                            <select name="" id="" className={Styles.Ac_forminput} onChange={(e)=>{{formstate.instrumentChange = e.target.value}}}>
+                                                <option value=""></option>
+                                                <option value="TRUE">TRUE</option>
+                                                <option value="FALSE">FALSE</option>
+                                            </select>
+                                            <label htmlFor="" className={Styles.Ac_form}>Exchange Change</label>
+                                            <select name="" id="" className={Styles.Ac_forminput} onChange={(e)=>{{formstate.exchangeChange = e.target.value}}}>
+                                                <option value=""></option>
+                                                <option value="TRUE">TRUE</option>
+                                                <option value="FALSE">FALSE</option>
+                                            </select>
+                                            <label htmlFor="" className={Styles.Ac_form}>Product Change</label>
+                                            <select name="" id="" className={Styles.Ac_forminput} onChange={(e)=>{{formstate.productChange = e.target.value}}}>
+                                                <option value=""></option>
+                                                <option value="TRUE">TRUE</option>
+                                                <option value="FALSE">FALSE</option>
+                                            </select>
+                                            <label htmlFor="" className={Styles.Ac_form}>Lot Multipler</label>
+                                            <input type="text" className={Styles.Ac_forminput} onChange={(e)=>{{formstate.lotMultipler = e.target.value}}} />
+                                            <label htmlFor="" className={Styles.Ac_form}>Trading Account</label>
+                                            <input type="text" className={Styles.Ac_forminput} onChange={(e)=>{{formstate.tradingAccount = e.target.value}}} />
+                                            <label htmlFor="" className={Styles.Ac_form}>Status</label>
+                                            <select name="" id="" className={Styles.Ac_forminput} onChange={(e)=>{{formstate.status = e.target.value}}}>
+                                                <option value=""></option>
+                                                <option value="Active">Active</option>
+                                                <option value="InActive">InActive</option>
+                                            </select>
+                                            <br />
+                                            <button className={Styles.ACform_tbn} onClick={formbtn}>OK</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
 
                         <div className="grid_1">
                             <span className="grid1_span">Trading Algos</span>

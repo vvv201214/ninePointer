@@ -5,7 +5,7 @@ export default function DashboardHeader({role}) {
 
   return (
     <>
-        <div className='all_headers'>
+        <div>
             {role === "admin" ?
             <ul className='navbar'>
                 <li>

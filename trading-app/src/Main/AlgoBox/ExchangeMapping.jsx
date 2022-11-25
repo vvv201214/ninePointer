@@ -3,7 +3,7 @@ import Popup from "reactjs-popup";
 import 'reactjs-popup/dist/index.css';
 import uniqid from "uniqid";
 import axios from "axios"
-
+import Styles from "./AlgoModuleCSSFiles/ExchangeMapping.module.css";
 
 function ExchangeMapping(){
     let uId = uniqid();
@@ -22,6 +22,18 @@ function ExchangeMapping(){
         Status : "",
     });
 
+
+    const [modal, setModal] = useState(false);
+    const toggleModal = () => {
+        setModal(!modal);
+    };
+    if (modal) {
+        document.body.classList.add('active-modal')
+    } else {
+        document.body.classList.remove('active-modal')
+    }
+
+
     useEffect(()=>{
         axios.get("http://localhost:3000/readExchangeMapping")
         .then((res)=>{
@@ -34,6 +46,7 @@ function ExchangeMapping(){
         e.preventDefault();
         setformstate(formstate);
         console.log(formstate)
+        setModal(!modal);
 
 
         const {ExchangeNameIncoming, IncomingExchangeCode, ExchangeNameOutgoing, OutgoingInstrumentCode, Status} = formstate;
@@ -64,27 +77,35 @@ function ExchangeMapping(){
             <div className="main_Container">
                 <div className="right_side">
                     <div className="rightside_maindiv">
-                        <Popup trigger={<button className="Ac_btn">Create Exchange Mapping</button>}>
-                            <form>
-                                <label className="Ac_form" htmlFor="">Exchange Name (Incoming)</label>
-                                <input type="text" className="Ac_forminput" onChange={(e)=>{{formstate.ExchangeNameIncoming = e.target.value}}} />
-                                <label htmlFor="" className="Ac_form">Incoming Exchange Code</label>
-                                <input type="text" className="Ac_forminput" onChange={(e)=>{{formstate.IncomingExchangeCode = e.target.value}}} />
-                                <label htmlFor="" className="Ac_form">Exchange Name (Outgoing)</label>
-                                <input type="text" className="Ac_forminput" onChange={(e)=>{{formstate.ExchangeNameOutgoing = e.target.value}}} />
-                                <label htmlFor="" className="Ac_form">Outgoing Instrument Code</label>
-                                <input type="text" className="Ac_forminput" onChange={(e)=>{{formstate.OutgoingInstrumentCode = e.target.value}}} />
-                                <label htmlFor="" className="Ac_form">Status</label>
-                                <select name="" id="" className="Ac_forminput" onChange={(e)=>{{formstate.Status = e.target.value}}}>
-                                    <option value=""></option>
-                                    <option value="Active">Active</option>
-                                    <option value="Inactive">Inactive</option>
-                                </select>
-                                <br />
-                                <button className="ACform_tbn" onClick={formbtn}>OK</button>
-                            </form>
-                        </Popup>
-
+                    <button onClick={toggleModal} className="Ac_btn">Create Exchange Mapping</button>
+                        {modal && (
+                            <div className="modal">
+                                <div onClick={toggleModal} className="overlay"></div>
+                                <div className={Styles.modalContent}>
+                                    <div className={Styles.form_btn}>
+                                        <form className={Styles.main_instrument_form}>
+                                            <label className={Styles.Ac_form} htmlFor="">Exchange Name (Incoming)</label>
+                                            <input type="text" className={Styles.Ac_form} onChange={(e)=>{{formstate.ExchangeNameIncoming = e.target.value}}} />
+                                            <label htmlFor="" className={Styles.Ac_form}>Incoming Exchange Code</label>
+                                            <input type="text" className={Styles.Ac_form} onChange={(e)=>{{formstate.IncomingExchangeCode = e.target.value}}} />
+                                            <label htmlFor="" className={Styles.Ac_form}>Exchange Name (Outgoing)</label>
+                                            <input type="text" className={Styles.Ac_form} onChange={(e)=>{{formstate.ExchangeNameOutgoing = e.target.value}}} />
+                                            <label htmlFor="" className={Styles.Ac_form}>Outgoing Instrument Code</label>
+                                            <input type="text" className={Styles.Ac_form} onChange={(e)=>{{formstate.OutgoingInstrumentCode = e.target.value}}} />
+                                            <label htmlFor="" className={Styles.Ac_form}>Status</label>
+                                            <select name="" id="" className={Styles.Ac_form} onChange={(e)=>{{formstate.Status = e.target.value}}}>
+                                                <option value=""></option>
+                                                <option value="Active">Active</option>
+                                                <option value="Inactive">Inactive</option>
+                                            </select>
+                                            <br />
+                                            <button className={Styles.ACform_tbn} onClick={formbtn}>OK</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                       
                         <div className="grid_1">
                             <span className="grid1_span">Exchange Mapping</span>
                             <table className="grid1_table">
@@ -121,3 +142,24 @@ function ExchangeMapping(){
     )
 }
 export default ExchangeMapping;
+
+{/* <Popup trigger={<button className="Ac_btn">Create Exchange Mapping</button>}>
+<form>
+    <label className="Ac_form" htmlFor="">Exchange Name (Incoming)</label>
+    <input type="text" className="Ac_forminput" onChange={(e)=>{{formstate.ExchangeNameIncoming = e.target.value}}} />
+    <label htmlFor="" className="Ac_form">Incoming Exchange Code</label>
+    <input type="text" className="Ac_forminput" onChange={(e)=>{{formstate.IncomingExchangeCode = e.target.value}}} />
+    <label htmlFor="" className="Ac_form">Exchange Name (Outgoing)</label>
+    <input type="text" className="Ac_forminput" onChange={(e)=>{{formstate.ExchangeNameOutgoing = e.target.value}}} />
+    <label htmlFor="" className="Ac_form">Outgoing Instrument Code</label>
+    <input type="text" className="Ac_forminput" onChange={(e)=>{{formstate.OutgoingInstrumentCode = e.target.value}}} />
+    <label htmlFor="" className="Ac_form">Status</label>
+    <select name="" id="" className="Ac_forminput" onChange={(e)=>{{formstate.Status = e.target.value}}}>
+        <option value=""></option>
+        <option value="Active">Active</option>
+        <option value="Inactive">Inactive</option>
+    </select>
+    <br />
+    <button className="ACform_tbn" onClick={formbtn}>OK</button>
+</form>
+</Popup> */}
