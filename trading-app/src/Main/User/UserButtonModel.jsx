@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./UserButtonModel.css";
+import Styles from "./UserButtonModel.module.css";
 import uniqid from "uniqid"
 
 
@@ -78,44 +78,44 @@ async function formbtn(e) {
       {modal && (
         <div className="modal">
           <div onClick={toggleModal} className="overlay"></div>
-          <div className="modal-content">
-          <form className="UserMainFormModel">
-            <label className="userModelform" htmlFor="">Name</label>
-            <input type="text" className="userModelforminput" onChange={(e) => { { formstate.Name = e.target.value } }}/>
-            <label className="userModelform" htmlFor="">Designation</label>
-            <input type="text" className="userModelforminput" onChange={(e) => { { formstate.Designation = (e.target.value)} }}/>
-            <label className="userModelform" htmlFor="">EmailID</label>
-            <input type="text" className="userModelforminput" onChange={(e) => { { formstate.EmailID = e.target.value} }}/>
-            <label htmlFor="" className="userModelform">MobileNo</label>
-            <input type="text" className="userModelforminput" onChange={(e) => { { formstate.MobileNo = e.target.value } }} />
-            <label htmlFor="" className="userModelform">Degree</label>
-            <input type="text" className="userModelforminput" onChange={(e) => { { formstate.Degree = e.target.value } }} />
-            <label htmlFor="" className="userModelform">DOB</label>
-            <input type="text" className="userModelforminput" onChange={(e) => { { formstate.DOB = e.target.value } }} />
-            <label htmlFor="" className="userModelform">Gender</label>
-            <select name="" id="" className="userModelforminput" onChange={(e) => { { formstate.Gender = e.target.value } }}>
+          <div className={Styles.modalContent}>
+          <form className={Styles.main_instrument_form}>
+            <label className={Styles.Ac_form} htmlFor="">Name</label>
+            <input type="text" className={Styles.Ac_forminput} onChange={(e) => { { formstate.Name = e.target.value } }}/>
+            <label className={Styles.Ac_form} htmlFor="">Designation</label>
+            <input type="text" className={Styles.Ac_forminput} onChange={(e) => { { formstate.Designation = (e.target.value)} }}/>
+            <label className={Styles.Ac_form} htmlFor="">EmailID</label>
+            <input type="text" className={Styles.Ac_forminput} onChange={(e) => { { formstate.EmailID = e.target.value} }}/>
+            <label htmlFor="" className={Styles.Ac_form}>MobileNo</label>
+            <input type="text" className={Styles.Ac_forminput} onChange={(e) => { { formstate.MobileNo = e.target.value } }} />
+            <label htmlFor="" className={Styles.Ac_form}>Degree</label>
+            <input type="text" className={Styles.Ac_forminput} onChange={(e) => { { formstate.Degree = e.target.value } }} />
+            <label htmlFor="" className={Styles.Ac_form}>DOB</label>
+            <input type="text" className={Styles.Ac_forminput} onChange={(e) => { { formstate.DOB = e.target.value } }} />
+            <label htmlFor="" className={Styles.Ac_form}>Gender</label>
+            <select name="" id="" className={Styles.Ac_forminput} onChange={(e) => { { formstate.Gender = e.target.value } }}>
                 <option value=""></option>
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
             </select>
-            <label htmlFor="" className="userModelform">Trading Exp.</label>
-            <input type="text" className="userModelforminput" onChange={(e) => { { formstate.TradingExp = e.target.value } }} />
-            <label htmlFor="" className="userModelform">Location</label>
-            <input type="text" className="userModelforminput" onChange={(e) => { { formstate.Location = e.target.value } }} />
-            <label htmlFor="" className="userModelform">Last Occupation</label>
-            <input type="text" className="userModelforminput" onChange={(e) => { { formstate.LastOccupation = e.target.value } }} />
-            <label htmlFor="" className="userModelform">Date of Joining</label>
-            <input type="text" className="userModelforminput" onChange={(e) => { { formstate.DateofJoining = e.target.value } }} />
-            <label htmlFor="" className="userModelform">Role</label>
-            <input type="text" className="userModelforminput" onChange={(e) => { { formstate.Role = e.target.value } }} />
-            <label htmlFor="" className="userModelform">Status</label>
-            <select name="" id="" className="userModelforminput" onChange={(e) => { { formstate.Status = e.target.value } }}>
+            <label htmlFor="" className={Styles.Ac_form}>Trading Exp.</label>
+            <input type="text" className={Styles.Ac_forminput} onChange={(e) => { { formstate.TradingExp = e.target.value } }} />
+            <label htmlFor="" className={Styles.Ac_form}>Location</label>
+            <input type="text" className={Styles.Ac_forminput} onChange={(e) => { { formstate.Location = e.target.value } }} />
+            <label htmlFor="" className={Styles.Ac_form}>Last Occupation</label>
+            <input type="text" className={Styles.Ac_forminput} onChange={(e) => { { formstate.LastOccupation = e.target.value } }} />
+            <label htmlFor="" className={Styles.Ac_form}>Date of Joining</label>
+            <input type="text" className={Styles.Ac_forminput} onChange={(e) => { { formstate.DateofJoining = e.target.value } }} />
+            <label htmlFor="" className={Styles.Ac_form}>Role</label>
+            <input type="text" className={Styles.Ac_forminput} onChange={(e) => { { formstate.Role = e.target.value } }} />
+            <label htmlFor="" className={Styles.Ac_form}>Status</label>
+            <select name="" id="" className={Styles.Ac_forminput} onChange={(e) => { { formstate.Status = e.target.value } }}>
                 <option value=""></option>
                 <option value="Inactive">Inactive</option>
                 <option value="Active">Active</option>
             </select> 
         </form>
-        <button className="ACform_tbn userCancelbtn" onClick={formbtn}>OK</button> <button className="bsButton1_cancel userCancelbtn" onClick={toggleModal}>CLOSE</button>
+        <button className={Styles.ACform_tbn} onClick={formbtn}>OK</button>
            
           </div>
         </div>

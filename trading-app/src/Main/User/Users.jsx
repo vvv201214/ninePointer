@@ -1,6 +1,7 @@
 import React,{useState, useEffect} from "react";
 import UserButtonModel from "./UserButtonModel";
 import axios from "axios";
+import { TiEdit } from "react-icons/ti";
 
 function Users(){
 
@@ -13,6 +14,14 @@ function Users(){
         })
     },[])
 
+    function Editfunc(id){
+        console.log("edit me");
+        let newData = data.filter((elem)=>{
+            return elem._id === id
+        })
+        console.log(newData);
+
+    }
 
     return(
         <div>
@@ -20,7 +29,6 @@ function Users(){
                 <div className="right_side">
                     <div className="rightside_maindiv">
                     <UserButtonModel/>
-
                         <div className="grid_1">
                             <span className="grid1_span">User Details</span>
                             <table className="grid1_table">
@@ -41,8 +49,8 @@ function Users(){
                                 </tr>
                             {data.map((elem)=>{
                                 return(
-                                <tr className="grid2_tr">
-                                    <td className="grid2_td">{elem.name}</td>
+                                <tr className="grid2_tr" key={elem._id}>
+                                    <td className="grid2_td"><span className="Editbutton" onClick={()=>{Editfunc(elem._id)}}><TiEdit/></span>{elem.name}</td>
                                     <td className="grid2_td">{elem.designation}</td>
                                     <td className="grid2_td">{elem.email}</td>
                                     <td className="grid2_td">{elem.mobile}</td>

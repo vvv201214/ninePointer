@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
 import "./TradingAccounts.css";
 import "./Accounts.css";
-import Popup from "reactjs-popup";
-import 'reactjs-popup/dist/index.css';
+import { TiEdit } from "react-icons/ti";
 import { useState } from "react";
 import uniqid from "uniqid";
 import axios from "axios";
@@ -139,12 +138,13 @@ function TradingAccounts() {
                             {activeData.map((elem)=>{
                                 return(
                                 <tr className="grid2_tr" key={elem.uId} >
-                                    <td className="grid2_td">{elem.brokerName}</td>
+                                    <td className="grid2_td"><span className="Editbutton"><TiEdit/></span>{elem.brokerName}</td>
                                     <td className="grid2_td">{elem.accountId}</td>
                                     <td className="grid2_td">{elem.accountName}</td>
                                     <td className="grid2_td">{elem.apiKey}</td>
                                     <td className="grid2_td">{elem.apiSecret}</td>
                                     <td className="grid2_td">{elem.status}</td>
+                                   
                                 </tr>
                                 )
                                 })
