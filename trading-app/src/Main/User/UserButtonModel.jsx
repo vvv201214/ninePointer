@@ -107,7 +107,12 @@ async function formbtn(e) {
             <label htmlFor="" className="userModelform">Date of Joining</label>
             <input type="text" className="userModelforminput" onChange={(e) => { { formstate.DateofJoining = e.target.value } }} />
             <label htmlFor="" className="userModelform">Role</label>
-            <input type="text" className="userModelforminput" onChange={(e) => { { formstate.Role = e.target.value } }} />
+            {/* <input type="text" className="userModelforminput" onChange={(e) => { { formstate.Role = e.target.value } }} /> */}
+            <select name="" id="" className="userModelforminput" onChange={(e) => {{formstate.Role = e.target.value}}}>
+                <option value=""></option>
+                <option value="admin">admin</option>
+                <option value="user">user</option>
+            </select>
             <label htmlFor="" className="userModelform">Status</label>
             <select name="" id="" className="userModelforminput" onChange={(e) => { { formstate.Status = e.target.value } }}>
                 <option value=""></option>

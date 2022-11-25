@@ -3,7 +3,7 @@ const TradeData = require("../models/TradeDetails/allTradeSchema");
 const express = require("express");
 const router = express.Router();
 
-  const getOrderData = async (apiKey, accessToken, res) => {
+  const getOrderData = async (apiKey, accessToken, res, orderId) => {
   const url = "https://api.kite.trade/orders";
   const api_key = apiKey;
   const access_token = accessToken;
@@ -19,12 +19,20 @@ const router = express.Router();
   try{
     const response = await axios.get(url, authOptions);
     // console.log("its json data", JSON.stringify(res.data));
-    const orderData = (response.data).data;
-    console.log("order data", orderData[orderData.length - 1]);
+    const allOrderData = (response.data).data;
+    console.log("in retrieve order");
+    let len = allOrderData.length;
+    let orderData;
+    for(let i = len-1; i >= 0; i--){
+      if(allOrderData[i].order_id === orderId){
+        orderData = JSON.parse(JSON.stringify(allOrderData[i]));
+      }
+    }
+    console.log("order data", orderData);
     const {order_id, status, average_price, quantity, product, transaction_type, exchange_order_id,
            order_timestamp, variety, validity, exchange, exchange_timestamp, order_type, price, filled_quantity, 
            pending_quantity, cancelled_quantity, guid, market_protection, disclosed_quantity, tradingsymbol, placed_by}
-            = orderData[orderData.length - 1];
+            = orderData
           
   
   

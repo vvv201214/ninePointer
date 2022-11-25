@@ -61,20 +61,20 @@ export default function Routing() {
                             <Route path='/main/user' element={<Users/>}></Route>
                             <Route path='/main/user/roles' element={<Roles/>}></Route>
                         </Route>
-
-                        {details.role === "admin" ?
+                        {/* {console.log("this is details...",details)}
+                        {details.role === "admin" ? */}
                         <Route path='/main/dashboard' element={<DashboardMain/>}>
-                            <Route path='/main/dashboard' element={<TradersDashboard/>}></Route>
+                            <Route path='/main/dashboard/tradersdashboard' element={<TradersDashboard/>}></Route>
                             <Route path='/main/dashboard/CompanyPosition' element={<CompanyPosition/>}></Route>
-                            <Route path='/main/dashboard/TradersPosition' element={<TradersPosition/>}></Route>
+                            <Route path='/main/dashboard' element={<TradersPosition/>}></Route>
                             <Route path='/main/dashboard/CompanyOrders' element={<CompanyOrders/>}></Route>
                             <Route path='/main/dashboard/TradersOrders' element={<TradersOrders info={details}/>}></Route>
                         </Route>
-                        :
-                        <Route path='/main/dashboard' element={<DashboardMain/>}>
-                            <Route path='/main/dashboard' element={<TradersPosition/>}></Route>
-                            <Route path='/main/dashboard/TradersOrders' element={<TradersOrders info={details}/>}></Route>
-                        </Route> }                        
+                        {/* // :
+                        // <Route path='/main/dashboard' element={<DashboardMain/>}>
+                        //     <Route path='/main/dashboard' element={<TradersPosition/>}></Route>
+                        //     <Route path='/main/dashboard/TradersOrders' element={<TradersOrders info={details}/>}></Route>
+                        // </Route> }                         */}
                     </Route>
                 </Routes>
                 </div>

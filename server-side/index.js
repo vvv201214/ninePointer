@@ -20,6 +20,7 @@ app.use(cors({
 
 app.use(express.json());
 
+app.use(require("./marketData/livePrice"));
 app.use(require("./routes/user/userLogin"));
 app.use(require('./routes/TradeData/getUserTrade'));
 app.use(require('./routes/TradeData/getCompanyTrade'));

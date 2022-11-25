@@ -78,6 +78,13 @@ const userTradeSchema = new mongoose.Schema({
     userId:{
         type: String,
         required: true        
+    },
+    brokerageCharge:{
+        type: String,     
+    },
+    realAmount:{
+        type: String,
+        required: true        
     }
 })
 

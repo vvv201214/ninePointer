@@ -68,15 +68,13 @@ async function parameters() {
 
   function onTicks(ticks) {
     // console.log('random', socket1);
-    // console.log('Ticks', ticks);
     // io.on('connection', (socket) => {
     //   console.log(socket.id);
-    if(token.length === ticks.length)
-    socket1.emit('tick', ticks);
-    //   socket.on('hi', (data) => {
-    //     console.log(data);
-    //   });
-    // });
+    // console.log('Ticks', ticks);
+    if(token.length === ticks.length){
+      socket1.emit('tick', ticks);
+      
+    }
   }
 
   function subscribe() {

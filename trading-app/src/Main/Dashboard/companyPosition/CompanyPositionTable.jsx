@@ -1,18 +1,25 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useState } from "react";
 import './CompanyPosition.css';
 import ByModal from './ByModal';
 import SellModel from "./SellModel";
 import { useEffect } from 'react';
 import axios from "axios"
+import { userContext } from "../../AuthContext";
 
 function CompanyPositionTable({ socket }) {
-
-    const isTradersTrade = false;
+    const getDetails = useContext(userContext);
     const [tradeData, setTradeData] = useState([]);
     const [marketData, setMarketData] = useState([]);
     let date = new Date();
+
     useEffect(() => {
+        axios.get("http://localhost:5000/getliveprice")
+            .then((res) => {
+                console.log("live price data", res)
+                setMarketData(res.data)
+            })
+
         axios.get("http://localhost:5000/readInstrumentDetails")
             .then((res) => {
                 let dataArr = (res.data).filter((elem) => {
@@ -30,19 +37,10 @@ function CompanyPositionTable({ socket }) {
         socket.on("tick",(data)=>{
             console.log(data);
             setMarketData(data);
-
         })
         
         console.log(marketData);
-        // tradeData.map((elem, index)=>{
-        //     for(let property in marketData[index]){
-        //         if(property === "last_price" || property === "change"){
-        //             elem[property] = marketData[index][property]
-        //         }
-        //     }
-        // })
         console.log(tradeData);
-        // setTradeData([...tradeData])
     },[])
 
     useEffect(()=>{
@@ -72,16 +70,23 @@ function CompanyPositionTable({ socket }) {
                                 let updatedMarketData = marketData.filter((subElem)=>{
                                     return elem.instrumentToken === subElem.instrument_token;
                                 })
-                                // setMarketData(updatedMarketData)
                                 return(
                                     <tr className="grid1_table">
                                             <td className="grid2_td">{elem.createdOn}</td>
                                             <td className="grid2_td">{elem.symbol}</td>
                                             <td className="grid2_td">{updatedMarketData[0]?.last_price}</td>
-                                            <td className="grid2_td">{updatedMarketData[0]?.change.toFixed(2)}</td>
-                                            <td className="grid2_th companyPosition_BSbtn2"><div className="companyPosition_BSbtn">
-                                            <ByModal marketData={marketData} uIdProps={elem.uId} isTradersTrade={false}/>
-                                            <SellModel marketData={marketData} uIdProps={elem.uId} isTradersTrade={false}/></div></td>
+                                            
+                                            {console.log(updatedMarketData[0], updatedMarketData[0]?.change)}
+                                            {(updatedMarketData[0]?.change === undefined) ? 
+                                            <td className="grid2_td">{updatedMarketData[0]?.change}</td>
+                                            :
+                                            <td className="grid2_td">{updatedMarketData[0]?.change.toFixed(2)}</td>}
+                                            <td className="grid2_th companyPosition_BSbtn2">
+                                                <div className="companyPosition_BSbtn">
+                                                    <ByModal marketData={marketData} uIdProps={elem.uId} isTradersTrade={false}/>
+                                                    <SellModel marketData={marketData} uIdProps={elem.uId} isTradersTrade={false}/>
+                                                </div>
+                                            </td>
                                     </tr>
                                     )
                                 })} 

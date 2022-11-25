@@ -31,11 +31,12 @@ const fetchData = async (getApiKey, getAccessToken) => {
       Authorization: auth,
     },
   };
-  
+
 
   let arr = [];
     try{
       const res = await axios.get(url, authOptions);
+      // console.log("its json data", JSON.stringify(res.data));
       for (instrument in res.data.data) {
         arr.push(res.data.data[instrument].instrument_token);
       }
@@ -43,9 +44,7 @@ const fetchData = async (getApiKey, getAccessToken) => {
 
     } catch (err){
       return new Error(err);
-  }
-  // console.log("its json data", JSON.stringify(res.data));
-  
-
+  }  
 };
+
 module.exports = fetchData;
