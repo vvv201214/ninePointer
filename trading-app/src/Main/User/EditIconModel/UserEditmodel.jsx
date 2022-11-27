@@ -99,7 +99,7 @@ export default function UserEditModel({data, id}) {
 
         const { Name, Designation, Degree, EmailID, MobileNo, DOB, Gender, TradingExp, Location, LastOccupation, DateofJoining, Role, Status } = formstate;
 
-        const res = await fetch(`http://localhost:5000/readuserdetails${id}`, {
+        const res = await fetch(`http://localhost:5000/readuserdetails/${id}`, {
             method: "PUT",
             headers: {
                 "Accept": "application/json",

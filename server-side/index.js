@@ -39,6 +39,14 @@ app.use(require('./routes/user/userDetailAuth'));
 app.use(require("./routes/user/everyoneRoleAuth"))
 require('./db/conn');
 
+process.on('unhandledRejection', (err) => {
+  console.log(err.name, err.message);
+  console.log('UNHANDLED REJECTION! Shutting Down...');
+  server.close(() => {
+    process.exit(1);
+  });
+});
+
 const PORT = 5000;
 
 // router.get("/dashboard", authentication, (req, res)=>{
