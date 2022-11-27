@@ -131,6 +131,7 @@ export default function SellModel({marketData, uIdProps, isTradersTrade}) {
                 setModal(!modal);
             })
         } else {
+            companyTrade.real_last_price = Details.last_price;
             companyTrade.realBuyOrSell = "SELL";
             companyTrade.realSymbol = Details.symbol
             companyTrade.realInstrument = Details.instrument
@@ -183,6 +184,7 @@ export default function SellModel({marketData, uIdProps, isTradersTrade}) {
                     return elem.tradingAccount === element.accountId
                 })
                 setApiKey(apiKeyData);
+                companyTrade.real_last_price = getLastPrice[0].last_price;
                 companyTrade.realAmount = getLastPrice[0].last_price * companyTrade.realQuantity;
                 companyTrade.realBrokerage = sellBrokerageCharge(brokerageData, companyTrade.realQuantity, companyTrade.realAmount);
                 

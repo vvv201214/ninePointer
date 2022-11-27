@@ -36,4 +36,16 @@ router.get("/readRequestToken", (req, res)=>{
     }).sort({$natural:-1})
 })
 
+router.get("/readRequestToken/:id", (req, res)=>{
+    console.log(req.params)
+    const {id} = req.params
+    RequestToken.findOne({_id : id})
+    .then((data)=>{
+        return res.status(200).send(data);
+    })
+    .catch((err)=>{
+        return res.status(422).json({error : "date not found"})
+    })
+})
+
 module.exports = router;

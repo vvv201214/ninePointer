@@ -37,7 +37,6 @@ router.post("/placeorder", (async (req, res)=>{
         "trigger_price": TriggerPrice
     }), {headers : headers})
     .then(async (resp)=>{
-        // let orderId = JSON.stringify(resp.data);
  
         console.log("its json data", JSON.stringify(resp.data));
         const orderId = resp.data.data.order_id
@@ -50,6 +49,7 @@ router.post("/placeorder", (async (req, res)=>{
         console.log("this is order-id", data.order_id);
 
 
+
         TradeData.findOne({order_id : data.order_id})
         .then((data)=>{
             console.log("i am receiving data", data)
@@ -58,7 +58,7 @@ router.post("/placeorder", (async (req, res)=>{
                 const { order_id, placed_by, exchange_order_id, status, order_timestamp, exchange_timestamp
                     , variety, exchange, tradingsymbol, order_type, transaction_type, validity, product,
                     quantity, disclosed_quantity, price, average_price, filled_quantity, pending_quantity,
-                    cancelled_quantity, market_protection, guid} = data;
+                    cancelled_quantity, market_protection, guid } = data;
 
                 OrderId.findOne({order_id : order_id})
                 .then((dateExist)=>{
