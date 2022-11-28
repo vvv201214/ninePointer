@@ -1,48 +1,54 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useState } from "react";
 import './CompanyPosition.css';
 import ByModal from './ByModal';
 import SellModel from "./SellModel";
 import { useEffect } from 'react';
 import axios from "axios"
+import { userContext } from "../../AuthContext";
 
 function CompanyPositionTable({ socket }) {
-
-    const isTradersTrade = false;
+    const getDetails = useContext(userContext);
     const [tradeData, setTradeData] = useState([]);
     const [marketData, setMarketData] = useState([]);
+    const [pnlData, setPnlData] = useState([]);
+
     let date = new Date();
+
     useEffect(() => {
+        
+        axios.get("http://localhost:5000/companytradedata")
+        .then((res) => {
+
+        })
+
+        axios.get("http://localhost:5000/getliveprice")
+        .then((res) => {
+            console.log("live price data", res)
+            setMarketData(res.data)
+        })
+
         axios.get("http://localhost:5000/readInstrumentDetails")
-            .then((res) => {
-                let dataArr = (res.data).filter((elem) => {
-                    return (elem.createdOn).includes(`${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`) && elem.status === "Active"
-                })
-                setTradeData(dataArr)
+        .then((res) => {
+            let dataArr = (res.data).filter((elem) => {
+                return (elem.createdOn).includes(`${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`) && elem.status === "Active"
             })
+            setTradeData(dataArr)
+        })
         console.log("hii");
 
         axios.get("http://localhost:5000/ws")
-
         .then((res)=>{
             console.log("vijay", (res.data)[0].last_price);
         })
+
         socket.on("tick",(data)=>{
             console.log(data);
             setMarketData(data);
-
         })
         
         console.log(marketData);
-        // tradeData.map((elem, index)=>{
-        //     for(let property in marketData[index]){
-        //         if(property === "last_price" || property === "change"){
-        //             elem[property] = marketData[index][property]
-        //         }
-        //     }
-        // })
         console.log(tradeData);
-        // setTradeData([...tradeData])
     },[])
 
     useEffect(()=>{
@@ -72,16 +78,23 @@ function CompanyPositionTable({ socket }) {
                                 let updatedMarketData = marketData.filter((subElem)=>{
                                     return elem.instrumentToken === subElem.instrument_token;
                                 })
-                                // setMarketData(updatedMarketData)
                                 return(
                                     <tr className="grid1_table">
                                             <td className="grid2_td">{elem.createdOn}</td>
                                             <td className="grid2_td">{elem.symbol}</td>
                                             <td className="grid2_td">{updatedMarketData[0]?.last_price}</td>
-                                            <td className="grid2_td">{updatedMarketData[0]?.change.toFixed(2)}</td>
-                                            <td className="grid2_th companyPosition_BSbtn2"><div className="companyPosition_BSbtn">
-                                            <ByModal marketData={marketData} uIdProps={elem.uId} isTradersTrade={false}/>
-                                            <SellModel marketData={marketData} uIdProps={elem.uId} isTradersTrade={false}/></div></td>
+                                            
+                                            {console.log(updatedMarketData[0], updatedMarketData[0]?.change)}
+                                            {(updatedMarketData[0]?.change === undefined) ? 
+                                            <td className="grid2_td">{updatedMarketData[0]?.change}</td>
+                                            :
+                                            <td className="grid2_td">{updatedMarketData[0]?.change.toFixed(2)}</td>}
+                                            <td className="grid2_th companyPosition_BSbtn2">
+                                                <div className="companyPosition_BSbtn">
+                                                    <ByModal marketData={marketData} uIdProps={elem.uId} isTradersTrade={false}/>
+                                                    <SellModel marketData={marketData} uIdProps={elem.uId} isTradersTrade={false}/>
+                                                </div>
+                                            </td>
                                     </tr>
                                     )
                                 })} 
@@ -90,29 +103,44 @@ function CompanyPositionTable({ socket }) {
                         <div className="grid_2">
                             <span className="grid2_span">Overall PNL-Company</span>
                             <table className="grid1_table">
-                            <tr className="grid2_tr">
-                                <th className="grid2_th">Product</th>
-                                <th className="grid2_th">Instruments</th>
-                                <th className="grid2_th">Quantity</th>
-                                <th className="grid2_th">Average Price</th>
-                                <th className="grid2_th">LTP</th>
-                                <th className="grid2_th">P&L</th>
-                                <th className="grid2_th">%Change</th>
-                            </tr>
+                                <tr className="grid2_tr">
+                                    <th className="grid2_th">Product</th>
+                                    <th className="grid2_th">Instruments</th>
+                                    <th className="grid2_th">Quantity</th>
+                                    <th className="grid2_th">Average Price</th>
+                                    <th className="grid2_th">LTP</th>
+                                    <th className="grid2_th">P&L</th>
+                                    <th className="grid2_th">%Change</th>
+                                </tr>
+    
                             </table>
                         </div>
                         <div className="grid_2">
                             <span className="grid2_span">Running PNL-Company</span>
                             <table className="grid1_table">
-                            <tr className="grid2_tr">
-                                <th className="grid2_th">Product</th>
-                                <th className="grid2_th">Instruments</th>
-                                <th className="grid2_th">Quantity</th>
-                                <th className="grid2_th">Average Price</th>
-                                <th className="grid2_th">LTP</th>
-                                <th className="grid2_th">P&L</th>
-                                <th className="grid2_th">%Change</th>
-                            </tr>
+                                <tr className="grid2_tr">
+                                    <th className="grid2_th">Product</th>
+                                    <th className="grid2_th">Instruments</th>
+                                    <th className="grid2_th">Quantity</th>
+                                    <th className="grid2_th">Average Price</th>
+                                    <th className="grid2_th">LTP</th>
+                                    <th className="grid2_th">P&L</th>
+                                    <th className="grid2_th">%Change</th>
+                                </tr>
+                                {
+                                    pnlData.map((elem)=>{
+                                        <tr className="grid2_tr" key={elem._id}>
+                                            <td className="grid2_td">{elem.product}</td>
+                                            <td className="grid2_td">{elem.tradingsymbol}</td>
+                                            <td className="grid2_td">{elem.quantity}</td>
+                                            <td className="grid2_td">{elem.average_price}</td>
+                                            <td className="grid2_td">{}</td>
+                                            <td className="grid2_td">{}</td>
+                                            <td className="grid2_td">{}</td>
+                                        </tr>
+                                    })
+                                }
+
                             </table>
                         </div>
                         <div className="grid_2">

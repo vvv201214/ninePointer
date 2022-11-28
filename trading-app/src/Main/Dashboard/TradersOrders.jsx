@@ -1,11 +1,14 @@
 import React from "react";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import checking from "./Checking";
 
 function TradersOrders({info}){
 
     console.log(info)
     const [data, setData] = useState([]);
+    
+    checking(info);
 
     useEffect(()=>{
         console.log(info.role)

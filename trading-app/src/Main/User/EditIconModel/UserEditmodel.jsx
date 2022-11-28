@@ -7,32 +7,65 @@ import Styles from "./UserEditModel.module.css";
 export default function UserEditModel({data, id}) {
    
     const[editData, setEditData] = useState(data);
+    const [name, setName] = useState();
+    const [designation, setDesignation] = useState();
+    const [email, setEmail] = useState();
+    const [dob, setDob] = useState();
+    const [mobile, setMobile] = useState();
+    const [gender, setGender] = useState();
+    const [trading_exp, setTradingExp] = useState();
+    const [location, setLocation] = useState();
+    const [lastOccupation, setLastOccupation] = useState();
+    const [joiningDate, setJoiningDate] = useState();
+    const [role, setRole] = useState();
+    const [status, setStatus] = useState();
+    const [degree, setDegree] = useState();
+
 
     useEffect(()=>{
-        let updatedData = editData.filter((elem)=>{
+        let updatedData = data.filter((elem)=>{
             return elem._id === id
         })
         setEditData(updatedData)
-        
-    },[])
-        console.log(editData);
 
+    },[])
+    useEffect(()=>{
+        console.log("edit data", editData);
+
+        setName(editData[0].name)
+        setDesignation(editData[0].designation);
+        setEmail(editData[0].email);
+        setMobile(editData[0].mobile);
+        setDegree(editData[0].degree);
+        setDob(editData[0].dob);
+        setGender(editData[0].gender);
+        setTradingExp(editData[0].trading_exp);
+        setLocation(editData[0].location);
+        setLastOccupation(editData[0].last_occupation);
+        setJoiningDate(editData[0].joining_date);
+        setRole(editData[0].role);
+        setStatus(editData[0].status);
+
+    }, [editData])
+        console.log(editData, id);
+        console.log(editData[0].name, name);
         const [formstate, setformstate] = useState({
-            Name: editData[0].name,
-            Designation: editData[0].designation,
-            EmailID: editData[0].email,
-            MobileNo: editData[0].mobile,
-            Degree: editData[0].degree,
-            DOB: editData[0].dob,
-            Gender: editData[0].gender,
-            TradingExp: editData[0].trading_exp,
-            Location: editData[0].location,
-            LastOccupation: editData[0].last_occupation,
-            DateofJoining: editData[0].joining_date,
-            Role: editData[0].role,
-            Status: editData[0].status
+            Name: "",
+            Designation: "",
+            EmailID: "",
+            MobileNo: "",
+            Degree: "",
+            DOB: "",
+            Gender: "",
+            TradingExp: "",
+            Location: "",
+            LastOccupation: "",
+            DateofJoining: "",
+            Role: "",
+            Status: ""
         });
-    
+
+    console.log(formstate);
     const [modal, setModal] = useState(false);
     const toggleModal = () => {
         setModal(!modal);
@@ -43,24 +76,72 @@ export default function UserEditModel({data, id}) {
     } else {
         document.body.classList.remove('active-modal')
     }
-
-    function formbtn(e) {
+    
+    async function formbtn(e) {
         e.preventDefault();
+
+        formstate.Name = name;
+        formstate.Designation = designation;
+        formstate.Degree = degree;
+        formstate.EmailID = email;
+        formstate.MobileNo = mobile;
+        formstate.DOB = dob;
+        formstate.Gender = gender;
+        formstate.TradingExp = trading_exp;
+        formstate.Location = location;
+        formstate.LastOccupation = lastOccupation;
+        formstate.DateofJoining = joiningDate;
+        formstate.Role = role;
+        formstate.Status = status;
+
         setformstate(formstate);
-        console.log(formstate)
+
+
+        const { Name, Designation, Degree, EmailID, MobileNo, DOB, Gender, TradingExp, Location, LastOccupation, DateofJoining, Role, Status } = formstate;
+
+        const res = await fetch(`http://localhost:5000/readuserdetails/${id}`, {
+            method: "PUT",
+            headers: {
+                "Accept": "application/json",
+                "content-type": "application/json"
+            },
+            body: JSON.stringify({
+                Name, Designation, Degree, EmailID, MobileNo, DOB, Gender, TradingExp, Location, LastOccupation, DateofJoining, Role, Status 
+            })
+        });
+        const dataResp = await res.json();
+        console.log(dataResp);
+        if (dataResp.status === 422 || dataResp.error || !dataResp) {
+            window.alert(dataResp.error);
+            console.log("Failed to Edit");
+        } else {
+            console.log(dataResp);
+            window.alert("Edit succesfull");
+            console.log("Edit succesfull");
+        }
+
         setModal(!modal);
-
     }
 
-    function handleInputChange(e){
-        // const target = e.target;
-        // const value = target.value;
-        // setformstate({
-           
-        // });
-        
-    }
+    async function Ondelete(){
+      console.log(editData)
+      const res = await fetch(`http://localhost:5000/readuserdetails/${id}`, {
+          method: "DELETE",
+      });
 
+      const dataResp = await res.json();
+      console.log(dataResp);
+      if (dataResp.status === 422 || dataResp.error || !dataResp) {
+          window.alert(dataResp.error);
+          console.log("Failed to Delete");
+      } else {
+          console.log(dataResp);
+          window.alert("Delete succesfull");
+          console.log("Delete succesfull");
+      }
+
+      setModal(!modal);
+    }
         return (
             <>
                 <button onClick={toggleModal}><TiEdit /></button>
@@ -71,41 +152,42 @@ export default function UserEditModel({data, id}) {
                         <div className={Styles.modalContent}>
                             <form className={Styles.main_instrument_form}>
                                 <label className={Styles.Ac_form} htmlFor="">Name</label>
-                                <input type="text" value={formstate.Name} className={Styles.Ac_forminput} onChange={(e) =>  setformstate(formstate.Name= e.target.value)} />
+                                <input type="text" value={name} className={Styles.Ac_forminput} onChange={(e)=>{setName( e.target.value)}}/>
                                 <label className={Styles.Ac_form} htmlFor="">Designation</label>
-                                <input type="text" value={formstate.Designation} className={Styles.Ac_forminput} onChange={handleInputChange} />
+                                <input type="text" value={designation} className={Styles.Ac_forminput} onChange={(e)=>{setDesignation( e.target.value)}} />
                                 <label className={Styles.Ac_form} htmlFor="">EmailID</label>
-                                <input type="text" value={formstate.EmailID} className={Styles.Ac_forminput} onChange={handleInputChange} />
+                                <input type="text" value={email} className={Styles.Ac_forminput} onChange={(e)=>{setEmail( e.target.value)}} />
                                 <label htmlFor="" className={Styles.Ac_form}>MobileNo</label>
-                                <input type="text" value={formstate.MobileNo} className={Styles.Ac_forminput} onChange={handleInputChange} />
+                                <input type="text" value={mobile} className={Styles.Ac_forminput} onChange={(e)=>{setMobile( e.target.value)}} />
                                 <label htmlFor="" className={Styles.Ac_form}>Degree</label>
-                                <input type="text" value={formstate.Degree} className={Styles.Ac_forminput} onChange={handleInputChange} />
+                                <input type="text" value={degree} className={Styles.Ac_forminput} onChange={(e)=>{setDegree( e.target.value)}} />
                                 <label htmlFor="" className={Styles.Ac_form}>DOB</label>
-                                <input type="text" value={formstate.DOB} className={Styles.Ac_forminput} onChange={handleInputChange} />
+                                <input type="text" value={dob} className={Styles.Ac_forminput} onChange={(e)=>{setDob( e.target.value)}} />
                                 <label htmlFor="" className={Styles.Ac_form}>Gender</label>
-                                <select name="" value={formstate.Gender} id="" className={Styles.Ac_forminput} onChange={handleInputChange}>
+                                <select name="" value={gender} id="" className={Styles.Ac_forminput} onChange={(e)=>{setGender( e.target.value)}}>
                                     <option value=""></option>
                                     <option value="Male">Male</option>
                                     <option value="Female">Female</option>
                                 </select>
                                 <label htmlFor="" className={Styles.Ac_form}>Trading Exp.</label>
-                                <input type="text" value={formstate.TradingExp} className={Styles.Ac_forminput} onChange={handleInputChange} />
+                                <input type="text" value={trading_exp} className={Styles.Ac_forminput} onChange={(e)=>{setTradingExp( e.target.value)}} />
                                 <label htmlFor="" className={Styles.Ac_form}>Location</label>
-                                <input type="text" value={formstate.Location} className={Styles.Ac_forminput} onChange={handleInputChange} />
+                                <input type="text" value={location} className={Styles.Ac_forminput} onChange={(e)=>{setLocation( e.target.value)}} />
                                 <label htmlFor="" className={Styles.Ac_form}>Last Occupation</label>
-                                <input type="text" value={formstate.LastOccupation} className={Styles.Ac_forminput} onChange={handleInputChange} />
+                                <input type="text" value={lastOccupation} className={Styles.Ac_forminput} onChange={(e)=>{setLastOccupation( e.target.value)}} />
                                 <label htmlFor="" className={Styles.Ac_form}>Date of Joining</label>
-                                <input type="text" value={formstate.DateofJoining} className={Styles.Ac_forminput} onChange={handleInputChange} />
+                                <input type="text" value={joiningDate} className={Styles.Ac_forminput} onChange={(e)=>{setJoiningDate( e.target.value)}} />
                                 <label htmlFor="" className={Styles.Ac_form}>Role</label>
-                                <input type="text" value={formstate.Role} className={Styles.Ac_forminput} onChange={handleInputChange} />
+                                <input type="text" value={role} className={Styles.Ac_forminput} onChange={(e)=>{setRole( e.target.value)}} />
                                 <label htmlFor="" className={Styles.Ac_form}>Status</label>
-                                <select name="" value={formstate.Status} id="" className={Styles.Ac_forminput} onChange={handleInputChange}>
+                                <select name="" value={status} id="" className={Styles.Ac_forminput} onChange={(e)=>{setStatus( e.target.value)}}>
                                     <option value=""></option>
                                     <option value="Inactive">Inactive</option>
                                     <option value="Active">Active</option>
                                 </select>
                             </form>
-                            <button className={Styles.ACform_tbn} onClick={formbtn}>OK</button>
+
+                            <button className={Styles.ACform_tbn} onClick={formbtn}>OK</button> <button className={Styles.ACform_tbn} onClick={Ondelete}>Delete</button>
 
                         </div>
                     </div>

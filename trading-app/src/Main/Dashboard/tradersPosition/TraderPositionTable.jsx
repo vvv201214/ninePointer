@@ -8,11 +8,16 @@ import axios from "axios"
 
 function TraderPositionTable({ socket }) {
 
-    const isTradersTrade = true;
     const [tradeData, setTradeData] = useState([]);
     const [marketData, setMarketData] = useState([]);
     let date = new Date();
     useEffect(() => {
+        axios.get("http://localhost:5000/getliveprice")
+            .then((res) => {
+                console.log("live price data", res)
+                setMarketData(res.data)
+            })
+
         axios.get("http://localhost:5000/readInstrumentDetails")
             .then((res) => {
                 let dataArr = (res.data).filter((elem) => {
@@ -23,26 +28,18 @@ function TraderPositionTable({ socket }) {
         console.log("hii");
 
         axios.get("http://localhost:5000/ws")
-
         .then((res)=>{
             console.log("vijay", (res.data)[0].last_price);
         })
+        
         socket.on("tick",(data)=>{
             console.log(data);
             setMarketData(data);
-
         })
         
         console.log(marketData);
-        // tradeData.map((elem, index)=>{
-        //     for(let property in marketData[index]){
-        //         if(property === "last_price" || property === "change"){
-        //             elem[property] = marketData[index][property]
-        //         }
-        //     }
-        // })
         console.log(tradeData);
-        // setTradeData([...tradeData])
+       
     },[])
 
     useEffect(()=>{
@@ -77,10 +74,16 @@ function TraderPositionTable({ socket }) {
                                             <td className="grid2_td">{elem.createdOn}</td>
                                             <td className="grid2_td">{elem.symbol}</td>
                                             <td className="grid2_td">{updatedMarketData[0]?.last_price}</td>
-                                            <td className="grid2_td">{updatedMarketData[0]?.change.toFixed(2)}</td>
+
+                                            {console.log(updatedMarketData[0], updatedMarketData[0]?.change)}
+                                            {(updatedMarketData[0]?.change === undefined) ? 
+                                            <td className="grid2_td">{updatedMarketData[0]?.change}</td>
+                                            :
+                                            <td className="grid2_td">{updatedMarketData[0]?.change.toFixed(2)}</td>}
+
                                             <td className="grid2_th companyPosition_BSbtn2"><div className="companyPosition_BSbtn">
-                                            <ByModal marketData={marketData} uIdProps={elem.uId} isTradersTrade={false}/>
-                                            <SellModel marketData={marketData} uIdProps={elem.uId} isTradersTrade={false}/></div></td>
+                                            <ByModal marketData={marketData} uIdProps={elem.uId} isTradersTrade={true}/>
+                                            <SellModel marketData={marketData} uIdProps={elem.uId} isTradersTrade={true}/></div></td>
                                         </tr>
                                     )
                                 })} 

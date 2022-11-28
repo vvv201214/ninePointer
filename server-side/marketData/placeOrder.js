@@ -11,7 +11,8 @@ router.post("/placeorder", (async (req, res)=>{
 
     const {exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice,
          stopLoss, validity, variety, uId, createdBy, createdOn, last_price, realBuyOrSell,
-          realSymbol, realQuantity, instrument, realInstrument, apiKey, accessToken, userId} = req.body;
+          realSymbol, realQuantity, instrument, realInstrument, apiKey, accessToken, userId, 
+          realBrokerage, realAmount, brokerageCharge} = req.body;
         console.log("this is req.body", req.body);
     const api_key = apiKey;
     const access_token = accessToken;
@@ -36,10 +37,11 @@ router.post("/placeorder", (async (req, res)=>{
         "trigger_price": TriggerPrice
     }), {headers : headers})
     .then(async (resp)=>{
-        // let orderId = JSON.stringify(resp.data);
  
         console.log("its json data", JSON.stringify(resp.data));
-        await getOrderData(apiKey, accessToken, res);
+        const orderId = resp.data.data.order_id
+        console.log("order_id", resp.data.data.order_id);
+        await getOrderData(apiKey, accessToken, res, orderId);
         const {status, data} = resp.data;
         let getOrderResp = await axios.get("http://localhost:5000/readorderdata");
         let getOrderDetails = getOrderResp.data;
@@ -47,17 +49,18 @@ router.post("/placeorder", (async (req, res)=>{
         console.log("this is order-id", data.order_id);
 
 
+
         TradeData.findOne({order_id : data.order_id})
         .then((data)=>{
             console.log("i am receiving data", data)
             if(data.exchange_timestamp === undefined){
-
+                console.log("in the if condition of exchange", data.exchange_timestamp);
                 const { order_id, placed_by, exchange_order_id, status, order_timestamp, exchange_timestamp
                     , variety, exchange, tradingsymbol, order_type, transaction_type, validity, product,
                     quantity, disclosed_quantity, price, average_price, filled_quantity, pending_quantity,
-                    cancelled_quantity, market_protection, guid} = data;
+                    cancelled_quantity, market_protection, guid } = data;
 
-                OrderId.findOne({createdOn : createdOn})
+                OrderId.findOne({order_id : order_id})
                 .then((dateExist)=>{
                     if(dateExist){
                         console.log("data already");
@@ -68,26 +71,26 @@ router.post("/placeorder", (async (req, res)=>{
                          order_timestamp , variety , validity , exchange , 
                           order_type , price , filled_quantity , pending_quantity 
                         , cancelled_quantity , guid , market_protection , disclosed_quantity , tradingsymbol 
-                        , placed_by, userId
+                        , placed_by, userId, realBrokerage, realAmount
                     });
-            
+                    console.log("this is orderid", orderid);
                     orderid.save().then(()=>{
                     }).catch((err)=> res.status(500).json({error:"Failed to Trade"}));
                 }).catch(err => {console.log(err, "fail")});
 
 
-                UserTradeData.findOne({createdOn : createdOn})
+                UserTradeData.findOne({order_id : order_id})
                 .then((dateExist)=>{
                     if(dateExist){
                         console.log("data already");
                         return res.status(422).json({error : "data already exist..."})
                     }
-                    console.log(instrument);
+                    console.log("first instrument", instrument);
                     const userTradeData = new UserTradeData({order_id, status, uId, createdOn, 
                         createdBy, last_price, average_price, Quantity, symbol, Product, buyOrSell, 
-                        validity, variety, order_timestamp, order_type, exchange, userId});
+                        validity, variety, order_timestamp, order_type, exchange, userId, brokerageCharge, realAmount});
             
-                    console.log(instrument);
+                    console.log("second instrument", instrument);
                     userTradeData.save().then(()=>{
                         res.status(201).json({massage : "Trade successfull"});
                     }).catch((err)=> res.status(500).json({error:"Failed to Trade"}));
@@ -97,7 +100,7 @@ router.post("/placeorder", (async (req, res)=>{
                     , variety, exchange, tradingsymbol, order_type, transaction_type, validity, product,
                     quantity, disclosed_quantity, price, average_price, filled_quantity, pending_quantity,
                     cancelled_quantity, market_protection, guid} = data
-                OrderId.findOne({createdOn : createdOn})
+                OrderId.findOne({order_id : order_id})
                 .then((dateExist)=>{
                     if(dateExist){
                         console.log("data already");
@@ -108,7 +111,7 @@ router.post("/placeorder", (async (req, res)=>{
                         exchange_order_id , order_timestamp , variety , validity , exchange , 
                         exchange_timestamp , order_type , price , filled_quantity , pending_quantity 
                         , cancelled_quantity , guid , market_protection , disclosed_quantity , tradingsymbol 
-                        , placed_by, userId
+                        , placed_by, userId, realBrokerage, realAmount
                     });
             
                     orderid.save().then(()=>{
@@ -116,7 +119,7 @@ router.post("/placeorder", (async (req, res)=>{
                 }).catch(err => {console.log(err, "fail")});
 
 
-                UserTradeData.findOne({createdOn : createdOn})
+                UserTradeData.findOne({order_id : order_id})
                 .then((dateExist)=>{
                     if(dateExist){
                         console.log("data already");
@@ -124,7 +127,8 @@ router.post("/placeorder", (async (req, res)=>{
                     }
                     const userTradeData = new UserTradeData({order_id, status, uId, createdOn, 
                         createdBy, last_price, average_price, Quantity, symbol, Product, buyOrSell, 
-                        validity, variety, order_timestamp, order_type, amount:(Quantity*last_price), exchange, userId});
+                        validity, variety, order_timestamp, order_type, amount:(Quantity*last_price), exchange,
+                         userId, brokerageCharge, realAmount});
             
                     userTradeData.save().then(()=>{
                         res.status(201).json({massage : "Trade successfull"});

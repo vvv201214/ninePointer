@@ -20,6 +20,7 @@ app.use(cors({
 
 app.use(express.json());
 
+app.use(require("./marketData/livePrice"));
 app.use(require("./routes/user/userLogin"));
 app.use(require('./routes/TradeData/getUserTrade'));
 app.use(require('./routes/TradeData/getCompanyTrade'));
@@ -37,6 +38,14 @@ app.use(require('./routes/TradingAccountAuth/requestTokenAuth'));
 app.use(require('./routes/user/userDetailAuth'));
 app.use(require("./routes/user/everyoneRoleAuth"))
 require('./db/conn');
+
+process.on('unhandledRejection', (err) => {
+  console.log(err.name, err.message);
+  console.log('UNHANDLED REJECTION! Shutting Down...');
+  server.close(() => {
+    process.exit(1);
+  });
+});
 
 const PORT = 5000;
 

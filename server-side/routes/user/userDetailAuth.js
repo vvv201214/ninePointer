@@ -35,4 +35,47 @@ router.get("/readuserdetails", (req, res)=>{
     }).sort({$natural:-1})
 })
 
+router.get("/readuserdetails/:id", (req, res)=>{
+    console.log(req.params)
+    const {id} = req.params
+    UserDetail.findOne({_id : id})
+    .then((data)=>{
+        return res.status(200).send(data);
+    })
+    .catch((err)=>{
+        return res.status(422).json({error : "date not found"})
+    })
+})
+
+router.put("/readuserdetails/:id", async (req, res)=>{
+    console.log(req.params)
+    console.log("this is body", req.body);
+    try{
+        const {id} = req.params
+        const userDetail = await UserDetail.findOneAndUpdate({_id : id}, {
+            $set:{
+                name: req.body.Name,
+                designation: req.body.Designation,
+                degree: req.body.Degree,
+                email: req.body.EmailID,
+                mobile: req.body.MobileNo,
+                dob: req.body.DOB,
+                gender: req.body.Gender,
+                trading_exp: req.body.TradingExp,
+                location: req.body.Location,
+                last_occupation: req.body.LastOccupation,
+                joining_date: req.body.DateofJoining,
+                role: req.body.Role,
+                status: req.body.Status
+            }
+        })
+        console.log("this is userdetail", userDetail);
+        res.send(userDetail)
+        // res.status(201).json({massage : "data edit succesfully"});
+    } catch (e){
+        res.status(500).json({error:"Failed to edit data"});
+    }
+
+})
+
 module.exports = router;
