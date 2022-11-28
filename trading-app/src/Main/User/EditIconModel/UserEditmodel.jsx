@@ -4,8 +4,9 @@ import { TiEdit } from "react-icons/ti";
 import Styles from "./UserEditModel.module.css";
 
 
-export default function UserEditModel({data, id}) {
-   
+export default function UserEditModel({data, id, Render}) {
+
+    const {reRender, setReRender} = Render;
     const[editData, setEditData] = useState(data);
     const [name, setName] = useState();
     const [designation, setDesignation] = useState();
@@ -46,7 +47,7 @@ export default function UserEditModel({data, id}) {
         setRole(editData[0].role);
         setStatus(editData[0].status);
 
-    }, [editData])
+    }, [editData, reRender])
         console.log(editData, id);
         console.log(editData[0].name, name);
         const [formstate, setformstate] = useState({
@@ -121,6 +122,7 @@ export default function UserEditModel({data, id}) {
         }
 
         setModal(!modal);
+        reRender ? setReRender(false) : setReRender(true)
     }
 
     async function Ondelete(){
@@ -141,6 +143,7 @@ export default function UserEditModel({data, id}) {
       }
 
       setModal(!modal);
+      reRender ? setReRender(false) : setReRender(true)
     }
         return (
             <>

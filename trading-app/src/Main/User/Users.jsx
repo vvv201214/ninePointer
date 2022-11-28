@@ -6,6 +6,7 @@ import UserEditModel from "./EditIconModel/UserEditmodel";
 
 function Users(){
 
+    const [reRender, setReRender] = useState(true);
     const [data, setData] = useState([]);
     useEffect(()=>{
         axios.get("http://localhost:5000/readuserdetails")
@@ -13,7 +14,7 @@ function Users(){
             setData(res.data);
             console.log(res.data);
         })
-    },[])
+    },[reRender])
 
 
     return(
@@ -21,7 +22,7 @@ function Users(){
              <div className="main_Container">
                 <div className="right_side">
                     <div className="rightside_maindiv">
-                    <UserButtonModel/>
+                    <UserButtonModel Render={{setReRender, reRender}}/>
                         <div className="grid_1">
                             <span className="grid1_span">User Details</span>
                             <table className="grid1_table">
@@ -43,7 +44,7 @@ function Users(){
                             {data.map((elem)=>{
                                 return(
                                 <tr className="grid2_tr" key={elem._id}>
-                                    <td className="grid2_td"><span className="Editbutton"><UserEditModel data={data} id={elem._id}/></span>{elem.name}</td>
+                                    <td className="grid2_td"><span className="Editbutton"><UserEditModel data={data} id={elem._id} Render={{setReRender, reRender}}/></span>{elem.name}</td>
                                     <td className="grid2_td">{elem.designation}</td>
                                     <td className="grid2_td">{elem.email}</td>
                                     <td className="grid2_td">{elem.mobile}</td>
