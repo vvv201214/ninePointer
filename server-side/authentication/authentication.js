@@ -12,7 +12,8 @@ const Authenticate = async (req, res, next)=>{
         // const verifyToken = jwt.verify(token, process.env.SECRET_KEY);
         const verifyToken = jwt.verify(token, "NINEPOINTER");
 
-        const user = await User.findOne({_id: verifyToken._id, "tokens.token": token});
+        // const user = await User.findOne({_id: verifyToken._id, "tokens.token": token});
+        const user = await User.findOne({_id: verifyToken._id});
         console.log("token and verifyToken", token, verifyToken);
 
         if(!user){ throw new Error("User not found")}

@@ -21,7 +21,7 @@ const orderIdSchema = new mongoose.Schema({
         type: String,
         required : true
     },
-    last_price:{
+    real_last_price:{
         type: Number,
         required : true
     },

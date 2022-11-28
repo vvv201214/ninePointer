@@ -7,6 +7,7 @@ import Styles from "./UserEditModel.module.css";
 export default function UserEditModel({data, id}) {
    
     const[editData, setEditData] = useState(data);
+
     const [name, setName] = useState();
     const [designation, setDesignation] = useState();
     const [email, setEmail] = useState();
@@ -21,14 +22,13 @@ export default function UserEditModel({data, id}) {
     const [status, setStatus] = useState();
     const [degree, setDegree] = useState();
 
-
     useEffect(()=>{
         let updatedData = data.filter((elem)=>{
             return elem._id === id
         })
         setEditData(updatedData)
-
     },[])
+
     useEffect(()=>{
         console.log("edit data", editData);
 
@@ -47,6 +47,7 @@ export default function UserEditModel({data, id}) {
         setStatus(editData[0].status);
 
     }, [editData])
+    
         console.log(editData, id);
         console.log(editData[0].name, name);
         const [formstate, setformstate] = useState({
@@ -119,10 +120,6 @@ export default function UserEditModel({data, id}) {
             window.alert("Edit succesfull");
             console.log("Edit succesfull");
         }
-
-
-
-
         setModal(!modal);
     }
 

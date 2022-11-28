@@ -12,7 +12,7 @@ router.post("/placeorder", (async (req, res)=>{
     const {exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice,
          stopLoss, validity, variety, uId, createdBy, createdOn, last_price, realBuyOrSell,
           realSymbol, realQuantity, instrument, realInstrument, apiKey, accessToken, userId, 
-          realBrokerage, realAmount, brokerageCharge} = req.body;
+          realBrokerage, realAmount, brokerageCharge, real_last_price, tradeBy} = req.body;
         console.log("this is req.body", req.body);
     const api_key = apiKey;
     const access_token = accessToken;
@@ -37,11 +37,11 @@ router.post("/placeorder", (async (req, res)=>{
         "trigger_price": TriggerPrice
     }), {headers : headers})
     .then(async (resp)=>{
- 
+
         console.log("its json data", JSON.stringify(resp.data));
-        const orderId = resp.data.data.order_id
+        const order_Id = resp.data.data.order_id
         console.log("order_id", resp.data.data.order_id);
-        await getOrderData(apiKey, accessToken, res, orderId);
+        await getOrderData(apiKey, accessToken, res, order_Id);
         const {status, data} = resp.data;
         let getOrderResp = await axios.get("http://localhost:5000/readorderdata");
         let getOrderDetails = getOrderResp.data;
@@ -66,7 +66,7 @@ router.post("/placeorder", (async (req, res)=>{
                         console.log("data already");
                         return res.status(422).json({error : "data already exist..."})
                     }
-                    const orderid = new OrderId({order_id , status , uId, createdOn, createdBy, last_price,
+                    const orderid = new OrderId({order_id , status , uId, createdOn, createdBy, real_last_price,
                         average_price, quantity, realInstrument, product, transaction_type, 
                          order_timestamp , variety , validity , exchange , 
                           order_type , price , filled_quantity , pending_quantity 
@@ -88,11 +88,12 @@ router.post("/placeorder", (async (req, res)=>{
                     console.log("first instrument", instrument);
                     const userTradeData = new UserTradeData({order_id, status, uId, createdOn, 
                         createdBy, last_price, average_price, Quantity, symbol, Product, buyOrSell, 
-                        validity, variety, order_timestamp, order_type, exchange, userId, brokerageCharge, realAmount});
+                        validity, variety, order_timestamp, order_type, exchange, userId, brokerageCharge
+                        , realAmount, tradeBy});
             
                     console.log("second instrument", instrument);
                     userTradeData.save().then(()=>{
-                        res.status(201).json({massage : "Trade successfull"});
+                        res.status(201).json({massage : "Trade successfull", orderId: order_Id});
                     }).catch((err)=> res.status(500).json({error:"Failed to Trade"}));
                 }).catch(err => {console.log(err, "fail")});
             }else{
@@ -106,7 +107,7 @@ router.post("/placeorder", (async (req, res)=>{
                         console.log("data already");
                         return res.status(422).json({error : "data already exist..."})
                     }
-                    const orderid = new OrderId({order_id, status, uId, createdOn, createdBy, last_price,
+                    const orderid = new OrderId({order_id, status, uId, createdOn, createdBy, real_last_price,
                         average_price, quantity , realInstrument , product , transaction_type , 
                         exchange_order_id , order_timestamp , variety , validity , exchange , 
                         exchange_timestamp , order_type , price , filled_quantity , pending_quantity 
@@ -128,7 +129,7 @@ router.post("/placeorder", (async (req, res)=>{
                     const userTradeData = new UserTradeData({order_id, status, uId, createdOn, 
                         createdBy, last_price, average_price, Quantity, symbol, Product, buyOrSell, 
                         validity, variety, order_timestamp, order_type, amount:(Quantity*last_price), exchange,
-                         userId, brokerageCharge, realAmount});
+                         userId, brokerageCharge, realAmount, tradeBy});
             
                     userTradeData.save().then(()=>{
                         res.status(201).json({massage : "Trade successfull"});
