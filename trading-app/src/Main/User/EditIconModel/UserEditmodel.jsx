@@ -120,12 +120,28 @@ export default function UserEditModel({data, id}) {
             console.log("Edit succesfull");
         }
 
-
-
-
         setModal(!modal);
     }
 
+    async function Ondelete(){
+      console.log(editData)
+      const res = await fetch(`http://localhost:5000/readuserdetails/${id}`, {
+          method: "DELETE",
+      });
+
+      const dataResp = await res.json();
+      console.log(dataResp);
+      if (dataResp.status === 422 || dataResp.error || !dataResp) {
+          window.alert(dataResp.error);
+          console.log("Failed to Delete");
+      } else {
+          console.log(dataResp);
+          window.alert("Delete succesfull");
+          console.log("Delete succesfull");
+      }
+
+      setModal(!modal);
+    }
         return (
             <>
                 <button onClick={toggleModal}><TiEdit /></button>
@@ -171,7 +187,7 @@ export default function UserEditModel({data, id}) {
                                 </select>
                             </form>
 
-                            <button className={Styles.ACform_tbn} onClick={formbtn}>OK</button>
+                            <button className={Styles.ACform_tbn} onClick={formbtn}>OK</button> <button className={Styles.ACform_tbn} onClick={Ondelete}>Delete</button>
 
                         </div>
                     </div>
