@@ -1,25 +1,27 @@
 import RoleButtonModel from "./Roles/RoleButtonModel";
-import React,{useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
+import RoleEditModel from "./EditIconModel/RoleEditModel";
 
 
-function Roles(){
+function Roles() {
 
+    const [reRender, setReRender] = useState(true);
     const [data, setData] = useState([]);
-    useEffect(()=>{
+    useEffect(() => {
         axios.get("http://localhost:5000/readeveryonerole")
-        .then((res)=>{
-            setData(res.data);
-            console.log(res.data);
-        })
-    },[])
+            .then((res) => {
+                setData(res.data);
+                console.log(res.data);
+            })
+    }, [])
 
-    return(
+    return (
         <div>
-             <div className="main_Container">
+            <div className="main_Container">
                 <div className="right_side">
                     <div className="rightside_maindiv">
-                        <RoleButtonModel/>
+                        <RoleButtonModel Render={{setReRender, reRender}}/>
                         <div className="grid_1">
                             <span className="grid1_span">User Roles</span>
                             <table className="grid1_table">
@@ -33,10 +35,10 @@ function Roles(){
                                     <th className="grid2_th">AlgoBox</th>
                                     <th className="grid2_th">Reports</th>
                                 </tr>
-                                {data.map((elem)=>{
-                                    return(
+                                {data.map((elem) => {
+                                    return (
                                         <tr className="grid2_tr">
-                                            <td className="grid2_td">{elem.createdOn}</td>
+                                            <td className="grid2_td"><span className="Editbutton"><RoleEditModel data={data} id={elem._id} Render={{setReRender, reRender}}/></span>{elem.createdOn}</td>
                                             <td className="grid2_td">{elem.roleName}</td>
                                             <td className="grid2_td">{elem.instruments}</td>
                                             <td className="grid2_td">{elem.tradingAccount}</td>
