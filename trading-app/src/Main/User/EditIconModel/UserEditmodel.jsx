@@ -4,8 +4,9 @@ import { TiEdit } from "react-icons/ti";
 import Styles from "./UserEditModel.module.css";
 
 
-export default function UserEditModel({data, id}) {
-   
+export default function UserEditModel({data, id, Render}) {
+
+    const {reRender, setReRender} = Render;
     const[editData, setEditData] = useState(data);
 
     const [name, setName] = useState();
@@ -46,8 +47,7 @@ export default function UserEditModel({data, id}) {
         setRole(editData[0].role);
         setStatus(editData[0].status);
 
-    }, [editData])
-    
+    }, [editData, reRender])
         console.log(editData, id);
         console.log(editData[0].name, name);
         const [formstate, setformstate] = useState({
@@ -121,8 +121,29 @@ export default function UserEditModel({data, id}) {
             console.log("Edit succesfull");
         }
         setModal(!modal);
+        reRender ? setReRender(false) : setReRender(true)
     }
 
+    async function Ondelete(){
+      console.log(editData)
+      const res = await fetch(`http://localhost:5000/readuserdetails/${id}`, {
+          method: "DELETE",
+      });
+
+      const dataResp = await res.json();
+      console.log(dataResp);
+      if (dataResp.status === 422 || dataResp.error || !dataResp) {
+          window.alert(dataResp.error);
+          console.log("Failed to Delete");
+      } else {
+          console.log(dataResp);
+          window.alert("Delete succesfull");
+          console.log("Delete succesfull");
+      }
+
+      setModal(!modal);
+      reRender ? setReRender(false) : setReRender(true)
+    }
         return (
             <>
                 <button onClick={toggleModal}><TiEdit /></button>
@@ -168,7 +189,7 @@ export default function UserEditModel({data, id}) {
                                 </select>
                             </form>
 
-                            <button className={Styles.ACform_tbn} onClick={formbtn}>OK</button>
+                            <button className={Styles.ACform_tbn} onClick={formbtn}>OK</button> <button className={Styles.ACform_tbn} onClick={Ondelete}>Delete</button>
 
                         </div>
                     </div>

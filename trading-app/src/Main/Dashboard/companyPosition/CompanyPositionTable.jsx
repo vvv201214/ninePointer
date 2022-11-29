@@ -13,7 +13,6 @@ function CompanyPositionTable({ socket }) {
     const [tradeData, setTradeData] = useState([]);
     const [marketData, setMarketData] = useState([]);
     const [orderId, setOrderId] = useState();
-    
 
     let date = new Date();
 

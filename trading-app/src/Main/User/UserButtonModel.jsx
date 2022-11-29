@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Styles from "./UserButtonModel.module.css";
 import uniqid from "uniqid"
 
 
-export default function UserButtonModel() {
+export default function UserButtonModel({Render}) {
 
+  const {reRender, setReRender} = Render;
   let uId = uniqid();
   let date = new Date();
   let createdOn = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`
@@ -13,7 +14,7 @@ export default function UserButtonModel() {
 
   const [modal, setModal] = useState(false);
   const [data, setData] = useState([]);
-  const [reRender, setReRender] = useState(true);
+  
   const [formstate, setformstate] = useState({
     Name:"",
     Designation:"",
@@ -29,6 +30,10 @@ export default function UserButtonModel() {
     Role:"",
     Status:""
 });
+
+useEffect(()=>{
+
+}, [reRender])
 
 async function formbtn(e) {
     e.preventDefault();

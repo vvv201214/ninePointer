@@ -5,7 +5,9 @@ import axios from "axios"
 import uniqid from "uniqid"
 import { userContext } from "../../AuthContext";
 
-export default function ByModal({ marketData, uIdProps, isTradersTrade, setOrder }) {
+export default function ByModal({ marketData, uIdProps, isTradersTrade, setOrder }, props) {
+    console.log("props", props);
+    console.log("checking setOrder", typeof(setOrder));
     const getDetails = useContext(userContext);
     let uId = uniqid();
     let date = new Date();
@@ -157,7 +159,8 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade, setOrder
     function tradingAlgo(uId, lastPrice) {
         if (tradingAlgoData.length) {
             tradingAlgoData.map((elem) => {
-                console.log("in algo");
+                // console.log("in algo");
+                
                 if (elem.transactionChange) {
                     companyTrade.realBuyOrSell = "SELL"
                 } else {
@@ -200,7 +203,7 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade, setOrder
                 setCompanyTrade(companyTrade)
                 console.log(Details);
                 console.log(companyTrade);
-                // sendOrderReq();
+                sendOrderReq();
                 setModal(!modal);
             })
         } else {
@@ -216,7 +219,7 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade, setOrder
             setCompanyTrade(companyTrade)
             console.log(Details);
             console.log(companyTrade);
-            // sendOrderReq();
+            sendOrderReq();
             setModal(!modal);
         }
     }
@@ -274,7 +277,7 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade, setOrder
                 console.log(Details);
                 console.log(companyTrade);
         
-                // sendOrderReq(); // must keep inside both if and else
+                sendOrderReq(); // must keep inside both if and else
                 setModal(!modal);
             }
         } else if(Details.exchange === "NSE"){
@@ -296,7 +299,7 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade, setOrder
                 console.log(Details);
                 console.log(companyTrade);
         
-                // sendOrderReq(); // must keep inside both if and else
+                sendOrderReq(); // must keep inside both if and else
                 setModal(!modal);
             }                
 

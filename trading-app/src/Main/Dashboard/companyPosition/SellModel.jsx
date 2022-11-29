@@ -135,7 +135,7 @@ export default function SellModel({marketData, uIdProps, isTradersTrade, setOrde
                 setCompanyTrade(companyTrade)
                 console.log(Details);
                 console.log(companyTrade);
-                // sendOrderReq();
+                sendOrderReq();
                 setModal(!modal);
             })
         } else {
@@ -150,7 +150,7 @@ export default function SellModel({marketData, uIdProps, isTradersTrade, setOrde
             setCompanyTrade(companyTrade)
             console.log(Details);
             console.log(companyTrade);
-            // sendOrderReq();
+            sendOrderReq();
             setModal(!modal);
         }
     }
@@ -205,7 +205,7 @@ export default function SellModel({marketData, uIdProps, isTradersTrade, setOrde
                 setCompanyTrade(companyTrade)
                 console.log(Details);
                 console.log(companyTrade);
-                // sendOrderReq();
+                sendOrderReq();
                 setModal(!modal);                
             })
         }else{
@@ -220,7 +220,7 @@ export default function SellModel({marketData, uIdProps, isTradersTrade, setOrde
             setCompanyTrade(companyTrade)
             console.log(Details);
             console.log(companyTrade);
-            // sendOrderReq();
+            sendOrderReq();
             setModal(!modal);
         }
     }
@@ -277,7 +277,7 @@ export default function SellModel({marketData, uIdProps, isTradersTrade, setOrde
                 console.log(Details);
                 console.log(companyTrade);
         
-                // sendOrderReq(); // must keep inside both if and else
+                sendOrderReq(); // must keep inside both if and else
                 setModal(!modal);
             }
 
@@ -301,7 +301,7 @@ export default function SellModel({marketData, uIdProps, isTradersTrade, setOrde
                 console.log(Details);
                 console.log(companyTrade);
         
-                // sendOrderReq(); // must keep inside both if and else
+                sendOrderReq(); // must keep inside both if and else
                 setModal(!modal);        
             }    
         }
@@ -382,7 +382,7 @@ export default function SellModel({marketData, uIdProps, isTradersTrade, setOrde
                        <div className="container_two">
                            <div className="form_inputContain">
                            <label htmlFor="" className="bsLabel">Quantity</label>
-                           <input type="text" className="bsInput" onChange={(e) => { { Details.Quantity = e.target.value } }} />
+                           <input type="text" className="bsInput" onChange={(e) => { { Details.Quantity = -(e.target.value) } }} />
                                                   
                            <label htmlFor="" className="bsLabel" >Price</label>
                            <input type="text" className="bsInput" onChange={(e) => { { Details.Price = e.target.value } }}/>

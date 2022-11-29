@@ -75,6 +75,19 @@ router.put("/readuserdetails/:id", async (req, res)=>{
     } catch (e){
         res.status(500).json({error:"Failed to edit data"});
     }
+})
+
+router.delete("/readuserdetails/:id", async (req, res)=>{
+    console.log(req.params)
+    try{
+        const {id} = req.params
+        const userDetail = await UserDetail.deleteOne({_id : id})
+        console.log("this is userdetail", userDetail);
+        // res.send(userDetail)
+        res.status(201).json({massage : "data delete succesfully"});
+    } catch (e){
+        res.status(500).json({error:"Failed to delete data"});
+    }
 
 })
 
