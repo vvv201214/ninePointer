@@ -11,6 +11,7 @@ function TraderPositionTable({ socket }) {
 
     const [tradeData, setTradeData] = useState([]);
     const [marketData, setMarketData] = useState([]);
+    const [renderRunning, setRenderRunning] = useState(true);
     const [orderId, setOrderId] = useState();
     console.log("orderid in client", orderId);
     let date = new Date();
@@ -108,7 +109,7 @@ function TraderPositionTable({ socket }) {
                         </div>
                         <div className="grid_2">
                             <span className="grid2_span">Running PNL-Trader</span>
-                            <RunningPnl marketData={marketData} tradeData={tradeData} orderId={orderId}/>
+                            <RunningPnl marketData={marketData} tradeData={tradeData} orderId={orderId} render1={renderRunning} renderFunc={setRenderRunning}/>
                         </div>
                         <div className="grid_2">
                             <span className="grid2_span">Closed Trades PNL-Trader</span>
