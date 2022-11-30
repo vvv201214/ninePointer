@@ -4,6 +4,7 @@ import 'reactjs-popup/dist/index.css';
 import uniqid from "uniqid";
 import axios from "axios"
 import Styles from "./AlgoModuleCSSFiles/TradingAlgo.module.css";
+import TradingAlgoEditModel from "./AlgoEditIcon/TradingAlgoEditModel";
 
 function TradingAlgo(){
     let uId = uniqid();
@@ -148,7 +149,7 @@ function TradingAlgo(){
                                 data.map((elem)=>{
                                     return(
                                         <tr className="grid2_tr" key={elem.uId}>
-                                            <td className="grid2_td">{elem.createdOn}</td>
+                                            <td className="grid2_td"><span className="Editbutton"><TradingAlgoEditModel data={data} id={elem._id} Render={{setReRender, reRender}}/></span>{elem.createdOn}</td>
                                             <td className="grid2_td">{elem.algoName}</td>
                                             <td className="grid2_td">{elem.transactionChange}</td>
                                             <td className="grid2_td">{elem.instrumentChange}</td>
