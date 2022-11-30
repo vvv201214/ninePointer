@@ -52,7 +52,7 @@ router.put("/readuserdetails/:id", async (req, res)=>{
     console.log("this is body", req.body);
     try{
         const {id} = req.params
-        const userDetail = await UserDetail.findOneAndUpdate({_id : id}, {
+        const userDetail = await UserDetail.findOneAndUpdate({_id : id} , {
             $set:{
                 name: req.body.Name,
                 designation: req.body.Designation,
