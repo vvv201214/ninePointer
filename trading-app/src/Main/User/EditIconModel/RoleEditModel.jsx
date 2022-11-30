@@ -4,6 +4,9 @@ import { TiEdit } from "react-icons/ti";
 import Styles from "./RoleEditModel.module.css";
 
 function RoleEditModel({data, id, Render}) {
+    let date = new Date();
+    let lastModified = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
+  
 
     const {reRender, setReRender} = Render;
     const[editData, setEditData] = useState(data);
@@ -38,7 +41,7 @@ function RoleEditModel({data, id, Render}) {
         console.log(editData, id);
         console.log(editData[0].roleName, roleName);
         const [formstate, setformstate] = useState({
-            roleName: "",
+            roleName1: "",
             instruments: "",
             tradingAccount: "",
             APIParameters: "",
@@ -62,27 +65,28 @@ function RoleEditModel({data, id, Render}) {
     async function formbtn(e) {
         e.preventDefault();
 
-        formstate.roleName = roleName;
-        formstate.instruments = instruments;
+        formstate.roleName1 = roleName;
+        formstate.instruments1 = instruments;
         formstate.tradingAccount = trandingAC;
         formstate.APIParameters = apiParameters;
-        formstate.users = users;
-        formstate.algoBox = algoBox;
-        formstate.reports = reports;
+        formstate.users1 = users;
+        formstate.algoBox1 = algoBox;
+        formstate.reports1 = reports;
 
+        console.log(formstate);
         setformstate(formstate);
 
 
-        const { roleName, instruments, tradingAccount, APIParameters, users, algoBox, reports } = formstate;
+        const { roleName1, instruments1, tradingAccount, APIParameters, users1, algoBox1, reports1 } = formstate;
 
-        const res = await fetch(`http://localhost:5000/everyonerole/${id}`, {
+        const res = await fetch(`http://localhost:5000/readeveryonerole/${id}`, {
             method: "PUT",
             headers: {
                 "Accept": "application/json",
                 "content-type": "application/json"
             },
             body: JSON.stringify({
-                roleName, instruments, tradingAccount, APIParameters, users, algoBox, reports 
+                roleName1, instruments1, tradingAccount, APIParameters, users1, algoBox1, reports1, lastModified
             })
         });
         const dataResp = await res.json();
@@ -101,7 +105,7 @@ function RoleEditModel({data, id, Render}) {
 
     async function Ondelete(){
       console.log(editData)
-      const res = await fetch(`http://localhost:5000/everyonerole/${id}`, {
+      const res = await fetch(`http://localhost:5000/readeveryonerole/${id}`, {
           method: "DELETE",
       });
 

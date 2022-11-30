@@ -14,7 +14,7 @@ function Roles() {
                 setData(res.data);
                 console.log(res.data);
             })
-    }, [])
+    }, [reRender])
 
     return (
         <div>

@@ -46,4 +46,44 @@ router.get("/readeveryonerole/:id", (req, res)=>{
     })
 })
 
+router.put("/readeveryonerole/:id", async (req, res)=>{
+    console.log(req.params)
+    console.log("this is body", req.body);
+    try{
+        const {id} = req.params
+        const role = await Role.findOneAndUpdate({_id : id}, {
+            $set:{ //roleName, instruments, tradingAccount, APIParameters, users, algoBox, reports 
+                lastModified: req.body.lastModified,
+                roleName: req.body.roleName1,
+                instruments: req.body.instruments1,
+                tradingAccount: req.body.tradingAccount,
+                APIParameters: req.body.APIParameters,
+                users: req.body.users1,
+                algoBox: req.body.algoBox1,
+                reports: req.body.reports1
+            }
+        })
+        console.log("this is role", role);
+        res.send(role)
+        // res.status(201).json({massage : "data edit succesfully"});
+    } catch (e){
+        res.status(500).json({error:"Failed to edit data"});
+    }
+})
+
+router.delete("/readeveryonerole/:id", async (req, res)=>{
+    console.log(req.params)
+    try{
+        const {id} = req.params
+        const role = await Role.deleteOne({_id : id})
+        console.log("this is userdetail", role);
+        // res.send(userDetail)
+        res.status(201).json({massage : "data delete succesfully"});
+    } catch (e){
+        res.status(500).json({error:"Failed to delete data"});
+    }
+
+})
+
+
 module.exports = router;
