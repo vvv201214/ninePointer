@@ -6,6 +6,9 @@ import Styles from "./UserEditModel.module.css";
 
 export default function UserEditModel({data, id, Render}) {
 
+    let date = new Date();
+    let lastModified = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
+  
     const {reRender, setReRender} = Render;
     const[editData, setEditData] = useState(data);
 
@@ -107,7 +110,7 @@ export default function UserEditModel({data, id, Render}) {
                 "content-type": "application/json"
             },
             body: JSON.stringify({
-                Name, Designation, Degree, EmailID, MobileNo, DOB, Gender, TradingExp, Location, LastOccupation, DateofJoining, Role, Status 
+                Name, Designation, Degree, EmailID, MobileNo, DOB, Gender, TradingExp, Location, LastOccupation, DateofJoining, Role, Status, lastModified
             })
         });
         const dataResp = await res.json();

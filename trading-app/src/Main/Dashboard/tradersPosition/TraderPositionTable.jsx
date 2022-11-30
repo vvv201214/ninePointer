@@ -5,13 +5,15 @@ import ByModal from '../companyPosition/ByModal';
 import SellModel from "../companyPosition/SellModel";
 import { useEffect } from 'react';
 import axios from "axios"
-import RunningPnl from "../companyPosition/RunningPnl";
+import RunningPnl from "../PnlParts/RunningPnl";
+import ClosedPnl from "../PnlParts/ClosedPnl";
 
 function TraderPositionTable({ socket }) {
 
     const [tradeData, setTradeData] = useState([]);
     const [marketData, setMarketData] = useState([]);
     const [orderId, setOrderId] = useState();
+    const [closedPnlDetails, setClosedPnlDetails] = useState([]);
     console.log("orderid in client", orderId);
     let date = new Date();
     useEffect(() => {
@@ -108,21 +110,11 @@ function TraderPositionTable({ socket }) {
                         </div>
                         <div className="grid_2">
                             <span className="grid2_span">Running PNL-Trader</span>
-                            <RunningPnl marketData={marketData} tradeData={tradeData} orderId={orderId}/>
+                            <RunningPnl marketData={marketData} tradeData={tradeData} closed={{closedPnlDetails, setClosedPnlDetails}}/>
                         </div>
                         <div className="grid_2">
                             <span className="grid2_span">Closed Trades PNL-Trader</span>
-                            <table className="grid1_table">
-                                <tr className="grid2_tr">
-                                    <th className="grid2_th">Product</th>
-                                    <th className="grid2_th">Instrument</th>
-                                    <th className="grid2_th">Quantity</th>
-                                    <th className="grid2_th">Average Price</th>
-                                    <th className="grid2_th">LTP</th>
-                                    <th className="grid2_th">P&L</th>
-                                    <th className="grid2_th">%Change</th>
-                                </tr> 
-                            </table>
+                                <ClosedPnl closed={{closedPnlDetails, setClosedPnlDetails}}/>
                         </div>
                     </div>
                 </div>
