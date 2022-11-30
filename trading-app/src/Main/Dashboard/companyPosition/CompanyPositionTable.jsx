@@ -6,10 +6,12 @@ import SellModel from "./SellModel";
 import { useEffect } from 'react';
 import axios from "axios"
 import { userContext } from "../../AuthContext";
-import RunningPnl from "./RunningPnl";
+import RunningPnl from "../PnlParts/RunningPnl";
+import ClosedPnl from "../PnlParts/ClosedPnl";
 
 function CompanyPositionTable({ socket }) {
     const getDetails = useContext(userContext);
+
     const [tradeData, setTradeData] = useState([]);
     const [marketData, setMarketData] = useState([]);
     const [orderId, setOrderId] = useState();
@@ -117,17 +119,7 @@ function CompanyPositionTable({ socket }) {
                         </div>
                         <div className="grid_2">
                             <span className="grid2_span">Closed Trades PNL-Company</span>
-                            <table className="grid1_table">
-                                <tr className="grid2_tr">
-                                    <th className="grid2_th">Product</th>
-                                    <th className="grid2_th">Instruments</th>
-                                    <th className="grid2_th">Quantity</th>
-                                    <th className="grid2_th">Average Price</th>
-                                    <th className="grid2_th">LTP</th>
-                                    <th className="grid2_th">P&L</th>
-                                    <th className="grid2_th">%Change</th>
-                                </tr>
-                            </table>
+                            <ClosedPnl/>
                         </div>
                     </div>
            

@@ -2,21 +2,17 @@ import React from 'react'
 import { useEffect, useState } from 'react'
 import axios from "axios";
 
-export default function RunningPnl({marketData, tradeData, renderFunc, render1}) {
+export default function RunningPnl({marketData, tradeData, closed}) {
     let date = new Date();
     let todayDate = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`
     let fake_date = "28-11-2022"
-
-    const [render, setRender] = useState(render1)
+    const {closedPnlDetails, setClosedPnlDetails} = closed;
     const [pnlData, setPnlData] = useState([]);
     const [closedPnl, setClosedPnl] = useState([]);
     const [liveDetail, setLiveDetail] = useState([])
     console.log("tradedata", tradeData);
     console.log("market data", marketData);
     useEffect(()=>{
-        if(render1){
-            setRender(false);
-        }
         axios.get("http://localhost:5000/usertradedata")
         .then((res) => {
             let data = (res.data).filter((elem)=>{
@@ -24,7 +20,8 @@ export default function RunningPnl({marketData, tradeData, renderFunc, render1})
             })
             setPnlData(data);
 
-            let closedPnlArr;
+            let closedPnlArr = [];
+            let closedPnlObj = {};
 
             for(let i = 0; i < data.length-1; i++){
                 for(let j = i+1; j < data.length; j++){
@@ -36,15 +33,20 @@ export default function RunningPnl({marketData, tradeData, renderFunc, render1})
                             + (Number(data[j].average_price) * Number(data[j].Quantity)))/(Number(data[i].Quantity) 
                             + Number(data[j].Quantity));
                         } else{
+
+                            closedPnlObj.firstData = data[i];
+                            closedPnlObj.secondData = data[j];
+                            closedPnlArr.push(closedPnlObj);
+
                             data[i].Quantity = Number(data[i].Quantity) - Number(data[j].Quantity);
+                            // jo bhi quantity dono me se chhoti hogi wahi close ho jaegi..
+
 
                             if(Number(data[i].Quantity) > 0){
                                 data[i].buyOrSell = "BUY";
                             } else if((data[i].Quantity) > 0){
                                 data[i].buyOrSell = "SELL"
-                            } else{
-                                closedPnlArr.push(data[i]);
-                            }
+                            } 
                         }
                         data.splice(j, 1);
                         j--;
@@ -52,6 +54,7 @@ export default function RunningPnl({marketData, tradeData, renderFunc, render1})
                 }
             }
             setPnlData(data);
+            setClosedPnlDetails(closedPnlArr);
 
             let liveDetailsArr = [];
             data.map((elem)=>{
@@ -74,11 +77,7 @@ export default function RunningPnl({marketData, tradeData, renderFunc, render1})
         })
     }, [marketData])
 
-    useEffect(()=>{
-        if(!render){
-            setRender(true);
-        }
-    }, [render])
+    console.log("this is closed pnl", closedPnl);
     console.log("this is pnl data", pnlData);
     console.log("live data", liveDetail);
 
