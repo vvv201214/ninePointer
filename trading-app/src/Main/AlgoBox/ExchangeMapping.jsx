@@ -4,6 +4,7 @@ import 'reactjs-popup/dist/index.css';
 import uniqid from "uniqid";
 import axios from "axios"
 import Styles from "./AlgoModuleCSSFiles/ExchangeMapping.module.css";
+import ExchangeMappingEditModel from "./AlgoEditIcon/ExchangeMappingEditModel";
 
 function ExchangeMapping(){
     let uId = uniqid();
@@ -121,7 +122,7 @@ function ExchangeMapping(){
                                 data.map((elem)=>{
                                     return(
                                         <tr className="grid2_tr" key={elem.uId} >
-                                            <td className="grid2_td">{elem.createdOn}</td>
+                                            <td className="grid2_td"><span className="Editbutton"><ExchangeMappingEditModel data={data} id={elem._id} Render={{setReRender, reRender}}/></span>{elem.createdOn}</td>
                                             <td className="grid2_td">{elem.ExchangeNameIncoming}</td>
                                             <td className="grid2_td">{elem.IncomingExchangeCode}</td>
                                             <td className="grid2_td">{elem.ExchangeNameOutgoing}</td>

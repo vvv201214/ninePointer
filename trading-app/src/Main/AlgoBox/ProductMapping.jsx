@@ -4,6 +4,7 @@ import 'reactjs-popup/dist/index.css';
 import uniqid from "uniqid";
 import axios from "axios"
 import Styles from "./AlgoModuleCSSFiles/ProductMapping.module.css";
+import ProductMappingEditModel from "./AlgoEditIcon/ProductMappingEditModel";
 
 function ProductMapping(){
     let uId = uniqid();
@@ -120,7 +121,7 @@ function ProductMapping(){
                                 data.map((elem)=>{
                                     return(
                                         <tr className="grid2_tr" key={elem.uId} >
-                                            <td className="grid2_td">{elem.createdOn}</td>
+                                            <td className="grid2_td"><span className="Editbutton"><ProductMappingEditModel data={data} id={elem._id} Render={{setReRender, reRender}}/></span>{elem.createdOn}</td>
                                             <td className="grid2_td">{elem.ProductNameIncoming}</td>
                                             <td className="grid2_td">{elem.IncomingProductCode}</td>
                                             <td className="grid2_td">{elem.ProductNameOutgoing}</td>
@@ -142,23 +143,3 @@ function ProductMapping(){
 }
 export default ProductMapping;
 
-{/* <Popup trigger={<button className="Ac_btn">Create Product Mapping</button>}>
-<form>
-    <label className="Ac_form" htmlFor="">Product Name (Incoming)</label>
-    <input type="text" className="Ac_forminput" onChange={(e)=>{{formstate.ProductNameIncoming = e.target.value}}} />
-    <label htmlFor="" className="Ac_form">Incoming Product Code</label>
-    <input type="text" className="Ac_forminput" onChange={(e)=>{{formstate.IncomingProductCode = e.target.value}}} />
-    <label htmlFor="" className="Ac_form">Product Name (Outgoing)</label>
-    <input type="text" className="Ac_forminput" onChange={(e)=>{{formstate.ProductNameOutgoing = e.target.value}}} />
-    <label htmlFor="" className="Ac_form">Outgoing Product Code</label>
-    <input type="text" className="Ac_forminput" onChange={(e)=>{{formstate.OutgoingProductCode = e.target.value}}} />
-    <label htmlFor="" className="Ac_form">Status</label>
-    <select name="" id="" className="Ac_forminput" onChange={(e)=>{{formstate.Status = e.target.value}}}>
-        <option value=""></option>
-        <option value="Active">Active</option>
-        <option value="Inactive">Inactive</option>
-    </select>
-    <br />
-    <button className="ACform_tbn" onClick={formbtn}>OK</button>
-</form>
-</Popup> */}
