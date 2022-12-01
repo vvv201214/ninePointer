@@ -6,21 +6,19 @@ import SellModel from "./SellModel";
 import { useEffect } from 'react';
 import axios from "axios"
 import { userContext } from "../../AuthContext";
+import RunningPnl from "../PnlParts/RunningPnl";
+import ClosedPnl from "../PnlParts/ClosedPnl";
 
 function CompanyPositionTable({ socket }) {
     const getDetails = useContext(userContext);
+
     const [tradeData, setTradeData] = useState([]);
     const [marketData, setMarketData] = useState([]);
-    const [pnlData, setPnlData] = useState([]);
+    const [orderId, setOrderId] = useState();
 
     let date = new Date();
 
     useEffect(() => {
-        
-        axios.get("http://localhost:5000/companytradedata")
-        .then((res) => {
-
-        })
 
         axios.get("http://localhost:5000/getliveprice")
         .then((res) => {
@@ -91,8 +89,8 @@ function CompanyPositionTable({ socket }) {
                                             <td className="grid2_td">{updatedMarketData[0]?.change.toFixed(2)}</td>}
                                             <td className="grid2_th companyPosition_BSbtn2">
                                                 <div className="companyPosition_BSbtn">
-                                                    <ByModal marketData={marketData} uIdProps={elem.uId} isTradersTrade={false}/>
-                                                    <SellModel marketData={marketData} uIdProps={elem.uId} isTradersTrade={false}/>
+                                                    <ByModal marketData={marketData} uIdProps={elem.uId} isTradersTrade={false} setOrder={setOrderId}/>
+                                                    <SellModel marketData={marketData} uIdProps={elem.uId} isTradersTrade={false} setOrder={setOrderId}/>
                                                 </div>
                                             </td>
                                     </tr>
@@ -117,45 +115,11 @@ function CompanyPositionTable({ socket }) {
                         </div>
                         <div className="grid_2">
                             <span className="grid2_span">Running PNL-Company</span>
-                            <table className="grid1_table">
-                                <tr className="grid2_tr">
-                                    <th className="grid2_th">Product</th>
-                                    <th className="grid2_th">Instruments</th>
-                                    <th className="grid2_th">Quantity</th>
-                                    <th className="grid2_th">Average Price</th>
-                                    <th className="grid2_th">LTP</th>
-                                    <th className="grid2_th">P&L</th>
-                                    <th className="grid2_th">%Change</th>
-                                </tr>
-                                {
-                                    pnlData.map((elem)=>{
-                                        <tr className="grid2_tr" key={elem._id}>
-                                            <td className="grid2_td">{elem.product}</td>
-                                            <td className="grid2_td">{elem.tradingsymbol}</td>
-                                            <td className="grid2_td">{elem.quantity}</td>
-                                            <td className="grid2_td">{elem.average_price}</td>
-                                            <td className="grid2_td">{}</td>
-                                            <td className="grid2_td">{}</td>
-                                            <td className="grid2_td">{}</td>
-                                        </tr>
-                                    })
-                                }
-
-                            </table>
+                            <RunningPnl marketData={marketData} tradeData={tradeData} orderId={orderId}/>
                         </div>
                         <div className="grid_2">
                             <span className="grid2_span">Closed Trades PNL-Company</span>
-                            <table className="grid1_table">
-                                <tr className="grid2_tr">
-                                    <th className="grid2_th">Product</th>
-                                    <th className="grid2_th">Instruments</th>
-                                    <th className="grid2_th">Quantity</th>
-                                    <th className="grid2_th">Average Price</th>
-                                    <th className="grid2_th">LTP</th>
-                                    <th className="grid2_th">P&L</th>
-                                    <th className="grid2_th">%Change</th>
-                                </tr>
-                            </table>
+                            <ClosedPnl/>
                         </div>
                     </div>
            

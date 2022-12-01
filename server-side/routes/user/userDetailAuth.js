@@ -52,8 +52,9 @@ router.put("/readuserdetails/:id", async (req, res)=>{
     console.log("this is body", req.body);
     try{
         const {id} = req.params
-        const userDetail = await UserDetail.findOneAndUpdate({_id : id}, {
+        const userDetail = await UserDetail.findOneAndUpdate({_id : id} , {
             $set:{
+                lastModified: req.body.lastModified,
                 name: req.body.Name,
                 designation: req.body.Designation,
                 degree: req.body.Degree,
@@ -74,6 +75,19 @@ router.put("/readuserdetails/:id", async (req, res)=>{
         // res.status(201).json({massage : "data edit succesfully"});
     } catch (e){
         res.status(500).json({error:"Failed to edit data"});
+    }
+})
+
+router.delete("/readuserdetails/:id", async (req, res)=>{
+    console.log(req.params)
+    try{
+        const {id} = req.params
+        const userDetail = await UserDetail.deleteOne({_id : id})
+        console.log("this is userdetail", userDetail);
+        // res.send(userDetail)
+        res.status(201).json({massage : "data delete succesfully"});
+    } catch (e){
+        res.status(500).json({error:"Failed to delete data"});
     }
 
 })

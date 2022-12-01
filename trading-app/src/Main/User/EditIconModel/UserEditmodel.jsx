@@ -4,9 +4,14 @@ import { TiEdit } from "react-icons/ti";
 import Styles from "./UserEditModel.module.css";
 
 
-export default function UserEditModel({data, id}) {
-   
+export default function UserEditModel({data, id, Render}) {
+
+    let date = new Date();
+    let lastModified = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
+  
+    const {reRender, setReRender} = Render;
     const[editData, setEditData] = useState(data);
+
     const [name, setName] = useState();
     const [designation, setDesignation] = useState();
     const [email, setEmail] = useState();
@@ -21,14 +26,13 @@ export default function UserEditModel({data, id}) {
     const [status, setStatus] = useState();
     const [degree, setDegree] = useState();
 
-
     useEffect(()=>{
         let updatedData = data.filter((elem)=>{
             return elem._id === id
         })
         setEditData(updatedData)
-
     },[])
+
     useEffect(()=>{
         console.log("edit data", editData);
 
@@ -46,7 +50,7 @@ export default function UserEditModel({data, id}) {
         setRole(editData[0].role);
         setStatus(editData[0].status);
 
-    }, [editData])
+    }, [editData, reRender])
         console.log(editData, id);
         console.log(editData[0].name, name);
         const [formstate, setformstate] = useState({
@@ -106,7 +110,7 @@ export default function UserEditModel({data, id}) {
                 "content-type": "application/json"
             },
             body: JSON.stringify({
-                Name, Designation, Degree, EmailID, MobileNo, DOB, Gender, TradingExp, Location, LastOccupation, DateofJoining, Role, Status 
+                Name, Designation, Degree, EmailID, MobileNo, DOB, Gender, TradingExp, Location, LastOccupation, DateofJoining, Role, Status, lastModified
             })
         });
         const dataResp = await res.json();
@@ -119,8 +123,8 @@ export default function UserEditModel({data, id}) {
             window.alert("Edit succesfull");
             console.log("Edit succesfull");
         }
-
         setModal(!modal);
+        reRender ? setReRender(false) : setReRender(true)
     }
 
     async function Ondelete(){
@@ -141,6 +145,7 @@ export default function UserEditModel({data, id}) {
       }
 
       setModal(!modal);
+      reRender ? setReRender(false) : setReRender(true)
     }
         return (
             <>

@@ -5,7 +5,9 @@ import axios from "axios"
 import uniqid from "uniqid"
 import { userContext } from "../../AuthContext";
 
-export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
+export default function ByModal({ marketData, uIdProps, isTradersTrade, setOrder }, props) {
+    console.log("props", props);
+    console.log("checking setOrder", typeof(setOrder));
     const getDetails = useContext(userContext);
     let uId = uniqid();
     let date = new Date();
@@ -13,6 +15,7 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
     let createdBy = getDetails.userDetails.name;
     let userId = getDetails.userDetails.email;
     let totalAmount = 0;
+    let tradeBy = getDetails.userDetails.name;
 
     let isTradeEnable;
     if(getDetails.userDetails.status === "Active"){
@@ -42,8 +45,8 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
         brokerageCharge: "",
         totalAmount: ""
     })
-    const [accessTokenDetails, setAccessToken] = useState([]);
-    const [apiKeyDetails, setApiKey] = useState([]);
+    let [accessTokenDetails, setAccessToken] = useState([]);
+    let [apiKeyDetails, setApiKey] = useState([]);
     const [tradeData, setTradeData] = useState([]);
     const [brokerageData, setBrokerageData] = useState([]);
     const [tradingAlgoData, setTradingAlgoData] = useState([]);
@@ -54,17 +57,24 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
         realQuantity: "",
         realInstrument: "",
         realBrokerage: "",
-        realAmount: ""
+        realAmount: "",
+        real_last_price: "",
     })
 
     useEffect(() => {
         axios.get("http://localhost:5000/readRequestToken")
             .then((res) => {
-                setAccessToken(res.data);
+                let activeAccessToken = (res.data).filter((elem)=>{
+                    return elem.status === "Active"
+                })
+                setAccessToken(activeAccessToken);
             })
         axios.get("http://localhost:5000/readAccountDetails")
             .then((res) => {
-                setApiKey(res.data);
+                let activeApiKey = (res.data).filter((elem)=>{
+                    return elem.status === "Active"
+                })
+                setApiKey(activeApiKey);
             })
         axios.get("http://localhost:5000/readtradingAlgo")
             .then((res) => {
@@ -129,6 +139,7 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
                 setModal(!modal);
             })
         } else {
+            companyTrade.real_last_price = Details.last_price;
             companyTrade.realBuyOrSell = "BUY";
             companyTrade.realSymbol = Details.symbol
             companyTrade.realInstrument = Details.instrument
@@ -148,7 +159,8 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
     function tradingAlgo(uId, lastPrice) {
         if (tradingAlgoData.length) {
             tradingAlgoData.map((elem) => {
-                console.log("in algo");
+                // console.log("in algo");
+                
                 if (elem.transactionChange) {
                     companyTrade.realBuyOrSell = "SELL"
                 } else {
@@ -174,27 +186,28 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
                 })
 
                 companyTrade.realQuantity = elem.lotMultipler * (Details.Quantity);
-                let accesssTokenData = accessTokenDetails.filter((element) => {
+                accessTokenDetails = accessTokenDetails.filter((element) => {
                     return elem.tradingAccount === element.accountId
                 })
-                console.log(accesssTokenData);
-                setAccessToken(accesssTokenData);
-                let apiKeyData = apiKeyDetails.filter((element) => {
+                console.log(accessTokenDetails);
+                setAccessToken(accessTokenDetails);
+                apiKeyDetails = apiKeyDetails.filter((element) => {
                     return elem.tradingAccount === element.accountId
                 })
-                console.log(apiKeyData);
-                setApiKey(apiKeyData);
-
+                console.log(apiKeyDetails);
+                setApiKey(apiKeyDetails);
+                companyTrade.real_last_price = getLastPrice[0].last_price;
                 companyTrade.realAmount = getLastPrice[0].last_price * companyTrade.realQuantity;
                 companyTrade.realBrokerage = buyBrokerageCharge(brokerageData, companyTrade.realQuantity, companyTrade.realAmount);
                 
                 setCompanyTrade(companyTrade)
                 console.log(Details);
                 console.log(companyTrade);
-                // sendOrderReq();
+                sendOrderReq();
                 setModal(!modal);
             })
         } else {
+            companyTrade.real_last_price = Details.last_price;
             companyTrade.realBuyOrSell = "BUY";
             companyTrade.realSymbol = Details.symbol
             companyTrade.realInstrument = Details.instrument
@@ -206,7 +219,7 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
             setCompanyTrade(companyTrade)
             console.log(Details);
             console.log(companyTrade);
-            // sendOrderReq();
+            sendOrderReq();
             setModal(!modal);
         }
     }
@@ -264,7 +277,7 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
                 console.log(Details);
                 console.log(companyTrade);
         
-                // sendOrderReq(); // must keep inside both if and else
+                sendOrderReq(); // must keep inside both if and else
                 setModal(!modal);
             }
         } else if(Details.exchange === "NSE"){
@@ -286,7 +299,7 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
                 console.log(Details);
                 console.log(companyTrade);
         
-                // sendOrderReq(); // must keep inside both if and else
+                sendOrderReq(); // must keep inside both if and else
                 setModal(!modal);
             }                
 
@@ -298,7 +311,7 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
 
     async function sendOrderReq() {
         const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price } = Details;
-        const { realBuyOrSell, realSymbol, realQuantity, realInstrument, realBrokerage, realAmount} = companyTrade;
+        const { realBuyOrSell, realSymbol, realQuantity, realInstrument, realBrokerage, realAmount, real_last_price} = companyTrade;
         const { instrument } = tradeData;
         const { apiKey } = apiKeyDetails[0];
         const { accessToken } = accessTokenDetails[0];
@@ -312,10 +325,12 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
                 exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType,
                 TriggerPrice, stopLoss, variety, validity, uId, createdBy, createdOn,
                 last_price, realBuyOrSell, realSymbol, realQuantity, instrument,
-                realInstrument, apiKey, accessToken, userId, realBrokerage, realAmount
+                realInstrument, apiKey, accessToken, userId, realBrokerage, realAmount, 
+                real_last_price, tradeBy
             })
         });
         const dataResp = await res.json();
+        setOrder(dataResp.orderId);
         console.log(dataResp);
         if (dataResp.status === 422 || dataResp.error || !dataResp) {
             window.alert(dataResp.error);

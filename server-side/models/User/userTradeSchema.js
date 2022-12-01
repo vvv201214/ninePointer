@@ -85,6 +85,9 @@ const userTradeSchema = new mongoose.Schema({
     realAmount:{
         type: String,
         required: true        
+    },
+    tradeBy: {
+        type: String
     }
 })
 

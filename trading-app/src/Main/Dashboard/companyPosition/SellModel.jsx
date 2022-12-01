@@ -5,7 +5,7 @@ import axios from "axios"
 import uniqid from "uniqid"
 import { userContext } from "../../AuthContext";
 
-export default function SellModel({marketData, uIdProps, isTradersTrade}) {
+export default function SellModel({marketData, uIdProps, isTradersTrade, setOrder}) {
     const getDetails = useContext(userContext);
     let uId = uniqid();
     let date = new Date();
@@ -13,6 +13,7 @@ export default function SellModel({marketData, uIdProps, isTradersTrade}) {
     let createdBy = getDetails.userDetails.name;
     let userId = getDetails.userDetails.email;
     let totalAmount = 0;
+    let tradeBy = getDetails.userDetails.name;
 
     let isTradeEnable;
     if(getDetails.userDetails.status === "Active"){
@@ -40,8 +41,8 @@ export default function SellModel({marketData, uIdProps, isTradersTrade}) {
         brokerageCharge: "",
         totalAmount: ""
     })
-    const [accessTokenDetails, setAccessToken] = useState([]);
-    const [apiKeyDetails, setApiKey] = useState([]);
+    let [accessTokenDetails, setAccessToken] = useState([]);
+    let [apiKeyDetails, setApiKey] = useState([]);
     const [tradeData, setTradeData] = useState([]);
     const [brokerageData, setBrokerageData] = useState([]);
     const [tradingAlgoData, setTradingAlgoData] = useState([]);
@@ -52,17 +53,24 @@ export default function SellModel({marketData, uIdProps, isTradersTrade}) {
         realQuantity: "",
         realInstrument: "",
         realBrokerage: "",
-        realAmount: ""
-    })
+        realAmount: "",
+        real_last_price: "",
+    }) 
 
     useEffect(()=>{
         axios.get("http://localhost:5000/readRequestToken")
         .then((res)=>{
-            setAccessToken(res.data);
+            let activeAccessToken = (res.data).filter((elem)=>{
+                return elem.status === "Active"
+            })
+            setAccessToken(activeAccessToken);
         })
         axios.get("http://localhost:5000/readAccountDetails")
         .then((res)=>{
-            setApiKey(res.data);
+            let activeApiKey = (res.data).filter((elem)=>{
+                return elem.status === "Active"
+            })
+            setApiKey(activeApiKey);
         })
         
         axios.get("http://localhost:5000/readtradingAlgo")
@@ -176,18 +184,24 @@ export default function SellModel({marketData, uIdProps, isTradersTrade}) {
                 })
                 
                 companyTrade.realQuantity = elem.lotMultipler * (Details.Quantity);
-                let accesssTokenData = accessTokenDetails.filter((element)=>{
+                accessTokenDetails = accessTokenDetails.filter((element)=>{
                     return elem.tradingAccount === element.accountId
                 })
-                setAccessToken(accesssTokenData);
-                let apiKeyData = apiKeyDetails.filter((element)=>{
+                console.log("access token", accessTokenDetails, elem.tradingAccount);
+
+                setAccessToken(accessTokenDetails);
+                apiKeyDetails = apiKeyDetails.filter((element)=>{
                     return elem.tradingAccount === element.accountId
                 })
-                setApiKey(apiKeyData);
+                console.log("api key", apiKeyDetails, elem.tradingAccount);
+                
+                setApiKey(apiKeyDetails);
+                console.log("after setting api", apiKeyDetails);
                 companyTrade.real_last_price = getLastPrice[0].last_price;
                 companyTrade.realAmount = getLastPrice[0].last_price * companyTrade.realQuantity;
                 companyTrade.realBrokerage = sellBrokerageCharge(brokerageData, companyTrade.realQuantity, companyTrade.realAmount);
                 
+                console.log("api key and access token", apiKeyDetails, accessTokenDetails);
                 setCompanyTrade(companyTrade)
                 console.log(Details);
                 console.log(companyTrade);
@@ -195,6 +209,7 @@ export default function SellModel({marketData, uIdProps, isTradersTrade}) {
                 setModal(!modal);                
             })
         }else{
+            companyTrade.real_last_price = Details.last_price;
             companyTrade.realBuyOrSell = "SELL";
             companyTrade.realSymbol = Details.symbol
             companyTrade.realInstrument = Details.instrument
@@ -297,7 +312,7 @@ export default function SellModel({marketData, uIdProps, isTradersTrade}) {
 
     async function sendOrderReq(){
         const {exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, brokerageCharge} = Details;
-        const {realBuyOrSell, realSymbol, realQuantity, realInstrument, realBrokerage, realAmount} = companyTrade;
+        const {realBuyOrSell, realSymbol, realQuantity, realInstrument, realBrokerage, realAmount, real_last_price} = companyTrade;
         const {instrument} = tradeData;
         const {apiKey} = apiKeyDetails[0];
         const {accessToken} = accessTokenDetails[0];
@@ -311,10 +326,12 @@ export default function SellModel({marketData, uIdProps, isTradersTrade}) {
                 exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, 
                 TriggerPrice, stopLoss, variety, validity, uId, createdBy, createdOn,
                 last_price, realBuyOrSell, realSymbol, realQuantity, instrument,
-                realInstrument, apiKey, accessToken, userId, realBrokerage, realAmount, brokerageCharge
+                realInstrument, apiKey, accessToken, userId, realBrokerage, realAmount, 
+                brokerageCharge, real_last_price, tradeBy
             })
         });
         const dataResp = await res.json();
+        setOrder(dataResp.orderId);
         console.log(dataResp);
         if(dataResp.status === 422 || dataResp.error || !dataResp){
             window.alert(dataResp.error);
@@ -365,7 +382,7 @@ export default function SellModel({marketData, uIdProps, isTradersTrade}) {
                        <div className="container_two">
                            <div className="form_inputContain">
                            <label htmlFor="" className="bsLabel">Quantity</label>
-                           <input type="text" className="bsInput" onChange={(e) => { { Details.Quantity = e.target.value } }} />
+                           <input type="text" className="bsInput" onChange={(e) => { { Details.Quantity = -(e.target.value) } }} />
                                                   
                            <label htmlFor="" className="bsLabel" >Price</label>
                            <input type="text" className="bsInput" onChange={(e) => { { Details.Price = e.target.value } }}/>
