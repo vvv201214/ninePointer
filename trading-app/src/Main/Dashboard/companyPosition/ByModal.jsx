@@ -106,9 +106,11 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
             })
          axios.get("http://localhost:5000/readInstrumentAlgo")
             .then((res) => {
-                setInstrumentAlgoData(res.data)
-            })        
-        console.log("hii");
+                let activeInstrumentAlgo = (res.data).filter((elem)=>{
+                    return elem.Status === "Active";
+                })
+                setInstrumentAlgoData(activeInstrumentAlgo)
+            })
 
         console.log(tradeData);
         setTradeData([...tradeData])
@@ -137,7 +139,9 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
                         companyTrade.realSymbol = elem.OutgoingInstrumentCode;
                     }
                 })
-
+                companyTrade.real_last_price = Details.last_price; // its wrong because OutgoingInstrumentCode it decide real last price
+                companyTrade.realBuyOrSell = "BUY";
+                companyTrade.realQuantity = Details.Quantity;
                 companyTrade.realAmount = Details.Quantity * lastPrice;
                 companyTrade.realBrokerage = buyBrokerageCharge(brokerageData, companyTrade.realQuantity, companyTrade.realAmount);
                 
@@ -169,7 +173,6 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
     function tradingAlgo(uId, lastPrice) {
         if (tradingAlgoData.length) {
             tradingAlgoData.map((elem) => {
-                // console.log("in algo");
                 
                 if (elem.transactionChange) {
                     companyTrade.realBuyOrSell = "SELL"
@@ -267,7 +270,7 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
         console.log(Details.exchange, tradeData);
         // Algo box applied here....
 
-        if(Details.exchange === "NFO"){
+        if(Details.exchange === "NSE"){
             console.log("in nse")
             if (isTradersTrade) {
                 console.log("algo box should be applied");
@@ -290,7 +293,7 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
                 sendOrderReq(); // must keep inside both if and else
                 setModal(!modal);
             }
-        } else if(Details.exchange === "NSE"){
+        } else if(Details.exchange === "NFO"){
             if (isTradersTrade) {
                 console.log("algo box should be applied");
                 setDetails(Details)
@@ -322,6 +325,7 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
         const { instrument } = tradeData;
         const { apiKey } = apiKeyDetails[0];
         const { accessToken } = accessTokenDetails[0];
+        console.log("this is product", Product);
 
         const res = await fetch("http://localhost:5000/placeorder", {
             method: "POST",

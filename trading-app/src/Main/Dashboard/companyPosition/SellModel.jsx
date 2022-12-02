@@ -105,7 +105,10 @@ export default function SellModel({marketData, uIdProps, isTradersTrade}) {
         })
         axios.get("http://localhost:5000/readInstrumentAlgo")
         .then((res) => {
-            setInstrumentAlgoData(res.data)
+            let activeInstrumentAlgo = (res.data).filter((elem)=>{
+                return elem.Status === "Active";
+            })
+            setInstrumentAlgoData(activeInstrumentAlgo)
         })  
         console.log("hii");
 
@@ -133,11 +136,13 @@ export default function SellModel({marketData, uIdProps, isTradersTrade}) {
             instrumentAlgoData.map((elem) => {
                 tradeData.map((element)=>{
                     if(elem.IncomingInstrumentCode === element.symbol){
-                        companyTrade.realSymbol = elem.IncomingInstrumentCode;
+                        companyTrade.realSymbol = elem.OutgoingInstrumentCode;
                     }
                 })
-
-                companyTrade.realAmount = lastPrice * Details.Quantity;
+                companyTrade.real_last_price = Details.last_price; // wrong see here in buy model
+                companyTrade.realBuyOrSell = "SELL";
+                companyTrade.realQuantity = Details.Quantity;
+                companyTrade.realAmount = Details.Quantity * lastPrice;
                 companyTrade.realBrokerage = sellBrokerageCharge(brokerageData, companyTrade.realQuantity, companyTrade.realAmount );
                 
                 // Details.totalAmount = totalAmount;
@@ -267,7 +272,7 @@ export default function SellModel({marketData, uIdProps, isTradersTrade}) {
         
         // Algo box applied here....
         console.log("checking exchange", Details.exchange )
-        if(Details.exchange === "NFO"){
+        if(Details.exchange === "NSE"){
             if (isTradersTrade) {
                 console.log("algo box should be applied");
                 setDetails(Details)
@@ -291,7 +296,7 @@ export default function SellModel({marketData, uIdProps, isTradersTrade}) {
             }
 
 
-        }else if(Details.exchange === "NSE"){
+        }else if(Details.exchange === "NFO"){
             if(isTradersTrade){
                 console.log("algo box should be applied");
                 setDetails(Details)

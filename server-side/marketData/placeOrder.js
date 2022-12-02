@@ -8,7 +8,7 @@ router.post("/placeorder", (async (req, res)=>{
     const OrderId = require("../models/TradeDetails/orderIdSchema");
     const TradeData = require("../models/TradeDetails/allTradeSchema");
     const UserTradeData = require("../models/User/userTradeSchema");
-
+    console.log(req.body.Product);
     let {exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice,
          stopLoss, validity, variety, uId, createdBy, createdOn, last_price, realBuyOrSell,
           realSymbol, realQuantity, instrument, realInstrument, apiKey, accessToken, userId, 
@@ -94,7 +94,7 @@ router.post("/placeorder", (async (req, res)=>{
                     });
                     console.log("this is orderid", orderid);
                     orderid.save().then(()=>{
-                    }).catch((err)=> res.status(500).json({error:"Failed to Trade"}));
+                    }).catch((err)=> res.status(500).json({error:"Failed to Trade company side"}));
                 }).catch(err => {console.log(err, "fail")});
 
 
@@ -113,7 +113,7 @@ router.post("/placeorder", (async (req, res)=>{
                     console.log("second instrument", instrument);
                     userTradeData.save().then(()=>{
                         res.status(201).json({massage : "Trade successfull", orderId: order_Id});
-                    }).catch((err)=> res.status(500).json({error:"Failed to Trade"}));
+                    }).catch((err)=> res.status(500).json({error:"Failed to Trade user side"}));
                 }).catch(err => {console.log(err, "fail")});
             }else{
                 let { order_id, placed_by, exchange_order_id, status, order_timestamp, exchange_timestamp
