@@ -39,7 +39,7 @@ function ProductMapping(){
             setData(res.data)
             console.log(res.data);
         })
-    },[])
+    },[reRender])
 
     async function formbtn(e){
         e.preventDefault();
@@ -126,7 +126,7 @@ function ProductMapping(){
                                             <td className="grid2_td">{elem.IncomingProductCode}</td>
                                             <td className="grid2_td">{elem.ProductNameOutgoing}</td>
                                             <td className="grid2_td">{elem.OutgoingProductCode}</td>
-                                            <td className="grid2_td">{elem.status}</td>
+                                            <td className="grid2_td">{elem.Status}</td>
                                         </tr>
                                     )
                                 })

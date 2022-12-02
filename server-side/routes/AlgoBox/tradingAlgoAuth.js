@@ -49,5 +49,46 @@ router.get("/readtradingAlgo/:id", (req, res)=>{
     })
 })
 
+router.put("/readtradingAlgo/:id", async (req, res)=>{
+    console.log(req.params)
+    console.log("this is body", req.body);
+    try{
+        const {id} = req.params
+        const tradingAlgo = await TradingAlgo.findOneAndUpdate({_id : id}, {
+            $set:{
+                algoName: req.body.algo_Name,
+                transactionChange: req.body.transaction_Change,
+                instrumentChange: req.body.instrument_Change,
+                status: req.body.Status,
+                exchangeChange: req.body.exchange_Change,
+                lotMultipler: req.body.lot_Multipler,
+                productChange: req.body.product_Change,
+                tradingAccount: req.body.trading_Account,
+                lastModified: req.body.lastModified
+            }
+        })
+        console.log("this is role", tradingAlgo);
+        res.send(tradingAlgo)
+        // res.status(201).json({massage : "data edit succesfully"});
+    } catch (e){
+        res.status(500).json({error:"Failed to edit data"});
+    }
+})
+
+router.delete("/readtradingAlgo/:id", async (req, res)=>{
+    console.log(req.params)
+    try{
+        const {id} = req.params
+        const tradingAlgo = await TradingAlgo.deleteOne({_id : id})
+        console.log("this is userdetail", tradingAlgo);
+        // res.send(userDetail)
+        res.status(201).json({massage : "data delete succesfully"});
+    } catch (e){
+        res.status(500).json({error:"Failed to delete data"});
+    }
+
+})
+
+
 
 module.exports = router;

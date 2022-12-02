@@ -5,9 +5,7 @@ import axios from "axios"
 import uniqid from "uniqid"
 import { userContext } from "../../AuthContext";
 
-export default function ByModal({ marketData, uIdProps, isTradersTrade, setOrder }, props) {
-    console.log("props", props);
-    console.log("checking setOrder", typeof(setOrder));
+export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
     const getDetails = useContext(userContext);
     let uId = uniqid();
     let date = new Date();
@@ -37,7 +35,7 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade, setOrder
         Product: "",
         Quantity: "",
         Price: "",
-        OrderType: "LIMIT",
+        OrderType: "",
         TriggerPrice: "",
         stopLoss: "",
         validity: "DAY",
@@ -78,11 +76,21 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade, setOrder
             })
         axios.get("http://localhost:5000/readtradingAlgo")
             .then((res) => {
-                let activeAlgo = (res.data).filter((elem) => {
-                    return elem.status === "Active"
+                let tradingAlgo = [];
+                apiKeyDetails.map((elem)=>{
+                    accessTokenDetails.map((subelem)=>{
+                        (res.data).map((element) => {
+                            console.log("line 82", elem.accountId, subelem.accountId, element.tradingAccount, element.status);
+                            if(element.status === "Active" && subelem.accountId == element.tradingAccount && elem.accountId == element.tradingAccount){
+                                tradingAlgo.push(element);
+                            }
+                        })
+                        console.log(tradingAlgo);
+                        
+                    })
                 })
-                setTradingAlgoData(activeAlgo);
-                console.log(activeAlgo);
+
+                setTradingAlgoData(tradingAlgo);
             })
         axios.get("http://localhost:5000/readBrokerage")
             .then((res) => {
@@ -98,13 +106,17 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade, setOrder
             })
          axios.get("http://localhost:5000/readInstrumentAlgo")
             .then((res) => {
-                setInstrumentAlgoData(res.data)
-            })        
-        console.log("hii");
+                let activeInstrumentAlgo = (res.data).filter((elem)=>{
+                    return elem.Status === "Active";
+                })
+                setInstrumentAlgoData(activeInstrumentAlgo)
+            })
 
         console.log(tradeData);
         setTradeData([...tradeData])
     }, [])
+
+    console.log(tradingAlgoData);
 
 
     const toggleModal = () => {
@@ -127,7 +139,9 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade, setOrder
                         companyTrade.realSymbol = elem.OutgoingInstrumentCode;
                     }
                 })
-
+                companyTrade.real_last_price = Details.last_price; // its wrong because OutgoingInstrumentCode it decide real last price
+                companyTrade.realBuyOrSell = "BUY";
+                companyTrade.realQuantity = Details.Quantity;
                 companyTrade.realAmount = Details.Quantity * lastPrice;
                 companyTrade.realBrokerage = buyBrokerageCharge(brokerageData, companyTrade.realQuantity, companyTrade.realAmount);
                 
@@ -159,7 +173,6 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade, setOrder
     function tradingAlgo(uId, lastPrice) {
         if (tradingAlgoData.length) {
             tradingAlgoData.map((elem) => {
-                // console.log("in algo");
                 
                 if (elem.transactionChange) {
                     companyTrade.realBuyOrSell = "SELL"
@@ -257,7 +270,7 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade, setOrder
         console.log(Details.exchange, tradeData);
         // Algo box applied here....
 
-        if(Details.exchange === "NFO"){
+        if(Details.exchange === "NSE"){
             console.log("in nse")
             if (isTradersTrade) {
                 console.log("algo box should be applied");
@@ -280,7 +293,7 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade, setOrder
                 sendOrderReq(); // must keep inside both if and else
                 setModal(!modal);
             }
-        } else if(Details.exchange === "NSE"){
+        } else if(Details.exchange === "NFO"){
             if (isTradersTrade) {
                 console.log("algo box should be applied");
                 setDetails(Details)
@@ -302,11 +315,8 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade, setOrder
                 sendOrderReq(); // must keep inside both if and else
                 setModal(!modal);
             }                
-
         }
-
         console.log("tradingAlgoData", tradingAlgoData);
-
     }
 
     async function sendOrderReq() {
@@ -315,6 +325,7 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade, setOrder
         const { instrument } = tradeData;
         const { apiKey } = apiKeyDetails[0];
         const { accessToken } = accessTokenDetails[0];
+        console.log("this is product", Product);
 
         const res = await fetch("http://localhost:5000/placeorder", {
             method: "POST",
@@ -330,7 +341,6 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade, setOrder
             })
         });
         const dataResp = await res.json();
-        setOrder(dataResp.orderId);
         console.log(dataResp);
         if (dataResp.status === 422 || dataResp.error || !dataResp) {
             window.alert(dataResp.error);

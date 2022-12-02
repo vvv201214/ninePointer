@@ -48,4 +48,50 @@ router.get("/readBrokerage/:id", (req, res)=>{
     })
 })
 
+router.put("/readBrokerage/:id", async (req, res)=>{
+    console.log(req.params)
+    console.log("this is body", req.body);
+    try{ 
+        const {id} = req.params
+        const brokerage = await Brokerage.findOneAndUpdate({_id : id}, {
+            $set:{
+                brokerName: req.body.Broker,
+                type: req.body.Type,
+                brokerageCharge: req.body.BrokerageCharge,
+                exchangeCharge: req.body.ExchangeCharge,
+                gst: req.body.GST,
+                sebiCharge: req.body.SEBICharge,
+                stampDuty: req.body.StampDuty,
+                sst: req.body.SST,
+                lastModified: req.body.lastModified,
+                transaction: req.body.Transaction,
+                exchange: req.body.Exchange,
+                ctt: req.body.CTT,
+                dpCharge: req.body.DPCharges
+            }
+        })
+        console.log("this is role", brokerage);
+        res.send(brokerage)
+        // res.status(201).json({massage : "data edit succesfully"});
+    } catch (e){
+        res.status(500).json({error:"Failed to edit data"});
+    }
+})
+
+router.delete("/readBrokerage/:id", async (req, res)=>{
+    console.log(req.params)
+    try{
+        const {id} = req.params
+        const brokerage = await Brokerage.deleteOne({_id : id})
+        console.log("this is userdetail", brokerage);
+        // res.send(userDetail)
+        res.status(201).json({massage : "data delete succesfully"});
+    } catch (e){
+        res.status(500).json({error:"Failed to delete data"});
+    }
+
+})
+
+
+
 module.exports = router;

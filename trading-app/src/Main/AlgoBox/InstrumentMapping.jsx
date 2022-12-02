@@ -33,7 +33,7 @@ function InstrumentMapping() {
                 setData(res.data)
                 console.log(res.data);
             })
-    }, [])
+    }, [reRender])
     const [formstate, setformstate] = useState({
         InstrumentNameIncoming: "",
         IncomingInstrumentCode: "",

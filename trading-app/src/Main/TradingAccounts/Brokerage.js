@@ -5,7 +5,6 @@ import Popup from "reactjs-popup";
 import 'reactjs-popup/dist/index.css';
 import { NavLink } from "react-router-dom";
 import uniqid from "uniqid"
-import TradingHeader from "./TradingHeader";
 import axios from "axios"
 import Styles from "./TradingAccountsCSSFiles/Brokerage.module.css";
 import BrokerageEditModel from "./TradingEditIcon/BrokerageEditModel";

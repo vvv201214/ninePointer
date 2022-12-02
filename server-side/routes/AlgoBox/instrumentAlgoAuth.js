@@ -48,4 +48,39 @@ router.get("/readInstrumentAlgo/:id", (req, res)=>{
     })
 })
 
+router.put("/readInstrumentAlgo/:id", async (req, res)=>{
+    console.log(req.params)
+    console.log("this is body", req.body);
+    try{ 
+        const {id} = req.params
+        const instrumentAlgo = await InstrumentAlgo.findOneAndUpdate({_id : id}, {
+            $set:{
+                InstrumentNameIncoming: req.body.InstrumentNameIncoming,
+                IncomingInstrumentCode: req.body.IncomingInstrumentCode,
+                InstrumentNameOutgoing: req.body.InstrumentNameOutgoing,
+                OutgoingInstrumentCode: req.body.OutgoingInstrumentCode,
+                Status: req.body.Status,
+                lastModified: req.body.lastModified
+            }
+        })
+        console.log("this is role", instrumentAlgo);
+        res.send(instrumentAlgo)
+    } catch (e){
+        res.status(500).json({error:"Failed to edit data"});
+    }
+})
+
+router.delete("/readInstrumentAlgo/:id", async (req, res)=>{
+    console.log(req.params)
+    try{
+        const {id} = req.params
+        const instrumentAlgo = await InstrumentAlgo.deleteOne({_id : id})
+        console.log("this is userdetail", instrumentAlgo);
+        res.status(201).json({massage : "data delete succesfully"});
+    } catch (e){
+        res.status(500).json({error:"Failed to delete data"});
+    }
+
+})
+
 module.exports = router;

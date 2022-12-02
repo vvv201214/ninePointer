@@ -38,16 +38,17 @@ function RoleEditModel({data, id, Render}) {
         setReports(editData[0].reports);
        
     }, [editData, reRender])
-        console.log(editData, id);
-        console.log(editData[0].roleName, roleName);
-        const [formstate, setformstate] = useState({
-            roleName1: "",
-            instruments: "",
-            tradingAccount: "",
-            APIParameters: "",
-            users: "",
-            algoBox: "",
-            reports: "",
+    
+    console.log(editData, id);
+    console.log(editData[0].roleName, roleName);
+    const [formstate, setformstate] = useState({
+        roleName1: "",
+        instruments: "",
+        tradingAccount: "",
+        APIParameters: "",
+        users: "",
+        algoBox: "",
+        reports: "",
     });
 
     console.log(formstate);

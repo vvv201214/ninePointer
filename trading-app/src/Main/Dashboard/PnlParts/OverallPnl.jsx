@@ -1,14 +1,14 @@
 import React from 'react'
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from "axios";
 
-export default function ClosedPnl({marketData, tradeData, data}) {
-    // let date = new Date();
-    // let todayDate = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`
-    // let fake_date = "1-12-2022"
+export default function OverallPnl({marketData, tradeData, data}) {
 
-    const [closedPnlArr, setClosedPnlArr] = useState([]);
+    let date = new Date();
+    let todayDate = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}` ;
+    let fake_date = "1-12-2022"
+
+    const [overallPnlArr, setOverallPnlArr] = useState([]);
     const [liveDetail, setLiveDetail] = useState([]);
 
     useEffect(()=>{
@@ -35,7 +35,6 @@ export default function ClosedPnl({marketData, tradeData, data}) {
                         } else if((obj.Quantity) > 0){
                             obj.buyOrSell = "SELL"
                         }
-
                     } else{
                         if(Number(obj.Quantity) > 0){
                             obj.average_price_buying = obj.average_price;
@@ -73,74 +72,73 @@ export default function ClosedPnl({marketData, tradeData, data}) {
             }
             console.log(hash);
         
-        let closedPnl = [];
-        for (let value of hash.values()){
-            closedPnl.push(value);
-        }
+            let overallPnl = [];
+            for (let value of hash.values()){
+                overallPnl.push(value);
+            }
 
 
-        setClosedPnlArr(closedPnl);
-        console.log("details array", closedPnl);
+            setOverallPnlArr(overallPnl);
+            console.log("details array", overallPnl);
 
-        let liveDetailsArr = [];
-        closedPnl.map((elem)=>{
-            console.log("52");
-            tradeData.map((element)=>{
-                console.log("53");
-                if(element.symbol === elem.symbol){
-                    console.log("line 54");
-                    marketData.map((subElem)=>{
-                        if(subElem !== undefined && subElem.instrument_token === element.instrumentToken){
-                            console.log(subElem);
-                            liveDetailsArr.push(subElem)
-                        }
-                    })
-                }
+            let liveDetailsArr = [];
+            overallPnl.map((elem)=>{
+                console.log("52");
+                tradeData.map((element)=>{
+                    console.log("53");
+                    if(element.symbol === elem.symbol){
+                        console.log("line 54");
+                        marketData.map((subElem)=>{
+                            if(subElem !== undefined && subElem.instrument_token === element.instrumentToken){
+                                console.log(subElem);
+                                liveDetailsArr.push(subElem)
+                            }
+                        })
+                    }
+                })
             })
-        })
 
-        setLiveDetail(liveDetailsArr);
+            setLiveDetail(liveDetailsArr);
 
-    // })
+        // })
  
     }, [marketData])
 
-    console.log(liveDetail);
-    console.log(closedPnlArr);
-
   return (
-    <table className="grid1_table">
-        <tr className="grid2_tr">
-            <th className="grid2_th">Product</th>
-            <th className="grid2_th">Instruments</th>
-            <th className="grid2_th">Quantity</th>
-            <th className="grid2_th">Average Price</th>
-            <th className="grid2_th">LTP</th>
-            <th className="grid2_th">P&L</th>
-            <th className="grid2_th">%Change</th>
-        </tr>
-        {
-         closedPnlArr.map((elem, index)=>{
-            return(
-                <>
-                    {(elem.closed_quantity !== 0 && elem.closed_quantity !== undefined) &&
+        <table className="grid1_table">
+            <tr className="grid2_tr">
+                <th className="grid2_th">Product</th>
+                <th className="grid2_th">Instrument</th>
+                <th className="grid2_th">Quantity</th>
+                <th className="grid2_th">Average Price</th>
+                <th className="grid2_th">LTP</th>
+                <th className="grid2_th">P&L</th>
+                <th className="grid2_th">%Change</th>
+            </tr> 
+            {
+            overallPnlArr.map((elem, index)=>{
+                return(
                     <tr className="grid2_tr" key={index}>
                         <th className="grid2_th">{elem.Product}</th>
                         <th className="grid2_th">{elem.symbol}</th>
-                        <th className="grid2_th">{elem.closed_quantity}</th>
-                        <th className="grid2_th">{(elem.average_price_buying).toFixed(2)}</th>
+                        <th className="grid2_th">{elem.Quantity}</th>
+                        <th className="grid2_th">{(elem.average_price).toFixed(2)}</th>
                         <th className="grid2_th">{liveDetail[index]?.last_price}</th>
-                        <th className="grid2_th">{((elem.average_price_selling * elem.closed_quantity) - 
-                                                    (elem.average_price_buying * elem.closed_quantity)).toFixed(2)}</th>
+                        <th className="grid2_th">{(((elem.average_price_selling * elem.closed_quantity) - (elem.average_price_buying * elem.closed_quantity)) 
+                                                + 
+                                                (((liveDetail[index]?.last_price)*(elem.Quantity)) - (elem.average_price*elem.Quantity)
+                                                )).toFixed(2)}</th>
                         {liveDetail[index]?.change === undefined ?
                             <td className="grid2_td">{liveDetail[index]?.change}</td>
                             :
                             <td className="grid2_td">{liveDetail[index]?.change.toFixed(2)}</td>}
-                    </tr> } 
-                </>            
-            )
-         })   
-        }
-    </table>
+                    </tr>                
+                )
+            })   
+            }
+
+        </table>
   )
 }
+
+

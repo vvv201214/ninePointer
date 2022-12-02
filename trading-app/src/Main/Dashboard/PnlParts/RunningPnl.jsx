@@ -2,67 +2,65 @@ import React from 'react'
 import { useEffect, useState } from 'react'
 import axios from "axios";
 
-export default function RunningPnl({marketData, tradeData, closed}) {
+export default function RunningPnl({marketData, tradeData, data}) {
     let date = new Date();
-    let todayDate = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`
-    let fake_date = "28-11-2022"
-    const {closedPnlDetails, setClosedPnlDetails} = closed;
+    // let todayDate = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`
+    // let fake_date = "1-12-2022"
     const [pnlData, setPnlData] = useState([]);
-    const [closedPnl, setClosedPnl] = useState([]);
     const [liveDetail, setLiveDetail] = useState([])
     console.log("tradedata", tradeData);
     console.log("market data", marketData);
     useEffect(()=>{
-        axios.get("http://localhost:5000/usertradedata")
-        .then((res) => {
-            let data = (res.data).filter((elem)=>{
-                return elem.createdOn.includes(fake_date);
-            })
+        // axios.get("http://localhost:5000/usertradedata")
+        // .then((res) => {
+        //     let data = (res.data).filter((elem)=>{
+        //         return elem.createdOn.includes(todayDate) && elem.status === "COMPLETE";
+        //     })
+            console.log(data);
             setPnlData(data);
 
-            let closedPnlArr = [];
-            let closedPnlObj = {};
-
-            for(let i = 0; i < data.length-1; i++){
-                for(let j = i+1; j < data.length; j++){
-                   
-                    if(data[i].symbol === data[j].symbol){
-                        if(data[i].buyOrSell === data[j].buyOrSell){
-                            data[i].Quantity = Number(data[i].Quantity) + Number(data[j].Quantity);
-                            data[i].average_price = ((Number(data[i].average_price) * Number(data[i].Quantity)) 
-                            + (Number(data[j].average_price) * Number(data[j].Quantity)))/(Number(data[i].Quantity) 
-                            + Number(data[j].Quantity));
-                        } else{
-
-                            closedPnlObj.firstData = data[i];
-                            closedPnlObj.secondData = data[j];
-                            closedPnlArr.push(closedPnlObj);
-
-                            data[i].Quantity = Number(data[i].Quantity) - Number(data[j].Quantity);
-                            // jo bhi quantity dono me se chhoti hogi wahi close ho jaegi..
-
-
-                            if(Number(data[i].Quantity) > 0){
-                                data[i].buyOrSell = "BUY";
-                            } else if((data[i].Quantity) > 0){
-                                data[i].buyOrSell = "SELL"
-                            } 
-                        }
-                        data.splice(j, 1);
-                        j--;
+            let hash = new Map();
+            for(let i = data.length-1; i >= 0 ; i--){
+                if(hash.has(data[i].symbol)){
+                    let obj = hash.get(data[i].symbol);
+                    if(Number(data[i].Quantity) + Number(obj.Quantity) === 0){
+                        obj.average_price = 0;
+                    }else{
+                        obj.average_price = ((Number(obj.average_price) * Number(obj.Quantity)) 
+                                        + (Number(data[i].average_price) * Number(data[i].Quantity)))/(Number(data[i].Quantity) 
+                                        + Number(obj.Quantity));
                     }
+                    obj.Quantity = Number(obj.Quantity) + Number(data[i].Quantity)
+                    if(Number(obj.Quantity) > 0){
+                        obj.buyOrSell = "BUY";
+                    } else if((obj.Quantity) > 0){
+                        obj.buyOrSell = "SELL"
+                    } 
+
+                } else{
+                    hash.set(data[i].symbol, {
+                        buyOrSell : data[i].buyOrSell,
+                        Quantity : Number(data[i].Quantity),
+                        average_price: Number(data[i].average_price),
+                        Product: data[i].Product,
+                        symbol: data[i].symbol
+                    })
                 }
             }
-            setPnlData(data);
-            setClosedPnlDetails(closedPnlArr);
+
+            console.log(hash);
+            let runningPnl = [];
+            for (let value of hash.values()){
+                runningPnl.push(value);
+            }
+
+
+            setPnlData(runningPnl);
 
             let liveDetailsArr = [];
-            data.map((elem)=>{
-                console.log("52");
+            runningPnl.map((elem)=>{
                 tradeData.map((element)=>{
-                    console.log("53");
                     if(element.symbol === elem.symbol){
-                        console.log("line 54");
                         marketData.map((subElem)=>{
                             if(subElem !== undefined && subElem.instrument_token === element.instrumentToken){
                                 console.log(subElem);
@@ -74,10 +72,9 @@ export default function RunningPnl({marketData, tradeData, closed}) {
             })
 
             setLiveDetail(liveDetailsArr);
-        })
+        // })
     }, [marketData])
 
-    console.log("this is closed pnl", closedPnl);
     console.log("this is pnl data", pnlData);
     console.log("live data", liveDetail);
 
@@ -96,23 +93,21 @@ export default function RunningPnl({marketData, tradeData, closed}) {
             pnlData.map((elem, index)=>{
                 return(
                     <>
+                    {elem.Quantity !== 0 &&
                     <tr className="grid2_tr" key={elem._id}>
                         <td className="grid2_td">{elem.Product}</td>
                         <td className="grid2_td">{elem.symbol}</td>
                         <td className="grid2_td">{elem.Quantity}</td>
-                        <td className="grid2_td">{elem.average_price}</td>
+                        <td className="grid2_td">{(elem.average_price).toFixed(2)}</td>
                         <td className="grid2_td">{liveDetail[index]?.last_price}</td>
                         <td className="grid2_td">{(
                             ((liveDetail[index]?.last_price)*(elem.Quantity)) - (elem.average_price*elem.Quantity)
-                        )}</td>
+                        ).toFixed(2)}</td>
                         {liveDetail[index]?.change === undefined ?
                         <td className="grid2_td">{liveDetail[index]?.change}</td>
                         :
                         <td className="grid2_td">{liveDetail[index]?.change.toFixed(2)}</td>}
-                        
-                    </tr>
-
-
+                    </tr>}
                 </>
                 )
             })

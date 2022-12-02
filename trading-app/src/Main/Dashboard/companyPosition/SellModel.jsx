@@ -5,7 +5,7 @@ import axios from "axios"
 import uniqid from "uniqid"
 import { userContext } from "../../AuthContext";
 
-export default function SellModel({marketData, uIdProps, isTradersTrade, setOrder}) {
+export default function SellModel({marketData, uIdProps, isTradersTrade}) {
     const getDetails = useContext(userContext);
     let uId = uniqid();
     let date = new Date();
@@ -74,14 +74,23 @@ export default function SellModel({marketData, uIdProps, isTradersTrade, setOrde
         })
         
         axios.get("http://localhost:5000/readtradingAlgo")
-        .then((res)=>{
-                    
-        let activeAlgo = (res.data).filter((elem)=>{
-            return elem.status === "Active"
-        })
-            setTradingAlgoData(activeAlgo)
-            console.log(activeAlgo);
-        })
+            .then((res) => {
+                let tradingAlgo = [];
+                apiKeyDetails.map((elem)=>{
+                    accessTokenDetails.map((subelem)=>{
+                        (res.data).map((element) => {
+                            console.log("line 82", elem.accountId, subelem.accountId, element.tradingAccount, element.status);
+                            if(element.status === "Active" && subelem.accountId == element.tradingAccount && elem.accountId == element.tradingAccount){
+                                tradingAlgo.push(element);
+                            }
+                        })
+                        console.log(tradingAlgo);
+                        
+                    })
+                })
+
+                setTradingAlgoData(tradingAlgo);
+            })
         axios.get("http://localhost:5000/readBrokerage")
         .then((res)=>{
             setBrokerageData(res.data)
@@ -96,7 +105,10 @@ export default function SellModel({marketData, uIdProps, isTradersTrade, setOrde
         })
         axios.get("http://localhost:5000/readInstrumentAlgo")
         .then((res) => {
-            setInstrumentAlgoData(res.data)
+            let activeInstrumentAlgo = (res.data).filter((elem)=>{
+                return elem.Status === "Active";
+            })
+            setInstrumentAlgoData(activeInstrumentAlgo)
         })  
         console.log("hii");
 
@@ -124,11 +136,13 @@ export default function SellModel({marketData, uIdProps, isTradersTrade, setOrde
             instrumentAlgoData.map((elem) => {
                 tradeData.map((element)=>{
                     if(elem.IncomingInstrumentCode === element.symbol){
-                        companyTrade.realSymbol = elem.IncomingInstrumentCode;
+                        companyTrade.realSymbol = elem.OutgoingInstrumentCode;
                     }
                 })
-
-                companyTrade.realAmount = lastPrice * Details.Quantity;
+                companyTrade.real_last_price = Details.last_price; // wrong see here in buy model
+                companyTrade.realBuyOrSell = "SELL";
+                companyTrade.realQuantity = Details.Quantity;
+                companyTrade.realAmount = Details.Quantity * lastPrice;
                 companyTrade.realBrokerage = sellBrokerageCharge(brokerageData, companyTrade.realQuantity, companyTrade.realAmount );
                 
                 // Details.totalAmount = totalAmount;
@@ -258,7 +272,7 @@ export default function SellModel({marketData, uIdProps, isTradersTrade, setOrde
         
         // Algo box applied here....
         console.log("checking exchange", Details.exchange )
-        if(Details.exchange === "NFO"){
+        if(Details.exchange === "NSE"){
             if (isTradersTrade) {
                 console.log("algo box should be applied");
                 setDetails(Details)
@@ -282,7 +296,7 @@ export default function SellModel({marketData, uIdProps, isTradersTrade, setOrde
             }
 
 
-        }else if(Details.exchange === "NSE"){
+        }else if(Details.exchange === "NFO"){
             if(isTradersTrade){
                 console.log("algo box should be applied");
                 setDetails(Details)
@@ -331,7 +345,6 @@ export default function SellModel({marketData, uIdProps, isTradersTrade, setOrde
             })
         });
         const dataResp = await res.json();
-        setOrder(dataResp.orderId);
         console.log(dataResp);
         if(dataResp.status === 422 || dataResp.error || !dataResp){
             window.alert(dataResp.error);
@@ -382,7 +395,7 @@ export default function SellModel({marketData, uIdProps, isTradersTrade, setOrde
                        <div className="container_two">
                            <div className="form_inputContain">
                            <label htmlFor="" className="bsLabel">Quantity</label>
-                           <input type="text" className="bsInput" onChange={(e) => { { Details.Quantity = -(e.target.value) } }} />
+                           <input type="text" className="bsInput" onChange={(e) => { { Details.Quantity = (e.target.value) } }} />
                                                   
                            <label htmlFor="" className="bsLabel" >Price</label>
                            <input type="text" className="bsInput" onChange={(e) => { { Details.Price = e.target.value } }}/>

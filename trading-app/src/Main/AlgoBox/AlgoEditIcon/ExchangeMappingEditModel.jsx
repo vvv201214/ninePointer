@@ -5,6 +5,8 @@ import Styles from "./ExchangeMappingEditModel.module.css";
 
 
 export default function ExchangeMappingEditModel ({ data, id, Render }) {
+    let date = new Date();
+    let lastModified = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
 
     const { reRender, setReRender } = Render;
     const [editData, setEditData] = useState(data);
@@ -75,7 +77,7 @@ export default function ExchangeMappingEditModel ({ data, id, Render }) {
                 "content-type": "application/json"
             },
             body: JSON.stringify({
-                ExchangeNameIncoming, IncomingExchangeCode, ExchangeNameOutgoing, OutgoingInstrumentCode, Status
+                ExchangeNameIncoming, IncomingExchangeCode, ExchangeNameOutgoing, OutgoingInstrumentCode, Status, lastModified
             })
         });
         const dataResp = await res.json();
