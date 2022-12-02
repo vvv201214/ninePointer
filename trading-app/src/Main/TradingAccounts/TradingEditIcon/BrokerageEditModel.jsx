@@ -5,6 +5,8 @@ import Styles from "./BrokerageEditModel.module.css";
 
 
 export default function BrokerageEditModel ({ data, id, Render }) {
+    let date = new Date();
+    let lastModified = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
 
     const { reRender, setReRender } = Render;
     const [editData, setEditData] = useState(data);
@@ -96,14 +98,14 @@ export default function BrokerageEditModel ({ data, id, Render }) {
 
         const { Broker, Transaction, Type, Exchange, BrokerageCharge, ExchangeCharge, GST, SEBICharge,StampDuty,SST,CTT,DPCharges} = formstate;
 
-        const res = await fetch(`http://localhost:5000/brokerage/${id}`, {
+        const res = await fetch(`http://localhost:5000/readBrokerage/${id}`, {
             method: "PUT",
             headers: {
                 "Accept": "application/json",
                 "content-type": "application/json"
             },
             body: JSON.stringify({
-                Broker, Transaction, Type, Exchange, BrokerageCharge, ExchangeCharge, GST, SEBICharge,StampDuty,SST,CTT, DPCharges
+                Broker, Transaction, Type, Exchange, BrokerageCharge, ExchangeCharge, GST, SEBICharge,StampDuty,SST,CTT, DPCharges, lastModified
             })
         });
         const dataResp = await res.json();
@@ -122,7 +124,7 @@ export default function BrokerageEditModel ({ data, id, Render }) {
 
     async function Ondelete() {
         console.log(editData)
-        const res = await fetch(`http://localhost:5000/brokerage/${id}`, {
+        const res = await fetch(`http://localhost:5000/readBrokerage/${id}`, {
             method: "DELETE",
         });
 
