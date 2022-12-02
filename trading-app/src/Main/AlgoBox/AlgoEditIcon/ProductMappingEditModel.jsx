@@ -6,6 +6,9 @@ import Styles from "./ProductMappingEditModel.module.css";
 
 export default function ProductMappingEditModel ({ data, id, Render }) {
 
+    let date = new Date();
+    let lastModified = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
+
     const { reRender, setReRender } = Render;
     const [editData, setEditData] = useState(data);
 
@@ -68,14 +71,14 @@ export default function ProductMappingEditModel ({ data, id, Render }) {
 
         const { ProductNameIncoming, IncomingProductCode, ProductNameOutgoing, OutgoingProductCode, Status} = formstate;
 
-        const res = await fetch(`http://localhost:5000/productMapping/${id}`, {
+        const res = await fetch(`http://localhost:5000/readProductMapping/${id}`, {
             method: "PUT",
             headers: {
                 "Accept": "application/json",
                 "content-type": "application/json"
             },
             body: JSON.stringify({
-                ProductNameIncoming, IncomingProductCode, ProductNameOutgoing, OutgoingProductCode, Status
+                ProductNameIncoming, IncomingProductCode, ProductNameOutgoing, OutgoingProductCode, Status, lastModified
             })
         });
         const dataResp = await res.json();
@@ -94,7 +97,7 @@ export default function ProductMappingEditModel ({ data, id, Render }) {
 
     async function Ondelete() {
         console.log(editData)
-        const res = await fetch(`http://localhost:5000/productMapping/${id}`, {
+        const res = await fetch(`http://localhost:5000/readProductMapping/${id}`, {
             method: "DELETE",
         });
 

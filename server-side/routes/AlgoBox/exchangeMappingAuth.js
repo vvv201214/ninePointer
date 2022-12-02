@@ -48,4 +48,41 @@ router.get("/readExchangeMapping/:id", (req, res)=>{
     })
 })
 
+router.put("/readExchangeMapping/:id", async (req, res)=>{
+    console.log(req.params)
+    console.log("this is body", req.body);
+    try{ 
+       const {id} = req.params
+        const exchangeMapping = await ExchangeMapping.findOneAndUpdate({_id : id}, {
+            $set:{
+                ExchangeNameIncoming: req.body.ExchangeNameIncoming,
+                IncomingExchangeCode: req.body.IncomingExchangeCode,
+                ExchangeNameOutgoing: req.body.ExchangeNameOutgoing,
+                OutgoingInstrumentCode: req.body.OutgoingInstrumentCode,
+                Status: req.body.Status,
+                lastModified: req.body.lastModified
+            }
+        })
+        console.log("this is role", exchangeMapping);
+        res.send(exchangeMapping)
+        // res.status(201).json({massage : "data edit succesfully"});
+    } catch (e){
+        res.status(500).json({error:"Failed to edit data"});
+    }
+})
+
+router.delete("/readExchangeMapping/:id", async (req, res)=>{
+    console.log(req.params)
+    try{
+        const {id} = req.params
+        const exchangeMapping = await ExchangeMapping.deleteOne({_id : id})
+        console.log("this is userdetail", exchangeMapping);
+        // res.send(userDetail)
+        res.status(201).json({massage : "data delete succesfully"});
+    } catch (e){
+        res.status(500).json({error:"Failed to delete data"});
+    }
+
+})
+
 module.exports = router;

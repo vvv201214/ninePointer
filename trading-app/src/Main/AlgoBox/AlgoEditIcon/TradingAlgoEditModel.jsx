@@ -80,7 +80,6 @@ export default function TradingAlgoEditModel ({ data, id, Render }) {
 
         setformstate(formstate);
 
-
         const {algo_Name, transaction_Change, instrument_Change, Status, exchange_Change, lot_Multipler, product_Change, trading_Account } = formstate;
 
         const res = await fetch(`http://localhost:3000/readtradingAlgo/${id}`, {

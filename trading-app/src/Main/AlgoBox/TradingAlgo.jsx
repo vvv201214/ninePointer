@@ -43,7 +43,7 @@ function TradingAlgo(){
             setData(res.data)
             console.log(res.data);
         })
-    },[])
+    },[reRender])
 
     async function formbtn(e){
         e.preventDefault();
