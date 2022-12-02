@@ -9,7 +9,7 @@ router.post("/placeorder", (async (req, res)=>{
     const TradeData = require("../models/TradeDetails/allTradeSchema");
     const UserTradeData = require("../models/User/userTradeSchema");
 
-    const {exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice,
+    let {exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice,
          stopLoss, validity, variety, uId, createdBy, createdOn, last_price, realBuyOrSell,
           realSymbol, realQuantity, instrument, realInstrument, apiKey, accessToken, userId, 
           realBrokerage, realAmount, brokerageCharge, real_last_price, tradeBy} = req.body;
@@ -24,18 +24,32 @@ router.post("/placeorder", (async (req, res)=>{
         'Authorization': auth,
         "content-type" : "application/x-www-form-urlencoded"
     }
+    let orderData;
+    if(variety === "amo"){
+        orderData = new URLSearchParams({
+            "tradingsymbol":realSymbol,
+            "exchange":exchange,
+            "transaction_type":realBuyOrSell,
+            "order_type":OrderType,
+            "quantity":realQuantity,
+            "product":Product,
+            "validity":validity,
+            "price":Price,
+            "trigger_price": TriggerPrice
+        })
+    } else if(variety === "regular"){
+        orderData = new URLSearchParams({
+            "tradingsymbol":realSymbol,
+            "exchange":exchange,
+            "transaction_type":realBuyOrSell,
+            "order_type":OrderType,
+            "quantity":realQuantity,
+            "product":Product,
+            "validity":validity
+        })
+    }
 
-    axios.post(`https://api.kite.trade/orders/${variety}`, new URLSearchParams({
-        "tradingsymbol":realSymbol,
-        "exchange":exchange,
-        "transaction_type":realBuyOrSell,
-        "order_type":OrderType,
-        "quantity":realQuantity,
-        "product":Product,
-        "validity":validity,
-        "price":Price,
-        "trigger_price": TriggerPrice
-    }), {headers : headers})
+    axios.post(`https://api.kite.trade/orders/${variety}`, orderData, {headers : headers})
     .then(async (resp)=>{
 
         console.log("its json data", JSON.stringify(resp.data));
@@ -48,6 +62,9 @@ router.post("/placeorder", (async (req, res)=>{
         console.log("now i am in placeorder");
         console.log("this is order-id", data.order_id);
 
+        if(buyOrSell === "SELL"){
+            Quantity = "-"+Quantity;
+        }
 
 
         TradeData.findOne({order_id : data.order_id})
@@ -55,11 +72,13 @@ router.post("/placeorder", (async (req, res)=>{
             console.log("i am receiving data", data)
             if(data.exchange_timestamp === undefined){
                 console.log("in the if condition of exchange", data.exchange_timestamp);
-                const { order_id, placed_by, exchange_order_id, status, order_timestamp, exchange_timestamp
+                let { order_id, placed_by, exchange_order_id, status, order_timestamp, exchange_timestamp
                     , variety, exchange, tradingsymbol, order_type, transaction_type, validity, product,
                     quantity, disclosed_quantity, price, average_price, filled_quantity, pending_quantity,
                     cancelled_quantity, market_protection, guid } = data;
-
+                    if(transaction_type === "SELL"){
+                        quantity = -quantity;
+                    }
                 OrderId.findOne({order_id : order_id})
                 .then((dateExist)=>{
                     if(dateExist){
@@ -97,7 +116,7 @@ router.post("/placeorder", (async (req, res)=>{
                     }).catch((err)=> res.status(500).json({error:"Failed to Trade"}));
                 }).catch(err => {console.log(err, "fail")});
             }else{
-                const { order_id, placed_by, exchange_order_id, status, order_timestamp, exchange_timestamp
+                let { order_id, placed_by, exchange_order_id, status, order_timestamp, exchange_timestamp
                     , variety, exchange, tradingsymbol, order_type, transaction_type, validity, product,
                     quantity, disclosed_quantity, price, average_price, filled_quantity, pending_quantity,
                     cancelled_quantity, market_protection, guid} = data
@@ -106,6 +125,9 @@ router.post("/placeorder", (async (req, res)=>{
                     if(dateExist){
                         console.log("data already");
                         return res.status(422).json({error : "data already exist..."})
+                    }
+                    if(transaction_type === "SELL"){
+                        quantity = -quantity;
                     }
                     const orderid = new OrderId({order_id, status, uId, createdOn, createdBy, real_last_price,
                         average_price, quantity , realInstrument , product , transaction_type , 

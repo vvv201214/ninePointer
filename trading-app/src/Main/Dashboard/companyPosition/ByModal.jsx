@@ -5,9 +5,7 @@ import axios from "axios"
 import uniqid from "uniqid"
 import { userContext } from "../../AuthContext";
 
-export default function ByModal({ marketData, uIdProps, isTradersTrade, setOrder }, props) {
-    console.log("props", props);
-    console.log("checking setOrder", typeof(setOrder));
+export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
     const getDetails = useContext(userContext);
     let uId = uniqid();
     let date = new Date();
@@ -37,7 +35,7 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade, setOrder
         Product: "",
         Quantity: "",
         Price: "",
-        OrderType: "LIMIT",
+        OrderType: "",
         TriggerPrice: "",
         stopLoss: "",
         validity: "DAY",
@@ -78,11 +76,21 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade, setOrder
             })
         axios.get("http://localhost:5000/readtradingAlgo")
             .then((res) => {
-                let activeAlgo = (res.data).filter((elem) => {
-                    return elem.status === "Active"
+                let tradingAlgo = [];
+                apiKeyDetails.map((elem)=>{
+                    accessTokenDetails.map((subelem)=>{
+                        (res.data).map((element) => {
+                            console.log("line 82", elem.accountId, subelem.accountId, element.tradingAccount, element.status);
+                            if(element.status === "Active" && subelem.accountId == element.tradingAccount && elem.accountId == element.tradingAccount){
+                                tradingAlgo.push(element);
+                            }
+                        })
+                        console.log(tradingAlgo);
+                        
+                    })
                 })
-                setTradingAlgoData(activeAlgo);
-                console.log(activeAlgo);
+
+                setTradingAlgoData(tradingAlgo);
             })
         axios.get("http://localhost:5000/readBrokerage")
             .then((res) => {
@@ -105,6 +113,8 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade, setOrder
         console.log(tradeData);
         setTradeData([...tradeData])
     }, [])
+
+    console.log(tradingAlgoData);
 
 
     const toggleModal = () => {
@@ -302,11 +312,8 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade, setOrder
                 sendOrderReq(); // must keep inside both if and else
                 setModal(!modal);
             }                
-
         }
-
         console.log("tradingAlgoData", tradingAlgoData);
-
     }
 
     async function sendOrderReq() {
@@ -330,7 +337,6 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade, setOrder
             })
         });
         const dataResp = await res.json();
-        setOrder(dataResp.orderId);
         console.log(dataResp);
         if (dataResp.status === 422 || dataResp.error || !dataResp) {
             window.alert(dataResp.error);

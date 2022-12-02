@@ -15,6 +15,7 @@ function CompanyPositionTable({ socket }) {
     const [tradeData, setTradeData] = useState([]);
     const [marketData, setMarketData] = useState([]);
     const [orderId, setOrderId] = useState();
+    const [closedPnlDetails, setClosedPnlDetails] = useState([]);
 
     let date = new Date();
 
@@ -115,11 +116,11 @@ function CompanyPositionTable({ socket }) {
                         </div>
                         <div className="grid_2">
                             <span className="grid2_span">Running PNL-Company</span>
-                            <RunningPnl marketData={marketData} tradeData={tradeData} orderId={orderId}/>
+                            <RunningPnl marketData={marketData} tradeData={tradeData}/>
                         </div>
                         <div className="grid_2">
                             <span className="grid2_span">Closed Trades PNL-Company</span>
-                            <ClosedPnl/>
+                            <ClosedPnl closedPnlDetails={closedPnlDetails} marketData={marketData} tradeData={tradeData}/>
                         </div>
                     </div>
            

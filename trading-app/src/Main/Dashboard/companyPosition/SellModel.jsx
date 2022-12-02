@@ -74,14 +74,23 @@ export default function SellModel({marketData, uIdProps, isTradersTrade, setOrde
         })
         
         axios.get("http://localhost:5000/readtradingAlgo")
-        .then((res)=>{
-                    
-        let activeAlgo = (res.data).filter((elem)=>{
-            return elem.status === "Active"
-        })
-            setTradingAlgoData(activeAlgo)
-            console.log(activeAlgo);
-        })
+            .then((res) => {
+                let tradingAlgo = [];
+                apiKeyDetails.map((elem)=>{
+                    accessTokenDetails.map((subelem)=>{
+                        (res.data).map((element) => {
+                            console.log("line 82", elem.accountId, subelem.accountId, element.tradingAccount, element.status);
+                            if(element.status === "Active" && subelem.accountId == element.tradingAccount && elem.accountId == element.tradingAccount){
+                                tradingAlgo.push(element);
+                            }
+                        })
+                        console.log(tradingAlgo);
+                        
+                    })
+                })
+
+                setTradingAlgoData(tradingAlgo);
+            })
         axios.get("http://localhost:5000/readBrokerage")
         .then((res)=>{
             setBrokerageData(res.data)
@@ -382,7 +391,7 @@ export default function SellModel({marketData, uIdProps, isTradersTrade, setOrde
                        <div className="container_two">
                            <div className="form_inputContain">
                            <label htmlFor="" className="bsLabel">Quantity</label>
-                           <input type="text" className="bsInput" onChange={(e) => { { Details.Quantity = -(e.target.value) } }} />
+                           <input type="text" className="bsInput" onChange={(e) => { { Details.Quantity = (e.target.value) } }} />
                                                   
                            <label htmlFor="" className="bsLabel" >Price</label>
                            <input type="text" className="bsInput" onChange={(e) => { { Details.Price = e.target.value } }}/>

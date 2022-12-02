@@ -110,11 +110,11 @@ function TraderPositionTable({ socket }) {
                         </div>
                         <div className="grid_2">
                             <span className="grid2_span">Running PNL-Trader</span>
-                            <RunningPnl marketData={marketData} tradeData={tradeData} closed={{closedPnlDetails, setClosedPnlDetails}}/>
+                            <RunningPnl marketData={marketData} tradeData={tradeData}/>
                         </div>
                         <div className="grid_2">
                             <span className="grid2_span">Closed Trades PNL-Trader</span>
-                                <ClosedPnl closed={{closedPnlDetails, setClosedPnlDetails}}/>
+                                <ClosedPnl closedPnlDetails={closedPnlDetails} marketData={marketData} tradeData={tradeData}/>
                         </div>
                     </div>
                 </div>
