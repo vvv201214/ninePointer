@@ -35,11 +35,7 @@ export default function LogInForm() {
             window.alert(data.error);
             console.log("invalid user details");
         }else{
-            // cookie.set("jwtoken", data, {
-            //     secure:true,
-            //     path:"/login"
-            // });
-            window.alert("user login succesfull");
+            window.alert("Login succesfull");
             console.log("entry succesfull");
             navigate("/main/dashboard");
         }
