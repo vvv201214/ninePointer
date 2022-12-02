@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import "./TradingAccounts.css";
 import "./Accounts.css";
-import { TiEdit } from "react-icons/ti";
 import { useState } from "react";
 import uniqid from "uniqid";
 import axios from "axios";
 import Styles from "./TradingAccountsCSSFiles/TradingAccounts.module.css";
+import TradingAccountsEditModel from "./TradingEditIcon/TradingAccountsEditModel";
 
 function TradingAccounts() {
     let uId = uniqid();
@@ -138,7 +138,7 @@ function TradingAccounts() {
                             {activeData.map((elem)=>{
                                 return(
                                 <tr className="grid2_tr" key={elem.uId} >
-                                    <td className="grid2_td"><span className="Editbutton"><TiEdit/></span>{elem.brokerName}</td>
+                                    <td className="grid2_td">{elem.brokerName}</td>
                                     <td className="grid2_td">{elem.accountId}</td>
                                     <td className="grid2_td">{elem.accountName}</td>
                                     <td className="grid2_td">{elem.apiKey}</td>
