@@ -6,6 +6,9 @@ import Styles from "./TradingAlgoEditModel.module.css";
 
 export default function TradingAlgoEditModel ({ data, id, Render }) {
 
+    let date = new Date();
+    let lastModified = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
+
     const { reRender, setReRender } = Render;
     const [editData, setEditData] = useState(data);
 
@@ -41,14 +44,14 @@ export default function TradingAlgoEditModel ({ data, id, Render }) {
     console.log(editData, id);
     console.log(editData[0].algoName, algoName);
     const [formstate, setformstate] = useState({
-        algoName: "",
-        transactionChange : "",
-        instrumentChange : "",
-        status : "",
-        exchangeChange:"",
-        lotMultipler:"",
-        productChange : "",
-        tradingAccount:""
+        algo_Name: "",
+        transaction_Change : "",
+        instrument_Change : "",
+        Status : "",
+        exchange_Change:"",
+        lot_Multipler:"",
+        product_Change : "",
+        trading_Account:""
     });
 
     console.log(formstate);
@@ -66,19 +69,19 @@ export default function TradingAlgoEditModel ({ data, id, Render }) {
     async function formbtn(e) {
         e.preventDefault();
 
-        formstate.algoName = algoName;
-        formstate.transactionChange = transactionChange;
-        formstate.instrumentChange = instrumentChange;
-        formstate.exchangeChange = exchangeChange;
-        formstate.lotMultipler = lotMultipler;
-        formstate.productChange = productChange;
-        formstate.tradingAccount = tradingAccount;
-        formstate.status = status;
+        formstate.algo_Name = algoName;
+        formstate.transaction_Change = transactionChange;
+        formstate.instrument_Change = instrumentChange;
+        formstate.exchange_Change = exchangeChange;
+        formstate.lot_Multipler = lotMultipler;
+        formstate.product_Change = productChange;
+        formstate.trading_Account = tradingAccount;
+        formstate.Status = status;
 
         setformstate(formstate);
 
 
-        const { algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount, status} = formstate;
+        const {algo_Name, transaction_Change, instrument_Change, Status, exchange_Change, lot_Multipler, product_Change, trading_Account } = formstate;
 
         const res = await fetch(`http://localhost:3000/readtradingAlgo/${id}`, {
             method: "PUT",
@@ -87,7 +90,7 @@ export default function TradingAlgoEditModel ({ data, id, Render }) {
                 "content-type": "application/json"
             },
             body: JSON.stringify({
-                algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount, status
+                algo_Name, transaction_Change, instrument_Change, Status, exchange_Change, lot_Multipler, product_Change, trading_Account, lastModified
             })
         });
         const dataResp = await res.json();
