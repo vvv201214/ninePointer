@@ -86,10 +86,10 @@ router.post("/placeorder", (async (req, res)=>{
                         return res.status(422).json({error : "data already exist..."})
                     }
                     const orderid = new OrderId({order_id , status , uId, createdOn, createdBy, real_last_price,
-                        average_price, quantity, realInstrument, product, transaction_type, 
+                        average_price, Quantity:quantity, realInstrument, Product:product, buyOrSell:transaction_type, 
                          order_timestamp , variety , validity , exchange , 
                           order_type , price , filled_quantity , pending_quantity 
-                        , cancelled_quantity , guid , market_protection , disclosed_quantity , tradingsymbol 
+                        , cancelled_quantity , guid , market_protection , disclosed_quantity , symbol:tradingsymbol 
                         , placed_by, userId, realBrokerage, realAmount
                     });
                     console.log("this is orderid", orderid);
@@ -129,11 +129,12 @@ router.post("/placeorder", (async (req, res)=>{
                     if(transaction_type === "SELL"){
                         quantity = -quantity;
                     }
-                    const orderid = new OrderId({order_id, status, uId, createdOn, createdBy, real_last_price,
-                        average_price, quantity , realInstrument , product , transaction_type , 
-                        exchange_order_id , order_timestamp , variety , validity , exchange , 
-                        exchange_timestamp , order_type , price , filled_quantity , pending_quantity 
-                        , cancelled_quantity , guid , market_protection , disclosed_quantity , tradingsymbol 
+                    const orderid = new OrderId({
+                        exchange_order_id, exchange_timestamp, order_id , status , uId, createdOn, createdBy, real_last_price,
+                        average_price, Quantity:quantity, realInstrument, Product:product, buyOrSell:transaction_type, 
+                         order_timestamp , variety , validity , exchange , 
+                          order_type , price , filled_quantity , pending_quantity 
+                        , cancelled_quantity , guid , market_protection , disclosed_quantity , symbol:tradingsymbol 
                         , placed_by, userId, realBrokerage, realAmount
                     });
             

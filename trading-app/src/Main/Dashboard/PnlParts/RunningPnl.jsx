@@ -2,20 +2,20 @@ import React from 'react'
 import { useEffect, useState } from 'react'
 import axios from "axios";
 
-export default function RunningPnl({marketData, tradeData}) {
+export default function RunningPnl({marketData, tradeData, data}) {
     let date = new Date();
-    let todayDate = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`
-    let fake_date = "1-12-2022"
+    // let todayDate = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`
+    // let fake_date = "1-12-2022"
     const [pnlData, setPnlData] = useState([]);
     const [liveDetail, setLiveDetail] = useState([])
     console.log("tradedata", tradeData);
     console.log("market data", marketData);
     useEffect(()=>{
-        axios.get("http://localhost:5000/usertradedata")
-        .then((res) => {
-            let data = (res.data).filter((elem)=>{
-                return elem.createdOn.includes(todayDate) && elem.status === "COMPLETE";
-            })
+        // axios.get("http://localhost:5000/usertradedata")
+        // .then((res) => {
+        //     let data = (res.data).filter((elem)=>{
+        //         return elem.createdOn.includes(todayDate) && elem.status === "COMPLETE";
+        //     })
             console.log(data);
             setPnlData(data);
 
@@ -72,7 +72,7 @@ export default function RunningPnl({marketData, tradeData}) {
             })
 
             setLiveDetail(liveDetailsArr);
-        })
+        // })
     }, [marketData])
 
     console.log("this is pnl data", pnlData);

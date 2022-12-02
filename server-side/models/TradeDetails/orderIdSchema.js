@@ -29,18 +29,18 @@ const orderIdSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    quantity:{
+    Quantity:{
         type: String,
         required: true
     },
     realInstrument:{
         type: String,
     },
-    product:{
+    Product:{
         type: String,
         required: true
     },
-    transaction_type:{
+    buyOrSell:{
         type: String,
         required: true
     },
@@ -98,7 +98,7 @@ const orderIdSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    tradingsymbol:{
+    symbol:{
         type: String,
         required: true
     },

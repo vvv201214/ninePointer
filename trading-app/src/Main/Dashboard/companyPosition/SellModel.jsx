@@ -5,7 +5,7 @@ import axios from "axios"
 import uniqid from "uniqid"
 import { userContext } from "../../AuthContext";
 
-export default function SellModel({marketData, uIdProps, isTradersTrade, setOrder}) {
+export default function SellModel({marketData, uIdProps, isTradersTrade}) {
     const getDetails = useContext(userContext);
     let uId = uniqid();
     let date = new Date();
@@ -340,7 +340,6 @@ export default function SellModel({marketData, uIdProps, isTradersTrade, setOrde
             })
         });
         const dataResp = await res.json();
-        setOrder(dataResp.orderId);
         console.log(dataResp);
         if(dataResp.status === 422 || dataResp.error || !dataResp){
             window.alert(dataResp.error);
