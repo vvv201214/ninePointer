@@ -1,19 +1,19 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { TiEdit } from "react-icons/ti";
-import Styles from "./TradingAccountsEditModel.module.css";
+import Styles from "./TradingARTokenEditModel.module.css";
 
 
-export default function TradingAccountsEditModel ({ data, id, Render }) {
+export default function TradingARTokenEditModule ({ data, id, Render }) {
+    let date = new Date();
+    let lastModified = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
 
     const { reRender, setReRender } = Render;
     const [editData, setEditData] = useState(data);
 
-    const [broker, setbroker] = useState();
-    const [accountId, setAccountId] = useState();
-    const [accountName, setAccountName] = useState();
-    const [apiKey, setApiKey] = useState();
-    const [apiSecret, setApiSecret] = useState();
+    const [accountId, setaccountId] = useState();
+    const [accessToken, setaccessToken] = useState();
+    const [requestToken, setRequestToken] = useState();
     const [status, setStatus] = useState();
    
     useEffect(() => {
@@ -26,23 +26,19 @@ export default function TradingAccountsEditModel ({ data, id, Render }) {
     useEffect(() => {
         console.log("edit data", editData);
 
-        setbroker(editData[0].brokerName)
-        setAccountId(editData[0].accountId);
-        setAccountName(editData[0].accountName);
-        setApiKey(editData[0].apiKey);
-        setApiSecret(editData[0].apiSecret);
+        setaccountId(editData[0].accountId)
+        setaccessToken(editData[0].accessToken);
+        setRequestToken(editData[0].requestToken);
         setStatus(editData[0].status);
 
     }, [editData, reRender])
     console.log(editData, id);
-    console.log(editData[0].broker, broker);
+    console.log(editData[0].accountId, accountId);
     const [formstate, setformstate] = useState({
-        Broker: "",
-        AccountID : "",
-        AccountName : "",
-        APIKey : "",
-        APISecret : "",
-        Status:""
+        AccountID: "",
+        AccesToken: "",
+        RequestToken: "",
+        Status: ""
     });
 
     console.log(formstate);
@@ -59,27 +55,25 @@ export default function TradingAccountsEditModel ({ data, id, Render }) {
 
     async function formbtn(e) {
         e.preventDefault();
-        setModal(!modal);
-        formstate.Broker = broker;
+
         formstate.AccountID = accountId;
-        formstate.AccountName = accountName;
-        formstate.APIKey = apiKey;
-        formstate.APISecret = apiSecret;
+        formstate.AccesToken = accessToken;
+        formstate.RequestToken = requestToken;
         formstate.Status = status;
-
+        setModal(!modal);
         setformstate(formstate);
-        
 
-        const { Broker, AccountID, AccountName, APIKey, APISecret, Status} = formstate;
 
-        const res = await fetch(`http://localhost:5000/account/${id}`, {
+        const { AccountID, AccesToken, RequestToken, Status} = formstate;
+
+        const res = await fetch(`http://localhost:5000/requestToken/${id}`, {
             method: "PUT",
             headers: {
                 "Accept": "application/json",
                 "content-type": "application/json"
             },
             body: JSON.stringify({
-                Broker, AccountID, AccountName, APIKey, APISecret, Status
+                AccountID, AccesToken, RequestToken, Status
             })
         });
         const dataResp = await res.json();
@@ -99,7 +93,7 @@ export default function TradingAccountsEditModel ({ data, id, Render }) {
     async function Ondelete() {
         console.log(editData)
         setModal(!modal);
-        const res = await fetch(`http://localhost:5000/account/${id}`, {
+        const res = await fetch(`http://localhost:5000/requestToken/${id}`, {
             method: "DELETE",
         });
 
@@ -120,28 +114,23 @@ export default function TradingAccountsEditModel ({ data, id, Render }) {
     return (
         <>
             <button onClick={toggleModal}><TiEdit /></button>
-
             {modal && (
                 <div className="modal">
                     <div onClick={toggleModal} className="overlay"></div>
                     <div className={Styles.modalContent}>
                         <form className={Styles.main_instrument_form}>
-                            <label className={Styles.Ac_form} htmlFor="">Broker</label>
-                            <input type="text" value={broker} className={Styles.Ac_forminput} onChange={(e)=>{{setbroker(e.target.value)}}} />
                             <label className={Styles.Ac_form} htmlFor="">Account ID</label>
-                            <input type="text" value={accountId} className={Styles.Ac_forminput} onChange={(e)=>{{setAccountId(e.target.value)}}}/>
-                            <label className={Styles.Ac_form} htmlFor="">Acccount Name</label>
-                            <input type="text" value={accountName} className={Styles.Ac_forminput}  onChange={(e)=>{{setAccountName(e.target.value)}}} />
-                            <label className={Styles.Ac_form} htmlFor="">API Key</label>
-                            <input type="text" value={apiKey} className={Styles.Ac_forminput}  onChange={(e)=>{{setApiKey(e.target.value)}}} />
-                            <label className={Styles.Ac_form}htmlFor="">API Secret</label>
-                            <input type="text" value={apiSecret} className={Styles.Ac_forminput}  onChange={(e)=>{{setApiSecret(e.target.value)}}} />
+                            <input type="text" value={accountId} className={Styles.Ac_forminput} onChange={(e) => { {setaccountId(e.target.value) } }} />
+                            <label className={Styles.Ac_form} htmlFor="">Access Token</label>
+                            <input type="text" value={accessToken} className={Styles.Ac_forminput} onChange={(e) => { {setaccessToken(e.target.value) } }} />
+                            <label className={Styles.Ac_form} htmlFor="">Request Token</label>
+                            <input type="text" value={requestToken} className={Styles.Ac_forminput} onChange={(e) => { {setRequestToken(e.target.value) } }} />
                             <label htmlFor="" className={Styles.Ac_form}>Status</label>
-                            <select name="" id="" value={status} className={Styles.Ac_forminput} onChange={(e)=>{{setStatus(e.target.value)}}}>
+                            <select name="" id="" value={status} className={Styles.Ac_forminput} onChange={(e) => { {setStatus(e.target.value) } }}>
                                 <option value=""></option>
                                 <option value="Inactive">Inactive</option>
                                 <option value="Active">Active</option>
-                            </select>                         
+                            </select>
                         </form>
                         <button className={Styles.ACform_tbn} onClick={formbtn}>OK</button> <button className={Styles.ACform_tbn} onClick={Ondelete}>Delete</button>
 
