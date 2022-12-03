@@ -103,7 +103,7 @@ a{
 
 .User_header {
     min-height: 5%;
-    max-height: 20%;
+    max-height: 12%;
     display: flex;
     justify-content: space-between;
     align-items: center;

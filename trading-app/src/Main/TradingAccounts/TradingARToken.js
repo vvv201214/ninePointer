@@ -2,10 +2,9 @@ import React, { useState, useEffect } from "react";
 import "./TradingAccounts.css";
 import "./Accounts.css";
 import uniqid from "uniqid"
-import Popup from "reactjs-popup";
-import 'reactjs-popup/dist/index.css';
 import axios from "axios"
 import Styles from "./TradingAccountsCSSFiles/TradingARToken.module.css";
+import TradingARTokenEditModule from "./TradingEditIcon/TradingARTokenEditModel";
 
 function TradingARToken() {
     let uId = uniqid();
@@ -104,7 +103,7 @@ function TradingARToken() {
                                         <form className={Styles.main_instrument_form}>
                                             <label className={Styles.Ac_form} htmlFor="">Account ID</label>
                                             <input type="text" className={Styles.Ac_forminput} onChange={(e) => { { formstate.AccountID = e.target.value } }} />
-                                            <label className={Styles.Ac_form} htmlFor="">Account Token</label>
+                                            <label className={Styles.Ac_form} htmlFor="">Access Token</label>
                                             <input type="text" className={Styles.Ac_forminput} onChange={(e) => { { formstate.AccesToken = e.target.value } }} />
                                             <label className={Styles.Ac_form} htmlFor="">Request Token</label>
                                             <input type="text" className={Styles.Ac_forminput} onChange={(e) => { { formstate.RequestToken = e.target.value } }} />
@@ -134,7 +133,7 @@ function TradingARToken() {
                                 {activeData.map((elem) => {
                                     return (
                                         <tr className="grid2_tr" key={elem.uId}>
-                                            <td className="grid2_td">{elem.accountId}</td>
+                                            <td className="grid2_td"><span className="Editbutton"><TradingARTokenEditModule data={activeData} id={elem._id} Render={{setReRender, reRender}}/></span>{elem.accountId}</td>
                                             <td className="grid2_td">{elem.accessToken}</td>
                                             <td className="grid2_td">{elem.requestToken}</td>
                                             <td className="grid2_td">{elem.status}</td>
@@ -159,7 +158,7 @@ function TradingARToken() {
                             {inactiveData.map((elem) => {
                                 return (
                                     <tr className="grid2_tr" key={elem.uId}>
-                                        <td className="grid2_td">{elem.accountId}</td>
+                                        <td className="grid2_td"><span className="Editbutton"><TradingARTokenEditModule data={inactiveData} id={elem._id} Render={{setReRender, reRender}}/></span>{elem.accountId}{elem.accountId}</td>
                                         <td className="grid2_td">{elem.accessToken}</td>
                                         <td className="grid2_td">{elem.requestToken}</td>
                                         <td className="grid2_td">{elem.status}</td>
@@ -176,23 +175,3 @@ function TradingARToken() {
     )
 }
 export default TradingARToken;
-
-{/* <Popup trigger={<button className="Ac_btn">Generate Access & Request Token</button>}>
-<form>
-    <label className="Ac_form" htmlFor="">Account ID</label>
-    <input type="text" className="Ac_forminput" onChange={(e)=>{{formstate.AccountID = e.target.value}}} />
-    <label className="Ac_form" htmlFor="">Account Token</label>
-    <input type="text" className="Ac_forminput" onChange={(e)=>{{formstate.AccesToken = e.target.value}}} />
-    <label className="Ac_form" htmlFor="">Request Token</label>
-    <input type="text" className="Ac_forminput" onChange={(e)=>{{formstate.RequestToken = e.target.value}}} />
-    
-    <label htmlFor="" className="Ac_form">Status</label>
-    <select name="" id="" className="Ac_forminput" onChange={(e)=>{{formstate.Status = e.target.value}}}>
-        <option value=""></option>
-        <option value="Inactive">Inactive</option>
-        <option value="Active">Active</option>
-    </select> 
-    <br />
-    <button className="ACform_tbn" onClick={formbtn}>OK</button>
-</form>
-</Popup> */}
