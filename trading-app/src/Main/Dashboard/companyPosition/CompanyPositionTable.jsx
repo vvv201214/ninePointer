@@ -27,11 +27,10 @@ function CompanyPositionTable({ socket }) {
         .then((res) => {
             let data = (res.data).filter((elem)=>{
                 return elem.createdOn.includes(todayDate) && elem.status === "COMPLETE";
-            }).catch((err)=>{
-                
-                return new Error(err);
             })
             setData(data);
+        }).catch((err)=>{
+            return new Error(err);
         })
 
         axios.get("http://localhost:5000/getliveprice")
