@@ -59,7 +59,7 @@ async function parameters() {
       access_token: getAccessToken,
     });
     // console.log(ticker);
-    ticker.autoReconnect(true, 100, 5);
+    // ticker.autoReconnect(true, 5, 1);
     ticker.connect();
     ticker.on('ticks', onTicks);
     ticker.on('connect', subscribe);
