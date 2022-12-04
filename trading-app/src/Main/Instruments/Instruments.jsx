@@ -49,6 +49,9 @@ function Instruments() {
                 })
                 setInActiveData(inActive);
                 console.log(inactiveData);
+            }).catch((err)=>{
+                window.alert("Server Down");
+                return new Error(err);
             })
     }, [reRender])
 

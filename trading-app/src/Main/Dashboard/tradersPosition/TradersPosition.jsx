@@ -6,7 +6,12 @@ import TraderPositionTable from "./TraderPositionTable";
 
 
 function TraderPosition() {
-    const socket = io.connect("http://localhost:9000/")
+    let socket;
+    try{
+        socket = io.connect("http://localhost:9000/")
+    } catch(err){
+        throw new Error(err);
+    }
     useEffect(()=>{
         console.log("rendering")
         console.log(socket);
@@ -14,20 +19,7 @@ function TraderPosition() {
             console.log(socket.id);
             socket.emit("hi","ok")
         })
-        // socket.on("disconnect", ()=>{
-        //     console.log(socket.id);
-        // return ()=>{
-        //     console.log('closing');
-        //     socket.close();
-        // }
         }, []);
-
-        // useEffect(()=>{
-        //     return ()=>{
-        //         console.log('closing');
-        //         socket.close();
-        //     }
-        // },[])
 
     return (
         <div>

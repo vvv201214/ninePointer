@@ -65,7 +65,6 @@ router.put("/readProductMapping/:id", async (req, res)=>{
         })
         console.log("this is role", productMapping);
         res.send(productMapping)
-        // res.status(201).json({massage : "data edit succesfully"});
     } catch (e){
         res.status(500).json({error:"Failed to edit data"});
     }
@@ -77,7 +76,6 @@ router.delete("/readProductMapping/:id", async (req, res)=>{
         const {id} = req.params
         const productMapping = await ProductMapping.deleteOne({_id : id})
         console.log("this is userdetail", productMapping);
-        // res.send(userDetail)
         res.status(201).json({massage : "data delete succesfully"});
     } catch (e){
         res.status(500).json({error:"Failed to delete data"});
