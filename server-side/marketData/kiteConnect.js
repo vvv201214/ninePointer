@@ -19,12 +19,27 @@ io.on('connection', (socket) => {
     console.log(data);
   });
 });
-async function parameters() {
-  let accessTokenResp = await axios.get("http://localhost:5000/readRequestToken")
-  let getAccessToken = (accessTokenResp.data)[0].accessToken
 
-  let apiKeyResp = await axios.get("http://localhost:5000/readAccountDetails")
-  let getApiKey = (apiKeyResp.data)[0].apiKey
+async function parameters() {
+  let getAccessToken;
+  let getApiKey;
+
+  try{
+    let accessTokenResp = await axios.get("http://localhost:5000/readRequestToken")
+    let apiKeyResp = await axios.get("http://localhost:5000/readAccountDetails")
+
+    for(let elem of accessTokenResp.data){
+      for(let subElem of apiKeyResp.data){
+          if(elem.accountId === subElem.accountId && elem.status === "Active" && subElem.status === "Active"){
+              getAccessToken = elem.accessToken;
+              getApiKey = subElem.apiKey
+          }
+      }
+    }
+
+  } catch(err) {
+    return new Error(err);
+  }
 
   var api_key = getApiKey;
 

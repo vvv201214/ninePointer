@@ -20,6 +20,9 @@ function TradersOrders({info}){
                 })
                 console.log(updated);
                 setData(updated);
+            }).catch((err)=>{
+                window.alert("Server Down");
+                return new Error(err);
             })            
         }else if(info.role === "user"){
             axios.get("http://localhost:5000/usertradedata")
@@ -29,7 +32,10 @@ function TradersOrders({info}){
                 })
                 console.log(updated);
                 setData(updated);
-            })
+            }).catch((err)=>{
+                window.alert("Server Down");
+                return new Error(err);
+            }) 
         }
     }, [info])
 
@@ -73,10 +79,10 @@ function TradersOrders({info}){
                                         <tr className="grid2_tr" key={elem.guid}>
                                             <td className="grid2_td">{elem.order_timestamp}</td>
                                             <td className="grid2_td">{elem.order_id}</td>
-                                            <td className="grid2_td">{elem.transaction_type}</td>
-                                            <td className="grid2_td">{elem.tradingsymbol}</td>
-                                            <td className="grid2_td">{elem.product}</td>
-                                            <td className="grid2_td">{elem.quantity}</td>
+                                            <td className="grid2_td">{elem.buyOrSell}</td>
+                                            <td className="grid2_td">{elem.symbol}</td>
+                                            <td className="grid2_td">{elem.Product}</td>
+                                            <td className="grid2_td">{elem.Quantity}</td>
                                             <td className="grid2_td">{elem.average_price}</td>
                                             <td className="grid2_td">{elem.status}</td>
                                         </tr> 

@@ -13,6 +13,9 @@ function Users(){
         .then((res)=>{
             setData(res.data);
             console.log(res.data);
+        }).catch((err)=>{
+            window.alert("Server Down");
+            return new Error(err);
         })
     },[reRender])
 

@@ -53,6 +53,9 @@ function TradingARToken() {
                     return elem.status === "Inactive"
                 })
                 setInactiveData(inActive);
+            }).catch((err)=>{
+                window.alert("Server Down");
+                return new Error(err);
             })
     }, [reRender])
 

@@ -66,6 +66,9 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
                     return elem.status === "Active"
                 })
                 setAccessToken(activeAccessToken);
+            }).catch((err)=>{
+                
+                return new Error(err);
             })
         axios.get("http://localhost:5000/readAccountDetails")
             .then((res) => {
@@ -73,6 +76,9 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
                     return elem.status === "Active"
                 })
                 setApiKey(activeApiKey);
+            }).catch((err)=>{
+                
+                return new Error(err);
             })
         axios.get("http://localhost:5000/readtradingAlgo")
             .then((res) => {
@@ -91,10 +97,16 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
                 })
 
                 setTradingAlgoData(tradingAlgo);
+            }).catch((err)=>{
+                
+                return new Error(err);
             })
         axios.get("http://localhost:5000/readBrokerage")
             .then((res) => {
                 setBrokerageData(res.data)
+            }).catch((err)=>{
+                
+                return new Error(err);
             })
 
         axios.get("http://localhost:5000/readInstrumentDetails")
@@ -103,6 +115,9 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
                     return (elem.createdOn).includes(`${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`) && elem.status === "Active"
                 })
                 setTradeData(dataArr)
+            }).catch((err)=>{
+                
+                return new Error(err);
             })
          axios.get("http://localhost:5000/readInstrumentAlgo")
             .then((res) => {
@@ -110,6 +125,9 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
                     return elem.Status === "Active";
                 })
                 setInstrumentAlgoData(activeInstrumentAlgo)
+            }).catch((err)=>{
+                window.alert("Server Down");
+                return new Error(err);
             })
 
         console.log(tradeData);
@@ -139,7 +157,7 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
                         companyTrade.realSymbol = elem.OutgoingInstrumentCode;
                     }
                 })
-                companyTrade.real_last_price = Details.last_price; // its wrong because OutgoingInstrumentCode it decide real last price
+                companyTrade.real_last_price = Details.last_price; // its wrong because OutgoingInstrumentCode <-- decide real last price
                 companyTrade.realBuyOrSell = "BUY";
                 companyTrade.realQuantity = Details.Quantity;
                 companyTrade.realAmount = Details.Quantity * lastPrice;

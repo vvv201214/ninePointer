@@ -2,25 +2,30 @@ const axios = require('axios');
 
 const fetchData = async (getApiKey, getAccessToken) => {
   let date = new Date();
-  const resp = await axios.get('http://localhost:5000/readInstrumentDetails');
-  let ans = resp.data.filter((elem) => {
-    return (
-      elem.createdOn.includes(
-        `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
-      ) && elem.status === 'Active'
-    );
-  });
   let addUrl = '';
-  ans.forEach((elem, index) => {
-    if (index === 0) {
-      addUrl = 'i=' + elem.exchange + ':' + elem.symbol;
-    } else {
-      addUrl += '&i=' + elem.exchange + ':' + elem.symbol;
-    }
-  });
+
+  try{
+    const resp = await axios.get('http://localhost:5000/readInstrumentDetails');
+    let ans = resp.data.filter((elem) => {
+      return (
+        elem.createdOn.includes(
+          `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
+        ) && elem.status === 'Active'
+      );
+    });
+    
+    ans.forEach((elem, index) => {
+      if (index === 0) {
+        addUrl = 'i=' + elem.exchange + ':' + elem.symbol;
+      } else {
+        addUrl += '&i=' + elem.exchange + ':' + elem.symbol;
+      }
+    });  
+  } catch(err) {
+    return new Error(err);
+  }
 
   let url = `https://api.kite.trade/quote?${addUrl}`;
-  // let url = `https://api.kite.trade/quote?i=NFO:NIFTY22N1718200CE`;
   const api_key = getApiKey;
   const access_token = getAccessToken;
   let auth = 'token' + api_key + ':' + access_token;
