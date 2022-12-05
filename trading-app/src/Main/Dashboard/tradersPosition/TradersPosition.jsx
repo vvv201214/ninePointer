@@ -19,6 +19,11 @@ function TraderPosition() {
             console.log(socket.id);
             socket.emit("hi","ok")
         })
+
+        socket.on("noToken", (data)=>{
+            console.log("no token");
+            window.alert(data);
+        })
         }, []);
 
     return (

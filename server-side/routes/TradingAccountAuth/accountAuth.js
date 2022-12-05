@@ -48,4 +48,58 @@ router.get("/readAccountDetails/:id", (req, res)=>{
     })
 })
 
+router.put("/readAccountDetails/:id", async (req, res)=>{
+    console.log(req.params)
+    console.log("this is body", req.body);
+    try{ // Broker, AccountID, AccountName, APIKey, APISecret, Status, lastModified
+        const {id} = req.params
+        const account = await Account.findOneAndUpdate({_id : id}, {
+            $set:{
+                brokerName: req.body.Broker,
+                accountId: req.body.AccountID,
+                accountName: req.body.AccountName,
+                apiKey: req.body.APIKey,
+                apiSecret: req.body.APISecret,
+                status: req.body.Status,
+                lastModified: req.body.lastModified
+            }
+        })
+        console.log("this is role", account);
+        res.send(account)
+    } catch (e){
+        res.status(500).json({error:"Failed to edit data"});
+    }
+})
+
+router.delete("/readAccountDetails/:id", async (req, res)=>{
+    console.log(req.params)
+    try{
+        const {id} = req.params
+        const account = await Account.deleteOne({_id : id})
+        console.log("this is userdetail", account);
+        // res.send(userDetail)
+        res.status(201).json({massage : "data delete succesfully"});
+    } catch (e){
+        res.status(500).json({error:"Failed to delete data"});
+    }
+})
+
+router.patch("/readAccountDetails/:id", async (req, res)=>{
+    console.log(req.params)
+    console.log("this is body", req.body);
+    try{ // Broker, AccountID, AccountName, APIKey, APISecret, Status, lastModified
+        const {id} = req.params
+        const account = await Account.findOneAndUpdate({_id : id}, {
+            $set:{
+                status: req.body.Status,
+                lastModified: req.body.lastModified
+            }
+        })
+        console.log("this is role", account);
+        res.send(account)
+    } catch (e){
+        res.status(500).json({error:"Failed to edit data"});
+    }
+})
+
 module.exports = router;

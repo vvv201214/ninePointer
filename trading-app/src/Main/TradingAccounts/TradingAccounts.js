@@ -69,19 +69,16 @@ function TradingAccounts() {
     }
     useEffect(()=>{
         axios.get("http://localhost:5000/readAccountDetails")
-        .then((res)=>{
+        .then(async (res)=>{
             let data = res.data;
             let active = data.filter((elem)=>{
                 console.log(elem.createdOn, createdOn);
-                return (elem.createdOn).includes(`${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`) && elem.status === "Active"
+                return elem.status === "Active"
             })
             setActiveData(active);
             console.log(active);
 
             let inActive = data.filter((elem) => {
-                if (elem.status === "Active" && !(elem.createdOn).includes(`${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`)) {
-                    elem.status = "Inactive"
-                }
                 return elem.status === "Inactive"
             })
             setInactiveData(inActive);
