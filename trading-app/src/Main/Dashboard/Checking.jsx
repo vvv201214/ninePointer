@@ -7,6 +7,9 @@ function Checking(data){
         axios.get("http://localhost:5000/readBrokerage")
         .then((res) => {
             console.log(res.data)
+        }).catch((err)=>{
+            window.alert("Server Down");
+            return new Error(err);
         })
     },[])
     function hii(){

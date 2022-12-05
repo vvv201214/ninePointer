@@ -5,14 +5,24 @@ require("../db/conn");
 
 
 router.get("/getliveprice", async (req, res)=>{
+  let getAccessToken;
+  let getApiKey;
+  let addUrl = '';
+  let date = new Date();
+
+  try{
     let accessTokenResp = await axios.get("http://localhost:5000/readRequestToken")
-    let getAccessToken = (accessTokenResp.data)[0].accessToken
-  
     let apiKeyResp = await axios.get("http://localhost:5000/readAccountDetails")
-    let getApiKey = (apiKeyResp.data)[0].apiKey
+    
+    for(let elem of accessTokenResp.data){
+      for(let subElem of apiKeyResp.data){
+          if(elem.accountId === subElem.accountId && elem.status === "Active" && subElem.status === "Active"){
+              getAccessToken = elem.accessToken;
+              getApiKey = subElem.apiKey
+          }
+      }
+    }
 
-
-    let date = new Date();
     const resp = await axios.get('http://localhost:5000/readInstrumentDetails');
     let ans = resp.data.filter((elem) => {
       return (
@@ -21,7 +31,7 @@ router.get("/getliveprice", async (req, res)=>{
         ) && elem.status === 'Active'
       );
     });
-    let addUrl = '';
+    
     ans.forEach((elem, index) => {
       if (index === 0) {
         addUrl = 'i=' + elem.exchange + ':' + elem.symbol;
@@ -29,6 +39,10 @@ router.get("/getliveprice", async (req, res)=>{
         addUrl += '&i=' + elem.exchange + ':' + elem.symbol;
       }
     });
+
+  } catch(err) {
+    return new Error(err);
+  }
   
     let url = `https://api.kite.trade/quote?${addUrl}`;
     const api_key = getApiKey;

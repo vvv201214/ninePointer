@@ -6,9 +6,14 @@ import CompanyPositionTable from "./CompanyPositionTable";
 
 
 function CompanyPosition() {
-    const socket = io.connect("http://localhost:9000/")
+    let socket;
+    try{
+        socket = io.connect("http://localhost:9000/")
+    } catch(err){
+        throw new Error(err);
+    }
+    
     useEffect(()=>{
-        console.log("rendering")
         console.log(socket);
         socket.on("connect", ()=>{
             console.log(socket.id);

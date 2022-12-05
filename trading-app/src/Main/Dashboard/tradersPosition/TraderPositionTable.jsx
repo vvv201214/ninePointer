@@ -27,12 +27,18 @@ function TraderPositionTable({ socket }) {
                 return elem.createdOn.includes(todayDate) && elem.status === "COMPLETE" && elem.userId === getDetails.userDetails.email;
             })
             setData(data);
+        }).catch((err)=>{
+            
+            return new Error(err);
         })
 
         axios.get("http://localhost:5000/getliveprice")
             .then((res) => {
                 console.log("live price data", res)
                 setMarketData(res.data)
+            }).catch((err)=>{
+                
+                return new Error(err);
             })
 
         axios.get("http://localhost:5000/readInstrumentDetails")
@@ -41,12 +47,18 @@ function TraderPositionTable({ socket }) {
                     return (elem.createdOn).includes(`${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`) && elem.status === "Active"
                 })
                 setTradeData(dataArr)
+            }).catch((err)=>{
+                
+                return new Error(err);
             })
         console.log("hii");
 
         axios.get("http://localhost:5000/ws")
         .then((res)=>{
             console.log("vijay", (res.data)[0].last_price);
+        }).catch((err)=>{
+            window.alert("Server Down");
+            return new Error(err);
         })
         
         socket.on("tick",(data)=>{

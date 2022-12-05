@@ -5,7 +5,6 @@ const app = express();
 const dotenv = require('dotenv');
 const kiteConnect = require('./marketData/kiteConnect');
 const fetch = require('./marketData/placeOrder');
-const authentication = require("./authentication/authentication")
 app.use(require("cookie-parser")());
 
 dotenv.config({ path: './config.env' });
@@ -19,7 +18,6 @@ app.use(cors({
 }));
 
 app.use(express.json());
-
 app.use(require("./marketData/livePrice"));
 app.use(require("./routes/user/userLogin"));
 app.use(require('./routes/TradeData/getUserTrade'));
