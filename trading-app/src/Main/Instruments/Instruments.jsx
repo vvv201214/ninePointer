@@ -4,6 +4,7 @@ import 'reactjs-popup/dist/index.css';
 import Styles from './InstrumentModel.module.css';
 import uniqid from "uniqid";
 import axios from "axios";
+import InstrumentsEditModel from "./InstrumentEditModel/InstrumentsEditModel";
 
 
 function Instruments() {
@@ -146,7 +147,7 @@ function Instruments() {
                                     activeData.map((elem) => {
                                         return (
                                             <tr className="grid2_tr">
-                                                <td className="grid2_td">{elem.createdOn}</td>
+                                                <td className="grid2_td"><span className="Editbutton"><InstrumentsEditModel data={activeData} id={elem._id} Render={{setReRender, reRender}}/></span>{elem.createdOn}</td>
                                                 <td className="grid2_td">{elem.instrument}</td>
                                                 <td className="grid2_td">{elem.exchange}</td>
                                                 <td className="grid2_td">{elem.symbol}</td>
@@ -174,7 +175,7 @@ function Instruments() {
                                 {inactiveData.map((elem) => {
                                     return (
                                         <tr className="grid2_tr">
-                                            <td className="grid2_td">{elem.createdOn}</td>
+                                            <td className="grid2_td"><span className="Editbutton"><InstrumentsEditModel data={inactiveData} id={elem._id} Render={{setReRender, reRender}}/></span>{elem.createdOn}</td>
                                             <td className="grid2_td">{elem.instrument}</td>
                                             <td className="grid2_td">{elem.exchange}</td>
                                             <td className="grid2_td">{elem.symbol}</td>
