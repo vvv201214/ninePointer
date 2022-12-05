@@ -45,10 +45,38 @@ function TradingARToken() {
                 setActiveData(active);
                 console.log(active);
 
-                let inActive = data.filter((elem) => {
-                    if (elem.status === "Active" && !(elem.generatedOn).includes(`${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`)) {
-                        elem.status = "Inactive"
+                (res.data).map(async (elem)=>{
+                    if(elem.status === "Active" && !(elem.createdOn).includes(`${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`)){
+                        formstate.Status = "Inactive";
+                        const {Status, lastModified} = formstate;
+                        const res = await fetch(`http://localhost:5000/readAccountDetails/${elem._id}`, {
+                            method: "PATCH",
+                            headers: {
+                                "Accept": "application/json",
+                                "content-type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                Status, lastModified
+                            })
+                        });
+                        const dataResp = await res.json();
+                        console.log(dataResp);
+                        if (dataResp.status === 422 || dataResp.error || !dataResp) {
+                            window.alert(dataResp.error);
+                            console.log("Failed to Edit");
+                        } else {
+                            console.log(dataResp);
+                            window.alert("Edit succesfull");
+                            console.log("Edit succesfull");
+                        }
+    
+    
                     }
+                })
+    
+    
+
+                let inActive = data.filter((elem) => {
                     return elem.status === "Inactive"
                 })
                 setInactiveData(inActive);
@@ -161,7 +189,7 @@ function TradingARToken() {
                             {inactiveData.map((elem) => {
                                 return (
                                     <tr className="grid2_tr" key={elem.uId}>
-                                        <td className="grid2_td"><span className="Editbutton"><TradingARTokenEditModule data={inactiveData} id={elem._id} Render={{setReRender, reRender}}/></span>{elem.accountId}{elem.accountId}</td>
+                                        <td className="grid2_td"><span className="Editbutton"><TradingARTokenEditModule data={inactiveData} id={elem._id} Render={{setReRender, reRender}}/></span>{elem.accountId}</td>
                                         <td className="grid2_td">{elem.accessToken}</td>
                                         <td className="grid2_td">{elem.requestToken}</td>
                                         <td className="grid2_td">{elem.status}</td>
