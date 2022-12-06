@@ -27,6 +27,7 @@ import CompanyOrders from './Dashboard/CompanyOrders';
 import TradersOrders from './Dashboard/TradersOrders';
 import TradersPosition from './Dashboard/tradersPosition/TradersPosition';
 import "./Main.css"
+import UserSelect from './User/UserSelect/UserSelect';
 
 
 export default function Routing() {
@@ -60,6 +61,7 @@ export default function Routing() {
                         <Route path='/main/user' element={<UserMain/>}>
                             <Route path='/main/user' element={<Users/>}></Route>
                             <Route path='/main/user/roles' element={<Roles/>}></Route>
+                            <Route path='/main/user/UserSelect' element={<UserSelect/>}></Route>
                         </Route>
                         {/* {console.log("this is details...",details)}
                         {details.role === "admin" ? */}
