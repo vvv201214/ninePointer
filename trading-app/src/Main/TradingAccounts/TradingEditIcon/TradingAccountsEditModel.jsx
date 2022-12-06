@@ -6,6 +6,9 @@ import Styles from "./TradingAccountsEditModel.module.css";
 
 export default function TradingAccountsEditModel ({ data, id, Render }) {
 
+    let date = new Date();
+    let lastModified = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
+
     const { reRender, setReRender } = Render;
     const [editData, setEditData] = useState(data);
 
@@ -72,14 +75,14 @@ export default function TradingAccountsEditModel ({ data, id, Render }) {
 
         const { Broker, AccountID, AccountName, APIKey, APISecret, Status} = formstate;
 
-        const res = await fetch(`http://localhost:5000/account/${id}`, {
+        const res = await fetch(`http://localhost:5000/readAccountDetails/${id}`, {
             method: "PUT",
             headers: {
                 "Accept": "application/json",
                 "content-type": "application/json"
             },
             body: JSON.stringify({
-                Broker, AccountID, AccountName, APIKey, APISecret, Status
+                Broker, AccountID, AccountName, APIKey, APISecret, Status, lastModified
             })
         });
         const dataResp = await res.json();
@@ -99,7 +102,7 @@ export default function TradingAccountsEditModel ({ data, id, Render }) {
     async function Ondelete() {
         console.log(editData)
         setModal(!modal);
-        const res = await fetch(`http://localhost:5000/account/${id}`, {
+        const res = await fetch(`http://localhost:5000/readAccountDetails/${id}`, {
             method: "DELETE",
         });
 

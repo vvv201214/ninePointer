@@ -70,7 +70,7 @@ function CompanyPositionTable({ socket }) {
         console.log(marketData);
         console.log(tradeData);
     },[])
-
+    console.log(marketData);
     useEffect(()=>{
         return ()=>{
             console.log('closing');

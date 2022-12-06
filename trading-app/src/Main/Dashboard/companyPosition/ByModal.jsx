@@ -387,6 +387,31 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
         return finalCharge
     }
 
+    async function mockTrade(){
+        const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price } = Details;
+
+        const res = await fetch("http://localhost:5000/mocktrade", {
+            method: "POST",
+            headers: {
+                "content-type": "application/json"
+            },
+            body: JSON.stringify({
+                exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, createdBy, userId, createdOn, uId, placed_by
+            })
+        });
+        const dataResp = await res.json();
+        console.log(dataResp);
+        if (dataResp.status === 422 || dataResp.error || !dataResp) {
+            window.alert(dataResp.error);
+            console.log("Failed to Trade");
+        } else {
+            console.log(dataResp);
+            window.alert("Trade succesfull");
+            console.log("entry succesfull");
+        }
+
+    }
+
     return (
         <>
             <button disabled={isTradeEnable} onClick={toggleModal} className="btn-modal By_btn">

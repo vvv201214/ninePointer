@@ -4,44 +4,49 @@ require("../../db/conn");
 const Instrument = require("../../models/Instruments/instrumentSchema");
 const axios = require('axios');
 
+async function fetchToken (exchange, symbol){
+    let getAccessToken;
+    let getApiKey;
+    let instrumentToken ;
+
+    let accessTokenResp = await axios.get("http://localhost:5000/readRequestToken")
+    let apiKeyResp = await axios.get("http://localhost:5000/readAccountDetails")
+
+    for(let elem of accessTokenResp.data){
+        for(let subElem of apiKeyResp.data){
+            if(elem.accountId === subElem.accountId && elem.status === "Active" && subElem.status === "Active"){
+                getAccessToken = elem.accessToken;
+                getApiKey = subElem.apiKey
+            }
+        }
+    }
+    const addUrl = 'i=' + exchange + ':' + symbol;
+    const url = `https://api.kite.trade/quote?${addUrl}`
+
+    let auth = 'token' + getApiKey + ':' + getAccessToken;
+    
+    let authOptions = {
+        headers: {
+            'X-Kite-Version': '3',
+            Authorization: auth,
+        },
+    };
+    const resp = await axios.get(url, authOptions);
+    for (let elem in resp.data.data) {
+        instrumentToken = (resp.data.data[elem].instrument_token);
+    }
+    return instrumentToken;
+}
+
+
 router.post("/instrument", async (req, res)=>{
 
     try{
         const {instrument, exchange, symbol, status, uId, createdOn, lastModified, createdBy, lotSize} = req.body;
         console.log(req.body);
-        let getAccessToken;
-        let getApiKey;
-        let instrumentToken ;
 
-        let accessTokenResp = await axios.get("http://localhost:5000/readRequestToken")
-        let apiKeyResp = await axios.get("http://localhost:5000/readAccountDetails")
-
-        for(let elem of accessTokenResp.data){
-            for(let subElem of apiKeyResp.data){
-                if(elem.accountId === subElem.accountId && elem.status === "Active" && subElem.status === "Active"){
-                    getAccessToken = elem.accessToken;
-                    getApiKey = subElem.apiKey
-                }
-            }
-        }
-    
-        
-        const addUrl = 'i=' + exchange + ':' + symbol;
-        const url = `https://api.kite.trade/quote?${addUrl}`
-
-        let auth = 'token' + getApiKey + ':' + getAccessToken;
-        
-        let authOptions = {
-            headers: {
-                'X-Kite-Version': '3',
-                Authorization: auth,
-            },
-        };
-        const resp = await axios.get(url, authOptions);
-        for (let elem in resp.data.data) {
-            instrumentToken = (resp.data.data[elem].instrument_token);
-        }
-
+        let instrumentToken = await fetchToken(exchange, symbol);
+        console.log(instrumentToken);
         if(!instrument || !exchange || !symbol || !status || !uId || !createdOn || !lastModified || !createdBy || !lotSize || !instrumentToken){
             console.log(instrumentToken);
             console.log(req.body);
@@ -87,6 +92,44 @@ router.get("/readInstrumentDetails/:id", (req, res)=>{
     .catch((err)=>{
         return res.status(422).json({error : "date not found"})
     })
+})
+
+router.put("/readInstrumentDetails/:id", async (req, res)=>{
+    console.log(req.params)
+    console.log("this is body", req.body);
+    const {exchange, symbol} = req.body;
+    const token = await fetchToken(exchange, symbol);
+    try{ 
+        const {id} = req.params
+        const instrument = await Instrument.findOneAndUpdate({_id : id}, {
+            $set:{ 
+                instrument: req.body.Instrument,
+                exchange: req.body.Exchange,
+                symbol: req.body.Symbole,
+                status: req.body.Status,
+                lastModified: req.body.lastModified,  
+                lotSize: req.body.LotSize,
+                instrumentToken: token,
+            }
+        })
+        console.log("this is role", instrument);
+        res.send(instrument)
+    } catch (e){
+        res.status(500).json({error:"Failed to edit data"});
+    }
+})
+
+router.delete("/readInstrumentDetails/:id", async (req, res)=>{
+    console.log(req.params)
+    try{
+        const {id} = req.params
+        const instrument = await Instrument.deleteOne({_id : id})
+        console.log("this is userdetail", instrument);
+        // res.send(userDetail)
+        res.status(201).json({massage : "data delete succesfully"});
+    } catch (e){
+        res.status(500).json({error:"Failed to delete data"});
+    }
 })
 
 module.exports = router;

@@ -28,7 +28,6 @@ function TraderPositionTable({ socket }) {
             })
             setData(data);
         }).catch((err)=>{
-            
             return new Error(err);
         })
 

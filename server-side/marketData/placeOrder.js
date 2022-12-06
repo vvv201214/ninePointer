@@ -106,7 +106,7 @@ router.post("/placeorder", (async (req, res)=>{
                     }
                     console.log("first instrument", instrument);
                     const userTradeData = new UserTradeData({order_id, status, uId, createdOn, 
-                        createdBy, last_price, average_price, Quantity, symbol, Product, buyOrSell, 
+                        createdBy, last_price, average_price:last_price , Quantity, symbol, Product, buyOrSell, 
                         validity, variety, order_timestamp, order_type, exchange, userId, brokerageCharge
                         , realAmount, tradeBy});
             
@@ -150,7 +150,7 @@ router.post("/placeorder", (async (req, res)=>{
                         return res.status(422).json({error : "data already exist..."})
                     }
                     const userTradeData = new UserTradeData({order_id, status, uId, createdOn, 
-                        createdBy, last_price, average_price, Quantity, symbol, Product, buyOrSell, 
+                        createdBy, last_price, average_price: last_price, Quantity, symbol, Product, buyOrSell, 
                         validity, variety, order_timestamp, order_type, amount:(Quantity*last_price), exchange,
                          userId, brokerageCharge, realAmount, tradeBy});
             
