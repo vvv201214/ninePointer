@@ -5,12 +5,13 @@ const Instrument = require("../../models/Instruments/instrumentSchema");
 const axios = require('axios');
 
 async function fetchToken (exchange, symbol){
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/";
     let getAccessToken;
     let getApiKey;
     let instrumentToken ;
 
-    let accessTokenResp = await axios.get("http://localhost:5000/readRequestToken")
-    let apiKeyResp = await axios.get("http://localhost:5000/readAccountDetails")
+    let accessTokenResp = await axios.get(`${baseUrl}api/v1/readRequestToken`)
+    let apiKeyResp = await axios.get(`${baseUrl}api/v1/readAccountDetails`)
 
     for(let elem of accessTokenResp.data){
         for(let subElem of apiKeyResp.data){
@@ -96,9 +97,8 @@ router.get("/readInstrumentDetails/:id", (req, res)=>{
 
 router.put("/readInstrumentDetails/:id", async (req, res)=>{
     console.log(req.params)
-    console.log("this is body", req.body);
-    const {exchange, symbol} = req.body;
-    const token = await fetchToken(exchange, symbol);
+    const {Exchange, Symbole} = req.body;
+    const token = await fetchToken(Exchange, Symbole);
     try{ 
         const {id} = req.params
         const instrument = await Instrument.findOneAndUpdate({_id : id}, {

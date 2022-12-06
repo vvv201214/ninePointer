@@ -8,6 +8,8 @@ import Styles from "./TradingAccountsCSSFiles/TradingAccounts.module.css";
 import TradingAccountsEditModel from "./TradingEditIcon/TradingAccountsEditModel";
 
 function TradingAccounts() {
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+
     let uId = uniqid();
     let date = new Date();
     let createdOn = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`
@@ -44,7 +46,7 @@ function TradingAccounts() {
         setModal(!modal);
         const {AccountID, Broker, AccountName, APIKey, APISecret, Status} = formstate;
 
-        const res = await fetch("http://localhost:5000/account", {
+        const res = await fetch(`${baseUrl}api/v1/account`, {
             method: "POST",
             headers: {
                 "content-type" : "application/json"
@@ -68,7 +70,7 @@ function TradingAccounts() {
         setOpen(false);
     }
     useEffect(()=>{
-        axios.get("http://localhost:5000/readAccountDetails")
+        axios.get(`${baseUrl}api/v1/readAccountDetails`)
         .then(async (res)=>{
             let data = res.data;
             let active = data.filter((elem)=>{

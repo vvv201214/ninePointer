@@ -7,6 +7,8 @@ import Styles from "./TradingAccountsCSSFiles/TradingARToken.module.css";
 import TradingARTokenEditModule from "./TradingEditIcon/TradingARTokenEditModel";
 
 function TradingARToken() {
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+
     let uId = uniqid();
     let date = new Date();
     let generatedOn = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
@@ -35,7 +37,7 @@ function TradingARToken() {
     }
 
     useEffect(() => {
-        axios.get("http://localhost:5000/readRequestToken")
+        axios.get(`${baseUrl}api/v1/readRequestToken`)
             .then((res) => {
                 let data = res.data;
                 let active = data.filter((elem) => {
@@ -49,7 +51,7 @@ function TradingARToken() {
                     if(elem.status === "Active" && !(elem.createdOn).includes(`${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`)){
                         formstate.Status = "Inactive";
                         const {Status, lastModified} = formstate;
-                        const res = await fetch(`http://localhost:5000/readAccountDetails/${elem._id}`, {
+                        const res = await fetch(`${baseUrl}api/v1/readAccountDetails/${elem._id}`, {
                             method: "PATCH",
                             headers: {
                                 "Accept": "application/json",
@@ -98,7 +100,7 @@ function TradingARToken() {
 
         const { AccountID, AccesToken, RequestToken, Status } = formstate;
 
-        const res = await fetch("http://localhost:5000/requestToken", {
+        const res = await fetch(`${baseUrl}api/v1/requestToken`, {
             method: "POST",
             headers: {
                 "content-type": "application/json"

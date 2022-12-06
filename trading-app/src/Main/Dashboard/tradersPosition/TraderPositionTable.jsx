@@ -10,6 +10,7 @@ import OverallPnl from "../PnlParts/OverallPnl";
 import { userContext } from "../../AuthContext";
 
 function TraderPositionTable({ socket }) {
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
     const getDetails = useContext(userContext);
     const [tradeData, setTradeData] = useState([]);
@@ -21,7 +22,7 @@ function TraderPositionTable({ socket }) {
     let fake_date = "1-12-2022"
 
     useEffect(() => {
-        axios.get("http://localhost:5000/usertradedata")
+        axios.get(`${baseUrl}api/v1/usertradedata`)
         .then((res) => {
             let data = (res.data).filter((elem)=>{
                 return elem.createdOn.includes(todayDate) && elem.status === "COMPLETE" && elem.userId === getDetails.userDetails.email;
@@ -31,7 +32,7 @@ function TraderPositionTable({ socket }) {
             return new Error(err);
         })
 
-        axios.get("http://localhost:5000/getliveprice")
+        axios.get(`${baseUrl}api/v1/getliveprice`)
             .then((res) => {
                 console.log("live price data", res)
                 setMarketData(res.data)
@@ -40,10 +41,10 @@ function TraderPositionTable({ socket }) {
                 return new Error(err);
             })
 
-        axios.get("http://localhost:5000/readInstrumentDetails")
+        axios.get(`${baseUrl}api/v1/readInstrumentDetails`)
             .then((res) => {
                 let dataArr = (res.data).filter((elem) => {
-                    return (elem.createdOn).includes(`${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`) && elem.status === "Active"
+                    return  elem.status === "Active"
                 })
                 setTradeData(dataArr)
             }).catch((err)=>{
@@ -52,7 +53,7 @@ function TraderPositionTable({ socket }) {
             })
         console.log("hii");
 
-        axios.get("http://localhost:5000/ws")
+        axios.get(`${baseUrl}api/v1/ws`)
         .then((res)=>{
             console.log("vijay", (res.data)[0].last_price);
         }).catch((err)=>{

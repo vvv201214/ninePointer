@@ -5,6 +5,8 @@ import Styles from "./InstrumentMappingEditModel.module.css";
 
 
 export default function InstrumentMappingEditModel ({ data, id, Render }) {
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+
     let date = new Date();
     let lastModified = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
 
@@ -70,7 +72,7 @@ export default function InstrumentMappingEditModel ({ data, id, Render }) {
 
         const { InstrumentNameIncoming, IncomingInstrumentCode, InstrumentNameOutgoing, OutgoingInstrumentCode, Status} = formstate;
 
-        const res = await fetch(`http://localhost:5000/readInstrumentAlgo/${id}`, {
+        const res = await fetch(`${baseUrl}api/v1/readInstrumentAlgo/${id}`, {
             method: "PUT",
             headers: {
                 "Accept": "application/json",
@@ -96,7 +98,7 @@ export default function InstrumentMappingEditModel ({ data, id, Render }) {
 
     async function Ondelete() {
         console.log(editData)
-        const res = await fetch(`http://localhost:5000/readInstrumentAlgo/${id}`, {
+        const res = await fetch(`${baseUrl}api/v1/readInstrumentAlgo/${id}`, {
             method: "DELETE",
         });
 

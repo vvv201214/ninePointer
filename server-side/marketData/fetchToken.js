@@ -1,11 +1,13 @@
 const axios = require('axios');
 
 const fetchData = async (getApiKey, getAccessToken) => {
+  let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+
   let date = new Date();
   let addUrl = '';
 
   try{
-    const resp = await axios.get('http://localhost:5000/readInstrumentDetails');
+    const resp = await axios.get(`${baseUrl}api/v1/readInstrumentDetails`);
     let ans = resp.data.filter((elem) => {
       return (
         elem.createdOn.includes(

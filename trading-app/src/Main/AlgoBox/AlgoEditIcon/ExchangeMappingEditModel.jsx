@@ -5,6 +5,7 @@ import Styles from "./ExchangeMappingEditModel.module.css";
 
 
 export default function ExchangeMappingEditModel ({ data, id, Render }) {
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
     let date = new Date();
     let lastModified = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
 
@@ -70,7 +71,7 @@ export default function ExchangeMappingEditModel ({ data, id, Render }) {
 
         const { ExchangeNameIncoming, IncomingExchangeCode, ExchangeNameOutgoing, OutgoingInstrumentCode, Status} = formstate;
 
-        const res = await fetch(`http://localhost:3000/readExchangeMapping/${id}`, {
+        const res = await fetch(`${baseUrl}api/v1/readExchangeMapping/${id}`, {
             method: "PUT",
             headers: {
                 "Accept": "application/json",
@@ -96,7 +97,7 @@ export default function ExchangeMappingEditModel ({ data, id, Render }) {
 
     async function Ondelete() {
         console.log(editData)
-        const res = await fetch(`http://localhost:3000/readExchangeMapping/${id}`, {
+        const res = await fetch(`${baseUrl}api/v1/readExchangeMapping/${id}`, {
             method: "DELETE",
         });
 

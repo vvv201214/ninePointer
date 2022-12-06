@@ -5,6 +5,7 @@ import Styles from "./UserEditModel.module.css";
 
 
 export default function UserEditModel({data, id, Render}) {
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
     let date = new Date();
     let lastModified = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
@@ -103,7 +104,7 @@ export default function UserEditModel({data, id, Render}) {
 
         const { Name, Designation, Degree, EmailID, MobileNo, DOB, Gender, TradingExp, Location, LastOccupation, DateofJoining, Role, Status } = formstate;
 
-        const res = await fetch(`http://localhost:5000/readuserdetails/${id}`, {
+        const res = await fetch(`${baseUrl}api/v1/readuserdetails/${id}`, {
             method: "PUT",
             headers: {
                 "Accept": "application/json",
@@ -129,7 +130,7 @@ export default function UserEditModel({data, id, Render}) {
 
     async function Ondelete(){
       console.log(editData)
-      const res = await fetch(`http://localhost:5000/readuserdetails/${id}`, {
+      const res = await fetch(`${baseUrl}api/v1/readuserdetails/${id}`, {
           method: "DELETE",
       });
 

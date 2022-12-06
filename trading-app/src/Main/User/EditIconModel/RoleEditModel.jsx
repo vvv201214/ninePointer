@@ -4,6 +4,8 @@ import { TiEdit } from "react-icons/ti";
 import Styles from "./RoleEditModel.module.css";
 
 function RoleEditModel({data, id, Render}) {
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+
     let date = new Date();
     let lastModified = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
   
@@ -80,7 +82,7 @@ function RoleEditModel({data, id, Render}) {
 
         const { roleName1, instruments1, tradingAccount, APIParameters, users1, algoBox1, reports1 } = formstate;
 
-        const res = await fetch(`http://localhost:5000/readeveryonerole/${id}`, {
+        const res = await fetch(`${baseUrl}api/v1/readeveryonerole/${id}`, {
             method: "PUT",
             headers: {
                 "Accept": "application/json",
@@ -106,7 +108,7 @@ function RoleEditModel({data, id, Render}) {
 
     async function Ondelete(){
       console.log(editData)
-      const res = await fetch(`http://localhost:5000/readeveryonerole/${id}`, {
+      const res = await fetch(`${baseUrl}api/v1/readeveryonerole/${id}`, {
           method: "DELETE",
       });
 
