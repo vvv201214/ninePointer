@@ -51,7 +51,7 @@ router.get("/readAccountDetails/:id", (req, res)=>{
 router.put("/readAccountDetails/:id", async (req, res)=>{
     console.log(req.params)
     console.log("this is body", req.body);
-    try{ // Broker, AccountID, AccountName, APIKey, APISecret, Status, lastModified
+    try{ 
         const {id} = req.params
         const account = await Account.findOneAndUpdate({_id : id}, {
             $set:{

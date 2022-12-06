@@ -71,14 +71,14 @@ export default function InstrumentsEditModel({ data, id, Render }) {
 
         const { Instrument, Exchange, Symbole,LotSize, Status } = formstate;
 
-        const res = await fetch(`http://localhost:5000/instrument/${id}`, {
+        const res = await fetch(`http://localhost:5000/readInstrumentDetails/${id}`, {
             method: "PUT",
             headers: {
                 "Accept": "application/json",
                 "content-type": "application/json"
             },
             body: JSON.stringify({
-                Instrument, Exchange, Symbole,LotSize, Status
+                Instrument, Exchange, Symbole,LotSize, Status, lastModified
             })
         });
         const dataResp = await res.json();
@@ -98,7 +98,7 @@ export default function InstrumentsEditModel({ data, id, Render }) {
     async function Ondelete() {
         console.log(editData)
         setModal(!modal);
-        const res = await fetch(`http://localhost:5000/instrument/${id}`, {
+        const res = await fetch(`http://localhost:5000/readInstrumentDetails/${id}`, {
             method: "DELETE",
         });
 
@@ -133,7 +133,7 @@ export default function InstrumentsEditModel({ data, id, Render }) {
                             <label htmlFor="" className={Styles.Ac_form}>Lot Size</label>
                             <input type="text" value={lotSize} className={Styles.Ac_forminput} onChange={(e) => { { setlotSize(e.target.value) } }} />
                             <label htmlFor="" className={Styles.Ac_form}>Status</label>
-                            <select name="" id="" value={status} className={Styles.Ac_forminput} onChange={(e) => { { setInstrument(e.target.value) } }}>
+                            <select name="" id="" value={status} className={Styles.Ac_forminput} onChange={(e) => { { setStatus(e.target.value) } }}>
                                 <option value=""></option>
                                 <option value="Inactive">Inactive</option>
                                 <option value="Active">Active</option>
