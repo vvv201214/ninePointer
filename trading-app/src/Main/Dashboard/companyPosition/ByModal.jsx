@@ -396,7 +396,7 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
                 "content-type": "application/json"
             },
             body: JSON.stringify({
-                exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, createdBy, userId, createdOn, uId, placed_by
+                exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, createdBy, userId, createdOn, uId
             })
         });
         const dataResp = await res.json();
