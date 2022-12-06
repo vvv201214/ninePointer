@@ -48,4 +48,59 @@ router.get("/readRequestToken/:id", (req, res)=>{
     })
 })
 
+router.put("/readRequestToken/:id", async (req, res)=>{
+    console.log(req.params)
+    console.log("this is body", req.body);
+    try{
+        const {id} = req.params
+        const requestToken = await RequestToken.findOneAndUpdate({_id : id}, {
+            $set:{
+                accountId: req.body.AccountID,
+                accessToken: req.body.AccesToken,
+                requestToken: req.body.RequestToken,
+                status: req.body.Status,
+                lastModified: req.body.lastModified
+            }
+        })
+        console.log("this is role", requestToken);
+        res.send(requestToken)
+        // res.status(201).json({massage : "data edit succesfully"});
+    } catch (e){
+        res.status(500).json({error:"Failed to edit data"});
+    }
+})
+
+router.delete("/readRequestToken/:id", async (req, res)=>{
+    console.log(req.params)
+    try{
+        const {id} = req.params
+        const requestToken = await RequestToken.deleteOne({_id : id})
+        console.log("this is userdetail", requestToken);
+        // res.send(userDetail)
+        res.status(201).json({massage : "data delete succesfully"});
+    } catch (e){
+        res.status(500).json({error:"Failed to delete data"});
+    }
+
+})
+
+router.patch("/readRequestToken/:id", async (req, res)=>{
+    console.log(req.params)
+    console.log("this is body", req.body);
+    try{ // Broker, AccountID, AccountName, APIKey, APISecret, Status, lastModified
+        const {id} = req.params
+        const account = await Account.findOneAndUpdate({_id : id}, {
+            $set:{
+                status: req.body.Status,
+                lastModified: req.body.lastModified
+            }
+        })
+        console.log("this is role", account);
+        res.send(account)
+    } catch (e){
+        res.status(500).json({error:"Failed to edit data"});
+    }
+})
+
+
 module.exports = router;

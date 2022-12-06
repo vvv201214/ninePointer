@@ -65,15 +65,15 @@ export default function TradingARTokenEditModule ({ data, id, Render }) {
 
 
         const { AccountID, AccesToken, RequestToken, Status} = formstate;
-
-        const res = await fetch(`http://localhost:5000/requestToken/${id}`, {
+                                        
+        const res = await fetch(`http://localhost:5000/readRequestToken/${id}`, {
             method: "PUT",
             headers: {
                 "Accept": "application/json",
                 "content-type": "application/json"
             },
             body: JSON.stringify({
-                AccountID, AccesToken, RequestToken, Status
+                AccountID, AccesToken, RequestToken, Status, lastModified
             })
         });
         const dataResp = await res.json();
@@ -93,7 +93,7 @@ export default function TradingARTokenEditModule ({ data, id, Render }) {
     async function Ondelete() {
         console.log(editData)
         setModal(!modal);
-        const res = await fetch(`http://localhost:5000/requestToken/${id}`, {
+        const res = await fetch(`http://localhost:5000/readRequestToken/${id}`, {
             method: "DELETE",
         });
 
