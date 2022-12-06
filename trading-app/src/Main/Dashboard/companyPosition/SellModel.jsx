@@ -6,6 +6,8 @@ import uniqid from "uniqid"
 import { userContext } from "../../AuthContext";
 
 export default function SellModel({marketData, uIdProps, isTradersTrade}) {
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+
     const getDetails = useContext(userContext);
     let uId = uniqid();
     let date = new Date();
@@ -58,7 +60,7 @@ export default function SellModel({marketData, uIdProps, isTradersTrade}) {
     }) 
 
     useEffect(()=>{
-        axios.get("http://localhost:5000/readRequestToken")
+        axios.get(`${baseUrl}api/v1/readRequestToken`)
         .then((res)=>{
             let activeAccessToken = (res.data).filter((elem)=>{
                 return elem.status === "Active"
@@ -68,7 +70,7 @@ export default function SellModel({marketData, uIdProps, isTradersTrade}) {
             
             return new Error(err);
         })
-        axios.get("http://localhost:5000/readAccountDetails")
+        axios.get(`${baseUrl}api/v1/readAccountDetails`)
         .then((res)=>{
             let activeApiKey = (res.data).filter((elem)=>{
                 return elem.status === "Active"
@@ -79,7 +81,7 @@ export default function SellModel({marketData, uIdProps, isTradersTrade}) {
             return new Error(err);
         })
         
-        axios.get("http://localhost:5000/readtradingAlgo")
+        axios.get(`${baseUrl}api/v1/readtradingAlgo`)
             .then((res) => {
                 let tradingAlgo = [];
                 apiKeyDetails.map((elem)=>{
@@ -100,7 +102,7 @@ export default function SellModel({marketData, uIdProps, isTradersTrade}) {
                 
                 return new Error(err);
             })
-        axios.get("http://localhost:5000/readBrokerage")
+        axios.get(`${baseUrl}api/v1/readBrokerage`)
         .then((res)=>{
             setBrokerageData(res.data)
         }).catch((err)=>{
@@ -108,7 +110,7 @@ export default function SellModel({marketData, uIdProps, isTradersTrade}) {
             return new Error(err);
         })
         
-        axios.get("http://localhost:5000/readInstrumentDetails")
+        axios.get(`${baseUrl}api/v1/readInstrumentDetails`)
         .then((res)=>{
             let dataArr = (res.data).filter((elem)=>{
                 return (elem.createdOn).includes(`${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`) && elem.status === "Active" 
@@ -118,7 +120,7 @@ export default function SellModel({marketData, uIdProps, isTradersTrade}) {
             
             return new Error(err);
         })
-        axios.get("http://localhost:5000/readInstrumentAlgo")
+        axios.get(`${baseUrl}api/v1/readInstrumentAlgo`)
         .then((res) => {
             let activeInstrumentAlgo = (res.data).filter((elem)=>{
                 return elem.Status === "Active";
@@ -349,7 +351,7 @@ export default function SellModel({marketData, uIdProps, isTradersTrade}) {
         const {apiKey} = apiKeyDetails[0];
         const {accessToken} = accessTokenDetails[0];
 
-        const res = await fetch("http://localhost:5000/placeorder", {
+        const res = await fetch(`${baseUrl}api/v1/placeorder`, {
             method: "POST",
             headers: {
                 "content-type" : "application/json"

@@ -6,6 +6,8 @@ import uniqid from "uniqid"
 import { userContext } from "../../AuthContext";
 
 export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+
     const getDetails = useContext(userContext);
     let uId = uniqid();
     let date = new Date();
@@ -58,9 +60,11 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
         realAmount: "",
         real_last_price: "",
     })
-
+    console.log(process.env.NODE_ENV);
+// developer : "http://localhost:5000/readRequestToken"
+// production : "/api/v1/readRequestToken"
     useEffect(() => {
-        axios.get("http://localhost:5000/readRequestToken")
+        axios.get(`${baseUrl}api/v1/readRequestToken`)
             .then((res) => {
                 let activeAccessToken = (res.data).filter((elem)=>{
                     return elem.status === "Active"
@@ -70,7 +74,7 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
                 
                 return new Error(err);
             })
-        axios.get("http://localhost:5000/readAccountDetails")
+        axios.get(`${baseUrl}api/v1/readAccountDetails`)
             .then((res) => {
                 let activeApiKey = (res.data).filter((elem)=>{
                     return elem.status === "Active"
@@ -80,7 +84,7 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
                 
                 return new Error(err);
             })
-        axios.get("http://localhost:5000/readtradingAlgo")
+        axios.get(`${baseUrl}api/v1/readtradingAlgo`)
             .then((res) => {
                 let tradingAlgo = [];
                 apiKeyDetails.map((elem)=>{
@@ -101,7 +105,7 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
                 
                 return new Error(err);
             })
-        axios.get("http://localhost:5000/readBrokerage")
+        axios.get(`${baseUrl}api/v1/readBrokerage`)
             .then((res) => {
                 setBrokerageData(res.data)
             }).catch((err)=>{
@@ -109,7 +113,7 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
                 return new Error(err);
             })
 
-        axios.get("http://localhost:5000/readInstrumentDetails")
+        axios.get(`${baseUrl}api/v1/readInstrumentDetails`)
             .then((res) => {
                 let dataArr = (res.data).filter((elem) => {
                     return (elem.createdOn).includes(`${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`) && elem.status === "Active"
@@ -119,7 +123,7 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
                 
                 return new Error(err);
             })
-         axios.get("http://localhost:5000/readInstrumentAlgo")
+         axios.get(`${baseUrl}api/v1/readInstrumentAlgo`)
             .then((res) => {
                 let activeInstrumentAlgo = (res.data).filter((elem)=>{
                     return elem.Status === "Active";
@@ -299,7 +303,7 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
                 companyTrade.realSymbol = Details.symbol
                 companyTrade.realInstrument = Details.instrument
                 companyTrade.realQuantity = Details.Quantity;
-    
+                companyTrade.real_last_price = Details.last_price
                 companyTrade.realAmount = Details.last_price * companyTrade.realQuantity;
                 companyTrade.realBrokerage = buyBrokerageCharge(brokerageData, companyTrade.realQuantity, companyTrade.realAmount);
                 
@@ -321,7 +325,7 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
                 companyTrade.realSymbol = Details.symbol
                 companyTrade.realInstrument = Details.instrument
                 companyTrade.realQuantity = Details.Quantity;
-    
+                companyTrade.real_last_price = Details.last_price
                 companyTrade.realAmount = Details.last_price * companyTrade.realQuantity;
                 companyTrade.realBrokerage = buyBrokerageCharge(brokerageData, companyTrade.realQuantity, companyTrade.realAmount);
                 
@@ -345,7 +349,7 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
         const { accessToken } = accessTokenDetails[0];
         console.log("this is product", Product);
 
-        const res = await fetch("http://localhost:5000/placeorder", {
+        const res = await fetch(`${baseUrl}api/v1/placeorder`, {
             method: "POST",
             headers: {
                 "content-type": "application/json"
@@ -390,7 +394,7 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
     async function mockTrade(){
         const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price } = Details;
 
-        const res = await fetch("http://localhost:5000/mocktrade", {
+        const res = await fetch(`${baseUrl}api/v1/mocktrade`, {
             method: "POST",
             headers: {
                 "content-type": "application/json"

@@ -5,6 +5,7 @@ import Styles from "./TradingAccountsEditModel.module.css";
 
 
 export default function TradingAccountsEditModel ({ data, id, Render }) {
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
     let date = new Date();
     let lastModified = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
@@ -75,7 +76,7 @@ export default function TradingAccountsEditModel ({ data, id, Render }) {
 
         const { Broker, AccountID, AccountName, APIKey, APISecret, Status} = formstate;
 
-        const res = await fetch(`http://localhost:5000/readAccountDetails/${id}`, {
+        const res = await fetch(`${baseUrl}api/v1/readAccountDetails/${id}`, {
             method: "PUT",
             headers: {
                 "Accept": "application/json",
@@ -102,7 +103,7 @@ export default function TradingAccountsEditModel ({ data, id, Render }) {
     async function Ondelete() {
         console.log(editData)
         setModal(!modal);
-        const res = await fetch(`http://localhost:5000/readAccountDetails/${id}`, {
+        const res = await fetch(`${baseUrl}api/v1/readAccountDetails/${id}`, {
             method: "DELETE",
         });
 

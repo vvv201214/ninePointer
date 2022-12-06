@@ -4,6 +4,7 @@ import uniqid from "uniqid"
 
 
 export default function UserButtonModel({Render}) {
+  let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
   const {reRender, setReRender} = Render;
   let uId = uniqid();
@@ -43,7 +44,7 @@ async function formbtn(e) {
 
     const { Name, Designation, EmailID, MobileNo, Degree, DOB, Gender, TradingExp, Location, LastOccupation , DateofJoining, Role, Status} = formstate;
 
-    const res = await fetch("http://localhost:5000/userdetail", {
+    const res = await fetch(`${baseUrl}api/v1/userdetail`, {
         method: "POST",
         headers: {
             "content-type" : "application/json"

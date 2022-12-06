@@ -5,14 +5,16 @@ require("../db/conn");
 
 
 router.get("/getliveprice", async (req, res)=>{
+  let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+
   let getAccessToken;
   let getApiKey;
   let addUrl = '';
   let date = new Date();
 
   try{
-    let accessTokenResp = await axios.get("http://localhost:5000/readRequestToken")
-    let apiKeyResp = await axios.get("http://localhost:5000/readAccountDetails")
+    let accessTokenResp = await axios.get(`${baseUrl}api/v1/readRequestToken`)
+    let apiKeyResp = await axios.get(`${baseUrl}api/v1/readAccountDetails`)
     
     for(let elem of accessTokenResp.data){
       for(let subElem of apiKeyResp.data){
@@ -23,7 +25,7 @@ router.get("/getliveprice", async (req, res)=>{
       }
     }
 
-    const resp = await axios.get('http://localhost:5000/readInstrumentDetails');
+    const resp = await axios.get(`${baseUrl}api/v1/readInstrumentDetails`);
     let ans = resp.data.filter((elem) => {
       return (
         elem.createdOn.includes(

@@ -4,7 +4,7 @@ const router = express.Router();
 const getOrderData = require("./retrieveOrder");
 
 router.post("/placeorder", (async (req, res)=>{
-
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
     const OrderId = require("../models/TradeDetails/orderIdSchema");
     const TradeData = require("../models/TradeDetails/allTradeSchema");
     const UserTradeData = require("../models/User/userTradeSchema");
@@ -57,7 +57,7 @@ router.post("/placeorder", (async (req, res)=>{
         console.log("order_id", resp.data.data.order_id);
         await getOrderData(apiKey, accessToken, res, order_Id);
         const {status, data} = resp.data;
-        let getOrderResp = await axios.get("http://localhost:5000/readorderdata");
+        let getOrderResp = await axios.get(`${baseUrl}api/v1/readorderdata`);
         let getOrderDetails = getOrderResp.data;
         console.log("now i am in placeorder");
         console.log("this is order-id", data.order_id);

@@ -5,6 +5,8 @@ import Styles from "./TradingARTokenEditModel.module.css";
 
 
 export default function TradingARTokenEditModule ({ data, id, Render }) {
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+
     let date = new Date();
     let lastModified = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
 
@@ -66,7 +68,7 @@ export default function TradingARTokenEditModule ({ data, id, Render }) {
 
         const { AccountID, AccesToken, RequestToken, Status} = formstate;
                                         
-        const res = await fetch(`http://localhost:5000/readRequestToken/${id}`, {
+        const res = await fetch(`${baseUrl}api/v1/readRequestToken/${id}`, {
             method: "PUT",
             headers: {
                 "Accept": "application/json",
@@ -93,7 +95,7 @@ export default function TradingARTokenEditModule ({ data, id, Render }) {
     async function Ondelete() {
         console.log(editData)
         setModal(!modal);
-        const res = await fetch(`http://localhost:5000/readRequestToken/${id}`, {
+        const res = await fetch(`${baseUrl}api/v1/readRequestToken/${id}`, {
             method: "DELETE",
         });
 

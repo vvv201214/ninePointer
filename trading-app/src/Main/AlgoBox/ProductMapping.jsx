@@ -7,6 +7,7 @@ import Styles from "./AlgoModuleCSSFiles/ProductMapping.module.css";
 import ProductMappingEditModel from "./AlgoEditIcon/ProductMappingEditModel";
 
 function ProductMapping(){
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
     let uId = uniqid();
     let date = new Date();
     let createdOn = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`
@@ -34,7 +35,7 @@ function ProductMapping(){
     }
 
     useEffect(()=>{
-        axios.get("http://localhost:3000/readProductMapping")
+        axios.get(`${baseUrl}api/v1/readProductMapping`)
         .then((res)=>{
             setData(res.data)
             console.log(res.data);
@@ -52,7 +53,7 @@ function ProductMapping(){
 
         const {ProductNameIncoming, IncomingProductCode, ProductNameOutgoing, OutgoingProductCode, Status} = formstate;
 
-        const res = await fetch("http://localhost:5000/productMapping", {
+        const res = await fetch(`${baseUrl}api/v1/productMapping`, {
             method: "POST",
             headers: {
                 "content-type" : "application/json"
