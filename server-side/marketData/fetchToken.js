@@ -9,11 +9,7 @@ const fetchData = async (getApiKey, getAccessToken) => {
   try{
     const resp = await axios.get(`${baseUrl}api/v1/readInstrumentDetails`);
     let ans = resp.data.filter((elem) => {
-      return (
-        elem.createdOn.includes(
-          `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
-        ) && elem.status === 'Active'
-      );
+      return elem.status === 'Active'
     });
     
     ans.forEach((elem, index) => {

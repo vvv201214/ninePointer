@@ -43,13 +43,11 @@ export default function UserSelect(props){
                                     </tr>                                    
                                 )
                            })}
-
                        </table>
                    </div>
                </div>
            </div>
        </div>
-
    </div>
     )
 }

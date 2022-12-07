@@ -100,7 +100,7 @@ function TraderPositionTable({ socket }) {
                                 // setMarketData(updatedMarketData)
                                 return(
                                         <tr className="grid2_tr" key={elem.uId}>
-                                            <td className="grid2_td">{elem.createdOn}</td>
+                                            <td className="grid2_td">{elem.lastModified}</td>
                                             <td className="grid2_td">{elem.symbol}</td>
                                             <td className="grid2_td">{updatedMarketData[0]?.last_price}</td>
 

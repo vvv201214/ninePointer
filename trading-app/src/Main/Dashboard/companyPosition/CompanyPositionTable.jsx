@@ -101,7 +101,7 @@ function CompanyPositionTable({ socket }) {
                                 })
                                 return(
                                     <tr className="grid1_table">
-                                            <td className="grid2_td">{elem.createdOn}</td>
+                                            <td className="grid2_td">{elem.lastModified}</td>
                                             <td className="grid2_td">{elem.symbol}</td>
                                             <td className="grid2_td">{updatedMarketData[0]?.last_price}</td>
                                             

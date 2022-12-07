@@ -60,6 +60,7 @@ app.use('/api/v1', require('./routes/TradingAccountAuth/parameterAuth'));
 app.use('/api/v1', require('./routes/TradingAccountAuth/requestTokenAuth'));
 app.use('/api/v1', require('./routes/user/userDetailAuth'));
 app.use('/api/v1', require("./routes/user/everyoneRoleAuth"));
+app.use('/api/v1', require("./routes/user/permissionAuth"));
 app.use('/api/v1', require("./marketData/mockTrade"));
 require('./db/conn');
 
