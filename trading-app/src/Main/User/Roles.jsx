@@ -5,11 +5,12 @@ import RoleEditModel from "./EditIconModel/RoleEditModel";
 
 
 function Roles() {
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
     const [reRender, setReRender] = useState(true);
     const [data, setData] = useState([]);
     useEffect(() => {
-        axios.get("http://localhost:5000/readeveryonerole")
+        axios.get(`${baseUrl}api/v1/readeveryonerole`)
             .then((res) => {
                 setData(res.data);
                 console.log(res.data);

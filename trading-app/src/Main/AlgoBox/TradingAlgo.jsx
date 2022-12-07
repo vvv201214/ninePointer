@@ -7,6 +7,8 @@ import Styles from "./AlgoModuleCSSFiles/TradingAlgo.module.css";
 import TradingAlgoEditModel from "./AlgoEditIcon/TradingAlgoEditModel";
 
 function TradingAlgo(){
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+    
     let uId = uniqid();
     let date = new Date();
     let createdOn = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`
@@ -36,9 +38,9 @@ function TradingAlgo(){
         document.body.classList.remove('active-modal')
     }
 
-
+    
     useEffect(()=>{
-        axios.get("http://localhost:3000/readtradingAlgo")
+        axios.get(`${baseUrl}api/v1/readtradingAlgo`)
         .then((res)=>{
             setData(res.data)
             console.log(res.data);
@@ -56,7 +58,7 @@ function TradingAlgo(){
 
         const {algoName, transactionChange, instrumentChange, status, exchangeChange, lotMultipler, productChange, tradingAccount} = formstate;
 
-        const res = await fetch("http://localhost:5000/tradingalgo", {
+        const res = await fetch(`${baseUrl}api/v1/tradingalgo`, {
             method: "POST",
             headers: {
                 "content-type" : "application/json"

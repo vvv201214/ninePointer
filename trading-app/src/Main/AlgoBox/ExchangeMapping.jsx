@@ -7,6 +7,7 @@ import Styles from "./AlgoModuleCSSFiles/ExchangeMapping.module.css";
 import ExchangeMappingEditModel from "./AlgoEditIcon/ExchangeMappingEditModel";
 
 function ExchangeMapping(){
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
     let uId = uniqid();
     let date = new Date();
     let createdOn = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`
@@ -34,9 +35,8 @@ function ExchangeMapping(){
         document.body.classList.remove('active-modal')
     }
 
-
     useEffect(()=>{
-        axios.get("http://localhost:3000/readExchangeMapping")
+        axios.get(`${baseUrl}api/v1/readExchangeMapping`)
         .then((res)=>{
             setData(res.data)
             console.log(res.data);
@@ -55,7 +55,7 @@ function ExchangeMapping(){
 
         const {ExchangeNameIncoming, IncomingExchangeCode, ExchangeNameOutgoing, OutgoingInstrumentCode, Status} = formstate;
 
-        const res = await fetch("http://localhost:5000/exchangeMapping", {
+        const res = await fetch(`${baseUrl}api/v1/exchangeMapping`, {
             method: "POST",
             headers: {
                 "content-type" : "application/json"

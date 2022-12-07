@@ -5,6 +5,7 @@ import Styles from "./TradingAlgoEditModel.module.css";
 
 
 export default function TradingAlgoEditModel ({ data, id, Render }) {
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
     let date = new Date();
     let lastModified = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
@@ -82,7 +83,7 @@ export default function TradingAlgoEditModel ({ data, id, Render }) {
 
         const {algo_Name, transaction_Change, instrument_Change, Status, exchange_Change, lot_Multipler, product_Change, trading_Account } = formstate;
 
-        const res = await fetch(`http://localhost:3000/readtradingAlgo/${id}`, {
+        const res = await fetch(`${baseUrl}api/v1/readtradingAlgo/${id}`, {
             method: "PUT",
             headers: {
                 "Accept": "application/json",
@@ -108,7 +109,7 @@ export default function TradingAlgoEditModel ({ data, id, Render }) {
 
     async function Ondelete() {
         console.log(editData)
-        const res = await fetch(`http://localhost:3000/readtradingAlgo/${id}`, {
+        const res = await fetch(`${baseUrl}api/v1/readtradingAlgo/${id}`, {
             method: "DELETE",
         });
 

@@ -3,10 +3,11 @@ import axios from "axios"
 import { useEffect, useState } from "react";
 
 function CompanyOrders(){
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
     const [data, setData] = useState([]);
     useEffect(()=>{
-        axios.get("http://localhost:5000/companytradedata")
+        axios.get(`${baseUrl}api/v1/companytradedata`)
         .then((res)=>{
             setData(res.data);
         }).catch((err)=>{

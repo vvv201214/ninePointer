@@ -74,8 +74,8 @@ const MockTradeDetails = mongoose.model("mock-trade", mockTradeSchema);
 
 router.post("/mocktrade", (req, res)=>{
 
-    const {exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, createdBy, userId, createdOn, uId, placed_by} = req.body
-    if(!exchange || !symbol || !buyOrSell || !Quantity || !Price || !Product || !OrderType || !TriggerPrice || !stopLoss || !validity || !variety || !last_price){
+    const {exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, createdBy, userId, createdOn, uId} = req.body
+    if(!exchange || !symbol || !buyOrSell || !Quantity || !Product || !OrderType || !validity || !variety || !last_price){
         console.log("data nhi h pura");
         return res.status(422).json({error : "please fill all the feilds..."})
     }
@@ -95,7 +95,6 @@ router.post("/mocktrade", (req, res)=>{
             res.status(201).json({massage : "data enter succesfully"});
         }).catch((err)=> res.status(500).json({error:"Failed to enter data"}));
     }).catch(err => {console.log(err, "fail")});
-    
 })
 
 router.get("/readmocktrade", (req, res)=>{

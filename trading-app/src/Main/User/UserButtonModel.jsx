@@ -4,6 +4,7 @@ import uniqid from "uniqid"
 
 
 export default function UserButtonModel({Render}) {
+  let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
   const {reRender, setReRender} = Render;
   let uId = uniqid();
@@ -43,7 +44,7 @@ async function formbtn(e) {
 
     const { Name, Designation, EmailID, MobileNo, Degree, DOB, Gender, TradingExp, Location, LastOccupation , DateofJoining, Role, Status} = formstate;
 
-    const res = await fetch("http://localhost:5000/userdetail", {
+    const res = await fetch(`${baseUrl}api/v1/userdetail`, {
         method: "POST",
         headers: {
             "content-type" : "application/json"
@@ -53,10 +54,21 @@ async function formbtn(e) {
           last_occupation:LastOccupation , joining_date:DateofJoining, role:Role, status:Status, uId, createdBy, createdOn, lastModified
         })
     });
-    
+
+    const response = await fetch(`${baseUrl}api/v1/permission`, {
+      method: "POST",
+      headers: {
+          "content-type" : "application/json"
+      },
+      body: JSON.stringify({
+        uId, modifiedOn:createdOn, modifiedBy:createdBy, userName:Name, userId:EmailID, isTradeEnable:"false", isAlgoEnable:"false", isRealTradeEnable:"false"
+      })
+  });
+
+    const permissionData = await response.json();
     const data = await res.json();
     console.log(data);
-    if(data.status === 422 || data.error || !data){
+    if(data.status === 422 || data.error || !data || permissionData.status === 422 || permissionData.error || !permissionData ){
         window.alert(data.error);
         console.log("invalid entry");
     }else{

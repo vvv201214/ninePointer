@@ -4,6 +4,8 @@ import "./LoginStyle.css";
 import { useNavigate } from "react-router-dom";
 
 export default function LogInForm() {
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+
     const navigate = useNavigate();
     const [userInfo, setUserInfo] = useState({
         userId : "",
@@ -17,7 +19,7 @@ export default function LogInForm() {
         
         const {userId, pass} = userInfo;
 
-        const res = await fetch("http://localhost:5000/login", {
+        const res = await fetch(`${baseUrl}api/v1/login`, {
             method: "POST",
             credentials:"include",
             headers: {
@@ -39,7 +41,6 @@ export default function LogInForm() {
             console.log("entry succesfull");
             navigate("/main/dashboard");
         }
-            
     }
   return (
     <>

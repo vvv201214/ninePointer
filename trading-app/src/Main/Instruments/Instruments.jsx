@@ -8,6 +8,8 @@ import InstrumentsEditModel from "./InstrumentEditModel/InstrumentsEditModel";
 
 
 function Instruments() {
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+
     let uId = uniqid();
     let date = new Date();
     let createdOn = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
@@ -32,20 +34,17 @@ function Instruments() {
     });
 
     useEffect(() => {
-        axios.get("http://localhost:5000/readInstrumentDetails")
+        axios.get(`${baseUrl}api/v1/readInstrumentDetails`)
             .then((res) => {
                 let data = res.data;
                 let active = data.filter((elem) => {
                     console.log(elem.createdOn, createdOn);
-                    return (elem.createdOn).includes(`${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`) && elem.status === "Active"
+                    return elem.status === "Active"
                 })
                 setActiveData(active);
                 console.log(active);
 
                 let inActive = data.filter((elem) => {
-                    if (elem.status === "Active" && !(elem.createdOn).includes(`${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`)) {
-                        elem.status = "Inactive"
-                    }
                     return elem.status === "Inactive"
                 })
                 setInActiveData(inActive);
@@ -77,7 +76,7 @@ function Instruments() {
 
         const { Instrument, Exchange, Status, Symbole, LotSize } = formstate;
 
-        const res = await fetch("http://localhost:5000/instrument", {
+        const res = await fetch(`${baseUrl}api/v1/instrument`, {
             method: "POST",
             headers: {
                 "content-type": "application/json"

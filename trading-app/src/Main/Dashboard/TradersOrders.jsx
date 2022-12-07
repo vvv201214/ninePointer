@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import checking from "./Checking";
 
 function TradersOrders({info}){
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
     console.log(info)
     const [data, setData] = useState([]);
@@ -13,7 +14,7 @@ function TradersOrders({info}){
     useEffect(()=>{
         console.log(info.role)
         if(info.role === "admin"){
-            axios.get("http://localhost:5000/companytradedata")
+            axios.get(`${baseUrl}api/v1/companytradedata`)
             .then((res)=>{
                 let updated = (res.data).filter((elem)=>{
                     return info.email === elem.userId;
@@ -25,7 +26,7 @@ function TradersOrders({info}){
                 return new Error(err);
             })            
         }else if(info.role === "user"){
-            axios.get("http://localhost:5000/usertradedata")
+            axios.get(`${baseUrl}api/v1/usertradedata`)
             .then((res)=>{
                 let updated = (res.data).filter((elem)=>{
                     return info.email === elem.userId;

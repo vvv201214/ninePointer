@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import { TiEdit } from "react-icons/ti";
 import Styles from "./UserEditModel.module.css";
-
+import axios from "axios";
+import { useRef } from "react";
 
 export default function UserEditModel({data, id, Render}) {
-
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+    let permissionId = useRef(0);
     let date = new Date();
     let lastModified = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
   
@@ -27,10 +29,23 @@ export default function UserEditModel({data, id, Render}) {
     const [degree, setDegree] = useState();
 
     useEffect(()=>{
+
         let updatedData = data.filter((elem)=>{
             return elem._id === id
         })
         setEditData(updatedData)
+
+        axios.get(`${baseUrl}api/v1/readpermission`)
+        .then((res)=>{
+            (res.data).map((elem)=>{
+                if(editData[0].email === elem.userId){
+                    permissionId.current = elem._id;
+                }
+            })
+        }).catch((err)=>{
+            window.alert("Server Down");
+            return new Error(err);
+        })
     },[])
 
     useEffect(()=>{
@@ -103,7 +118,7 @@ export default function UserEditModel({data, id, Render}) {
 
         const { Name, Designation, Degree, EmailID, MobileNo, DOB, Gender, TradingExp, Location, LastOccupation, DateofJoining, Role, Status } = formstate;
 
-        const res = await fetch(`http://localhost:5000/readuserdetails/${id}`, {
+        const res = await fetch(`${baseUrl}api/v1/readuserdetails/${id}`, {
             method: "PUT",
             headers: {
                 "Accept": "application/json",
@@ -113,12 +128,30 @@ export default function UserEditModel({data, id, Render}) {
                 Name, Designation, Degree, EmailID, MobileNo, DOB, Gender, TradingExp, Location, LastOccupation, DateofJoining, Role, Status, lastModified
             })
         });
+
+        const response = await fetch(`${baseUrl}api/v1/readpermission/${permissionId.current}`, {
+            method: "PATCH",
+            headers: {
+                "Accept": "application/json",
+                "content-type": "application/json"
+            },
+            body: JSON.stringify({
+                modifiedOn:lastModified, modifiedBy:"prateek", userName:Name, userId:EmailID
+            })
+        });
+
         const dataResp = await res.json();
+        const permissionData = await response.json();
         console.log(dataResp);
         if (dataResp.status === 422 || dataResp.error || !dataResp) {
             window.alert(dataResp.error);
             console.log("Failed to Edit");
-        } else {
+        }
+        else if (permissionData.status === 422 || permissionData.error || !permissionData) {
+            window.alert(permissionData.error);
+            console.log("Failed to Edit");
+        }
+         else {
             console.log(dataResp);
             window.alert("Edit succesfull");
             console.log("Edit succesfull");
@@ -129,16 +162,26 @@ export default function UserEditModel({data, id, Render}) {
 
     async function Ondelete(){
       console.log(editData)
-      const res = await fetch(`http://localhost:5000/readuserdetails/${id}`, {
+      const res = await fetch(`${baseUrl}api/v1/readuserdetails/${id}`, {
           method: "DELETE",
       });
 
+      const response = await fetch(`${baseUrl}api/v1/readpermission/${permissionId.current}`, {
+        method: "DELETE",
+      });
+
       const dataResp = await res.json();
+      const permissionData = await response.json();
       console.log(dataResp);
       if (dataResp.status === 422 || dataResp.error || !dataResp) {
           window.alert(dataResp.error);
           console.log("Failed to Delete");
-      } else {
+      }
+      else if(permissionData.status === 422 || permissionData.error || !permissionData){
+            window.alert(permissionData.error);
+            console.log("Failed to Delete");
+      }
+      else {
           console.log(dataResp);
           window.alert("Delete succesfull");
           console.log("Delete succesfull");

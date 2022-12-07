@@ -7,6 +7,8 @@ import Styles from "./AlgoModuleCSSFiles/InstrumentMapping.module.css";
 import InstrumentMappingEditModel from "./AlgoEditIcon/InstrumentMappingEditModel";
 
 function InstrumentMapping() {
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+
     let uId = uniqid();
     let date = new Date();
     let createdOn = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
@@ -28,7 +30,7 @@ function InstrumentMapping() {
 
 
     useEffect(() => {
-        axios.get("http://localhost:3000/readInstrumentAlgo")
+        axios.get(`${baseUrl}api/v1/readInstrumentAlgo`)
             .then((res) => {
                 setData(res.data)
                 console.log(res.data);
@@ -54,7 +56,7 @@ function InstrumentMapping() {
 
         const { InstrumentNameIncoming, IncomingInstrumentCode, InstrumentNameOutgoing, OutgoingInstrumentCode, Status } = formstate;
 
-        const res = await fetch("http://localhost:5000/instrumentAlgo", {
+        const res = await fetch(`${baseUrl}api/v1/instrumentAlgo`, {
             method: "POST",
             headers: {
                 "content-type": "application/json"

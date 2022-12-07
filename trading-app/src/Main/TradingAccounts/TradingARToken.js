@@ -7,6 +7,8 @@ import Styles from "./TradingAccountsCSSFiles/TradingARToken.module.css";
 import TradingARTokenEditModule from "./TradingEditIcon/TradingARTokenEditModel";
 
 function TradingARToken() {
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+
     let uId = uniqid();
     let date = new Date();
     let generatedOn = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
@@ -35,47 +37,45 @@ function TradingARToken() {
     }
 
     useEffect(() => {
-        axios.get("http://localhost:5000/readRequestToken")
+        axios.get(`${baseUrl}api/v1/readRequestToken`)
             .then((res) => {
                 let data = res.data;
                 let active = data.filter((elem) => {
                     // console.log(elem.createdOn, createdOn);
-                    return (elem.generatedOn).includes(`${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`) && elem.status === "Active"
+                    return elem.status === "Active"
                 })
                 setActiveData(active);
                 console.log(active);
+                console.log("49",res.data, data)
 
-                (res.data).map(async (elem)=>{
-                    if(elem.status === "Active" && !(elem.createdOn).includes(`${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`)){
-                        formstate.Status = "Inactive";
-                        const {Status, lastModified} = formstate;
-                        const res = await fetch(`http://localhost:5000/readAccountDetails/${elem._id}`, {
-                            method: "PATCH",
-                            headers: {
-                                "Accept": "application/json",
-                                "content-type": "application/json"
-                            },
-                            body: JSON.stringify({
-                                Status, lastModified
-                            })
-                        });
-                        const dataResp = await res.json();
-                        console.log(dataResp);
-                        if (dataResp.status === 422 || dataResp.error || !dataResp) {
-                            window.alert(dataResp.error);
-                            console.log("Failed to Edit");
-                        } else {
-                            console.log(dataResp);
-                            window.alert("Edit succesfull");
-                            console.log("Edit succesfull");
-                        }
+                // (res.data).map(async (elem)=>{
+                //     console.log("51")
+                //     if(elem.status === "Active" && !(elem.generatedOn).includes(`${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`)){
+                //         formstate.Status = "Inactive";
+                //         const {Status, lastModified} = formstate;
+                //         const res = await fetch(`${baseUrl}api/v1/readAccountDetails/${elem._id}`, {
+                //             method: "PATCH",
+                //             headers: {
+                //                 "Accept": "application/json",
+                //                 "content-type": "application/json"
+                //             },
+                //             body: JSON.stringify({
+                //                 Status, lastModified
+                //             })
+                //         });
+                //         const dataResp = await res.json();
+                //         console.log(dataResp);
+                //         if (dataResp.status === 422 || dataResp.error || !dataResp) {
+                //             window.alert(dataResp.error);
+                //             console.log("Failed to Edit");
+                //         } else {
+                //             console.log(dataResp);
+                //             window.alert("Edit succesfull");
+                //             console.log("Edit succesfull");
+                //         }
+                //     }
+                // })
     
-    
-                    }
-                })
-    
-    
-
                 let inActive = data.filter((elem) => {
                     return elem.status === "Inactive"
                 })
@@ -98,7 +98,7 @@ function TradingARToken() {
 
         const { AccountID, AccesToken, RequestToken, Status } = formstate;
 
-        const res = await fetch("http://localhost:5000/requestToken", {
+        const res = await fetch(`${baseUrl}api/v1/requestToken`, {
             method: "POST",
             headers: {
                 "content-type": "application/json"

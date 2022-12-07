@@ -5,6 +5,9 @@ const fetchData = require('./fetchToken');
 const { Server } = require('socket.io');
 const axios = require('axios');
 
+
+let eventEmitOnError ;
+// const io = new Server("/api/v1/socketconnection", {
 const io = new Server(9000, {
   cors: {
     origin: 'http://localhost:3000',
@@ -16,19 +19,22 @@ io.on("connection", (socket) => {
   console.log(socket.id);
   socket1 = socket;
   socket.on('hi', (data) => {
-    console.log(data);
+    eventEmitOnError = data;
+    // console.log(data);
   });
 });
 
 async function parameters() {
+  let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+
   console.log("inside function");
   let getAccessToken;
   let getApiKey;
 
   try{
     console.log("inside try 1");
-    let accessTokenResp = await axios.get("http://localhost:5000/readRequestToken")
-    let apiKeyResp = await axios.get("http://localhost:5000/readAccountDetails")
+    let accessTokenResp = await axios.get(`${baseUrl}api/v1/readRequestToken`)
+    let apiKeyResp = await axios.get(`${baseUrl}api/v1/readAccountDetails`)
 
     for(let elem of accessTokenResp.data){
       for(let subElem of apiKeyResp.data){
@@ -39,6 +45,8 @@ async function parameters() {
           }
       }
     }
+
+    console.log(getAccessToken, getApiKey);
 
   } catch(err) {
     return new Error(err);
@@ -116,6 +124,13 @@ async function parameters() {
  
       function onError(error) {
         console.log('Closed connection on error', error);
+        console.log(eventEmitOnError);
+        if(eventEmitOnError){
+          eventEmitOnError = false;
+          const data = "Incorrect access token or api key";
+          socket1.emit('wrongToken', data);
+        }
+
       }
     
       function onClose(reason) {

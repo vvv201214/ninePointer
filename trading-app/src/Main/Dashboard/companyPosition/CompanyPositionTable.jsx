@@ -12,6 +12,7 @@ import OverallPnl from "../PnlParts/OverallPnl";
 
 function CompanyPositionTable({ socket }) {
     const getDetails = useContext(userContext);
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
     const [tradeData, setTradeData] = useState([]);
     const [marketData, setMarketData] = useState([]);
@@ -23,7 +24,7 @@ function CompanyPositionTable({ socket }) {
 
     useEffect(() => {
 
-        axios.get("http://localhost:5000/companytradedata")
+        axios.get(`${baseUrl}api/v1/companytradedata`)
         .then((res) => {
             let data = (res.data).filter((elem)=>{
                 return elem.createdOn.includes(todayDate) && elem.status === "COMPLETE";
@@ -33,7 +34,7 @@ function CompanyPositionTable({ socket }) {
             return new Error(err);
         })
 
-        axios.get("http://localhost:5000/getliveprice")
+        axios.get(`${baseUrl}api/v1/getliveprice`)
         .then((res) => {
             console.log("live price data", res)
             setMarketData(res.data)
@@ -42,10 +43,10 @@ function CompanyPositionTable({ socket }) {
             return new Error(err);
         })
 
-        axios.get("http://localhost:5000/readInstrumentDetails")
+        axios.get(`${baseUrl}api/v1/readInstrumentDetails`)
         .then((res) => {
             let dataArr = (res.data).filter((elem) => {
-                return (elem.createdOn).includes(`${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`) && elem.status === "Active"
+                return elem.status === "Active"
             })
             setTradeData(dataArr)
         }).catch((err)=>{
@@ -54,7 +55,7 @@ function CompanyPositionTable({ socket }) {
         })
         console.log("hii");
 
-        axios.get("http://localhost:5000/ws")
+        axios.get(`${baseUrl}api/v1/ws`)
         .then((res)=>{
             console.log("vijay", (res.data)[0].last_price);
         }).catch((err)=>{
@@ -100,7 +101,7 @@ function CompanyPositionTable({ socket }) {
                                 })
                                 return(
                                     <tr className="grid1_table">
-                                            <td className="grid2_td">{elem.createdOn}</td>
+                                            <td className="grid2_td">{elem.lastModified}</td>
                                             <td className="grid2_td">{elem.symbol}</td>
                                             <td className="grid2_td">{updatedMarketData[0]?.last_price}</td>
                                             

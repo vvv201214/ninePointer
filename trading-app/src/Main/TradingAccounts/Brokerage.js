@@ -10,6 +10,8 @@ import Styles from "./TradingAccountsCSSFiles/Brokerage.module.css";
 import BrokerageEditModel from "./TradingEditIcon/BrokerageEditModel";
 
 function Brokerage() {
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+
     let uId = uniqid();
     let date = new Date();
     let createdOn = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
@@ -46,7 +48,7 @@ function Brokerage() {
 
 
     useEffect(() => {
-        axios.get("http://localhost:5000/readBrokerage")
+        axios.get(`${baseUrl}api/v1/readBrokerage`)
             .then((res) => {
                 setData(res.data)
                 console.log(res.data);
@@ -64,7 +66,7 @@ function Brokerage() {
 
         const { Broker, Transaction, Type, Exchange, BrokerageCharge, ExchangeCharge, GST, SEBICharge, StampDuty, SST, CTT, DPCharges } = formstate;
 
-        const res = await fetch("http://localhost:5000/brokerage", {
+        const res = await fetch(`${baseUrl}api/v1/brokerage`, {
             method: "POST",
             headers: {
                 "content-type": "application/json"

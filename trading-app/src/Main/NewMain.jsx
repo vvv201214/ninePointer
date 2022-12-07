@@ -7,6 +7,8 @@ import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 
 export default function NewMain({setter}) {
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+
     console.log("rendering")
     const setDetails = useContext(userContext);
     const [info, setInfo] = useState({});
@@ -14,7 +16,7 @@ export default function NewMain({setter}) {
     const dashboardPage = async ()=>{
       try{
           console.log("inside try")
-          const res = await fetch("http://localhost:5000/dashboard", {
+          const res = await fetch(`${baseUrl}api/v1/dashboard`, {
               method: "GET",
               headers: {
                   Accept: "application/json",

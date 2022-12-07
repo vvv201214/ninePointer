@@ -5,11 +5,12 @@ import UserEditModel from "./EditIconModel/UserEditmodel";
 
 
 function Users(){
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
     const [reRender, setReRender] = useState(true);
     const [data, setData] = useState([]);
     useEffect(()=>{
-        axios.get("http://localhost:5000/readuserdetails")
+        axios.get(`${baseUrl}api/v1/readuserdetails`)
         .then((res)=>{
             setData(res.data);
             console.log(res.data);
@@ -17,8 +18,10 @@ function Users(){
             window.alert("Server Down");
             return new Error(err);
         })
-    },[reRender])
 
+       
+        
+    },[reRender])
 
     return(
         <div>

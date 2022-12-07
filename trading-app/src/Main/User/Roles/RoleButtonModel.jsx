@@ -5,6 +5,8 @@ import uniqid from "uniqid";
 import axios from "axios";
 
 export default function RoleButtonModel() {
+  let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+
   let uId = uniqid();
   let date = new Date();
   let createdOn = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
@@ -29,7 +31,7 @@ export default function RoleButtonModel() {
 
     const { roleName, instruments, tradingAccount, APIParameters, users, algoBox, reports } = formstate;
 
-    const res = await fetch("http://localhost:5000/everyonerole", {
+    const res = await fetch(`${baseUrl}api/v1/everyonerole`, {
       method: "POST",
       headers: {
         "content-type": "application/json"
