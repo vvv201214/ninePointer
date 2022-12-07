@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import Style from "./UserSelect.module.css";
 import axios from "axios";
 
-export default function UserSelect(props){
+export default function UserSelect(id){
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
     const [data, setData] = useState([]);
@@ -16,6 +16,26 @@ export default function UserSelect(props){
             return new Error(err);
         })
     },[])
+    
+    const[checkBoxData, setChecBoxData] = useState({
+        enableTrading : "",
+        enableAlgo : "",
+        enableRealTrade : "",
+        
+    })
+    const[editData, setEditData] = useState(data);
+    function selectdata(e){
+       
+        console.log("ok button active");
+        setChecBoxData(checkBoxData);
+        console.log(checkBoxData);
+        let updatedData = data.filter((elem)=>{
+            return elem._id === id
+        })
+        setEditData(updatedData)
+
+    }
+
     console.log(data);
     return(
         <div>
@@ -31,19 +51,32 @@ export default function UserSelect(props){
                                <th className="grid2_th">Enable trading</th>
                                <th className="grid2_th">Enable Algo</th>
                                <th className="grid2_th">Enable Real Trade</th>
+                               <th className="grid2_th">Action</th>
                            </tr>
                            {data.map((elem, index)=>{
                                 return(
                                     <tr key={elem._id} className="grid2_tr">
                                         <td className="grid2_td">{elem.name}</td>
                                         <td className="grid2_td">{elem.email}</td>
-                                        <td className="grid2_td"><input type="checkbox" /></td>
-                                        <td className="grid2_td"><input type="checkbox" /></td>
-                                        <td className="grid2_td"><input type="checkbox" /></td>
+                                        <td className="grid2_td"> <select name=""  id="" onChange={(e)=> {{ checkBoxData.enableTrading = (e.target.value) } }}>
+                                            <option value=""></option>
+                                            <option value="True">True</option>
+                                            <option value="False">False</option>
+                                            </select></td>
+                                            <td className="grid2_td"> <select name=""  id="" onChange={(e)=> {{ checkBoxData.enableAlgo = (e.target.value) } }}>
+                                            <option value=""></option>
+                                            <option value="True">True</option>
+                                            <option value="False">False</option>
+                                            </select></td>
+                                            <td className="grid2_td"> <select name=""  id="" onChange={(e)=>{{ checkBoxData.enableRealTrade = (e.target.value) } }}>
+                                            <option value=""></option>
+                                            <option value="True">True</option>
+                                            <option value="False">False</option>
+                                            </select></td>
+                                        <td className="grid2_td"><button className={Style.userselectbtn} onClick={selectdata}>ADD</button></td>
                                     </tr>                                    
                                 )
                            })}
-
                        </table>
                    </div>
                </div>
