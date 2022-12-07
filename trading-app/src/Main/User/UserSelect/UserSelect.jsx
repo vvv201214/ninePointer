@@ -9,7 +9,7 @@ export default function UserSelect(props){
 
     const [data, setData] = useState([]);
     useEffect(()=>{
-        axios.get(`${baseUrl}api/v1/readuserdetails`)
+        axios.get(`${baseUrl}api/v1/readpermission`)
         .then((res) => {
             setData(res.data);
         }).catch((err)=>{
@@ -35,8 +35,8 @@ export default function UserSelect(props){
                            {data.map((elem, index)=>{
                                 return(
                                     <tr key={elem._id} className="grid2_tr">
-                                        <td className="grid2_td">{elem.name}</td>
-                                        <td className="grid2_td">{elem.email}</td>
+                                        <td className="grid2_td">{elem.userName}</td>
+                                        <td className="grid2_td">{elem.userId}</td>
                                         <td className="grid2_td"><input type="checkbox" /></td>
                                         <td className="grid2_td"><input type="checkbox" /></td>
                                         <td className="grid2_td"><input type="checkbox" /></td>
@@ -51,3 +51,6 @@ export default function UserSelect(props){
    </div>
     )
 }
+// checked={elem.isTradeEnable}
+// checked={elem.isAlgoEnable}
+// checked={elem.isRealTradeEnable}

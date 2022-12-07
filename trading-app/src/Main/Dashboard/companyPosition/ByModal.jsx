@@ -51,6 +51,7 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
     const [brokerageData, setBrokerageData] = useState([]);
     const [tradingAlgoData, setTradingAlgoData] = useState([]);
     const [instrumentAlgoData, setInstrumentAlgoData] = useState([]);
+    const [permission, setPermission] = useState([]);
     const [companyTrade, setCompanyTrade] = useState({
         realBuyOrSell: "",
         realSymbol: "",
@@ -60,10 +61,18 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
         realAmount: "",
         real_last_price: "",
     })
-    console.log(process.env.NODE_ENV);
-// developer : "http://localhost:5000/readRequestToken"
-// production : "/api/v1/readRequestToken"
+
     useEffect(() => {
+        axios.get(`${baseUrl}api/v1/readpermission`)
+        .then((res) => {
+            let update = (res.data).filter((elem)=>{
+                return elem.userId === userId;
+            })
+            setPermission(update);
+        }).catch((err)=>{
+            return new Error(err);
+        })
+
         axios.get(`${baseUrl}api/v1/readRequestToken`)
             .then((res) => {
                 let activeAccessToken = (res.data).filter((elem)=>{
@@ -137,8 +146,6 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
         console.log(tradeData);
         setTradeData([...tradeData])
     }, [])
-
-    console.log(tradingAlgoData);
 
 
     const toggleModal = () => {
