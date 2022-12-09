@@ -9,7 +9,7 @@ export default function UserSelect(id){
 
     const [data, setData] = useState([]);
     useEffect(()=>{
-        axios.get(`${baseUrl}api/v1/readuserdetails`)
+        axios.get(`${baseUrl}api/v1/readpermission`)
         .then((res) => {
             setData(res.data);
         }).catch((err)=>{
@@ -56,24 +56,11 @@ export default function UserSelect(id){
                            {data.map((elem, index)=>{
                                 return(
                                     <tr key={elem._id} className="grid2_tr">
-                                        <td className="grid2_td">{elem.name}</td>
-                                        <td className="grid2_td">{elem.email}</td>
-                                        <td className="grid2_td"> <select name=""  id="" onChange={(e)=> {{ checkBoxData.enableTrading = (e.target.value) } }}>
-                                            <option value=""></option>
-                                            <option value="True">True</option>
-                                            <option value="False">False</option>
-                                            </select></td>
-                                            <td className="grid2_td"> <select name=""  id="" onChange={(e)=> {{ checkBoxData.enableAlgo = (e.target.value) } }}>
-                                            <option value=""></option>
-                                            <option value="True">True</option>
-                                            <option value="False">False</option>
-                                            </select></td>
-                                            <td className="grid2_td"> <select name=""  id="" onChange={(e)=>{{ checkBoxData.enableRealTrade = (e.target.value) } }}>
-                                            <option value=""></option>
-                                            <option value="True">True</option>
-                                            <option value="False">False</option>
-                                            </select></td>
-                                        <td className="grid2_td"><button className={Style.userselectbtn} onClick={selectdata}>ADD</button></td>
+                                        <td className="grid2_td">{elem.userName}</td>
+                                        <td className="grid2_td">{elem.userId}</td>
+                                        <td className="grid2_td"><input type="checkbox" /></td>
+                                        <td className="grid2_td"><input type="checkbox" /></td>
+                                        <td className="grid2_td"><input type="checkbox" /></td>
                                     </tr>                                    
                                 )
                            })}
@@ -82,7 +69,9 @@ export default function UserSelect(id){
                </div>
            </div>
        </div>
-
    </div>
     )
 }
+// checked={elem.isTradeEnable}
+// checked={elem.isAlgoEnable}
+// checked={elem.isRealTradeEnable}

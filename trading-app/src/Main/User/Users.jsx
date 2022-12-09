@@ -18,8 +18,10 @@ function Users(){
             window.alert("Server Down");
             return new Error(err);
         })
-    },[reRender])
 
+       
+        
+    },[reRender])
 
     return(
         <div>

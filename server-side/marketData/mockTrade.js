@@ -95,7 +95,6 @@ router.post("/mocktrade", (req, res)=>{
             res.status(201).json({massage : "data enter succesfully"});
         }).catch((err)=> res.status(500).json({error:"Failed to enter data"}));
     }).catch(err => {console.log(err, "fail")});
-    
 })
 
 router.get("/readmocktrade", (req, res)=>{

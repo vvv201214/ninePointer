@@ -46,6 +46,8 @@ async function parameters() {
       }
     }
 
+    console.log(getAccessToken, getApiKey);
+
   } catch(err) {
     return new Error(err);
   }

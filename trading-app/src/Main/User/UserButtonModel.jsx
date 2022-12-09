@@ -54,10 +54,21 @@ async function formbtn(e) {
           last_occupation:LastOccupation , joining_date:DateofJoining, role:Role, status:Status, uId, createdBy, createdOn, lastModified
         })
     });
-    
+
+    const response = await fetch(`${baseUrl}api/v1/permission`, {
+      method: "POST",
+      headers: {
+          "content-type" : "application/json"
+      },
+      body: JSON.stringify({
+        uId, modifiedOn:createdOn, modifiedBy:createdBy, userName:Name, userId:EmailID, isTradeEnable:"false", isAlgoEnable:"false", isRealTradeEnable:"false"
+      })
+  });
+
+    const permissionData = await response.json();
     const data = await res.json();
     console.log(data);
-    if(data.status === 422 || data.error || !data){
+    if(data.status === 422 || data.error || !data || permissionData.status === 422 || permissionData.error || !permissionData ){
         window.alert(data.error);
         console.log("invalid entry");
     }else{
