@@ -178,6 +178,7 @@ export default function TradingAlgoEditModel ({ data, id, Render }) {
                     </div>
                 </div>
             )}
+        
         </>
     )
 }
