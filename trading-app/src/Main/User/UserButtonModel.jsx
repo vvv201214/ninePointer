@@ -65,10 +65,10 @@ async function formbtn(e) {
       })
   });
 
-    const permissionData = await response.json();
+    // const permissionData = await response.json();
     const data = await res.json();
     console.log(data);
-    if(data.status === 422 || data.error || !data || permissionData.status === 422 || permissionData.error || !permissionData ){
+    if(data.status === 422 || data.error || !data){ //  || permissionData.status === 422 || permissionData.error || !permissionData 
         window.alert(data.error);
         console.log("invalid entry");
     }else{
