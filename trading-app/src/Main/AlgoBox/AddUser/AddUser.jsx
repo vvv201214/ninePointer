@@ -38,7 +38,7 @@ export default function AddUser({algoName}) {
         realTrading:"",
     });
 
-    async function formbtn(e, id) {
+    function formbtn(e, id) {
         e.preventDefault();
         setModal(!modal);
         let flag = true;
@@ -47,44 +47,90 @@ export default function AddUser({algoName}) {
         })
         algoData.name=newDataUpdated[0].userName;
         setAlgoData(algoData);
-        console.log(algoData);
+        console.log(algoData, newDataUpdated);
 
         if(permissionDataUpdated.length){
             for(let elem of permissionDataUpdated){
                 if(elem.userId === newDataUpdated[0].userId){
                     console.log("put request");
+                    patchReq(id);
                     flag = false;
                 }
             }
             if(flag){
                 console.log("post request");
+                postReq(newDataUpdated);
             }
         } else{
             console.log("post request");
+            postReq(newDataUpdated);
         }
     }
-    async function deletehandler(e,id){
-        // let newDataUpdated = newData.filter((elem)=>{
-        //     return elem._id === id
-        // })
-        // setAlgoData(algoData);
-        // console.log(algoData);  
-        // console.log(newDataUpdated);
+    async function deletehandler(id){
 
-        // const res = await fetch(`${baseUrl}api/v1/readtradingAlgo/${id}`, {
-        //     method: "DELETE",
-        // });
+        const response = await fetch(`${baseUrl}api/v1/readpermission/${id}`, {
+            method: "DELETE",
+        });
+        const permissionData = await response.json();
 
-        // const dataResp = await res.json();
-        // console.log(dataResp);
-        // if (dataResp.status === 422 || dataResp.error || !dataResp) {
-        //     window.alert(dataResp.error);
-        //     console.log("Failed to Delete");
-        // } else {
-        //     console.log(dataResp);
-        //     window.alert("Delete succesfull");
-        //     console.log("Delete succesfull");
-        // }
+        if(permissionData.status === 422 || permissionData.error || !permissionData){
+            window.alert(permissionData.error);
+            console.log("Failed to Delete");
+        }else {
+            console.log(permissionData);
+            window.alert("Delete succesfull");
+            console.log("Delete succesfull");
+        }
+    }
+
+    async function postReq(newDataUpdated){
+        const {name, tradingEnable, realTrading} = algoData;
+        const {userId} = newDataUpdated[0];
+        const response = await fetch(`${baseUrl}api/v1/permission`, {
+            method: "POST",
+            headers: {
+                "content-type" : "application/json"
+            },
+            body: JSON.stringify({
+              modifiedOn, modifiedBy, userName:name, userId, 
+              isTradeEnable:tradingEnable, isRealTradeEnable:realTrading, algoName
+            })
+        });
+
+        const permissionData = await response.json();
+
+        if(permissionData.status === 422 || permissionData.error || !permissionData){ 
+            window.alert(permissionData.error);
+            console.log("invalid entry");
+        }else{
+            window.alert("entry succesfull");
+            console.log("entry succesfull");
+        }
+    }
+
+    async function patchReq(id){
+        const {name, tradingEnable, realTrading} = algoData;
+        const response = await fetch(`${baseUrl}api/v1/readpermission/${id}`, {
+            method: "PATCH",
+            headers: {
+                "Accept": "application/json",
+                "content-type": "application/json"
+            },
+            body: JSON.stringify({
+                modifiedOn, modifiedBy, isTradeEnable:tradingEnable, isRealTradeEnable:realTrading
+            })
+        });
+
+        const permissionData = await response.json();
+
+        if (permissionData.status === 422 || permissionData.error || !permissionData) {
+            window.alert(permissionData.error);
+            console.log("Failed to Edit");
+        }else {
+            console.log(permissionData);
+            window.alert("Edit succesfull");
+            console.log("Edit succesfull");
+        }
     }
 
     return (
@@ -95,10 +141,10 @@ export default function AddUser({algoName}) {
                 <div className="modal">
                     <div onClick={toggleModal} className="overlay"></div>
                     <div className={Styles.modalContent}>
-                        <UserList addUser={addUser} setAddUser={setAddUser} setPermissionData={setPermissionData}/>
+                        <UserList algoName={algoName} addUser={addUser} setAddUser={setAddUser} setPermissionData={setPermissionData}/>
                         <table className={Styles.main_instrument_table}>
                             <tr className={Styles.addUser_tr}>
-                                <th className={Styles.addUser_th} >User Name</th>
+                                <th className={Styles.addUser_th}>User Name</th>
                                 <th className={Styles.addUser_th}>Enable Trading</th>
                                 <th className={Styles.addUser_th}>Real Trading</th>
                                 <th className={Styles.addUser_th}>Action</th>
@@ -110,20 +156,20 @@ export default function AddUser({algoName}) {
                                         <td className={Styles.addUser_td}>
                                             <select name="" id="" className={Styles.addUser_select} onChange={(e)=>{{algoData.tradingEnable=e.target.value}}}>
                                                 <option value=""></option>
-                                                <option value="True">True</option>
-                                                <option value="False">False</option>
+                                                <option value="true">True</option>
+                                                <option value="false">False</option>
                                             </select>
                                         </td>
                                         <td className={Styles.addUser_td}>
                                             <select name="" id="" className={Styles.addUser_select} onChange={(e)=>{{algoData.realTrading=e.target.value}}}>
                                                 <option value=""></option>
-                                                <option value="True">True</option>
-                                                <option value="False">False</option>
+                                                <option value="true">True</option>
+                                                <option value="false">False</option>
                                             </select>
                                         </td>
                                         <td>
                                             <button className={Styles.ACform_tbn} onClick={(e)=>formbtn(e, elem._id)}>OK</button>
-                                            <button className={Styles.ACform_tbn_Delete} onClick={(e)=>deletehandler((e, elem._id))}>DELETE</button>
+                                            <button className={Styles.ACform_tbn_Delete} onClick={(e)=>deletehandler((elem._id))}>🗑️</button>
                                         </td>
                                     </tr>
                                 )

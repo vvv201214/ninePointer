@@ -5,7 +5,7 @@ import Styles from "./UserList.module.css"
 import axios from "axios"
 import uniqid from "uniqid";
 
-export default function UserList({addUser, setAddUser, setPermissionData}) {
+export default function UserList({addUser, setAddUser, setPermissionData, algoName}) {
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
     const [data, setData] = useState([]);
     const [permissionArr, setPermission] = useState([]);
@@ -35,7 +35,7 @@ export default function UserList({addUser, setAddUser, setPermissionData}) {
 
     for(let i = 0; i < data.length; i++){
         for(let j = 0; j < permissionArr.length; j++){
-            if(data[i].email === permissionArr[j].userId){
+            if(data[i].email === permissionArr[j].userId && permissionArr[j].algoName === algoName){
                 data.splice(i, 1);
                 j = -1;
             }

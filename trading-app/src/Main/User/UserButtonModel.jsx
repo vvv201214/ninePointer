@@ -55,15 +55,6 @@ async function formbtn(e) {
         })
     });
 
-    const response = await fetch(`${baseUrl}api/v1/permission`, {
-      method: "POST",
-      headers: {
-          "content-type" : "application/json"
-      },
-      body: JSON.stringify({
-        uId, modifiedOn:createdOn, modifiedBy:createdBy, userName:Name, userId:EmailID, isTradeEnable:"false", isAlgoEnable:"false", isRealTradeEnable:"false"
-      })
-  });
 
     // const permissionData = await response.json();
     const data = await res.json();

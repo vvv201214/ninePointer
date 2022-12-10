@@ -4,24 +4,24 @@ require("../../db/conn");
 const Permission = require("../../models/User/permissionSchema");
 
 router.post("/permission", (req, res)=>{
-    const {uId, modifiedOn, modifiedBy, userName, userId, isTradeEnable, isAlgoEnable, isRealTradeEnable} = req.body;
+    const {modifiedOn, modifiedBy, userName, userId, isTradeEnable, isRealTradeEnable, algoName} = req.body;
     console.log(req.body)
-    if(!uId || !modifiedOn || !modifiedBy || !userName || !userId || !isTradeEnable || !isAlgoEnable || !isRealTradeEnable){
+    if(!modifiedOn || !modifiedBy || !userName || !userId || !isTradeEnable || !isRealTradeEnable || !algoName){
         console.log("data nhi h pura");
         return res.status(422).json({error : "Please fill all the fields..."})
     }
 
-    Permission.findOne({uId : uId})
-    .then((dateExist)=>{
-        if(dateExist){
-            console.log("data already");
-            return res.status(422).json({error : "date already exist..."})
-        }
-        const permission = new Permission({uId, modifiedOn, modifiedBy, userName, userId, isTradeEnable, algoName, isRealTradeEnable});
+    // Permission.findOne({_id})
+    // .then((dateExist)=>{
+    //     if(dateExist){
+    //         console.log("data already");
+    //         return res.status(422).json({error : "date already exist..."})
+    //     }
+        const permission = new Permission({modifiedOn, modifiedBy, userName, userId, isTradeEnable, isRealTradeEnable, algoName});
         permission.save().then(()=>{
             res.status(201).json({massage : "data enter succesfully"});
         }).catch((err)=> res.status(500).json({error:"Failed to enter data"}));
-    }).catch(err => {console.log(err, "fail")});
+    // }).catch(err => {console.log(err, "fail")});
 })
 
 router.get("/readpermission", (req, res)=>{
