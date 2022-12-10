@@ -5,7 +5,7 @@ import axios from "axios"
 import uniqid from "uniqid"
 import { userContext } from "../../AuthContext";
 
-export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
+export default function ByModal({ marketData, uIdProps, permission }) {
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
     const getDetails = useContext(userContext);
@@ -17,13 +17,6 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
     let totalAmount = 0;
     let tradeBy = getDetails.userDetails.name;
 
-    let isTradeEnable;
-    if(getDetails.userDetails.status === "Active"){
-        isTradeEnable = false;
-    }else {
-        isTradeEnable = true;
-    }
-    console.log(isTradeEnable);
 
     console.log(marketData);
     const [bsBtn, setBsBtn] = useState(true)
@@ -51,7 +44,7 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
     const [brokerageData, setBrokerageData] = useState([]);
     const [tradingAlgoData, setTradingAlgoData] = useState([]);
     const [instrumentAlgoData, setInstrumentAlgoData] = useState([]);
-    const [permission, setPermission] = useState([]);
+    // const [permission, setPermission] = useState([]);
     const [companyTrade, setCompanyTrade] = useState({
         realBuyOrSell: "",
         realSymbol: "",
@@ -62,16 +55,33 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
         real_last_price: "",
     })
 
+    let algoUserArr = [{
+        algoName: "something",
+        transactionChange: "something",
+        instrumentChange: "something",
+        status: "something",
+        exchangeChange: "something",
+        lotMultipler: "something",
+        productChange: "something",
+        tradingAccount: "something",
+        isRealTradeEnable: "true",
+        user: [
+            {
+                userName: "Vijay",
+                isTradeEnable: "true",
+                algoEnable: "true",
+                isRealTradeEnable: "true"
+            },
+            {
+                userName: "Sachin",
+                isTradeEnable: "true",
+                algoEnable: "true",
+                isRealTradeEnable: "true"
+            }
+        ]
+    }]
+
     useEffect(() => {
-        axios.get(`${baseUrl}api/v1/readpermission`)
-        .then((res) => {
-            let update = (res.data).filter((elem)=>{
-                return elem.userId === userId;
-            })
-            setPermission(update);
-        }).catch((err)=>{
-            return new Error(err);
-        })
 
         axios.get(`${baseUrl}api/v1/readRequestToken`)
             .then((res) => {
@@ -105,13 +115,10 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
                             }
                         })
                         console.log(tradingAlgo);
-                        
                     })
                 })
-
                 setTradingAlgoData(tradingAlgo);
             }).catch((err)=>{
-                
                 return new Error(err);
             })
         axios.get(`${baseUrl}api/v1/readBrokerage`)
@@ -125,7 +132,7 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
         axios.get(`${baseUrl}api/v1/readInstrumentDetails`)
             .then((res) => {
                 let dataArr = (res.data).filter((elem) => {
-                    return (elem.createdOn).includes(`${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`) && elem.status === "Active"
+                    return elem.status === "Active"
                 })
                 setTradeData(dataArr)
             }).catch((err)=>{
@@ -145,8 +152,7 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
 
         console.log(tradeData);
         setTradeData([...tradeData])
-    }, [])
-
+    }, [getDetails])
 
     const toggleModal = () => {
         setModal(!modal);
@@ -178,7 +184,11 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
                 setCompanyTrade(companyTrade)
                 console.log(Details);
                 console.log(companyTrade);
-                sendOrderReq();
+                if(permission[0].isRealTradeEnable){
+                    sendOrderReq();
+                } else{
+                    mockTrade();
+                }
                 setModal(!modal);
             })
         } else {
@@ -194,7 +204,11 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
             setCompanyTrade(companyTrade)
             console.log(Details);
             console.log(companyTrade);
-            sendOrderReq();
+            if(permission[0].isRealTradeEnable){
+                sendOrderReq();
+            } else{
+                mockTrade();
+            }
             setModal(!modal);
         }
     }
@@ -245,7 +259,16 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
                 setCompanyTrade(companyTrade)
                 console.log(Details);
                 console.log(companyTrade);
-                sendOrderReq();
+
+
+                if(permission[0].isRealTradeEnable || permission[0].isRealTradeEnable){
+                    sendOrderReq();
+                    mockTradeUser();
+                } else{
+                    mockTrade();
+                    mockTradeCompany();
+                }
+
                 setModal(!modal);
             })
         } else {
@@ -261,10 +284,19 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
             setCompanyTrade(companyTrade)
             console.log(Details);
             console.log(companyTrade);
-            sendOrderReq();
+
+            if(permission[0].isRealTradeEnable || permission[0].isRealTradeEnable){
+                sendOrderReq();
+                mockTradeUser();
+            } else{
+                mockTrade();
+                mockTradeCompany();
+            }
+
             setModal(!modal);
         }
     }
+
     async function Buy(e, uId) {
         e.preventDefault()
         Details.buyOrSell = "BUY";
@@ -301,7 +333,7 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
 
         if(Details.exchange === "NSE"){
             console.log("in nse")
-            if (isTradersTrade) {
+            if (permission[0].isAlgoEnable) {
                 console.log("algo box should be applied");
                 setDetails(Details)
                 instrumentAlgo(Details.last_price);
@@ -319,11 +351,17 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
                 console.log(Details);
                 console.log(companyTrade);
         
-                sendOrderReq(); // must keep inside both if and else
+
+                if(permission[0].isRealTradeEnable){
+                    sendOrderReq();
+                } else{
+                    mockTrade();
+                } // must keep inside both if and else
                 setModal(!modal);
             }
         } else if(Details.exchange === "NFO"){
-            if (isTradersTrade) {
+// first check if value is there in algo mtlb algo ka account id match huaa h ya nhi agr nhi huaa to algo nhi h but user ko ock trade dilana h
+            if (permission[0].isAlgoEnable) {
                 console.log("algo box should be applied");
                 setDetails(Details)
                 tradingAlgo(uId, Details.last_price);
@@ -341,7 +379,13 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
                 console.log(Details);
                 console.log(companyTrade);
         
-                sendOrderReq(); // must keep inside both if and else
+                if(permission[0].isRealTradeEnable || permission[0].isRealTradeEnable){
+                    sendOrderReq();
+                    mockTradeUser();
+                } else{
+                    mockTrade();
+                    mockTradeCompany();
+                } // must keep inside both if and else
                 setModal(!modal);
             }                
         }
@@ -381,7 +425,6 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
         }
     }
 
-
     function buyBrokerageCharge(brokerageData, quantity, totalAmount) {
         let buyBrokerage = brokerageData.filter((elem) => {
             return elem.transaction === "BUY"
@@ -398,7 +441,31 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
         return finalCharge
     }
 
-    async function mockTrade(){
+    async function mockTradeUser(){ // have to add some feild according to auth
+        const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price } = Details;
+
+        const res = await fetch(`${baseUrl}api/v1/mocktrade`, {
+            method: "POST",
+            headers: {
+                "content-type": "application/json"
+            },
+            body: JSON.stringify({
+                exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, createdBy, userId, createdOn, uId
+            })
+        });
+        const dataResp = await res.json();
+        console.log(dataResp);
+        if (dataResp.status === 422 || dataResp.error || !dataResp) {
+            window.alert(dataResp.error);
+            console.log("Failed to Trade");
+        } else {
+            console.log(dataResp);
+            window.alert("Trade succesfull");
+            console.log("entry succesfull");
+        }
+
+    }
+    async function mockTradeCompany(){
         const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price } = Details;
 
         const res = await fetch(`${baseUrl}api/v1/mocktrade`, {
@@ -425,9 +492,15 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
 
     return (
         <>
-            <button disabled={isTradeEnable} onClick={toggleModal} className="btn-modal By_btn">
+            {permission[0] === undefined ?
+            <button disabled={!permission.isTradeEnable} onClick={toggleModal} className="btn-modal By_btn">
                 BUY
             </button>
+            :
+            <button disabled={!permission[0].isTradeEnable} onClick={toggleModal} className="btn-modal By_btn">
+            BUY
+            </button> }
+
 
             {modal && (
                 <div className="modal">
@@ -522,3 +595,9 @@ export default function ByModal({ marketData, uIdProps, isTradersTrade }) {
         </>
     );
 }
+
+// if(permission.isRealTradeEnable){
+//     sendOrderReq();
+// } else{
+//     mockTrade();
+// }

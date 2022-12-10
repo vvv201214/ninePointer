@@ -16,12 +16,25 @@ function TraderPositionTable({ socket }) {
     const [tradeData, setTradeData] = useState([]);
     const [data, setData]  = useState([]);
     const [marketData, setMarketData] = useState([]);
+    const [permission, setPermission] = useState([]);
 
     let date = new Date();
     let todayDate = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`
     let fake_date = "1-12-2022"
 
     useEffect(() => {
+
+        axios.get(`${baseUrl}api/v1/readpermission`)
+        .then((res) => {
+            let update = (res.data).filter((elem)=>{
+                return elem.userId === getDetails.userDetails.email;
+            })
+            setPermission(update);
+            console.log("permission", permission[0]);
+        }).catch((err)=>{
+            return new Error(err);
+        })
+
         axios.get(`${baseUrl}api/v1/usertradedata`)
         .then((res) => {
             let data = (res.data).filter((elem)=>{
@@ -100,7 +113,7 @@ function TraderPositionTable({ socket }) {
                                 // setMarketData(updatedMarketData)
                                 return(
                                         <tr className="grid2_tr" key={elem.uId}>
-                                            <td className="grid2_td">{elem.lastModified}</td>
+                                            <td className="grid2_td">{todayDate}</td>
                                             <td className="grid2_td">{elem.symbol}</td>
                                             <td className="grid2_td">{updatedMarketData[0]?.last_price}</td>
 
@@ -111,8 +124,8 @@ function TraderPositionTable({ socket }) {
                                             <td className="grid2_td">{updatedMarketData[0]?.change.toFixed(2)}</td>}
 
                                             <td className="grid2_th companyPosition_BSbtn2"><div className="companyPosition_BSbtn">
-                                            <ByModal marketData={marketData} uIdProps={elem.uId} isTradersTrade={true} />
-                                            <SellModel marketData={marketData} uIdProps={elem.uId} isTradersTrade={true} /></div></td>
+                                            <ByModal marketData={marketData} uIdProps={elem.uId} isTradersTrade={true} permission={permission}/>
+                                            <SellModel marketData={marketData} uIdProps={elem.uId} isTradersTrade={true} permission={permission} /></div></td>
                                         </tr>
                                     )
                                 })} 

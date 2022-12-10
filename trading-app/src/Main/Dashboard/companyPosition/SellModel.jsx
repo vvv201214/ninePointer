@@ -5,7 +5,7 @@ import axios from "axios"
 import uniqid from "uniqid"
 import { userContext } from "../../AuthContext";
 
-export default function SellModel({marketData, uIdProps, isTradersTrade}) {
+export default function SellModel({marketData, uIdProps, permission}) {
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
     const getDetails = useContext(userContext);
@@ -60,6 +60,7 @@ export default function SellModel({marketData, uIdProps, isTradersTrade}) {
     }) 
 
     useEffect(()=>{
+
         axios.get(`${baseUrl}api/v1/readRequestToken`)
         .then((res)=>{
             let activeAccessToken = (res.data).filter((elem)=>{
@@ -113,7 +114,7 @@ export default function SellModel({marketData, uIdProps, isTradersTrade}) {
         axios.get(`${baseUrl}api/v1/readInstrumentDetails`)
         .then((res)=>{
             let dataArr = (res.data).filter((elem)=>{
-                return (elem.createdOn).includes(`${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`) && elem.status === "Active" 
+                return elem.status === "Active" 
             })
             setTradeData(dataArr)
         }).catch((err)=>{
@@ -293,7 +294,7 @@ export default function SellModel({marketData, uIdProps, isTradersTrade}) {
         // Algo box applied here....
         console.log("checking exchange", Details.exchange )
         if(Details.exchange === "NSE"){
-            if (isTradersTrade) {
+            if (permission[0].isAlgoEnable) {
                 console.log("algo box should be applied");
                 setDetails(Details)
                 instrumentAlgo(Details.last_price);
@@ -302,7 +303,7 @@ export default function SellModel({marketData, uIdProps, isTradersTrade}) {
                 companyTrade.realSymbol = Details.symbol
                 companyTrade.realInstrument = Details.instrument
                 companyTrade.realQuantity = Details.Quantity;
-    
+                companyTrade.real_last_price = Details.last_price
                 companyTrade.realAmount = Details.last_price * companyTrade.realQuantity;
                 companyTrade.realBrokerage = sellBrokerageCharge(brokerageData, companyTrade.realQuantity, companyTrade.realAmount);
                 
@@ -317,7 +318,7 @@ export default function SellModel({marketData, uIdProps, isTradersTrade}) {
 
 
         }else if(Details.exchange === "NFO"){
-            if(isTradersTrade){
+            if(permission[0].isAlgoEnable){
                 console.log("algo box should be applied");
                 setDetails(Details)
                 tradingAlgo(uId, Details.last_price);
@@ -326,7 +327,7 @@ export default function SellModel({marketData, uIdProps, isTradersTrade}) {
                 companyTrade.realSymbol = Details.symbol
                 companyTrade.realInstrument = Details.instrument
                 companyTrade.realQuantity = Details.Quantity;
-    
+                companyTrade.real_last_price = Details.last_price
                 companyTrade.realAmount = Details.last_price * companyTrade.realQuantity;
                 companyTrade.realBrokerage = sellBrokerageCharge(brokerageData, companyTrade.realQuantity, companyTrade.realAmount);
                 
@@ -393,11 +394,41 @@ export default function SellModel({marketData, uIdProps, isTradersTrade}) {
         return finalCharge
     }
 
+    async function mockTrade(){
+        const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price } = Details;
+
+        const res = await fetch(`${baseUrl}api/v1/mocktrade`, {
+            method: "POST",
+            headers: {
+                "content-type": "application/json"
+            },
+            body: JSON.stringify({
+                exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, createdBy, userId, createdOn, uId
+            })
+        });
+        const dataResp = await res.json();
+        console.log(dataResp);
+        if (dataResp.status === 422 || dataResp.error || !dataResp) {
+            window.alert(dataResp.error);
+            console.log("Failed to Trade");
+        } else {
+            console.log(dataResp);
+            window.alert("Trade succesfull");
+            console.log("entry succesfull");
+        }
+
+    }
+
     return (
         <>
-            <button disabled={isTradeEnable} onClick={toggleModal} className="btn-modal Sell_btn">
+            {permission[0] === undefined ?
+            <button disabled={!permission.isTradeEnable} onClick={toggleModal} className="btn-modal Sell_btn">
                 SELL
             </button>
+            :
+            <button disabled={!permission[0].isTradeEnable} onClick={toggleModal} className="btn-modal Sell_btn">
+            SELL
+            </button> }
 
             {modal && (
                <div className="modal">

@@ -3,41 +3,8 @@ const router = express.Router();
 require("../../db/conn");
 const Instrument = require("../../models/Instruments/instrumentSchema");
 const axios = require('axios');
+const fetchToken = require("../../marketData/generateSingleToken");
 
-async function fetchToken (exchange, symbol){
-    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/";
-    let getAccessToken;
-    let getApiKey;
-    let instrumentToken ;
-
-    let accessTokenResp = await axios.get(`${baseUrl}api/v1/readRequestToken`)
-    let apiKeyResp = await axios.get(`${baseUrl}api/v1/readAccountDetails`)
-
-    for(let elem of accessTokenResp.data){
-        for(let subElem of apiKeyResp.data){
-            if(elem.accountId === subElem.accountId && elem.status === "Active" && subElem.status === "Active"){
-                getAccessToken = elem.accessToken;
-                getApiKey = subElem.apiKey
-            }
-        }
-    }
-    const addUrl = 'i=' + exchange + ':' + symbol;
-    const url = `https://api.kite.trade/quote?${addUrl}`
-
-    let auth = 'token' + getApiKey + ':' + getAccessToken;
-    
-    let authOptions = {
-        headers: {
-            'X-Kite-Version': '3',
-            Authorization: auth,
-        },
-    };
-    const resp = await axios.get(url, authOptions);
-    for (let elem in resp.data.data) {
-        instrumentToken = (resp.data.data[elem].instrument_token);
-    }
-    return instrumentToken;
-}
 
 
 router.post("/instrument", async (req, res)=>{
@@ -69,6 +36,7 @@ router.post("/instrument", async (req, res)=>{
         }).catch(err => {console.log(err, "fail")});
 
     } catch(err) {
+        res.status(500).json({error:"Failed to enter data Check access token"});
         return new Error(err);
     }
 })
@@ -97,10 +65,14 @@ router.get("/readInstrumentDetails/:id", (req, res)=>{
 
 router.put("/readInstrumentDetails/:id", async (req, res)=>{
     console.log(req.params)
+    console.log( req.body)
     const {Exchange, Symbole} = req.body;
-    const token = await fetchToken(Exchange, Symbole);
+    
+    // const token = 1232444;
+    // console.log(token, req.body)
     try{ 
         const {id} = req.params
+        const token = await fetchToken(Exchange, Symbole);
         const instrument = await Instrument.findOneAndUpdate({_id : id}, {
             $set:{ 
                 instrument: req.body.Instrument,
@@ -115,7 +87,7 @@ router.put("/readInstrumentDetails/:id", async (req, res)=>{
         console.log("this is role", instrument);
         res.send(instrument)
     } catch (e){
-        res.status(500).json({error:"Failed to edit data"});
+        res.status(500).json({error:"Failed to edit data Check access token"});
     }
 })
 
