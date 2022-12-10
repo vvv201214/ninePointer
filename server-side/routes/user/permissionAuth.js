@@ -17,7 +17,7 @@ router.post("/permission", (req, res)=>{
             console.log("data already");
             return res.status(422).json({error : "date already exist..."})
         }
-        const permission = new Permission({uId, modifiedOn, modifiedBy, userName, userId, isTradeEnable, isAlgoEnable, isRealTradeEnable});
+        const permission = new Permission({uId, modifiedOn, modifiedBy, userName, userId, isTradeEnable, algoName, isRealTradeEnable});
         permission.save().then(()=>{
             res.status(201).json({massage : "data enter succesfully"});
         }).catch((err)=> res.status(500).json({error:"Failed to enter data"}));
@@ -58,7 +58,7 @@ router.put("/readpermission/:id", async (req, res)=>{
                 userName: req.body.userName,
                 userId: req.body.userId,
                 isTradeEnable: req.body.isTradeEnable,
-                isAlgoEnable: req.body.isAlgoEnable,
+                algoName: req.body.algoName,
                 isRealTradeEnable: req.body.isRealTradeEnable,
             }
         })

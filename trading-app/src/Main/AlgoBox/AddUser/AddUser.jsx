@@ -23,9 +23,11 @@ export default function AddUser({algoName}) {
     } else {
         document.body.classList.remove('active-modal')
     }
+    let permissionDataUpdated = permissionData.filter((elem)=>{
+        return elem.algoName === algoName;
+    })
 
-
-    let newData = addUser.concat(permissionData);
+    let newData = addUser.concat(permissionDataUpdated);
     console.log("this is add usere", newData);
 
     async function formbtn(e, id) {
@@ -36,8 +38,8 @@ export default function AddUser({algoName}) {
             return elem._id === id
         })
 
-        if(permissionData.length){
-            for(let elem of permissionData){
+        if(permissionDataUpdated.length){
+            for(let elem of permissionDataUpdated){
                 if(elem.userId === newDataUpdated[0].userId){
                     console.log("put request");
                     flag = false;
