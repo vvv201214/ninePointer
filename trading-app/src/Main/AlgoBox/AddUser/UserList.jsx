@@ -5,7 +5,6 @@ import Styles from "./UserList.module.css"
 import axios from "axios"
 import uniqid from "uniqid";
 
-
 export default function UserList({addUser, setAddUser, setPermissionData}) {
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
     const [data, setData] = useState([]);

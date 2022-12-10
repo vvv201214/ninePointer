@@ -74,16 +74,27 @@
     float: left;
 }
 .ACform_tbn{
-    margin: 2rem 2rem;
-    width: 4rem;
+    margin: 5px;
+    padding: 2px;
+    width: 3rem;
     height: 2rem;
     background-color: #010101;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: bold;
     color: white;
     border: none;
     border-radius: 5px;
-    float: left;
-    
+   
+}
+.ACform_tbn_Delete{
+    margin: 5px;
+    width: 4rem;
+    height: 2rem;
+    background-color: #010101;
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
+    border: none;
+    border-radius: 5px;
 
 }

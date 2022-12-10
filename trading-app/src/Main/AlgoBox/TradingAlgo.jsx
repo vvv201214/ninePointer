@@ -165,6 +165,7 @@ function TradingAlgo(){
                                             <td className="grid2_td">{elem.exchangeChange}</td>
                                             <td className="grid2_td">{elem.productChange}</td>
                                             <td className="grid2_td">{elem.lotMultipler}</td>
+                                            <td className="grid2_td">{elem.lotMultipler}</td>
                                             <td className="grid2_td">{elem.tradingAccount}</td>
                                             <td className="grid2_td">{elem.status}</td>
                                         </tr>
