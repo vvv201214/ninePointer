@@ -184,11 +184,11 @@ export default function ByModal({ marketData, uIdProps, permission }) {
                 setCompanyTrade(companyTrade)
                 console.log(Details);
                 console.log(companyTrade);
-                if(permission[0].isRealTradeEnable){
-                    sendOrderReq();
-                } else{
-                    mockTrade();
-                }
+                // if(permission[0].isRealTradeEnable){
+                //     sendOrderReq();
+                // } else{
+                //     mockTrade();
+                // }
                 setModal(!modal);
             })
         } else {
@@ -204,11 +204,11 @@ export default function ByModal({ marketData, uIdProps, permission }) {
             setCompanyTrade(companyTrade)
             console.log(Details);
             console.log(companyTrade);
-            if(permission[0].isRealTradeEnable){
-                sendOrderReq();
-            } else{
-                mockTrade();
-            }
+            // if(permission[0].isRealTradeEnable){
+            //     sendOrderReq();
+            // } else{
+            //     mockTrade();
+            // }
             setModal(!modal);
         }
     }
@@ -265,7 +265,7 @@ export default function ByModal({ marketData, uIdProps, permission }) {
                     sendOrderReq();
                     mockTradeUser();
                 } else{
-                    mockTrade();
+                    mockTradeUser();
                     mockTradeCompany();
                 }
 
@@ -289,7 +289,7 @@ export default function ByModal({ marketData, uIdProps, permission }) {
                 sendOrderReq();
                 mockTradeUser();
             } else{
-                mockTrade();
+                mockTradeUser();
                 mockTradeCompany();
             }
 
@@ -352,11 +352,11 @@ export default function ByModal({ marketData, uIdProps, permission }) {
                 console.log(companyTrade);
         
 
-                if(permission[0].isRealTradeEnable){
-                    sendOrderReq();
-                } else{
-                    mockTrade();
-                } // must keep inside both if and else
+                // if(permission[0].isRealTradeEnable){
+                //     sendOrderReq();
+                // } else{
+                //     mockTrade();
+                // } // must keep inside both if and else
                 setModal(!modal);
             }
         } else if(Details.exchange === "NFO"){
@@ -383,7 +383,7 @@ export default function ByModal({ marketData, uIdProps, permission }) {
                     sendOrderReq();
                     mockTradeUser();
                 } else{
-                    mockTrade();
+                    mockTradeUser();
                     mockTradeCompany();
                 } // must keep inside both if and else
                 setModal(!modal);
