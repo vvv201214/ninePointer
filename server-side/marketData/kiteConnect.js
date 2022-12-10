@@ -26,6 +26,8 @@ io.on("connection", (socket) => {
 
 async function parameters() {
   let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+  let date = new Date();
+  let today = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`
 
   console.log("inside function");
   let getAccessToken;
@@ -39,7 +41,7 @@ async function parameters() {
     for(let elem of accessTokenResp.data){
       for(let subElem of apiKeyResp.data){
         console.log("inside 2");
-          if(elem.accountId === subElem.accountId && elem.status === "Active" && subElem.status === "Active"){
+          if(elem.accountId === subElem.accountId && elem.generatedOn === today && elem.status === "Active" && subElem.status === "Active"){
               getAccessToken = elem.accessToken;
               getApiKey = subElem.apiKey
           }
@@ -73,7 +75,7 @@ async function parameters() {
       });
       // console.log(ticker);
    
-      ticker.autoReconnect(true, 100000000, 5);
+      ticker.autoReconnect(true, 10000000000, 5);
       ticker.connect();
       ticker.on('ticks', onTicks);
       ticker.on('connect', subscribe);
