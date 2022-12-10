@@ -148,7 +148,8 @@ function TradingAlgo(){
                                     <th className="grid2_th">Instrument Change</th>
                                     <th className="grid2_th">Exchange Change</th>
                                     <th className="grid2_th">Product Change</th>
-                                    <th className="grid2_th">Lot Multipler</th>
+                                    <th className="grid2_th">Lot Multiplier</th>
+                                    <th className="grid2_th">Real Trade</th>
                                     <th className="grid2_th">Trading Account</th>
                                     <th className="grid2_th">Status</th>
                                 </tr>
@@ -158,7 +159,7 @@ function TradingAlgo(){
                                         <tr className="grid2_tr" key={elem.uId}>
                                             <td className="grid2_td"><span className="Editbutton"><TradingAlgoEditModel data={data} id={elem._id} Render={{setReRender, reRender}}/></span>{elem.createdOn}</td>
                                             <td className="grid2_td">{elem.algoName}</td>
-                                            <td className="grid2_td"><AddUser/></td>
+                                            <td className="grid2_td"><AddUser algoName={elem.algoName}/></td>
                                             <td className="grid2_td">{elem.transactionChange}</td>
                                             <td className="grid2_td">{elem.instrumentChange}</td>
                                             <td className="grid2_td">{elem.exchangeChange}</td>
