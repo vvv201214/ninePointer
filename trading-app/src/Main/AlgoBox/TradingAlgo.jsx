@@ -6,6 +6,7 @@ import axios from "axios"
 import Styles from "./AlgoModuleCSSFiles/TradingAlgo.module.css";
 import TradingAlgoEditModel from "./AlgoEditIcon/TradingAlgoEditModel";
 import AddUser from "./AddUser/AddUser";
+import RealTrade from "./RealTrade/RealTrade";
 
 function TradingAlgo(){
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
@@ -65,7 +66,9 @@ function TradingAlgo(){
                 "content-type" : "application/json"
             },
             body: JSON.stringify({
-                algoName, transactionChange, instrumentChange, status, exchangeChange, lotMultipler, productChange, tradingAccount, lastModified, uId, createdBy, createdOn
+                algoName, transactionChange, instrumentChange, status, exchangeChange, 
+                lotMultipler, productChange, tradingAccount, lastModified, uId, createdBy, 
+                createdOn, realTrade:false
             })
         });
         
@@ -165,7 +168,7 @@ function TradingAlgo(){
                                             <td className="grid2_td">{elem.exchangeChange}</td>
                                             <td className="grid2_td">{elem.productChange}</td>
                                             <td className="grid2_td">{elem.lotMultipler}</td>
-                                            <td className="grid2_td">{elem.lotMultipler}</td>
+                                            <td className="grid2_td"><RealTrade id={elem._id} Render={{reRender, setReRender}} tradingAlgo={data} buttonTextBool={elem.isRealTrade}/></td>
                                             <td className="grid2_td">{elem.tradingAccount}</td>
                                             <td className="grid2_td">{elem.status}</td>
                                         </tr>
