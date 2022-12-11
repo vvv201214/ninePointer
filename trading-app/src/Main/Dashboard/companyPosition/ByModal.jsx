@@ -5,7 +5,7 @@ import axios from "axios"
 import uniqid from "uniqid"
 import { userContext } from "../../AuthContext";
 
-export default function ByModal({ marketData, uIdProps, permission }) {
+export default function ByModal({ marketData, uIdProps }) {
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
     const getDetails = useContext(userContext);
@@ -55,12 +55,12 @@ export default function ByModal({ marketData, uIdProps, permission }) {
         real_last_price: "",
     })
 
-
     useEffect(() => {
 
         axios.get(`${baseUrl}api/v1/readpermission`)
         .then((res)=>{
             let perticularUser = (res.data).filter((elem)=>{
+                console.log(elem.userId , userId);
                 return elem.userId === userId;
             })
             setUserPermission(perticularUser);
@@ -150,7 +150,7 @@ export default function ByModal({ marketData, uIdProps, permission }) {
         }
     }
 
-    console.log(userPermissionAlgo);
+    console.log(userPermissionAlgo); //its an array do everything according it
 
 
     const toggleModal = () => {
@@ -209,8 +209,8 @@ export default function ByModal({ marketData, uIdProps, permission }) {
     }
 
     function tradingAlgo(uId, lastPrice) {
-        if (tradingAlgoData.length) {
-            tradingAlgoData.map((elem) => {
+        // if (userPermissionAlgo.length) {
+            userPermissionAlgo.map((elem) => {
                 
                 if (elem.transactionChange) {
                     companyTrade.realBuyOrSell = "SELL"
@@ -242,45 +242,50 @@ export default function ByModal({ marketData, uIdProps, permission }) {
                     return elem.tradingAccount === element.accountId
                 })
                 setApiKey(apiKeyDetails);
-                companyTrade.real_last_price = getLastPrice[0].last_price;
-                companyTrade.realAmount = getLastPrice[0].last_price * companyTrade.realQuantity;
+                // companyTrade.real_last_price = getLastPrice[0].last_price;
+                companyTrade.real_last_price = 100
+                companyTrade.realAmount = 800
+                //companyTrade.realAmount = getLastPrice[0].last_price * companyTrade.realQuantity;
                 companyTrade.realBrokerage = buyBrokerageCharge(brokerageData, companyTrade.realQuantity, companyTrade.realAmount);
                 
                 setCompanyTrade(companyTrade)
 
-
-                if(permission[0].isRealTradeEnable || permission[0].isRealTradeEnable){
-                    sendOrderReq();
-                    mockTradeUser();
-                } else{
-                    mockTradeUser();
-                    mockTradeCompany();
-                }
-
+                userPermission.map((subElem)=>{
+                    if(subElem.algoName === elem.algoName){
+                        if(subElem.isRealTradeEnable || subElem.isRealTradeEnable){
+                            sendOrderReq();
+                            // mockTradeUser("yes");
+                        } else{
+                            // mockTradeUser("no");
+                            mockTradeCompany(elem);
+                        }
+                    }
+                })
                 setModal(!modal);
             })
-        } else {
-            companyTrade.real_last_price = Details.last_price;
-            companyTrade.realBuyOrSell = "BUY";
-            companyTrade.realSymbol = Details.symbol
-            companyTrade.realInstrument = Details.instrument
-            companyTrade.realQuantity = Details.Quantity;
-            companyTrade.realAmount = lastPrice * companyTrade.realQuantity;
-            companyTrade.realBrokerage = buyBrokerageCharge(brokerageData, companyTrade.realQuantity, companyTrade.realAmount);
+        
+        // } else {
+        //     companyTrade.real_last_price = Details.last_price;
+        //     companyTrade.realBuyOrSell = "BUY";
+        //     companyTrade.realSymbol = Details.symbol
+        //     companyTrade.realInstrument = Details.instrument
+        //     companyTrade.realQuantity = Details.Quantity;
+        //     companyTrade.realAmount = lastPrice * companyTrade.realQuantity;
+        //     companyTrade.realBrokerage = buyBrokerageCharge(brokerageData, companyTrade.realQuantity, companyTrade.realAmount);
             
 
-            setCompanyTrade(companyTrade)
+        //     setCompanyTrade(companyTrade)
 
-            if(permission[0].isRealTradeEnable || permission[0].isRealTradeEnable){
-                sendOrderReq();
-                mockTradeUser();
-            } else{
-                mockTradeUser();
-                mockTradeCompany();
-            }
+        //     if(permission[0].isRealTradeEnable || permission[0].isRealTradeEnable){
+        //         sendOrderReq();
+        //         mockTradeUser();
+        //     } else{
+        //         mockTradeUser();
+        //         mockTradeCompany();
+        //     }
 
-            setModal(!modal);
-        }
+        //     setModal(!modal);
+        // }
     }
 
     async function Buy(e, uId) {
@@ -302,7 +307,9 @@ export default function ByModal({ marketData, uIdProps, permission }) {
         let getLivePrice = marketData.filter((elem) => {
             return getSomeData[0].instrumentToken === elem.instrument_token;
         })
-        Details.last_price = getLivePrice[0].last_price
+        Details.last_price = 100
+        // Details.last_price = getLivePrice[0].last_price
+
         Details.totalAmount = Details.last_price * Details.Quantity;
         Details.brokerageCharge = buyBrokerageCharge(brokerageData, Details.Quantity, Details.totalAmount);
         
@@ -312,8 +319,8 @@ export default function ByModal({ marketData, uIdProps, permission }) {
 
         // Algo box applied here....
 
-        if(Details.exchange === "NSE"){
-            if (permission[0].isAlgoEnable) {
+        if(Details.exchange === "NFO"){
+            if (true) {
                 setDetails(Details)
                 instrumentAlgo(Details.last_price);
             } else {
@@ -336,10 +343,11 @@ export default function ByModal({ marketData, uIdProps, permission }) {
                 // } // must keep inside both if and else
                 setModal(!modal);
             }
-        } else if(Details.exchange === "NFO"){
+        } else if(Details.exchange === "NSE"){
 // first check if value is there in algo mtlb algo ka account id match huaa h ya nhi agr nhi huaa to algo nhi h but user ko ock trade dilana h
-            if (permission[0].isAlgoEnable) {
+            if (userPermissionAlgo.length) {
                 setDetails(Details)
+                mockTradeUser("no");
                 tradingAlgo(uId, Details.last_price);
             } else {
                 companyTrade.realBuyOrSell = "BUY";
@@ -353,13 +361,18 @@ export default function ByModal({ marketData, uIdProps, permission }) {
                 setCompanyTrade(companyTrade)
                 setDetails(Details)
         
-                if(permission[0].isRealTradeEnable || permission[0].isRealTradeEnable){
-                    sendOrderReq();
-                    mockTradeUser();
-                } else{
-                    mockTradeUser();
-                    mockTradeCompany();
-                } // must keep inside both if and else
+                const fakeAlgo = {
+                    algoName: "no algo",
+                    transactionChange: "no algo",
+                    instrumentChange: "no algo",
+                    exchangeChange: "no algo",
+                    lotMultipler: "no algo",
+                    productChange: "no algo",
+                    tradingAccount: "no algo"
+                }
+                mockTradeUser("no");
+                mockTradeCompany(fakeAlgo);
+                // must keep inside both if and else
                 setModal(!modal);
             }                
         }
@@ -412,16 +425,18 @@ export default function ByModal({ marketData, uIdProps, permission }) {
         return finalCharge
     }
 
-    async function mockTradeUser(){ // have to add some feild according to auth
+    async function mockTradeUser(realTrade){ // have to add some feild according to auth
         const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price } = Details;
-
-        const res = await fetch(`${baseUrl}api/v1/mocktrade`, {
+        // const {algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount} = algoBox
+        const res = await fetch(`${baseUrl}api/v1/mocktradeuser`, {
             method: "POST",
             headers: {
                 "content-type": "application/json"
             },
             body: JSON.stringify({
-                exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, createdBy, userId, createdOn, uId
+                exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, createdBy, userId, createdOn, uId,
+                isRealTrade:realTrade
+                // , algoBox: {algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount}
             })
         });
         const dataResp = await res.json();
@@ -436,16 +451,23 @@ export default function ByModal({ marketData, uIdProps, permission }) {
         }
 
     }
-    async function mockTradeCompany(){
-        const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price } = Details;
 
-        const res = await fetch(`${baseUrl}api/v1/mocktrade`, {
+    async function mockTradeCompany(algoBox){
+        const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price } = Details;
+        const {algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount} = algoBox;
+        const {realBuyOrSell, realSymbol, realQuantity, realInstrument, realBrokerage, realAmount, real_last_price} = companyTrade;
+
+        const res = await fetch(`${baseUrl}api/v1/mocktradecompany`, {
             method: "POST",
             headers: {
                 "content-type": "application/json"
             },
             body: JSON.stringify({
-                exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, createdBy, userId, createdOn, uId
+                exchange, symbol: realSymbol, buyOrSell: realBuyOrSell, Quantity: realQuantity, Price, Product, OrderType, TriggerPrice, 
+                stopLoss, validity, variety, last_price: real_last_price, createdBy, userId, createdOn, uId, 
+                algoBox: {algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, 
+                productChange, tradingAccount}
+
             })
         });
         const dataResp = await res.json();
@@ -462,12 +484,12 @@ export default function ByModal({ marketData, uIdProps, permission }) {
 
     return (
         <>
-            {permission[0] === undefined ?
-            <button disabled={!permission.isTradeEnable} onClick={toggleModal} className="btn-modal By_btn">
-                BUY
+            {userPermission[0] === undefined ?
+            <button disabled={!userPermission.isTradeEnable} onClick={toggleModal} className="btn-modal By_btn">
+            BUY
             </button>
             :
-            <button disabled={!permission[0].isTradeEnable} onClick={toggleModal} className="btn-modal By_btn">
+            <button disabled={!userPermission[0].isTradeEnable} onClick={toggleModal} className="btn-modal By_btn">
             BUY
             </button> }
 

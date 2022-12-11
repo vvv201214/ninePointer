@@ -5,7 +5,7 @@ const MockTradeDetails = require("../../models/mock-trade/mockTradeCompanySchema
 
 router.post("/mocktradecompany", (req, res)=>{
 
-    const {exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType,
+    let {exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType,
          TriggerPrice, stopLoss, validity, variety, last_price, createdBy, userId,
           createdOn, uId, algoBox} = req.body
 
@@ -13,11 +13,14 @@ router.post("/mocktradecompany", (req, res)=>{
         , exchangeChange, lotMultipler, productChange, tradingAccount} = algoBox
 
     if(!exchange || !symbol || !buyOrSell || !Quantity || !Product || !OrderType || !validity || !variety || !last_price || !algoName || !transactionChange || !instrumentChange || !exchangeChange || !lotMultipler || !productChange || !tradingAccount){
-        console.log(exchange); console.log(symbol); console.log(buyOrSell); console.log(Quantity); console.log(Product); console.log(OrderType); console.log(validity); console.log(variety); console.log(last_price); console.log(algoName); console.log(transactionChange); console.log(instrumentChange); console.log(exchangeChange); console.log(lotMultipler); console.log(productChange); console.log(tradingAccount);
+        console.log(Boolean(exchange)); console.log(Boolean(symbol)); console.log(Boolean(buyOrSell)); console.log(Boolean(Quantity)); console.log(Boolean(Product)); console.log(Boolean(OrderType)); console.log(Boolean(validity)); console.log(Boolean(variety)); console.log(Boolean(last_price)); console.log(Boolean(algoName)); console.log(Boolean(transactionChange)); console.log(Boolean(instrumentChange)); console.log(Boolean(exchangeChange)); console.log(Boolean(lotMultipler)); console.log(Boolean(productChange)); console.log(Boolean(tradingAccount));
         console.log("data nhi h pura");
         return res.status(422).json({error : "please fill all the feilds..."})
     }
 
+    if(buyOrSell === "SELL"){
+        Quantity = "-"+Quantity;
+    }
     MockTradeDetails.findOne({uId : uId})
     .then((dateExist)=>{
         if(dateExist){
@@ -30,6 +33,7 @@ router.post("/mocktradecompany", (req, res)=>{
              algoBox:{algoName, transactionChange, instrumentChange, exchangeChange, 
             lotMultipler, productChange, tradingAccount}
         });
+
 
         mockTradeDetails.save().then(()=>{
             res.status(201).json({massage : "data enter succesfully"});

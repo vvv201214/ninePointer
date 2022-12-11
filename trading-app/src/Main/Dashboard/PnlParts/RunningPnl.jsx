@@ -54,7 +54,7 @@ export default function RunningPnl({marketData, tradeData, data}) {
                 runningPnl.push(value);
             }
 
-
+            
             setPnlData(runningPnl);
 
             let liveDetailsArr = [];

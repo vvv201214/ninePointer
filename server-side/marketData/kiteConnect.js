@@ -8,9 +8,10 @@ const axios = require('axios');
 
 let eventEmitOnError ;
 // const io = new Server("/api/v1/socketconnection", {
+  let newCors = process.env.NODE_ENV === "production" ? "http://3.110.187.5/" : "http://localhost:3000"
 const io = new Server(9000, {
   cors: {
-    origin: 'http://localhost:3000',
+    origin: newCors,
     methods: ['GET', 'POST', 'PATCH'],
   },
 });

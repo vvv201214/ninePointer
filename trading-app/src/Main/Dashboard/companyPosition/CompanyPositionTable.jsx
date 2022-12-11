@@ -17,28 +17,16 @@ function CompanyPositionTable({ socket }) {
     const [tradeData, setTradeData] = useState([]);
     const [marketData, setMarketData] = useState([]);
     const [data, setData] = useState([]);
-    const [permission, setPermission] = useState([]);
     let date = new Date();
     let todayDate = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`
     let fake_date = "1-12-2022"
 
     useEffect(() => {
 
-        axios.get(`${baseUrl}api/v1/readpermission`)
-        .then((res) => {
-            let update = (res.data).filter((elem)=>{
-                return elem.userId === getDetails.userDetails.email;
-            })
-            setPermission(update);
-            console.log("permission", permission[0]);
-        }).catch((err)=>{
-            return new Error(err);
-        })
-
         axios.get(`${baseUrl}api/v1/companytradedata`)
         .then((res) => {
             let data = (res.data).filter((elem)=>{
-                return elem.createdOn.includes(todayDate) && elem.status === "COMPLETE";
+                return elem.order_timestamp.includes(todayDate) && elem.status === "COMPLETE";
             })
             setData(data);
         }).catch((err)=>{
@@ -123,8 +111,8 @@ function CompanyPositionTable({ socket }) {
                                             <td className="grid2_td">{updatedMarketData[0]?.change.toFixed(2)}</td>}
                                             <td className="grid2_th companyPosition_BSbtn2">
                                                 <div className="companyPosition_BSbtn">
-                                                    <ByModal permission={permission} marketData={marketData} uIdProps={elem.uId} isTradersTrade={false} />
-                                                    <SellModel permission={permission} marketData={marketData} uIdProps={elem.uId} isTradersTrade={false} />
+                                                    <ByModal marketData={marketData} uIdProps={elem.uId} />
+                                                    <SellModel marketData={marketData} uIdProps={elem.uId} />
                                                 </div>
                                             </td>
                                     </tr>
