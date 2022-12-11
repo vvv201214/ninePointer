@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { userContext } from "../../AuthContext";
 import Styles from "./AddUser.module.css";
 import UserList from "./UserList";
@@ -12,8 +12,15 @@ export default function AddUser({algoName}) {
     const getDetails = useContext(userContext);
     let modifiedOn = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`
     let modifiedBy = getDetails.userDetails.name;
+
+    const [userName, setUserName] = useState();
+    const [entrading, setEntrading] = useState();
+    const [reTrading, setreTrading] = useState();
+
+
     
     const [permissionData, setPermissionData] = useState([]);
+
     const [modal, setModal] = useState(false);
     const [addUser, setAddUser] = useState([]);
     const toggleModal = () => {
@@ -39,11 +46,14 @@ export default function AddUser({algoName}) {
     async function formbtn(e, id) {
         e.preventDefault();
         setModal(!modal);
+
         let flag = true;
         let newDataUpdated = newData.filter((elem)=>{
             return elem._id === id
         })
         algoData.name=newDataUpdated[0].userName;
+        algoData.tradingEnable = entrading;
+        algoData.realTrading = reTrading;
         setAlgoData(algoData);
         console.log(algoData);
 
@@ -61,13 +71,14 @@ export default function AddUser({algoName}) {
             console.log("post request");
         }
     }
-    async function deletehandler(e,id){
-        // let newDataUpdated = newData.filter((elem)=>{
-        //     return elem._id === id
-        // })
-        // setAlgoData(algoData);
-        // console.log(algoData);  
-        // console.log(newDataUpdated);
+        function deletehandler(e,id){ 
+            // setModal(!modal);
+            // let newDataUpdated = newData.filter((elem)=>{
+            //     console.log(elem._id);
+            //     return elem._id === id
+            // })
+            // console.log(newData); 
+            // console.log(algoData,  algoData.name);  
 
         // const res = await fetch(`${baseUrl}api/v1/readtradingAlgo/${id}`, {
         //     method: "DELETE",
@@ -104,16 +115,16 @@ export default function AddUser({algoName}) {
                             {newData.map((elem)=>{
                                 return(
                                     <tr key={elem._id} className={Styles.addUser_tr}>
-                                        <td className={Styles.addUser_td} value={elem.userName}>{elem.userName}</td>
+                                        <td className={Styles.addUser_td}>{elem.userName}</td>
                                         <td className={Styles.addUser_td}>
-                                            <select name="" id="" className={Styles.addUser_select} onChange={(e)=>{{algoData.tradingEnable=e.target.value}}}>
+                                            <select name="" id="" value={entrading} className={Styles.addUser_select} onChange={(e)=>{{setEntrading(e.target.value)}}}>
                                                 <option value=""></option>
                                                 <option value="True">True</option>
                                                 <option value="False">False</option>
                                             </select>
                                         </td>
                                         <td className={Styles.addUser_td}>
-                                            <select name="" id="" className={Styles.addUser_select} onChange={(e)=>{{algoData.realTrading=e.target.value}}}>
+                                            <select name="" id="" value={reTrading} className={Styles.addUser_select} onChange={(e)=>{{setreTrading(e.target.value)}}}>
                                                 <option value=""></option>
                                                 <option value="True">True</option>
                                                 <option value="False">False</option>

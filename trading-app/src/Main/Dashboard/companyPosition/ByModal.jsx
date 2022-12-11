@@ -19,6 +19,7 @@ export default function ByModal({ marketData, uIdProps, permission }) {
 
 
     console.log(marketData);
+
     const [bsBtn, setBsBtn] = useState(true)
     const [modal, setModal] = useState(false);
     const [Details, setDetails] = useState({
@@ -493,11 +494,11 @@ export default function ByModal({ marketData, uIdProps, permission }) {
     return (
         <>
             {permission[0] === undefined ?
-            <button disabled={!permission.isTradeEnable} onClick={toggleModal} className="btn-modal By_btn">
+            <button disabled={permission.isTradeEnable} onClick={toggleModal} className="btn-modal By_btn">
                 BUY
             </button>
             :
-            <button disabled={!permission[0].isTradeEnable} onClick={toggleModal} className="btn-modal By_btn">
+            <button disabled={permission[0].isTradeEnable} onClick={toggleModal} className="btn-modal By_btn">
             BUY
             </button> }
 
@@ -510,7 +511,7 @@ export default function ByModal({ marketData, uIdProps, permission }) {
                             <button className={bsBtn ? "amobtn" : `bsBtn`} onClick={() => { setBsBtn(true) }}>Regular</button> <button className={bsBtn ? "bsBtn" : "amobtn"} onClick={() => { setBsBtn(false) }}>AMO</button>
                         </div>
                         {bsBtn ? <form className="Form_head" onChange={FormHandler} >
-                            <div className="container_One">
+                        <div className="container_One">
                                 <input type="radio" value="MIS" name="Product" className="btnRadio" onChange={(e) => { { Details.Product = e.target.value } }} /> Intraday <span style={{ color: 'gray' }}>MIS</span>
 
                                 <input type="radio" value="NRML" name="Product" className="btnRadio" onChange={(e) => { { Details.Product = e.target.value } }} /> Overnight <span style={{ color: 'gray' }}>NRML</span>

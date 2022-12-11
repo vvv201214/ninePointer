@@ -129,7 +129,7 @@ export default function TradingAlgoEditModel ({ data, id, Render }) {
     }
     return (
         <>
-            <button onClick={toggleModal}><TiEdit /></button>
+            <button onClick={toggleModal} className={Styles.tiicon}><TiEdit /></button>
 
             {modal && (
                 <div className="modal">

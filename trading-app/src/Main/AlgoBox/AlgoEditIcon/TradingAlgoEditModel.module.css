@@ -34,7 +34,10 @@
     max-width: 600px;
     min-width: 300px;    
 }
-
+.tiicon:hover {
+    cursor:pointer;
+   }
+   
 .Form_head{
     margin-top: 3rem;  
 }

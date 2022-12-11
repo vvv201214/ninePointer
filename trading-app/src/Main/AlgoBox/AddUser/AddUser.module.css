@@ -42,6 +42,9 @@
     height: 2rem;
     padding: 5px;
 }
+.addUserBtn:hover {
+    cursor:pointer;
+   }
 .main_instrument_table{
     width: 100%;
 }
