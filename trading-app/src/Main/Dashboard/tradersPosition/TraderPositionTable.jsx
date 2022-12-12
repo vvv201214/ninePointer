@@ -55,13 +55,13 @@ function TraderPositionTable({ socket }) {
             })
         console.log("hii");
 
-        axios.get(`${baseUrl}api/v1/ws`)
-        .then((res)=>{
-            console.log("vijay", (res.data)[0].last_price);
-        }).catch((err)=>{
-            window.alert("Server Down");
-            return new Error(err);
-        })
+        // axios.get(`${baseUrl}api/v1/ws`)
+        // .then((res)=>{
+        //     console.log("vijay", (res.data)[0].last_price);
+        // }).catch((err)=>{
+        //     window.alert("Server Down");
+        //     return new Error(err);
+        // })
         
         socket.on("tick",(data)=>{
             console.log(data);
