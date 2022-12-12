@@ -106,7 +106,7 @@ async function parameters() {
       function onTicks(ticks) {
 
         if(token.length === ticks.length){
-          // console.log('Ticks', ticks);
+          console.log('Ticks', ticks);
           socket1.emit('tick', ticks);
         }
       }
