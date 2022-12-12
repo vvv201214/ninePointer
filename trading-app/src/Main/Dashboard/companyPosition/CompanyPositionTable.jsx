@@ -23,7 +23,7 @@ function CompanyPositionTable({ socket }) {
 
     useEffect(() => {
 
-        axios.get(`${baseUrl}api/v1/companytradedata`)
+        axios.get(`${baseUrl}api/v1/readmocktradecompany`)
         .then((res) => {
             let data = (res.data).filter((elem)=>{
                 return elem.order_timestamp.includes(todayDate) && elem.status === "COMPLETE";

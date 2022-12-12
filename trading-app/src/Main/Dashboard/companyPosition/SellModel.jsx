@@ -127,7 +127,7 @@ export default function SellModel({marketData, uIdProps }) {
 
         console.log(tradeData);
         setTradeData([...tradeData])
-    },[])
+    },[getDetails])
 
 
     const tradingAlgoArr = [];
@@ -251,17 +251,18 @@ export default function SellModel({marketData, uIdProps }) {
                 
                 setApiKey(apiKeyDetails);
                 
-                companyTrade.real_last_price = 100
-                companyTrade.realAmount = 800
-                // companyTrade.real_last_price = getLastPrice[0].last_price;
-                // companyTrade.realAmount = getLastPrice[0].last_price * companyTrade.realQuantity;
+                // companyTrade.real_last_price = 100
+                // companyTrade.realAmount = 800
+                companyTrade.real_last_price = getLastPrice[0].last_price;
+                companyTrade.realAmount = getLastPrice[0].last_price * companyTrade.realQuantity;
                 companyTrade.realBrokerage = sellBrokerageCharge(brokerageData, companyTrade.realQuantity, companyTrade.realAmount);
                 
                 userPermission.map((subElem)=>{
                     if(subElem.algoName === elem.algoName){
-                        if(subElem.isRealTradeEnable || subElem.isRealTradeEnable){
+                        if(subElem.isRealTradeEnable || elem.isRealTrade){
                             sendOrderReq();
                             // mockTradeUser("yes");
+                            mockTradeCompany(elem);
                         } else{
                             // mockTradeUser("no");
                             mockTradeCompany(elem);
@@ -309,8 +310,8 @@ export default function SellModel({marketData, uIdProps }) {
             return getSomeData[0].instrumentToken === elem.instrument_token;
         })
         
-        // Details.last_price = getLivePrice[0].last_price
-        Details.last_price = 100;
+        Details.last_price = getLivePrice[0].last_price
+        // Details.last_price = 100;
 
         Details.totalAmount = Details.last_price * Details.Quantity;
         Details.brokerageCharge = sellBrokerageCharge(brokerageData, Details.Quantity, Details.totalAmount);
@@ -479,15 +480,15 @@ export default function SellModel({marketData, uIdProps }) {
         }
 
     }
-// disabled={userPermission.isTradeEnable} disabled={userPermission[0].isTradeEnable}
+  
     return (
         <>
             {userPermission[0] === undefined ?
-            <button  onClick={toggleModal} className="btn-modal Sell_btn">
+            <button disabled={!userPermission.isTradeEnable} onClick={toggleModal} className="btn-modal Sell_btn">
                 SELL
             </button>
             :
-            <button  onClick={toggleModal} className="btn-modal Sell_btn">
+            <button disabled={!userPermission[0].isTradeEnable} onClick={toggleModal} className="btn-modal Sell_btn">
             SELL
             </button> }
 

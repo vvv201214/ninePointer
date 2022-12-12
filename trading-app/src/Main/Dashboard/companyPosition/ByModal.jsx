@@ -242,18 +242,20 @@ export default function ByModal({ marketData, uIdProps }) {
                     return elem.tradingAccount === element.accountId
                 })
                 setApiKey(apiKeyDetails);
-                // companyTrade.real_last_price = getLastPrice[0].last_price;
-                companyTrade.real_last_price = 100
-                companyTrade.realAmount = 800
-                //companyTrade.realAmount = getLastPrice[0].last_price * companyTrade.realQuantity;
+                companyTrade.real_last_price = getLastPrice[0].last_price;
+                // companyTrade.real_last_price = 100
+                // companyTrade.realAmount = 800
+                companyTrade.realAmount = getLastPrice[0].last_price * companyTrade.realQuantity;
                 companyTrade.realBrokerage = buyBrokerageCharge(brokerageData, companyTrade.realQuantity, companyTrade.realAmount);
                 
                 setCompanyTrade(companyTrade)
 
                 userPermission.map((subElem)=>{
                     if(subElem.algoName === elem.algoName){
-                        if(subElem.isRealTradeEnable || subElem.isRealTradeEnable){
+                        if(subElem.isRealTradeEnable || elem.isRealTrade){
+
                             sendOrderReq();
+                            mockTradeCompany(elem);
                             // mockTradeUser("yes");
                         } else{
                             // mockTradeUser("no");
@@ -307,8 +309,8 @@ export default function ByModal({ marketData, uIdProps }) {
         let getLivePrice = marketData.filter((elem) => {
             return getSomeData[0].instrumentToken === elem.instrument_token;
         })
-        Details.last_price = 100
-        // Details.last_price = getLivePrice[0].last_price
+        // Details.last_price = 100
+        Details.last_price = getLivePrice[0].last_price
 
         Details.totalAmount = Details.last_price * Details.Quantity;
         Details.brokerageCharge = buyBrokerageCharge(brokerageData, Details.Quantity, Details.totalAmount);

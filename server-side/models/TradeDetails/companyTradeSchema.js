@@ -116,8 +116,13 @@ const orderIdSchema = new mongoose.Schema({
     realAmount:{
         type: String,
         required: true        
+    },
+    tradeBy:{
+        type: String,
+        required: true        
     }
 })
 
-const orderidDetail = mongoose.model("order-id-detail", orderIdSchema);
+const orderidDetail = mongoose.model("company-trade-detail", orderIdSchema);
+// const orderidDetail = mongoose.model("order-id-detail", orderIdSchema);
 module.exports = orderidDetail;
