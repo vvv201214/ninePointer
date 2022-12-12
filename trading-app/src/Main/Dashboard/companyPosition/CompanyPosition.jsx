@@ -9,7 +9,9 @@ function CompanyPosition() {
     let socket;
     try{
         // socket = io.connect("http://localhost:9000/")
+
         socket = io.connect(`${baseUrl}`)
+
     } catch(err){
         throw new Error(err);
     }
