@@ -10,7 +10,7 @@ function TraderPosition() {
     let socket;
     try{
         // socket = io.connect("http://localhost:9000/")
-        socket = io.connect(`${baseUrl}api/v1/socket.io`)
+        socket = io.connect(`${baseUrl}socket.io`)
     } catch(err){
         throw new Error(err);
     }
