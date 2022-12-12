@@ -5,7 +5,7 @@ import axios from "axios"
 import uniqid from "uniqid"
 import { userContext } from "../../AuthContext";
 
-export default function SellModel({marketData, uIdProps, isTradersTrade}) {
+export default function SellModel({marketData, uIdProps }) {
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
     const getDetails = useContext(userContext);
@@ -17,13 +17,7 @@ export default function SellModel({marketData, uIdProps, isTradersTrade}) {
     let totalAmount = 0;
     let tradeBy = getDetails.userDetails.name;
 
-    let isTradeEnable;
-    if(getDetails.userDetails.status === "Active"){
-        isTradeEnable = false;
-    }else {
-        isTradeEnable = true;
-    }
-
+    const [userPermission, setUserPermission] = useState([]);
     const [bsBtn, setBsBtn] = useState(true)
     const [modal, setModal] = useState(false);
     const[Details, setDetails] = useState({
@@ -60,6 +54,19 @@ export default function SellModel({marketData, uIdProps, isTradersTrade}) {
     }) 
 
     useEffect(()=>{
+
+        axios.get(`${baseUrl}api/v1/readpermission`)
+        .then((res)=>{
+            let perticularUser = (res.data).filter((elem)=>{
+                console.log(elem.userId , userId);
+                return elem.userId === userId;
+            })
+            setUserPermission(perticularUser);
+        }).catch((err)=>{
+            window.alert("Server Down");
+            return new Error(err);
+        })
+
         axios.get(`${baseUrl}api/v1/readRequestToken`)
         .then((res)=>{
             let activeAccessToken = (res.data).filter((elem)=>{
@@ -83,25 +90,11 @@ export default function SellModel({marketData, uIdProps, isTradersTrade}) {
         
         axios.get(`${baseUrl}api/v1/readtradingAlgo`)
             .then((res) => {
-                let tradingAlgo = [];
-                apiKeyDetails.map((elem)=>{
-                    accessTokenDetails.map((subelem)=>{
-                        (res.data).map((element) => {
-                            console.log("line 82", elem.accountId, subelem.accountId, element.tradingAccount, element.status);
-                            if(element.status === "Active" && subelem.accountId == element.tradingAccount && elem.accountId == element.tradingAccount){
-                                tradingAlgo.push(element);
-                            }
-                        })
-                        console.log(tradingAlgo);
-                        
-                    })
-                })
-
-                setTradingAlgoData(tradingAlgo);
+               setTradingAlgoData(res.data);
             }).catch((err)=>{
-                
                 return new Error(err);
             })
+
         axios.get(`${baseUrl}api/v1/readBrokerage`)
         .then((res)=>{
             setBrokerageData(res.data)
@@ -113,7 +106,7 @@ export default function SellModel({marketData, uIdProps, isTradersTrade}) {
         axios.get(`${baseUrl}api/v1/readInstrumentDetails`)
         .then((res)=>{
             let dataArr = (res.data).filter((elem)=>{
-                return (elem.createdOn).includes(`${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`) && elem.status === "Active" 
+                return elem.status === "Active" 
             })
             setTradeData(dataArr)
         }).catch((err)=>{
@@ -134,7 +127,32 @@ export default function SellModel({marketData, uIdProps, isTradersTrade}) {
 
         console.log(tradeData);
         setTradeData([...tradeData])
-    },[])
+    },[getDetails])
+
+
+    const tradingAlgoArr = [];
+    apiKeyDetails.map((elem)=>{
+        accessTokenDetails.map((subelem)=>{
+            tradingAlgoData.map((element) => {
+                if(element.status === "Active" && subelem.accountId == element.tradingAccount && elem.accountId == element.tradingAccount){
+                    tradingAlgoArr.push(element);
+                }
+            })
+        })
+    })
+
+    console.log(userPermission, tradingAlgoArr);
+    const userPermissionAlgo = [];
+    for(let elem of tradingAlgoArr){
+        for(let subElem of userPermission){
+            if(elem.algoName === subElem.algoName){
+                userPermissionAlgo.push(elem)
+            }
+        }
+    }
+
+    console.log(userPermissionAlgo); //its an array do everything according it
+
 
 
     const toggleModal = () => {
@@ -167,9 +185,11 @@ export default function SellModel({marketData, uIdProps, isTradersTrade}) {
                 
                 // Details.totalAmount = totalAmount;
                 setCompanyTrade(companyTrade)
-                console.log(Details);
-                console.log(companyTrade);
-                sendOrderReq();
+                // if(permission[0].isRealTradeEnable){
+                //     sendOrderReq();
+                // } else{
+                //     mockTrade();
+                // }
                 setModal(!modal);
             })
         } else {
@@ -182,17 +202,19 @@ export default function SellModel({marketData, uIdProps, isTradersTrade}) {
             companyTrade.realBrokerage = sellBrokerageCharge(brokerageData, companyTrade.realQuantity, companyTrade.realAmount);
             
             setCompanyTrade(companyTrade)
-            console.log(Details);
-            console.log(companyTrade);
-            sendOrderReq();
+            // if(permission[0].isRealTradeEnable){
+            //     sendOrderReq();
+            // } else{
+            //     mockTrade();
+            // }
             setModal(!modal);
         }
     }
 
     function tradingAlgo(uId, lastPrice){
-        if(tradingAlgoData.length){
-            tradingAlgoData.map((elem)=>{
-                console.log("in algo");
+        // if(tradingAlgoData.length){
+            userPermissionAlgo.map((elem)=>{
+
                 if(elem.transactionChange){
                     companyTrade.realBuyOrSell = "BUY"
                 }else{
@@ -221,42 +243,49 @@ export default function SellModel({marketData, uIdProps, isTradersTrade}) {
                 accessTokenDetails = accessTokenDetails.filter((element)=>{
                     return elem.tradingAccount === element.accountId
                 })
-                console.log("access token", accessTokenDetails, elem.tradingAccount);
 
                 setAccessToken(accessTokenDetails);
                 apiKeyDetails = apiKeyDetails.filter((element)=>{
                     return elem.tradingAccount === element.accountId
                 })
-                console.log("api key", apiKeyDetails, elem.tradingAccount);
                 
                 setApiKey(apiKeyDetails);
-                console.log("after setting api", apiKeyDetails);
+                
+                // companyTrade.real_last_price = 100
+                // companyTrade.realAmount = 800
                 companyTrade.real_last_price = getLastPrice[0].last_price;
                 companyTrade.realAmount = getLastPrice[0].last_price * companyTrade.realQuantity;
                 companyTrade.realBrokerage = sellBrokerageCharge(brokerageData, companyTrade.realQuantity, companyTrade.realAmount);
                 
-                console.log("api key and access token", apiKeyDetails, accessTokenDetails);
-                setCompanyTrade(companyTrade)
-                console.log(Details);
-                console.log(companyTrade);
-                sendOrderReq();
-                setModal(!modal);                
+                userPermission.map((subElem)=>{
+                    if(subElem.algoName === elem.algoName){
+                        if(subElem.isRealTradeEnable || elem.isRealTrade){
+                            sendOrderReq();
+                            // mockTradeUser("yes");
+                            mockTradeCompany(elem);
+                        } else{
+                            // mockTradeUser("no");
+                            mockTradeCompany(elem);
+                        }
+                    }
+                })
+                setModal(!modal);               
             })
-        }else{
-            companyTrade.real_last_price = Details.last_price;
-            companyTrade.realBuyOrSell = "SELL";
-            companyTrade.realSymbol = Details.symbol
-            companyTrade.realInstrument = Details.instrument
-            companyTrade.realQuantity = Details.Quantity;
-            companyTrade.realAmount = lastPrice * companyTrade.realQuantity;
-            companyTrade.realBrokerage = sellBrokerageCharge(brokerageData, companyTrade.realQuantity, companyTrade.realAmount);
+        // }else{
+        //     companyTrade.real_last_price = Details.last_price;
+        //     companyTrade.realBuyOrSell = "SELL";
+        //     companyTrade.realSymbol = Details.symbol
+        //     companyTrade.realInstrument = Details.instrument
+        //     companyTrade.realQuantity = Details.Quantity;
+        //     companyTrade.realAmount = lastPrice * companyTrade.realQuantity;
+        //     companyTrade.realBrokerage = sellBrokerageCharge(brokerageData, companyTrade.realQuantity, companyTrade.realAmount);
 
-            setCompanyTrade(companyTrade)
-            console.log(Details);
-            console.log(companyTrade);
-            sendOrderReq();
-            setModal(!modal);
-        }
+        //     setCompanyTrade(companyTrade)
+        //     console.log(Details);
+        //     console.log(companyTrade);
+        //     sendOrderReq();
+        //     setModal(!modal);
+        // }
     }
 
     async function Sell(e, uId){
@@ -274,26 +303,22 @@ export default function SellModel({marketData, uIdProps, isTradersTrade}) {
         let getSomeData = tradeData.filter((elem)=>{
             return elem.uId === uIdProps;
         })
-        console.log(getSomeData)
         Details.exchange = getSomeData[0].exchange;
         Details.symbol = getSomeData[0].symbol
 
         let getLivePrice = marketData.filter((elem)=>{
-            console.log("getSomeData.instrumentToken", getSomeData[0].instrumentToken, "elem.instrument_token", elem.instrument_token);
             return getSomeData[0].instrumentToken === elem.instrument_token;
         })
-        console.log(getLivePrice[0], getLivePrice)
+        
         Details.last_price = getLivePrice[0].last_price
         // Details.last_price = 100;
 
         Details.totalAmount = Details.last_price * Details.Quantity;
         Details.brokerageCharge = sellBrokerageCharge(brokerageData, Details.Quantity, Details.totalAmount);
-        console.log("Details.brokerageCharge", Details.brokerageCharge);
         
         // Algo box applied here....
-        console.log("checking exchange", Details.exchange )
-        if(Details.exchange === "NSE"){
-            if (isTradersTrade) {
+        if(Details.exchange === "NFO"){
+            if (true) {
                 console.log("algo box should be applied");
                 setDetails(Details)
                 instrumentAlgo(Details.last_price);
@@ -302,7 +327,7 @@ export default function SellModel({marketData, uIdProps, isTradersTrade}) {
                 companyTrade.realSymbol = Details.symbol
                 companyTrade.realInstrument = Details.instrument
                 companyTrade.realQuantity = Details.Quantity;
-    
+                companyTrade.real_last_price = Details.last_price
                 companyTrade.realAmount = Details.last_price * companyTrade.realQuantity;
                 companyTrade.realBrokerage = sellBrokerageCharge(brokerageData, companyTrade.realQuantity, companyTrade.realAmount);
                 
@@ -316,32 +341,38 @@ export default function SellModel({marketData, uIdProps, isTradersTrade}) {
             }
 
 
-        }else if(Details.exchange === "NFO"){
-            if(isTradersTrade){
-                console.log("algo box should be applied");
+        }else if(Details.exchange === "NSE"){
+            if(userPermissionAlgo.length){
                 setDetails(Details)
+                mockTradeUser("no");
                 tradingAlgo(uId, Details.last_price);
             }else{
                 companyTrade.realBuyOrSell = "SELL";
                 companyTrade.realSymbol = Details.symbol
                 companyTrade.realInstrument = Details.instrument
                 companyTrade.realQuantity = Details.Quantity;
-    
+                companyTrade.real_last_price = Details.last_price
                 companyTrade.realAmount = Details.last_price * companyTrade.realQuantity;
                 companyTrade.realBrokerage = sellBrokerageCharge(brokerageData, companyTrade.realQuantity, companyTrade.realAmount);
                 
                 setCompanyTrade(companyTrade)
                 setDetails(Details)
-                console.log(Details);
-                console.log(companyTrade);
         
-                sendOrderReq(); // must keep inside both if and else
+                const fakeAlgo = {
+                    algoName: "no algo",
+                    transactionChange: "no algo",
+                    instrumentChange: "no algo",
+                    exchangeChange: "no algo",
+                    lotMultipler: "no algo",
+                    productChange: "no algo",
+                    tradingAccount: "no algo"
+                }
+                mockTradeUser("no");
+                mockTradeCompany(fakeAlgo);
+                // must keep inside both if and else
                 setModal(!modal);        
             }    
         }
-        console.log("tradingAlgoData", tradingAlgoData);
-
-      
     }
 
     async function sendOrderReq(){
@@ -393,11 +424,73 @@ export default function SellModel({marketData, uIdProps, isTradersTrade}) {
         return finalCharge
     }
 
+    async function mockTradeUser(realTrade){ // have to add some feild according to auth
+        const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price } = Details;
+        // const {algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount} = algoBox
+        const res = await fetch(`${baseUrl}api/v1/mocktradeuser`, {
+            method: "POST",
+            headers: {
+                "content-type": "application/json"
+            },
+            body: JSON.stringify({
+                exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, createdBy, userId, createdOn, uId,
+                isRealTrade:realTrade
+                // , algoBox: {algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount}
+            })
+        });
+        const dataResp = await res.json();
+        console.log(dataResp);
+        if (dataResp.status === 422 || dataResp.error || !dataResp) {
+            window.alert(dataResp.error);
+            console.log("Failed to Trade");
+        } else {
+            console.log(dataResp);
+            window.alert("Trade succesfull");
+            console.log("entry succesfull");
+        }
+
+    }
+
+    async function mockTradeCompany(algoBox){
+        const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price } = Details;
+        const {algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount} = algoBox;
+        const {realBuyOrSell, realSymbol, realQuantity, realInstrument, realBrokerage, realAmount, real_last_price} = companyTrade;
+
+        const res = await fetch(`${baseUrl}api/v1/mocktradecompany`, {
+            method: "POST",
+            headers: {
+                "content-type": "application/json"
+            },
+            body: JSON.stringify({
+                exchange, symbol: realSymbol, buyOrSell: realBuyOrSell, Quantity: realQuantity, Price, Product, OrderType, TriggerPrice, 
+                stopLoss, validity, variety, last_price: real_last_price, createdBy, userId, createdOn, uId, 
+                algoBox: {algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, 
+                productChange, tradingAccount}
+
+            })
+        });
+        const dataResp = await res.json();
+        if (dataResp.status === 422 || dataResp.error || !dataResp) {
+            window.alert(dataResp.error);
+            console.log("Failed to Trade");
+        } else {
+            console.log(dataResp);
+            window.alert("Trade succesfull");
+            console.log("entry succesfull");
+        }
+
+    }
+  
     return (
         <>
-            <button disabled={isTradeEnable} onClick={toggleModal} className="btn-modal Sell_btn">
+            {userPermission[0] === undefined ?
+            <button disabled={!userPermission.isTradeEnable} onClick={toggleModal} className="btn-modal Sell_btn">
                 SELL
             </button>
+            :
+            <button disabled={!userPermission[0].isTradeEnable} onClick={toggleModal} className="btn-modal Sell_btn">
+            SELL
+            </button> }
 
             {modal && (
                <div className="modal">

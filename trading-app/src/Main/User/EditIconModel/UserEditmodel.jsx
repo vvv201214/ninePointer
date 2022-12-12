@@ -129,29 +129,14 @@ export default function UserEditModel({data, id, Render}) {
             })
         });
 
-        const response = await fetch(`${baseUrl}api/v1/readpermission/${permissionId.current}`, {
-            method: "PATCH",
-            headers: {
-                "Accept": "application/json",
-                "content-type": "application/json"
-            },
-            body: JSON.stringify({
-                modifiedOn:lastModified, modifiedBy:"prateek", userName:Name, userId:EmailID
-            })
-        });
 
         const dataResp = await res.json();
-        const permissionData = await response.json();
+        
         console.log(dataResp);
         if (dataResp.status === 422 || dataResp.error || !dataResp) {
             window.alert(dataResp.error);
             console.log("Failed to Edit");
-        }
-        else if (permissionData.status === 422 || permissionData.error || !permissionData) {
-            window.alert(permissionData.error);
-            console.log("Failed to Edit");
-        }
-         else {
+        }else {
             console.log(dataResp);
             window.alert("Edit succesfull");
             console.log("Edit succesfull");
@@ -166,22 +151,14 @@ export default function UserEditModel({data, id, Render}) {
           method: "DELETE",
       });
 
-      const response = await fetch(`${baseUrl}api/v1/readpermission/${permissionId.current}`, {
-        method: "DELETE",
-      });
 
       const dataResp = await res.json();
-      const permissionData = await response.json();
+      
       console.log(dataResp);
       if (dataResp.status === 422 || dataResp.error || !dataResp) {
           window.alert(dataResp.error);
           console.log("Failed to Delete");
-      }
-      else if(permissionData.status === 422 || permissionData.error || !permissionData){
-            window.alert(permissionData.error);
-            console.log("Failed to Delete");
-      }
-      else {
+      } else {
           console.log(dataResp);
           window.alert("Delete succesfull");
           console.log("Delete succesfull");

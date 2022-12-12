@@ -4,13 +4,13 @@ import axios from "axios";
 
 function Checking(data){
     useEffect(()=>{
-        axios.get("http://localhost:5000/readBrokerage")
-        .then((res) => {
-            console.log(res.data)
-        }).catch((err)=>{
-            window.alert("Server Down");
-            return new Error(err);
-        })
+        // axios.get("http://localhost:5000/readBrokerage")
+        // .then((res) => {
+        //     console.log(res.data)
+        // }).catch((err)=>{
+        //     window.alert("Server Down");
+        //     return new Error(err);
+        // })
     },[])
     function hii(){
         console.log("hii this is checking wala function", data);

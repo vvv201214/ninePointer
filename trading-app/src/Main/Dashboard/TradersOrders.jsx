@@ -1,7 +1,6 @@
 import React from "react";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import checking from "./Checking";
 
 function TradersOrders({info}){
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
@@ -9,24 +8,22 @@ function TradersOrders({info}){
     console.log(info)
     const [data, setData] = useState([]);
     
-    checking(info);
-
     useEffect(()=>{
         console.log(info.role)
-        if(info.role === "admin"){
-            axios.get(`${baseUrl}api/v1/companytradedata`)
-            .then((res)=>{
-                let updated = (res.data).filter((elem)=>{
-                    return info.email === elem.userId;
-                })
-                console.log(updated);
-                setData(updated);
-            }).catch((err)=>{
-                window.alert("Server Down");
-                return new Error(err);
-            })            
-        }else if(info.role === "user"){
-            axios.get(`${baseUrl}api/v1/usertradedata`)
+        // if(info.role === "admin"){
+        //     axios.get(`${baseUrl}api/v1/readmocktradecompany`)
+        //     .then((res)=>{
+        //         let updated = (res.data).filter((elem)=>{
+        //             return info.email === elem.userId;
+        //         })
+        //         console.log(updated);
+        //         setData(updated);
+        //     }).catch((err)=>{
+        //         window.alert("Server Down");
+        //         return new Error(err);
+        //     })            
+        // }else if(info.role === "user"){
+            axios.get(`${baseUrl}api/v1/readmocktradeuser`)
             .then((res)=>{
                 let updated = (res.data).filter((elem)=>{
                     return info.email === elem.userId;
@@ -37,7 +34,7 @@ function TradersOrders({info}){
                 window.alert("Server Down");
                 return new Error(err);
             }) 
-        }
+        // }
     }, [info])
 
     return(

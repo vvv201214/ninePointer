@@ -7,7 +7,7 @@ function CompanyOrders(){
 
     const [data, setData] = useState([]);
     useEffect(()=>{
-        axios.get(`${baseUrl}api/v1/companytradedata`)
+        axios.get(`${baseUrl}api/v1/readmocktradecompany`)
         .then((res)=>{
             setData(res.data);
         }).catch((err)=>{

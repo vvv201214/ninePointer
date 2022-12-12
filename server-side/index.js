@@ -15,33 +15,13 @@ app.get('/api/v1/data', fetch);
 
 // app.get('/ws', kiteConnect);
 // app.get('/data', fetch);
+let baseUrl = process.env.NODE_ENV === "production" ? "http://3.110.187.5/" : "http://localhost:3000"
 app.use(cors({
   credentials:true,
-  origin: "http://localhost:3000"
+  origin: baseUrl
 }));
 
 app.use(express.json());
-// app.use(require("./marketData/livePrice"));
-// app.use(require("./routes/user/userLogin"));
-// app.use(require('./routes/TradeData/getUserTrade'));
-// app.use(require('./routes/TradeData/getCompanyTrade'));
-// app.use(require('./routes/AlgoBox/exchangeMappingAuth'));
-// app.use(require('./routes/AlgoBox/instrumentAlgoAuth'));
-// app.use(require('./routes/AlgoBox/productMappingAuth'));
-// app.use(require('./routes/AlgoBox/tradingAlgoAuth'));
-// app.use(require("./marketData/getRetrieveOrder"));
-// app.use(require('./marketData/placeOrder'));
-// app.use(require('./routes/instrument/instrumentAuth'));
-// app.use(require('./routes/TradingAccountAuth/accountAuth'));
-// app.use(require('./routes/TradingAccountAuth/brokerageAuth'));
-// app.use(require('./routes/TradingAccountAuth/parameterAuth'));
-// app.use(require('./routes/TradingAccountAuth/requestTokenAuth'));
-// app.use(require('./routes/user/userDetailAuth'));
-// app.use(require("./routes/user/everyoneRoleAuth"));
-// app.use(require("./marketData/mockTrade"));
-
-
-
 
 app.use('/api/v1', require("./marketData/livePrice"));
 app.use('/api/v1', require("./routes/user/userLogin"));
@@ -61,7 +41,8 @@ app.use('/api/v1', require('./routes/TradingAccountAuth/requestTokenAuth'));
 app.use('/api/v1', require('./routes/user/userDetailAuth'));
 app.use('/api/v1', require("./routes/user/everyoneRoleAuth"));
 app.use('/api/v1', require("./routes/user/permissionAuth"));
-app.use('/api/v1', require("./marketData/mockTrade"));
+app.use('/api/v1', require("./routes/mockTrade/mockTradeUserAuth"));
+app.use('/api/v1', require("./routes/mockTrade/mockTradeCompanyAuth"));
 require('./db/conn');
 
 process.on('unhandledRejection', (err) => {
@@ -74,8 +55,4 @@ process.on('unhandledRejection', (err) => {
 
 const PORT = 5000;
 
-// router.get("/dashboard", authentication, (req, res)=>{
-//   console.log("hello my about");
-//   res.send(req.user);
-// })
 app.listen(PORT);

@@ -5,7 +5,7 @@ const getOrderData = require("./retrieveOrder");
 
 router.post("/placeorder", (async (req, res)=>{
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
-    const OrderId = require("../models/TradeDetails/orderIdSchema");
+    const CompanyTradeData = require("../models/TradeDetails/companyTradeSchema");
     const TradeData = require("../models/TradeDetails/allTradeSchema");
     const UserTradeData = require("../models/User/userTradeSchema");
     console.log(req.body.Product);
@@ -62,10 +62,6 @@ router.post("/placeorder", (async (req, res)=>{
         console.log("now i am in placeorder");
         console.log("this is order-id", data.order_id);
 
-        if(buyOrSell === "SELL"){
-            Quantity = "-"+Quantity;
-        }
-
 
         TradeData.findOne({order_id : data.order_id})
         .then((data)=>{
@@ -79,85 +75,70 @@ router.post("/placeorder", (async (req, res)=>{
                     if(transaction_type === "SELL"){
                         quantity = -quantity;
                     }
-                OrderId.findOne({order_id : order_id})
+                CompanyTradeData.findOne({order_id : order_id})
                 .then((dateExist)=>{
                     if(dateExist){
                         console.log("data already");
                         return res.status(422).json({error : "data already exist..."})
                     }
-                    const orderid = new OrderId({order_id , status , uId, createdOn, createdBy, real_last_price,
+                    const companyTradeData = new CompanyTradeData({order_id , status , uId, createdOn, createdBy, real_last_price,
                         average_price, Quantity:quantity, realInstrument, Product:product, buyOrSell:transaction_type, 
                          order_timestamp , variety , validity , exchange , 
                           order_type , price , filled_quantity , pending_quantity 
                         , cancelled_quantity , guid , market_protection , disclosed_quantity , symbol:tradingsymbol 
-                        , placed_by, userId, realBrokerage, realAmount
+                        , placed_by, userId, realBrokerage, realAmount, tradeBy
                     });
-                    console.log("this is orderid", orderid);
-                    orderid.save().then(()=>{
+                    console.log("this is CompanyTradeData", companyTradeData);
+                    companyTradeData.save().then(()=>{
                     }).catch((err)=> res.status(500).json({error:"Failed to Trade company side"}));
                 }).catch(err => {console.log(err, "fail")});
 
-
-                UserTradeData.findOne({order_id : order_id})
-                .then((dateExist)=>{
-                    if(dateExist){
-                        console.log("data already");
-                        return res.status(422).json({error : "data already exist..."})
-                    }
-                    console.log("first instrument", instrument);
-                    const userTradeData = new UserTradeData({order_id, status, uId, createdOn, 
-                        createdBy, last_price, average_price:last_price , Quantity, symbol, Product, buyOrSell, 
-                        validity, variety, order_timestamp, order_type, exchange, userId, brokerageCharge
-                        , realAmount, tradeBy});
+                // .then((dateExist)=>{
+                //     if(dateExist){
+                //         console.log("data already");
+                //         return res.status(422).json({error : "data already exist..."})
+                //     }
+                //     console.log("first instrument", instrument);
+                //     const userTradeData = new UserTradeData({order_id, status, uId, createdOn, 
+                //         createdBy, last_price, average_price:last_price , Quantity, symbol, Product, buyOrSell, 
+                //         validity, variety, order_timestamp, order_type, exchange, userId, brokerageCharge
+                //         , realAmount, tradeBy});
             
-                    console.log("second instrument", instrument);
-                    userTradeData.save().then(()=>{
-                        res.status(201).json({massage : "Trade successfull", orderId: order_Id});
-                    }).catch((err)=> res.status(500).json({error:"Failed to Trade user side"}));
-                }).catch(err => {console.log(err, "fail")});
+                //     console.log("second instrument", instrument);
+                //     userTradeData.save().then(()=>{
+                //         res.status(201).json({massage : "Trade successfull", CompanyTradeData: order_Id});
+                //     }).catch((err)=> res.status(500).json({error:"Failed to Trade user side"}));
+                // }).catch(err => {console.log(err, "fail")});
             }else{
                 let { order_id, placed_by, exchange_order_id, status, order_timestamp, exchange_timestamp
                     , variety, exchange, tradingsymbol, order_type, transaction_type, validity, product,
                     quantity, disclosed_quantity, price, average_price, filled_quantity, pending_quantity,
                     cancelled_quantity, market_protection, guid} = data
-                OrderId.findOne({order_id : order_id})
+
+                    if(transaction_type === "SELL"){
+                        quantity = -quantity;
+                    }
+                    
+                CompanyTradeData.findOne({order_id : order_id})
                 .then((dateExist)=>{
                     if(dateExist){
                         console.log("data already");
                         return res.status(422).json({error : "data already exist..."})
                     }
-                    if(transaction_type === "SELL"){
-                        quantity = -quantity;
-                    }
-                    const orderid = new OrderId({
+
+                    const companyTradeData = new CompanyTradeData({
                         exchange_order_id, exchange_timestamp, order_id , status , uId, createdOn, createdBy, real_last_price,
                         average_price, Quantity:quantity, realInstrument, Product:product, buyOrSell:transaction_type, 
                          order_timestamp , variety , validity , exchange , 
                           order_type , price , filled_quantity , pending_quantity 
                         , cancelled_quantity , guid , market_protection , disclosed_quantity , symbol:tradingsymbol 
-                        , placed_by, userId, realBrokerage, realAmount
+                        , placed_by, userId, realBrokerage, realAmount, tradeBy
                     });
             
-                    orderid.save().then(()=>{
+                    companyTradeData.save().then(()=>{
                     }).catch((err)=> res.status(500).json({error:"Failed to Trade"}));
                 }).catch(err => {console.log(err, "fail")});
 
-
-                UserTradeData.findOne({order_id : order_id})
-                .then((dateExist)=>{
-                    if(dateExist){
-                        console.log("data already");
-                        return res.status(422).json({error : "data already exist..."})
-                    }
-                    const userTradeData = new UserTradeData({order_id, status, uId, createdOn, 
-                        createdBy, last_price, average_price: last_price, Quantity, symbol, Product, buyOrSell, 
-                        validity, variety, order_timestamp, order_type, amount:(Quantity*last_price), exchange,
-                         userId, brokerageCharge, realAmount, tradeBy});
-            
-                    userTradeData.save().then(()=>{
-                        res.status(201).json({massage : "Trade successfull"});
-                    }).catch((err)=> res.status(500).json({error:"Failed to Trade"}));
-                }).catch(err => {console.log(err, "fail")});
             }
 
 

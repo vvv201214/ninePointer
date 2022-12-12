@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 require("../../db/conn");
-const CompanyTradeData = require("../../models/TradeDetails/orderIdSchema");
+const CompanyTradeData = require("../../models/TradeDetails/companyTradeSchema");
 
 router.get("/companytradedata", (req, res)=>{
     CompanyTradeData.find((err, data)=>{

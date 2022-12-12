@@ -97,3 +97,4 @@ userDetailSchema.methods.generateAuthToken = async function(){
 
 const userPersonalDetail = mongoose.model("user-personal-detail", userDetailSchema);
 module.exports = userPersonalDetail;
+

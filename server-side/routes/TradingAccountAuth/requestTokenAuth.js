@@ -11,7 +11,7 @@ router.post("/requestToken", (req, res)=>{
         return res.status(422).json({error : "plz filled the field..."})
     }
 
-    RequestToken.findOne({accountId : accountId})
+    RequestToken.findOne({uId : uId})
     .then((accountIdExist)=>{
         if(accountIdExist){
             console.log("accountId already");
