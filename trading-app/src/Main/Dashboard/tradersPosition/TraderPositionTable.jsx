@@ -24,21 +24,10 @@ function TraderPositionTable({ socket }) {
 
     useEffect(() => {
 
-        axios.get(`${baseUrl}api/v1/readpermission`)
-        .then((res) => {
-            let update = (res.data).filter((elem)=>{
-                return elem.userId === getDetails.userDetails.email;
-            })
-            setPermission(update);
-            console.log("permission", permission[0]);
-        }).catch((err)=>{
-            return new Error(err);
-        })
-
-        axios.get(`${baseUrl}api/v1/usertradedata`)
+        axios.get(`${baseUrl}api/v1/readmocktradeuser`)
         .then((res) => {
             let data = (res.data).filter((elem)=>{
-                return elem.createdOn.includes(todayDate) && elem.status === "COMPLETE" && elem.userId === getDetails.userDetails.email;
+                return elem.order_timestamp.includes(todayDate) && elem.status === "COMPLETE" && elem.userId === getDetails.userDetails.email;
             })
             setData(data);
         }).catch((err)=>{
@@ -124,8 +113,8 @@ function TraderPositionTable({ socket }) {
                                             <td className="grid2_td">{updatedMarketData[0]?.change.toFixed(2)}</td>}
 
                                             <td className="grid2_th companyPosition_BSbtn2"><div className="companyPosition_BSbtn">
-                                            <ByModal marketData={marketData} uIdProps={elem.uId} isTradersTrade={true} permission={permission}/>
-                                            <SellModel marketData={marketData} uIdProps={elem.uId} isTradersTrade={true} permission={permission} /></div></td>
+                                            <ByModal marketData={marketData} uIdProps={elem.uId} />
+                                            <SellModel marketData={marketData} uIdProps={elem.uId}  /></div></td>
                                         </tr>
                                     )
                                 })} 

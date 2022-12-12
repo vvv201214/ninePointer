@@ -73,6 +73,7 @@ export default function ClosedPnl({marketData, tradeData, data}) {
             }
             console.log(hash);
         
+            
         let closedPnl = [];
         for (let value of hash.values()){
             closedPnl.push(value);

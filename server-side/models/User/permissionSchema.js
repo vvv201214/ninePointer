@@ -2,10 +2,6 @@ const mongoose = require("mongoose");
 
 const permissionSchema = new mongoose.Schema({
 
-    uId:{
-        type: String,
-        required : true
-    },
     modifiedOn:{
         type: String,
         required : true
@@ -26,8 +22,8 @@ const permissionSchema = new mongoose.Schema({
         type: Boolean,
         required: true
     },
-    isAlgoEnable:{
-        type: Boolean,
+    algoName:{
+        type: String,
         required: true
     },
     isRealTradeEnable:{

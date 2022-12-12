@@ -5,7 +5,7 @@ import axios from "axios"
 import uniqid from "uniqid"
 import { userContext } from "../../AuthContext";
 
-export default function ByModal({ marketData, uIdProps, permission }) {
+export default function ByModal({ marketData, uIdProps }) {
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
     const getDetails = useContext(userContext);
@@ -17,9 +17,27 @@ export default function ByModal({ marketData, uIdProps, permission }) {
     let totalAmount = 0;
     let tradeBy = getDetails.userDetails.name;
 
+    const [selected, setSelected] = useState("NRML");
+    const radioHandler = (e) => {
+        console.log(e.target.value);
+        setSelected(e.target.value);
+        Details.Product = e.target.value
+        console.log(Details.Product);
+    }
 
-    console.log(marketData);
+    const [marketselected, setMarketselected] = useState("MARKET");
+    const radioHandlerTwo = (e)=>{
+        setMarketselected(e.target.value);
+        Details.OrderType = e.target.value
+    }
 
+    const [validitySelected, setValiditySelected] = useState("DAY");
+    const radioHandlerthree = (e)=>{
+        setValiditySelected(e.target.value);
+        Details.validity = e.target.value;
+    }
+
+    const [userPermission, setUserPermission] = useState([]);
     const [bsBtn, setBsBtn] = useState(true)
     const [modal, setModal] = useState(false);
     const [Details, setDetails] = useState({
@@ -56,77 +74,51 @@ export default function ByModal({ marketData, uIdProps, permission }) {
         real_last_price: "",
     })
 
-    let algoUserArr = [{
-        algoName: "something",
-        transactionChange: "something",
-        instrumentChange: "something",
-        status: "something",
-        exchangeChange: "something",
-        lotMultipler: "something",
-        productChange: "something",
-        tradingAccount: "something",
-        isRealTradeEnable: "true",
-        user: [
-            {
-                userName: "Vijay",
-                isTradeEnable: "true",
-                algoEnable: "true",
-                isRealTradeEnable: "true"
-            },
-            {
-                userName: "Sachin",
-                isTradeEnable: "true",
-                algoEnable: "true",
-                isRealTradeEnable: "true"
-            }
-        ]
-    }]
-
     useEffect(() => {
+
+        axios.get(`${baseUrl}api/v1/readpermission`)
+            .then((res) => {
+                let perticularUser = (res.data).filter((elem) => {
+                    console.log(elem.userId, userId);
+                    return elem.userId === userId;
+                })
+                setUserPermission(perticularUser);
+            }).catch((err) => {
+                window.alert("Server Down");
+                return new Error(err);
+            })
 
         axios.get(`${baseUrl}api/v1/readRequestToken`)
             .then((res) => {
-                let activeAccessToken = (res.data).filter((elem)=>{
+                let activeAccessToken = (res.data).filter((elem) => {
                     return elem.status === "Active"
                 })
                 setAccessToken(activeAccessToken);
-            }).catch((err)=>{
-                
+            }).catch((err) => {
+
                 return new Error(err);
             })
         axios.get(`${baseUrl}api/v1/readAccountDetails`)
             .then((res) => {
-                let activeApiKey = (res.data).filter((elem)=>{
+                let activeApiKey = (res.data).filter((elem) => {
                     return elem.status === "Active"
                 })
                 setApiKey(activeApiKey);
-            }).catch((err)=>{
-                
+            }).catch((err) => {
+
                 return new Error(err);
             })
         axios.get(`${baseUrl}api/v1/readtradingAlgo`)
             .then((res) => {
-                let tradingAlgo = [];
-                apiKeyDetails.map((elem)=>{
-                    accessTokenDetails.map((subelem)=>{
-                        (res.data).map((element) => {
-                            console.log("line 82", elem.accountId, subelem.accountId, element.tradingAccount, element.status);
-                            if(element.status === "Active" && subelem.accountId == element.tradingAccount && elem.accountId == element.tradingAccount){
-                                tradingAlgo.push(element);
-                            }
-                        })
-                        console.log(tradingAlgo);
-                    })
-                })
-                setTradingAlgoData(tradingAlgo);
-            }).catch((err)=>{
+                setTradingAlgoData(res.data);
+            }).catch((err) => {
                 return new Error(err);
             })
         axios.get(`${baseUrl}api/v1/readBrokerage`)
             .then((res) => {
                 setBrokerageData(res.data)
-            }).catch((err)=>{
-                
+            }).catch((err) => {
+
                 return new Error(err);
             })
 
@@ -136,24 +128,49 @@ export default function ByModal({ marketData, uIdProps, permission }) {
                     return elem.status === "Active"
                 })
                 setTradeData(dataArr)
-            }).catch((err)=>{
-                
+            }).catch((err) => {
+
                 return new Error(err);
             })
-         axios.get(`${baseUrl}api/v1/readInstrumentAlgo`)
+        axios.get(`${baseUrl}api/v1/readInstrumentAlgo`)
             .then((res) => {
-                let activeInstrumentAlgo = (res.data).filter((elem)=>{
+                let activeInstrumentAlgo = (res.data).filter((elem) => {
                     return elem.Status === "Active";
                 })
                 setInstrumentAlgoData(activeInstrumentAlgo)
-            }).catch((err)=>{
+            }).catch((err) => {
                 window.alert("Server Down");
                 return new Error(err);
             })
 
-        console.log(tradeData);
         setTradeData([...tradeData])
     }, [getDetails])
+
+
+
+    const tradingAlgoArr = [];
+    apiKeyDetails.map((elem) => {
+        accessTokenDetails.map((subelem) => {
+            tradingAlgoData.map((element) => {
+                if (element.status === "Active" && subelem.accountId == element.tradingAccount && elem.accountId == element.tradingAccount) {
+                    tradingAlgoArr.push(element);
+                }
+            })
+        })
+    })
+
+    console.log(userPermission, tradingAlgoArr);
+    const userPermissionAlgo = [];
+    for (let elem of tradingAlgoArr) {
+        for (let subElem of userPermission) {
+            if (elem.algoName === subElem.algoName) {
+                userPermissionAlgo.push(elem)
+            }
+        }
+    }
+
+    console.log(userPermissionAlgo); //its an array do everything according it
+
 
     const toggleModal = () => {
         setModal(!modal);
@@ -167,11 +184,11 @@ export default function ByModal({ marketData, uIdProps, permission }) {
     function FormHandler(e) {
         e.preventDefault()
     }
-    function instrumentAlgo(lastPrice){
+    function instrumentAlgo(lastPrice) {
         if (instrumentAlgoData.length) {
             instrumentAlgoData.map((elem) => {
-                tradeData.map((element)=>{
-                    if(elem.IncomingInstrumentCode === element.symbol){
+                tradeData.map((element) => {
+                    if (elem.IncomingInstrumentCode === element.symbol) {
                         companyTrade.realSymbol = elem.OutgoingInstrumentCode;
                     }
                 })
@@ -180,11 +197,9 @@ export default function ByModal({ marketData, uIdProps, permission }) {
                 companyTrade.realQuantity = Details.Quantity;
                 companyTrade.realAmount = Details.Quantity * lastPrice;
                 companyTrade.realBrokerage = buyBrokerageCharge(brokerageData, companyTrade.realQuantity, companyTrade.realAmount);
-                
+
                 // Details.totalAmount = totalAmount;
                 setCompanyTrade(companyTrade)
-                console.log(Details);
-                console.log(companyTrade);
                 // if(permission[0].isRealTradeEnable){
                 //     sendOrderReq();
                 // } else{
@@ -200,11 +215,9 @@ export default function ByModal({ marketData, uIdProps, permission }) {
             companyTrade.realQuantity = Details.Quantity;
             companyTrade.realAmount = lastPrice * companyTrade.realQuantity;
             companyTrade.realBrokerage = buyBrokerageCharge(brokerageData, companyTrade.realQuantity, companyTrade.realAmount);
-            
+
 
             setCompanyTrade(companyTrade)
-            console.log(Details);
-            console.log(companyTrade);
             // if(permission[0].isRealTradeEnable){
             //     sendOrderReq();
             // } else{
@@ -215,87 +228,83 @@ export default function ByModal({ marketData, uIdProps, permission }) {
     }
 
     function tradingAlgo(uId, lastPrice) {
-        if (tradingAlgoData.length) {
-            tradingAlgoData.map((elem) => {
-                
-                if (elem.transactionChange) {
-                    companyTrade.realBuyOrSell = "SELL"
-                } else {
-                    companyTrade.realBuyOrSell = "BUY"
-                }
-                console.log("exchange", tradeData);
+        // if (userPermissionAlgo.length) {
+        userPermissionAlgo.map((elem) => {
 
-                let arr;
-                if (elem.instrumentChange) {
-                    console.log("in the if2");
-                    arr = tradeData.filter((elem) => {
-                        return elem.uId !== uIdProps && elem.status === "Active";
-                    })
-                    console.log(arr);
-                    companyTrade.realSymbol = arr[0].symbol
-                    companyTrade.realInstrument = arr[0].instrument
-                } else {
-                    companyTrade.realSymbol = Details.symbol
-                    companyTrade.realInstrument = Details.instrument
-                }
-                const getLastPrice = marketData.filter((elem)=>{
-                    return elem.instrument_token === arr[0].instrumentToken;
-                })
-
-                companyTrade.realQuantity = elem.lotMultipler * (Details.Quantity);
-                accessTokenDetails = accessTokenDetails.filter((element) => {
-                    return elem.tradingAccount === element.accountId
-                })
-                console.log(accessTokenDetails);
-                setAccessToken(accessTokenDetails);
-                apiKeyDetails = apiKeyDetails.filter((element) => {
-                    return elem.tradingAccount === element.accountId
-                })
-                console.log(apiKeyDetails);
-                setApiKey(apiKeyDetails);
-                companyTrade.real_last_price = getLastPrice[0].last_price;
-                companyTrade.realAmount = getLastPrice[0].last_price * companyTrade.realQuantity;
-                companyTrade.realBrokerage = buyBrokerageCharge(brokerageData, companyTrade.realQuantity, companyTrade.realAmount);
-                
-                setCompanyTrade(companyTrade)
-                console.log(Details);
-                console.log(companyTrade);
-
-
-                if(permission[0].isRealTradeEnable || permission[0].isRealTradeEnable){
-                    sendOrderReq();
-                    mockTradeUser();
-                } else{
-                    mockTradeUser();
-                    mockTradeCompany();
-                }
-
-                setModal(!modal);
-            })
-        } else {
-            companyTrade.real_last_price = Details.last_price;
-            companyTrade.realBuyOrSell = "BUY";
-            companyTrade.realSymbol = Details.symbol
-            companyTrade.realInstrument = Details.instrument
-            companyTrade.realQuantity = Details.Quantity;
-            companyTrade.realAmount = lastPrice * companyTrade.realQuantity;
-            companyTrade.realBrokerage = buyBrokerageCharge(brokerageData, companyTrade.realQuantity, companyTrade.realAmount);
-            
-
-            setCompanyTrade(companyTrade)
-            console.log(Details);
-            console.log(companyTrade);
-
-            if(permission[0].isRealTradeEnable || permission[0].isRealTradeEnable){
-                sendOrderReq();
-                mockTradeUser();
-            } else{
-                mockTradeUser();
-                mockTradeCompany();
+            if (elem.transactionChange) {
+                companyTrade.realBuyOrSell = "SELL"
+            } else {
+                companyTrade.realBuyOrSell = "BUY"
             }
 
+            let arr;
+            if (elem.instrumentChange) {
+                arr = tradeData.filter((elem) => {
+                    return elem.uId !== uIdProps && elem.status === "Active";
+                })
+                companyTrade.realSymbol = arr[0].symbol
+                companyTrade.realInstrument = arr[0].instrument
+            } else {
+                companyTrade.realSymbol = Details.symbol
+                companyTrade.realInstrument = Details.instrument
+            }
+            const getLastPrice = marketData.filter((elem) => {
+                return elem.instrument_token === arr[0].instrumentToken;
+            })
+
+            companyTrade.realQuantity = elem.lotMultipler * (Details.Quantity);
+            accessTokenDetails = accessTokenDetails.filter((element) => {
+                return elem.tradingAccount === element.accountId
+            })
+            setAccessToken(accessTokenDetails);
+            apiKeyDetails = apiKeyDetails.filter((element) => {
+                return elem.tradingAccount === element.accountId
+            })
+            setApiKey(apiKeyDetails);
+            // companyTrade.real_last_price = getLastPrice[0].last_price;
+            companyTrade.real_last_price = 100
+            companyTrade.realAmount = 800
+            //companyTrade.realAmount = getLastPrice[0].last_price * companyTrade.realQuantity;
+            companyTrade.realBrokerage = buyBrokerageCharge(brokerageData, companyTrade.realQuantity, companyTrade.realAmount);
+
+            setCompanyTrade(companyTrade)
+
+            userPermission.map((subElem) => {
+                if (subElem.algoName === elem.algoName) {
+                    if (subElem.isRealTradeEnable || subElem.isRealTradeEnable) {
+                        sendOrderReq();
+                        // mockTradeUser("yes");
+                    } else {
+                        // mockTradeUser("no");
+                        mockTradeCompany(elem);
+                    }
+                }
+            })
             setModal(!modal);
-        }
+        })
+
+        // } else {
+        //     companyTrade.real_last_price = Details.last_price;
+        //     companyTrade.realBuyOrSell = "BUY";
+        //     companyTrade.realSymbol = Details.symbol
+        //     companyTrade.realInstrument = Details.instrument
+        //     companyTrade.realQuantity = Details.Quantity;
+        //     companyTrade.realAmount = lastPrice * companyTrade.realQuantity;
+        //     companyTrade.realBrokerage = buyBrokerageCharge(brokerageData, companyTrade.realQuantity, companyTrade.realAmount);
+
+
+        //     setCompanyTrade(companyTrade)
+
+        //     if(permission[0].isRealTradeEnable || permission[0].isRealTradeEnable){
+        //         sendOrderReq();
+        //         mockTradeUser();
+        //     } else{
+        //         mockTradeUser();
+        //         mockTradeCompany();
+        //     }
+
+        //     setModal(!modal);
+        // }
     }
 
     async function Buy(e, uId) {
@@ -308,34 +317,29 @@ export default function ByModal({ marketData, uIdProps, permission }) {
         else {
             Details.variety = "amo"
         }
-        console.log(tradeData)
         let getSomeData = tradeData.filter((elem) => {
             return elem.uId === uIdProps;
         })
-        console.log(getSomeData)
         Details.exchange = getSomeData[0].exchange;
         Details.symbol = getSomeData[0].symbol
 
         let getLivePrice = marketData.filter((elem) => {
-            console.log("getSomeData.instrumentToken", getSomeData[0].instrumentToken, "elem.instrument_token", elem.instrument_token);
             return getSomeData[0].instrumentToken === elem.instrument_token;
         })
-        console.log(getLivePrice[0], getLivePrice)
-        Details.last_price = getLivePrice[0].last_price
+        Details.last_price = 100
+        // Details.last_price = getLivePrice[0].last_price
+
         Details.totalAmount = Details.last_price * Details.Quantity;
         Details.brokerageCharge = buyBrokerageCharge(brokerageData, Details.Quantity, Details.totalAmount);
-        
+
 
         // Details.last_price = 100;
 
 
-        console.log(Details.exchange, tradeData);
         // Algo box applied here....
 
-        if(Details.exchange === "NSE"){
-            console.log("in nse")
-            if (permission[0].isAlgoEnable) {
-                console.log("algo box should be applied");
+        if (Details.exchange === "NFO") {
+            if (true) {
                 setDetails(Details)
                 instrumentAlgo(Details.last_price);
             } else {
@@ -346,12 +350,10 @@ export default function ByModal({ marketData, uIdProps, permission }) {
                 companyTrade.real_last_price = Details.last_price
                 companyTrade.realAmount = Details.last_price * companyTrade.realQuantity;
                 companyTrade.realBrokerage = buyBrokerageCharge(brokerageData, companyTrade.realQuantity, companyTrade.realAmount);
-                
+
                 setCompanyTrade(companyTrade)
                 setDetails(Details)
-                console.log(Details);
-                console.log(companyTrade);
-        
+
 
                 // if(permission[0].isRealTradeEnable){
                 //     sendOrderReq();
@@ -360,11 +362,11 @@ export default function ByModal({ marketData, uIdProps, permission }) {
                 // } // must keep inside both if and else
                 setModal(!modal);
             }
-        } else if(Details.exchange === "NFO"){
-// first check if value is there in algo mtlb algo ka account id match huaa h ya nhi agr nhi huaa to algo nhi h but user ko ock trade dilana h
-            if (permission[0].isAlgoEnable) {
-                console.log("algo box should be applied");
+        } else if (Details.exchange === "NSE") {
+            // first check if value is there in algo mtlb algo ka account id match huaa h ya nhi agr nhi huaa to algo nhi h but user ko ock trade dilana h
+            if (userPermissionAlgo.length) {
                 setDetails(Details)
+                mockTradeUser("no");
                 tradingAlgo(uId, Details.last_price);
             } else {
                 companyTrade.realBuyOrSell = "BUY";
@@ -374,32 +376,33 @@ export default function ByModal({ marketData, uIdProps, permission }) {
                 companyTrade.real_last_price = Details.last_price
                 companyTrade.realAmount = Details.last_price * companyTrade.realQuantity;
                 companyTrade.realBrokerage = buyBrokerageCharge(brokerageData, companyTrade.realQuantity, companyTrade.realAmount);
-                
+
                 setCompanyTrade(companyTrade)
                 setDetails(Details)
-                console.log(Details);
-                console.log(companyTrade);
-        
-                if(permission[0].isRealTradeEnable || permission[0].isRealTradeEnable){
-                    sendOrderReq();
-                    mockTradeUser();
-                } else{
-                    mockTradeUser();
-                    mockTradeCompany();
-                } // must keep inside both if and else
+
+                const fakeAlgo = {
+                    algoName: "no algo",
+                    transactionChange: "no algo",
+                    instrumentChange: "no algo",
+                    exchangeChange: "no algo",
+                    lotMultipler: "no algo",
+                    productChange: "no algo",
+                    tradingAccount: "no algo"
+                }
+                mockTradeUser("no");
+                mockTradeCompany(fakeAlgo);
+                // must keep inside both if and else
                 setModal(!modal);
-            }                
+            }
         }
-        console.log("tradingAlgoData", tradingAlgoData);
     }
 
     async function sendOrderReq() {
         const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price } = Details;
-        const { realBuyOrSell, realSymbol, realQuantity, realInstrument, realBrokerage, realAmount, real_last_price} = companyTrade;
+        const { realBuyOrSell, realSymbol, realQuantity, realInstrument, realBrokerage, realAmount, real_last_price } = companyTrade;
         const { instrument } = tradeData;
         const { apiKey } = apiKeyDetails[0];
         const { accessToken } = accessTokenDetails[0];
-        console.log("this is product", Product);
 
         const res = await fetch(`${baseUrl}api/v1/placeorder`, {
             method: "POST",
@@ -410,12 +413,11 @@ export default function ByModal({ marketData, uIdProps, permission }) {
                 exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType,
                 TriggerPrice, stopLoss, variety, validity, uId, createdBy, createdOn,
                 last_price, realBuyOrSell, realSymbol, realQuantity, instrument,
-                realInstrument, apiKey, accessToken, userId, realBrokerage, realAmount, 
+                realInstrument, apiKey, accessToken, userId, realBrokerage, realAmount,
                 real_last_price, tradeBy
             })
         });
         const dataResp = await res.json();
-        console.log(dataResp);
         if (dataResp.status === 422 || dataResp.error || !dataResp) {
             window.alert(dataResp.error);
             console.log("Failed to Trade");
@@ -442,16 +444,18 @@ export default function ByModal({ marketData, uIdProps, permission }) {
         return finalCharge
     }
 
-    async function mockTradeUser(){ // have to add some feild according to auth
+    async function mockTradeUser(realTrade) { // have to add some feild according to auth
         const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price } = Details;
-
-        const res = await fetch(`${baseUrl}api/v1/mocktrade`, {
+        // const {algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount} = algoBox
+        const res = await fetch(`${baseUrl}api/v1/mocktradeuser`, {
             method: "POST",
             headers: {
                 "content-type": "application/json"
             },
             body: JSON.stringify({
-                exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, createdBy, userId, createdOn, uId
+                exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, createdBy, userId, createdOn, uId,
+                isRealTrade: realTrade
+                // , algoBox: {algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount}
             })
         });
         const dataResp = await res.json();
@@ -466,20 +470,28 @@ export default function ByModal({ marketData, uIdProps, permission }) {
         }
 
     }
-    async function mockTradeCompany(){
-        const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price } = Details;
 
-        const res = await fetch(`${baseUrl}api/v1/mocktrade`, {
+    async function mockTradeCompany(algoBox) {
+        const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price } = Details;
+        const { algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount } = algoBox;
+        const { realBuyOrSell, realSymbol, realQuantity, realInstrument, realBrokerage, realAmount, real_last_price } = companyTrade;
+
+        const res = await fetch(`${baseUrl}api/v1/mocktradecompany`, {
             method: "POST",
             headers: {
                 "content-type": "application/json"
             },
             body: JSON.stringify({
-                exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, createdBy, userId, createdOn, uId
+                exchange, symbol: realSymbol, buyOrSell: realBuyOrSell, Quantity: realQuantity, Price, Product, OrderType, TriggerPrice,
+                stopLoss, validity, variety, last_price: real_last_price, createdBy, userId, createdOn, uId,
+                algoBox: {
+                    algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler,
+                    productChange, tradingAccount
+                }
+
             })
         });
         const dataResp = await res.json();
-        console.log(dataResp);
         if (dataResp.status === 422 || dataResp.error || !dataResp) {
             window.alert(dataResp.error);
             console.log("Failed to Trade");
@@ -493,14 +505,14 @@ export default function ByModal({ marketData, uIdProps, permission }) {
 
     return (
         <>
-            {permission[0] === undefined ?
-            <button disabled={permission.isTradeEnable} onClick={toggleModal} className="btn-modal By_btn">
-                BUY
-            </button>
-            :
-            <button disabled={permission[0].isTradeEnable} onClick={toggleModal} className="btn-modal By_btn">
-            BUY
-            </button> }
+            {userPermission[0] === undefined ?
+                <button disabled={!userPermission.isTradeEnable} onClick={toggleModal} className="btn-modal By_btn">
+                    BUY
+                </button>
+                :
+                <button disabled={!userPermission[0].isTradeEnable} onClick={toggleModal} className="btn-modal By_btn">
+                    BUY
+                </button>}
 
 
             {modal && (
@@ -508,51 +520,14 @@ export default function ByModal({ marketData, uIdProps, permission }) {
                     <div onClick={toggleModal} className="overlay"></div>
                     <div className="modal-content">
                         <div className="form_btnRagAMO">
-                            <button className={bsBtn ? "amobtn" : `bsBtn`} onClick={() => { setBsBtn(true) }}>Regular</button> <button className={bsBtn ? "bsBtn" : "amobtn"} onClick={() => { setBsBtn(false) }}>AMO</button>
+                            <button className={bsBtn ? "amobtn" : `bsBtn`} onClick={() => { setBsBtn(true) }}>Regular</button>
+                            <button className={bsBtn ? "bsBtn" : "amobtn"} onClick={() => { setBsBtn(false) }}>AMO</button>
                         </div>
-                        {bsBtn ? <form className="Form_head" onChange={FormHandler} >
-                        <div className="container_One">
-                                <input type="radio" value="MIS" name="Product" className="btnRadio" onChange={(e) => { { Details.Product = e.target.value } }} /> Intraday <span style={{ color: 'gray' }}>MIS</span>
-
-                                <input type="radio" value="NRML" name="Product" className="btnRadio" onChange={(e) => { { Details.Product = e.target.value } }} /> Overnight <span style={{ color: 'gray' }}>NRML</span>
-                            </div>
-                            <div className="container_two">
-                                <div className="form_inputContain">
-                                    <label htmlFor="" className="bsLabel">Quantity</label>
-                                    <input type="text" className="bsInput" onChange={(e) => { { Details.Quantity = e.target.value } }} />
-
-                                    <label htmlFor="" className="bsLabel" >Price</label>
-                                    <input type="text" className="bsInput" onChange={(e) => { { Details.Price = e.target.value } }} />
-
-                                    <label htmlFor="" className="bsLabel">Trigger Price</label>
-                                    <input type="text" className="bsInput" onChange={(e) => { { Details.TriggerPrice = e.target.value } }} />
-                                </div>
-                                <div className="form_checkbox">
-                                    <input type="radio" value="MARKET" name="OrderType" className="btnRadio1" onChange={(e) => { { Details.OrderType = e.target.value } }} /> Market
-                                    <input type="radio" value="LIMIT" name="OrderType" className="btnRadio1" onChange={(e) => { { Details.OrderType = e.target.value } }} /> Limit
-                                    <input type="radio" value="SL" name="TriggerPrice" className="btnRadio1" onChange={(e) => { { Details.stopLoss = e.target.value } }} /> SL
-                                    <input type="radio" value="SLM" name="TriggerPrice" className="btnRadio1" onChange={(e) => { { Details.stopLoss = e.target.value } }} /> SL-M
-                                </div>
-                            </div>
-
-                            <div className="container_three">
-                                <label htmlFor="" className="bsLabel bslable1" >Validity</label>
-                                <span className="lable1_radiobtn"><input type="radio" value="DAY" name="validity" className="btnRadio2" onChange={(e) => { { Details.validity = e.target.value } }} /> Day</span>
-
-                                <span className="lable1_radiobtn"><input type="radio" value="IMMEDIATE" name="validity" className="btnRadio2" onChange={(e) => { { Details.validity = e.target.value } }} /> Immediate  </span>
-
-                                <span className="lable1_radiobtn"><input type="radio" value="MINUTES" name="validity" className="btnRadio2" onChange={(e) => { { Details.validity = e.target.value } }} /> Minutes </span>
-                            </div>
-
-                            <div className="form_button">
-                                <button  className="bsButton bsButton1" onClick={(e) => { Buy(e, uId) }} >BUY</button> <button className="bsButton1_cancel" onClick={toggleModal}> Cancel</button>
-                            </div>
-                        </form> :
+                        {bsBtn ?
                             <form className="Form_head" onChange={FormHandler} >
                                 <div className="container_One">
-                                    <input type="radio" value="MIS" name="Product" className="btnRadio" onChange={(e) => { { Details.Product = e.target.value } }} /> Intraday <span style={{ color: 'gray' }}>MIS</span>
-
-                                    <input type="radio" value="NRML" name="Product" className="btnRadio" onChange={(e) => { { Details.Product = e.target.value } }} /> Overnight <span style={{ color: 'gray' }}>NRML</span>
+                                    <input type="radio" value="MIS" checked={selected === 'MIS'} name="Product" className="btnRadio" onChange={radioHandler} /> Intraday <span style={{ color: 'gray' }}>MIS</span>
+                                    <input type="radio" value="NRML" checked={selected === 'NRML'} name="Product" className="btnRadio" onChange={radioHandler} /> Overnight <span style={{ color: 'gray' }}>NRML</span>
                                 </div>
                                 <div className="container_two">
                                     <div className="form_inputContain">
@@ -566,8 +541,8 @@ export default function ByModal({ marketData, uIdProps, permission }) {
                                         <input type="text" className="bsInput" onChange={(e) => { { Details.TriggerPrice = e.target.value } }} />
                                     </div>
                                     <div className="form_checkbox">
-                                        <input type="radio" value="MARKET" name="OrderType" className="btnRadio1" onChange={(e) => { { Details.OrderType = e.target.value } }} /> Market
-                                        <input type="radio" value="LIMIT" name="OrderType" className="btnRadio1" onChange={(e) => { { Details.OrderType = e.target.value } }} /> Limit
+                                        <input type="radio" value="MARKET" checked={marketselected === 'MARKET'} name="OrderType" className="btnRadio1" onChange={radioHandlerTwo} /> Market
+                                        <input type="radio" value="LIMIT" checked={marketselected === 'LIMIT'} name="OrderType" className="btnRadio1" onChange={radioHandlerTwo} /> Limit
                                         <input type="radio" value="SL" name="TriggerPrice" className="btnRadio1" onChange={(e) => { { Details.stopLoss = e.target.value } }} /> SL
                                         <input type="radio" value="SLM" name="TriggerPrice" className="btnRadio1" onChange={(e) => { { Details.stopLoss = e.target.value } }} /> SL-M
                                     </div>
@@ -575,12 +550,45 @@ export default function ByModal({ marketData, uIdProps, permission }) {
 
                                 <div className="container_three">
                                     <label htmlFor="" className="bsLabel bslable1" >Validity</label>
-                             
-                                        <span className="lable1_radiobtn"><input type="radio" value="DAY" name="validity" className="btnRadio2" onChange={(e) => { { Details.validity = e.target.value } }} /> Day</span>
+                                    <span className="lable1_radiobtn"><input type="radio" value="DAY" checked={validitySelected === 'DAY'}  name="validity" className="btnRadio2" onChange={radioHandlerthree} /> Day</span>
+                                    <span className="lable1_radiobtn"><input type="radio" value="IMMEDIATE" checked={validitySelected === 'IMMEDIATE'} name="validity" className="btnRadio2" onChange={radioHandlerthree} /> Immediate  </span>
+                                    <span className="lable1_radiobtn"><input type="radio" value="MINUTES" checked={validitySelected === 'MINUTES'} name="validity" className="btnRadio2" onChange={radioHandlerthree} /> Minutes </span>
+                                </div>
 
-                                        <span className="lable1_radiobtn"> <input type="radio" value="IMMEDIATE" name="validity" className="btnRadio2" onChange={(e) => { { Details.validity = e.target.value } }} /> Immediate </span>
+                                <div className="form_button">
+                                    <button className="bsButton bsButton1" onClick={(e) => { Buy(e, uId) }} >BUY</button> <button className="bsButton1_cancel" onClick={toggleModal}> Cancel</button>
+                                </div>
+                            </form> :
+                            <form className="Form_head" onChange={FormHandler} >
+                                <div className="container_One">
+                                    <input type="radio" value="MIS" checked={selected === 'MIS'} name="Product" className="btnRadio" onChange={radioHandler} /> Intraday <span style={{ color: 'gray' }}>MIS</span>
+                                    <input type="radio" value="NRML" checked={selected === 'NRML'} name="Product" className="btnRadio" onChange={radioHandler} /> Overnight <span style={{ color: 'gray' }}>NRML</span>
+                                </div>
 
-                                        <span className="lable1_radiobtn">  <input type="radio" value="MINUTES" name="validity" className="btnRadio2" onChange={(e) => { { Details.validity = e.target.value } }} /> Minutes </span>
+                                <div className="container_two">
+                                    <div className="form_inputContain">
+                                        <label htmlFor="" className="bsLabel">Quantity</label>
+                                        <input type="text" className="bsInput" onChange={(e) => { { Details.Quantity = e.target.value } }} />
+
+                                        <label htmlFor="" className="bsLabel" >Price</label>
+                                        <input type="text" className="bsInput" onChange={(e) => { { Details.Price = e.target.value } }} />
+
+                                        <label htmlFor="" className="bsLabel">Trigger Price</label>
+                                        <input type="text" className="bsInput" onChange={(e) => { { Details.TriggerPrice = e.target.value } }} />
+                                    </div>
+                                    <div className="form_checkbox">
+                                        <input type="radio" value="MARKET" checked={marketselected === 'MARKET'} name="OrderType" className="btnRadio1" onChange={radioHandlerTwo} /> Market
+                                        <input type="radio" value="LIMIT" checked={marketselected === 'LIMIT'} name="OrderType" className="btnRadio1" onChange={radioHandlerTwo} /> Limit
+                                        <input type="radio" value="SL" name="TriggerPrice" className="btnRadio1" onChange={(e) => { { Details.stopLoss = e.target.value } }} /> SL
+                                        <input type="radio" value="SLM" name="TriggerPrice" className="btnRadio1" onChange={(e) => { { Details.stopLoss = e.target.value } }} /> SL-M
+                                    </div>
+                                </div>
+
+                                <div className="container_three">
+                                    <label htmlFor="" className="bsLabel bslable1" >Validity</label>
+                                   <span className="lable1_radiobtn"><input type="radio" value="DAY" checked={validitySelected === 'DAY'}  name="validity" className="btnRadio2" onChange={radioHandlerthree} /> Day</span>
+                                    <span className="lable1_radiobtn"><input type="radio" value="IMMEDIATE" checked={validitySelected === 'IMMEDIATE'} name="validity" className="btnRadio2" onChange={radioHandlerthree} /> Immediate  </span>
+                                    <span className="lable1_radiobtn"><input type="radio" value="MINUTES" checked={validitySelected === 'MINUTES'} name="validity" className="btnRadio2" onChange={radioHandlerthree} /> Minutes </span>
                                 </div>
 
                                 <div className="form_button">

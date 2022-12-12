@@ -66,37 +66,38 @@ const mockTradeSchema = new mongoose.Schema({
     },
     isRealTrade:{
         type: Boolean,
-        required: true        
-    },
-    algoBox:{
-        algoName:{
-            type: String,
-            required: true
-        },
-        transactionChange:{
-            type: String,
-            required : true
-        },
-        instrumentChange:{
-            type: String,
-            required : true
-        },
-        exchangeChange:{
-            type: String,
-            required : true
-        },
-        lotMultipler:{
-            type: String,
-            required : true
-        },
-        productChange:{
-            type: String,
-            required : true
-        },
-        tradingAccount:{
-            type: String,
-            required : true
-        }
+        required: true  
+          
+    // },
+    // algoBox:{
+    //     algoName:{
+    //         type: String,
+    //         required: true
+    //     },
+    //     transactionChange:{
+    //         type: String,
+    //         required : true
+    //     },
+    //     instrumentChange:{
+    //         type: String,
+    //         required : true
+    //     },
+    //     exchangeChange:{
+    //         type: String,
+    //         required : true
+    //     },
+    //     lotMultipler:{
+    //         type: String,
+    //         required : true
+    //     },
+    //     productChange:{
+    //         type: String,
+    //         required : true
+    //     },
+    //     tradingAccount:{
+    //         type: String,
+    //         required : true
+    //     }
     }
 })
 

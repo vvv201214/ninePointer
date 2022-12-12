@@ -18,6 +18,7 @@ export default function OverallPnl({marketData, tradeData, data}) {
         //     let data = (res.data).filter((elem)=>{
         //         return elem.createdOn.includes(todayDate) && elem.status === "COMPLETE";
         //     })
+
             console.log(data);
 
             let hash = new Map();
@@ -118,6 +119,8 @@ export default function OverallPnl({marketData, tradeData, data}) {
             {
             overallPnlArr.map((elem, index)=>{
                 return(
+                    <>
+                    {/* {elem.Quantity !== 0 && */}
                     <tr className="grid2_tr" key={index}>
                         <th className="grid2_th">{elem.Product}</th>
                         <th className="grid2_th">{elem.symbol}</th>
@@ -132,7 +135,8 @@ export default function OverallPnl({marketData, tradeData, data}) {
                             <td className="grid2_td">{liveDetail[index]?.change}</td>
                             :
                             <td className="grid2_td">{liveDetail[index]?.change.toFixed(2)}</td>}
-                    </tr>                
+                    </tr>
+                    </>             
                 )
             })   
             }

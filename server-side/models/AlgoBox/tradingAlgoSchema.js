@@ -48,6 +48,10 @@ const tradingAlgoSchema = new mongoose.Schema({
     tradingAccount:{
         type: String,
         required : true
+    },
+    isRealTrade:{
+        type: Boolean,
+        required : true
     }
 })
 
