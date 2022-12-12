@@ -5,11 +5,11 @@ import { io } from "socket.io-client";
 import CompanyPositionTable from "./CompanyPositionTable";
 
 function CompanyPosition() {
-    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:9000/"
     let socket;
     try{
-        // socket = io.connect(`${baseUrl}api/v1/socketconnection`)
-        socket = io.connect("http://localhost:9000/")
+        // socket = io.connect("http://localhost:9000/")
+        socket = io.connect(`${baseUrl}api/v1/socket.io`)
     } catch(err){
         throw new Error(err);
     }
