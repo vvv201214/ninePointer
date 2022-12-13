@@ -9,28 +9,29 @@ export default function DashboardHeader({role}) {
             {role === "admin" ?
             <ul className='navbar'>
                 <li>
-                    <NavLink to={"/main/dashboard/tradersdashboard"}>Trader's Dashboard</NavLink>
+                    <NavLink to={"/main/dashboard/tradersdashboard"}>Dashboard</NavLink>
                 </li>
                 <li>
-                    <NavLink to={"/main/dashboard/CompanyPosition"}>Company:Position</NavLink>
+                    <NavLink to={"/main/dashboard"}>Positions</NavLink>
                 </li>
                 <li>
-                    <NavLink to={"/main/dashboard"}>Traders:Position</NavLink>
+                    <NavLink to={"/main/dashboard/TradersOrders"}>TradeBook</NavLink>
                 </li>
                 <li>
-                    <NavLink to={"/main/dashboard/CompanyOrders"}>Company:Orders</NavLink>
+                    <NavLink to={"/main/dashboard/CompanyPosition"}>Company Position</NavLink>
                 </li>
                 <li>
-                    <NavLink to={"/main/dashboard/TradersOrders"}>Traders:Orders</NavLink>
+                    <NavLink to={"/main/dashboard/CompanyOrders"}>Company TradeBook</NavLink>
                 </li>
+               
             </ul>
             :
             <ul className='navbar'>
                 <li>
-                    <NavLink to={"/main/dashboard"}>Traders:Position</NavLink>
+                    <NavLink to={"/main/dashboard"}>Positions</NavLink>
                 </li>
                 <li>
-                    <NavLink to={"/main/dashboard/TradersOrders"}>Traders:Orders</NavLink>
+                    <NavLink to={"/main/dashboard/TradersOrders"}>TradeBook</NavLink>
                 </li>
             </ul> }
 

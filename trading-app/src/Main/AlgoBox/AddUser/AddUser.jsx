@@ -4,7 +4,6 @@ import Styles from "./AddUser.module.css";
 import UserList from "./UserList";
 
 
-
 export default function AddUser({algoName}) {
     
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
@@ -14,7 +13,7 @@ export default function AddUser({algoName}) {
     let modifiedOn = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`
     let modifiedBy = getDetails.userDetails.name;
 
-    const [userName, setUserName] = useState();
+    const [userNam, setUserNam] = useState();
     const [entrading, setEntrading] = useState();
     const [reTrading, setreTrading] = useState();
 
@@ -22,7 +21,8 @@ export default function AddUser({algoName}) {
     
     const [reRender, setReRender] = useState(true);
     const [permissionData, setPermissionData] = useState([]);
-
+    console.log(permissionData);
+    
     const [modal, setModal] = useState(false);
     const [addUser, setAddUser] = useState([]);
     const toggleModal = () => {
@@ -128,7 +128,8 @@ export default function AddUser({algoName}) {
 
     async function patchReq(id){
         const {name, tradingEnable, realTrading} = algoData;
-        const response = await fetch(`${baseUrl}api/v1/readpermission/${id}`, {
+        console.log("algoData", algoData);
+        const response = await fetch(`${baseUrl}api/v1/readpermissionadduser/${id}`, {
             method: "PATCH",
             headers: {
                 "Accept": "application/json",
@@ -150,6 +151,7 @@ export default function AddUser({algoName}) {
             console.log("Edit succesfull");
         }
     }
+    
 
     return (
         <>
@@ -168,19 +170,19 @@ export default function AddUser({algoName}) {
                                 <th className={Styles.addUser_th}>Real Trading</th>
                                 <th className={Styles.addUser_th}>Action</th>
                             </tr>
-                            {newData.map((elem)=>{
+                            {newData.map((elem)=>{ // value={entrading} value={reTrading}
                                 return(
                                     <tr key={elem._id} className={Styles.addUser_tr}>
                                         <td className={Styles.addUser_td}>{elem.userName}</td>
                                         <td className={Styles.addUser_td}>
-                                            <select name="" id="" value={entrading} className={Styles.addUser_select} onChange={(e)=>{{setEntrading(e.target.value)}}}>
+                                            <select name="" id=""  className={Styles.addUser_select} onChange={(e)=>{{setEntrading(e.target.value)}}}>
                                                 <option value=""></option>
                                                 <option value="true">True</option>
                                                 <option value="false">False</option>
                                             </select>
                                         </td>
                                         <td className={Styles.addUser_td}>
-                                            <select name="" id="" value={reTrading} className={Styles.addUser_select} onChange={(e)=>{{setreTrading(e.target.value)}}}>
+                                            <select name="" id=""  className={Styles.addUser_select} onChange={(e)=>{{setreTrading(e.target.value)}}}>
                                                 <option value=""></option>
                                                 <option value="true">True</option>
                                                 <option value="false">False</option>

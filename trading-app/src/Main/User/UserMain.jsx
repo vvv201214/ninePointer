@@ -9,7 +9,7 @@ function UserMain(){
         <>
             <div className="User_header">
             <h1 className="header_para">{`Hello ${getDetails.userDetails.name}! Welcome Back`}</h1>
-                <button className="logo_btn" >NINEPOINTER</button>
+                <button className="logo_btn" >ninepointer</button>
             </div>
             <UserHeader/>
         </>
