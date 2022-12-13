@@ -1,6 +1,8 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
 import axios from "axios";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons';  
 
 export default function OverallPnl({marketData, tradeData, data}) {
 
@@ -107,9 +109,9 @@ export default function OverallPnl({marketData, tradeData, data}) {
                 <th className="grid2_th">Product</th>
                 <th className="grid2_th">Instrument</th>
                 <th className="grid2_th">Quantity</th>
-                <th className="grid2_th">Avg. Price(₹)</th>
-                <th className="grid2_th">LTP</th>
-                <th className="grid2_th">P&L</th>
+                <th className="grid2_th">Avg. Price (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
+                <th className="grid2_th">LTP (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
+                <th className="grid2_th">P&L (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
                 <th className="grid2_th">%Change</th>
             </tr> 
             {
@@ -133,7 +135,7 @@ export default function OverallPnl({marketData, tradeData, data}) {
                                                 (((liveDetail[index]?.last_price)*(elem.Quantity)) - (elem.average_price*elem.Quantity)
                                                 )).toFixed(2)}</th> }
                         {liveDetail[index]?.change === undefined ?
-                            <td className="grid2_td">{((liveDetail[index]?.last_price - elem.average_price)/(elem.average_price)).toFixed(2)}</td>
+                            <td className="grid2_td">0.00%</td>//{((liveDetail[index]?.last_price - elem.average_price)/(elem.last_price)).toFixed(2)}
                             :
                             <td className="grid2_td">{liveDetail[index]?.change.toFixed(2)}</td>}
                     </tr>

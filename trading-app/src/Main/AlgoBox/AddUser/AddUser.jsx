@@ -13,7 +13,7 @@ export default function AddUser({algoName}) {
     let modifiedOn = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`
     let modifiedBy = getDetails.userDetails.name;
 
-    const [userName, setUserName] = useState();
+    const [userNam, setUserNam] = useState();
     const [entrading, setEntrading] = useState();
     const [reTrading, setreTrading] = useState();
 
@@ -21,7 +21,8 @@ export default function AddUser({algoName}) {
     
     const [reRender, setReRender] = useState(true);
     const [permissionData, setPermissionData] = useState([]);
-
+    console.log(permissionData);
+    
     const [modal, setModal] = useState(false);
     const [addUser, setAddUser] = useState([]);
     const toggleModal = () => {
@@ -150,6 +151,7 @@ export default function AddUser({algoName}) {
             console.log("Edit succesfull");
         }
     }
+    
 
     return (
         <>

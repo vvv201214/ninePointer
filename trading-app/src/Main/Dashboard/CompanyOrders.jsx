@@ -1,6 +1,8 @@
 import React from "react";
 import axios from "axios"
 import { useEffect, useState } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons';  
 
 function CompanyOrders(){
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
@@ -32,7 +34,7 @@ function CompanyOrders(){
                                     <th className="grid2_th">Instrument</th>
                                     <th className="grid2_th">Product</th>
                                     <th className="grid2_th">Quantity</th>
-                                    <th className="grid2_th">Avg.Price</th>
+                                    <th className="grid2_th">Avg.Price (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign}/>)</th>
                                     <th className="grid2_th">AlgoName</th>
                                     <th className="grid2_th">Status</th>
                                 </tr> 

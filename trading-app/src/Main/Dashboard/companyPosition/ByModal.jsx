@@ -19,7 +19,7 @@ export default function ByModal({ marketData, uIdProps, Render }) {
     let tradeBy = getDetails.userDetails.name;
     let dummyOrderId = `${date.getFullYear()-2000}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}${Math.floor(100000000 + Math.random() * 900000000)}`
 
-    const [selected, setSelected] = useState("NRML");
+    const [selected, setSelected] = useState("MIS");
     const radioHandler = (e) => {
         console.log(e.target.value);
         setSelected(e.target.value);
@@ -48,7 +48,7 @@ export default function ByModal({ marketData, uIdProps, Render }) {
         ceOrPe: "",
         buyOrSell: "",
         variety: "",
-        Product: "NRML",
+        Product: "MIS",
         Quantity: "",
         Price: "",
         OrderType: "MARKET",
@@ -474,14 +474,16 @@ export default function ByModal({ marketData, uIdProps, Render }) {
                                 </div>
 
                                 <div className="container_three">
-                                    <label htmlFor="" className="bsLabel bslable1" >Validity</label>
+                                    <label htmlFor="" className="bsLabel bslable1" >Validity </label>
                                     <span className="lable1_radiobtn"><input type="radio" value="DAY" checked={validitySelected === 'DAY'}  name="validity" className="btnRadio2" onChange={radioHandlerthree} /> Day</span>
                                     <span className="lable1_radiobtn"><input type="radio" value="IMMEDIATE" checked={validitySelected === 'IMMEDIATE'} name="validity" className="btnRadio2" onChange={radioHandlerthree} /> Immediate  </span>
                                     <span className="lable1_radiobtn"><input type="radio" value="MINUTES" checked={validitySelected === 'MINUTES'} name="validity" className="btnRadio2" onChange={radioHandlerthree} /> Minutes </span>
+                                   
                                 </div>
 
                                 <div className="form_button">
-                                    <button className="bsButton bsButton1" onClick={(e) => { Buy(e, uId) }} >BUY</button> <button className="bsButton1_cancel" onClick={toggleModal}> Cancel</button>
+                                    <button className="bsButton bsButton1 By_btn" onClick={(e) => { Buy(e, uId) }} >BUY</button> 
+                                    <button className="bsButton1_cancel" onClick={toggleModal}> Cancel</button>
                                 </div>
                             </form> :
                             <form className="Form_head" onChange={FormHandler} >
@@ -517,7 +519,8 @@ export default function ByModal({ marketData, uIdProps, Render }) {
                                 </div>
 
                                 <div className="form_button">
-                                    <button className="bsButton bsButton1" onClick={(e) => { Buy(e, uId) }} >BUY</button> <button className="bsButton1_cancel" onClick={toggleModal}> Cancel</button>
+                                    <button className="bsButton bsButton1 By_btn" onClick={(e) => { Buy(e, uId) }} >BUY</button> 
+                                    <button className="bsButton1_cancel" onClick={toggleModal}> Cancel</button>
                                 </div>
                             </form>
                         }
