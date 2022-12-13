@@ -154,7 +154,7 @@ function Brokerage() {
                                     <th className="grid2_th">Exchange</th>
                                     <th className="grid2_th">Brokerage Charge</th>
                                     <th className="grid2_th">Exchange Charge</th>
-                                    <th className="grid2_th">GST</th>
+                                    <th className="grid2_th">GST(%)</th>
                                     <th className="grid2_th">SEBI Charges</th>
                                     <th className="grid2_th">Stamp Duty Charges</th>
                                     <th className="grid2_th">SST</th>

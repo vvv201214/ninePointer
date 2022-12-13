@@ -17,7 +17,7 @@ export default function ByModal({ marketData, uIdProps }) {
     let totalAmount = 0;
     let tradeBy = getDetails.userDetails.name;
 
-    const [selected, setSelected] = useState("NRML");
+    const [selected, setSelected] = useState("MIS");
     const radioHandler = (e) => {
         console.log(e.target.value);
         setSelected(e.target.value);
@@ -549,14 +549,16 @@ export default function ByModal({ marketData, uIdProps }) {
                                 </div>
 
                                 <div className="container_three">
-                                    <label htmlFor="" className="bsLabel bslable1" >Validity</label>
+                                    <label htmlFor="" className="bsLabel bslable1" >Validity </label>
                                     <span className="lable1_radiobtn"><input type="radio" value="DAY" checked={validitySelected === 'DAY'}  name="validity" className="btnRadio2" onChange={radioHandlerthree} /> Day</span>
                                     <span className="lable1_radiobtn"><input type="radio" value="IMMEDIATE" checked={validitySelected === 'IMMEDIATE'} name="validity" className="btnRadio2" onChange={radioHandlerthree} /> Immediate  </span>
                                     <span className="lable1_radiobtn"><input type="radio" value="MINUTES" checked={validitySelected === 'MINUTES'} name="validity" className="btnRadio2" onChange={radioHandlerthree} /> Minutes </span>
+                                   
                                 </div>
 
                                 <div className="form_button">
-                                    <button className="bsButton bsButton1" onClick={(e) => { Buy(e, uId) }} >BUY</button> <button className="bsButton1_cancel" onClick={toggleModal}> Cancel</button>
+                                    <button className="bsButton bsButton1 By_btn" onClick={(e) => { Buy(e, uId) }} >BUY</button> 
+                                    <button className="bsButton1_cancel" onClick={toggleModal}> Cancel</button>
                                 </div>
                             </form> :
                             <form className="Form_head" onChange={FormHandler} >
@@ -592,7 +594,8 @@ export default function ByModal({ marketData, uIdProps }) {
                                 </div>
 
                                 <div className="form_button">
-                                    <button className="bsButton bsButton1" onClick={(e) => { Buy(e, uId) }} >BUY</button> <button className="bsButton1_cancel" onClick={toggleModal}> Cancel</button>
+                                    <button className="bsButton bsButton1 By_btn" onClick={(e) => { Buy(e, uId) }} >BUY</button> 
+                                    <button className="bsButton1_cancel" onClick={toggleModal}> Cancel</button>
                                 </div>
                             </form>
                         }

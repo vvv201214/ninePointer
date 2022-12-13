@@ -1,4 +1,6 @@
 import React from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons';  
 
 function TradersPosition(){
     return(
@@ -12,7 +14,7 @@ function TradersPosition(){
                                 <tr className="grid2_tr">
                                     <th className="grid2_th">Trading Date</th>
                                     <th className="grid2_th">Instrument</th>
-                                    <th className="grid2_th">LTP</th>
+                                    <th className="grid2_th">LTP (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
                                     <th className="grid2_th">%Change</th>
                                     <th className="grid2_th">Action</th>
                                 </tr> 
@@ -25,9 +27,9 @@ function TradersPosition(){
                                     <th className="grid2_th">Product</th>
                                     <th className="grid2_th">Instrument</th>
                                     <th className="grid2_th">Quantity</th>
-                                    <th className="grid2_th">Average Price</th>
-                                    <th className="grid2_th">LTP</th>
-                                    <th className="grid2_th">P&L</th>
+                                    <th className="grid2_th">Average Price (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
+                                    <th className="grid2_th">LTP (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
+                                    <th className="grid2_th">P&L (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
                                     <th className="grid2_th">%Change</th>
                                 </tr> 
                             </table>
@@ -39,9 +41,9 @@ function TradersPosition(){
                                     <th className="grid2_th">Product</th>
                                     <th className="grid2_th">Instrument</th>
                                     <th className="grid2_th">Quantity</th>
-                                    <th className="grid2_th">Average Price</th>
-                                    <th className="grid2_th">LTP</th>
-                                    <th className="grid2_th">P&L</th>
+                                    <th className="grid2_th">Average Price (<FontAwesomeIcon className='fa-xs'  icon={faIndianRupeeSign} />)</th>
+                                    <th className="grid2_th">LTP (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
+                                    <th className="grid2_th">P&L (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
                                     <th className="grid2_th">%Change</th>
                                 </tr> 
                             </table>
@@ -53,9 +55,9 @@ function TradersPosition(){
                                     <th className="grid2_th">Product</th>
                                     <th className="grid2_th">Instrument</th>
                                     <th className="grid2_th">Quantity</th>
-                                    <th className="grid2_th">Average Price</th>
-                                    <th className="grid2_th">LTP</th>
-                                    <th className="grid2_th">P&L</th>
+                                    <th className="grid2_th">Average Price (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
+                                    <th className="grid2_th">LTP (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
+                                    <th className="grid2_th">P&L (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
                                     <th className="grid2_th">%Change</th>
                                 </tr> 
                             </table>

@@ -1,6 +1,8 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
 import axios from "axios";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons';  
 
 export default function OverallPnl({marketData, tradeData, data}) {
 
@@ -111,9 +113,9 @@ export default function OverallPnl({marketData, tradeData, data}) {
                 <th className="grid2_th">Product</th>
                 <th className="grid2_th">Instrument</th>
                 <th className="grid2_th">Quantity</th>
-                <th className="grid2_th">Average Price</th>
-                <th className="grid2_th">LTP</th>
-                <th className="grid2_th">P&L</th>
+                <th className="grid2_th">Average Price (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
+                <th className="grid2_th">LTP (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
+                <th className="grid2_th">P&L (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
                 <th className="grid2_th">%Change</th>
             </tr> 
             {

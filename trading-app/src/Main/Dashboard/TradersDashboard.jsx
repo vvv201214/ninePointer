@@ -1,4 +1,7 @@
 import React from "react";
+import Styles from "./Dashboard.module.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons';  
 
 
 function TradersDashboard(){
@@ -14,9 +17,9 @@ function TradersDashboard(){
                                     <th className="grid2_th">Product</th>
                                     <th className="grid2_th">Instruments</th>
                                     <th className="grid2_th">Quantity</th>
-                                    <th className="grid2_th">Average Price</th>
-                                    <th className="grid2_th">LTP</th>
-                                    <th className="grid2_th">P&L</th>
+                                    <th className="grid2_th">Average Price (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
+                                    <th className="grid2_th">LTP (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
+                                    <th className="grid2_th">P&L (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
                                     <th className="grid2_th">%Change</th>
                                 </tr>
                             </table>
@@ -29,9 +32,9 @@ function TradersDashboard(){
                                 <th className="grid2_th">Product</th>
                                 <th className="grid2_th">Instruments</th>
                                 <th className="grid2_th">Quantity</th>
-                                <th className="grid2_th">Average Price</th>
-                                <th className="grid2_th">LTP</th>
-                                <th className="grid2_th">P&L</th>
+                                <th className="grid2_th">Average Price (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
+                                <th className="grid2_th">LTP (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
+                                <th className="grid2_th">P&L (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
                                 <th className="grid2_th">%Change</th>
                             </tr>
                             </table>
@@ -47,7 +50,7 @@ function TradersDashboard(){
                                 <th className="grid2_th">Open Lots</th>
                                 <th className="grid2_th"># of Trades</th>
                                 <th className="grid2_th">Trade Status</th>
-                                <th className="grid2_th">Tran. Cost</th>
+                                <th className="grid2_th">Tran. Cost (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
                                 <th className="grid2_th">Net PNL</th>
                             </tr>
                             </table>

@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import axios from "axios"
 import uniqid from "uniqid"
 import { userContext } from "../../AuthContext";
+import Styles from "./SellModel.module.css";
 
 export default function SellModel({ marketData, uIdProps }) {
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
@@ -17,7 +18,7 @@ export default function SellModel({ marketData, uIdProps }) {
     let totalAmount = 0;
     let tradeBy = getDetails.userDetails.name;
 
-    const [selected, setSelected] = useState("NRML");
+    const [selected, setSelected] = useState("MIS");
     const radioHandler = (e) => {
         console.log(e.target.value);
         setSelected(e.target.value);
@@ -591,7 +592,7 @@ export default function SellModel({ marketData, uIdProps }) {
                                 </div>
 
                                 <div className="form_button">
-                                    <button className="bsButton bsButton1" onClick={(e) => { Sell(e, uId) }} >Sell</button>
+                                    <button className= "bsButton bsButton1" onClick={(e) => { Sell(e, uId) }} >Sell</button>
                                     <button className="bsButton1_cancel" onClick={toggleModal}> Cancel</button>
                                 </div>
                             </form>

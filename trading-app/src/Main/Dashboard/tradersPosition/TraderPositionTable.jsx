@@ -8,6 +8,8 @@ import RunningPnl from "../PnlParts/RunningPnl";
 import ClosedPnl from "../PnlParts/ClosedPnl";
 import OverallPnl from "../PnlParts/OverallPnl";
 import { userContext } from "../../AuthContext";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons';
 
 function TraderPositionTable({ socket }) {
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
@@ -90,7 +92,7 @@ function TraderPositionTable({ socket }) {
                                 <tr className="grid2_tr">
                                     <th className="grid2_th">Trading Date</th>
                                     <th className="grid2_th">Instrument</th>
-                                    <th className="grid2_th">LTP</th>
+                                    <th className="grid2_th">LTP (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
                                     <th className="grid2_th">%Change</th>
                                     <th className="grid2_th">Action</th>
                                 </tr>

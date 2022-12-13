@@ -7,6 +7,7 @@ body.active-modal {
     display: block;
     /* margin: 100px auto 0; */
     font-size: 18px;
+    text-align: center;
 }
 
 .modal,
@@ -29,7 +30,7 @@ body.active-modal {
     min-width: 100vw;
     max-height: 100%;
     position: absolute;
-    top: 40%;
+    top: 45%;
     left: 50%;
     transform: translate(-50%, -50%);
     line-height: 1.4;
@@ -79,18 +80,20 @@ body.active-modal {
 }
 
 .container_three {
-    display: flex;
+    margin: 2rem 0;
+    width: fit-content;
+    margin-left: 4%;
+    /* display: flex;
     flex-direction: row;
     margin: 5px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    min-height: 20vh;
+    min-height: 20vh; */
 
 }
 
 .btnRadio1 {
-    width: 1rem;
     margin-top: 5px;
     margin-right: 9px;
     margin-left: auto;
@@ -99,39 +102,31 @@ body.active-modal {
 }
 
 .btnRadio {
-    width: 1rem;
     margin-top: 5px;
     margin-right: 12px;
     margin-left: 10px;
-
 }
 
 .btnRadio2 {
-    width: 1rem;
     margin-top: 5px;
-    margin-right: 10px;
-    margin-left: 10px;
-   
-
-
+    /* margin-right: 10px;
+    margin-left: 10px; */
 }
+
 .lable1_radiobtn{
-    display: flex;
+    /* display: flex; */
     margin: 5px;
     padding: 2px;
 }
 
-.bslable1 {
-  position: relative;
-    right: 40%;
-   padding: 5px;
+/* .bslable1 {
 
-}
+
+} */
 
 .bsLabel {
     font-weight: bold;
     margin: 3px;
-
 }
 
 .sellButton {
@@ -163,7 +158,6 @@ body.active-modal {
     height: 2rem;
     font-size: 16px;
     font-weight: bold;
-
 }
 
 .form_button {
@@ -172,13 +166,10 @@ body.active-modal {
     display: flex;
     flex-direction: row;
     justify-content: center;
-
-
-
 }
 
 .bsButton1 {
-    background-color: rgb(78, 78, 225);
+    background-color: #Df514C;
     color: #f1f1f1;
     border: none;
     font-weight: bold;
@@ -188,6 +179,7 @@ body.active-modal {
     font-size: 16px;
     font-weight: bold;
     margin-right: 8rem;
+    
 }
 
 .bsButton1_cancel {
@@ -203,27 +195,24 @@ body.active-modal {
 
 }
 
-
-
 .btn-modal {
 
     width: auto;
     border-radius: 15px;
-    height: 30px;
-    font-size: 14px;
+    /* height: 30px; */
+    font-size: 11px;
     font-weight: bold;
     margin-left: 5px;
     margin-right: 5px;
     border: none;
-
+    margin-bottom: 1px;
 }
 
 .By_btn {
     background-color: rgb(78, 78, 225);
     color: #f1f1f1;
     border: none;
-
-
+    text-align: center;
 }
 
 .form_btnRagAMO {
