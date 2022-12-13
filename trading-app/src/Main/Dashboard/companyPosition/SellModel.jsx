@@ -17,7 +17,7 @@ export default function SellModel({marketData, uIdProps, Render }) {
     let userId = getDetails.userDetails.email;
     let totalAmount = 0;
     let tradeBy = getDetails.userDetails.name;
-    let dummyOrderId = `${date.getFullYear()-2000}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}${Math.floor( Math.random() * 900000000)}`
+    let dummyOrderId = `${date.getFullYear()-2000}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}${Math.floor(100000000+ Math.random() * 900000000)}`
 
     const [selected, setSelected] = useState("NRML");
     const radioHandler = (e) => {
@@ -48,10 +48,10 @@ export default function SellModel({marketData, uIdProps, Render }) {
         ceOrPe: "",
         buyOrSell: "",
         variety: "",
-        Product: "",
+        Product: "NRML",
         Quantity: "",
         Price: "",
-        OrderType: "",
+        OrderType: "MARKET",
         TriggerPrice: "",
         stopLoss: "",
         validity: "DAY",
@@ -357,11 +357,11 @@ export default function SellModel({marketData, uIdProps, Render }) {
     }
 
     async function mockTradeUser(realTrade){ // have to add some feild according to auth
-        let currentTime = `${date.getHours()}:${date.getMinutes()}`
-        if(currentTime > "15:30" && currentTime < "9:15"){
-            window.alert("Market is closed now");
-            return;
-        }
+        // let currentTime = `${date.getHours()}:${date.getMinutes()}`
+        // if(currentTime > "15:30" && currentTime < "9:15"){
+        //     window.alert("Market is closed now");
+        //     return;
+        // }
         const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price } = Details;
         // const {algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount} = algoBox
         const res = await fetch(`${baseUrl}api/v1/mocktradeuser`, {
@@ -389,11 +389,11 @@ export default function SellModel({marketData, uIdProps, Render }) {
     }
 
     async function mockTradeCompany(algoBox){
-        let currentTime = `${date.getHours()}:${date.getMinutes()}`
-        if(currentTime > "15:30" && currentTime < "9:15"){
-            window.alert("Market is closed now");
-            return;
-        }
+        // let currentTime = `${date.getHours()}:${date.getMinutes()}`
+        // if(currentTime > "15:30" && currentTime < "9:15"){
+        //     window.alert("Market is closed now");
+        //     return;
+        // }
         const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price } = Details;
         const { algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount } = algoBox;
         const { realBuyOrSell, realSymbol, realQuantity, realInstrument, realBrokerage, realAmount, real_last_price } = companyTrade;

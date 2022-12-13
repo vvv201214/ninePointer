@@ -109,7 +109,7 @@ function TraderPositionTable({ socket }) {
 
                                             {console.log(updatedMarketData[0], updatedMarketData[0]?.change)}
                                             {(updatedMarketData[0]?.change === undefined) ? 
-                                            <td className="grid2_td">{updatedMarketData[0]?.change}</td>
+                                            <td className="grid2_td">0.00%</td>
                                             :
                                             <td className="grid2_td">{updatedMarketData[0]?.change.toFixed(2)}</td>}
 

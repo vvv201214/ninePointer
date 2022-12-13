@@ -133,7 +133,7 @@ export default function OverallPnl({marketData, tradeData, data}) {
                                                 (((liveDetail[index]?.last_price)*(elem.Quantity)) - (elem.average_price*elem.Quantity)
                                                 )).toFixed(2)}</th> }
                         {liveDetail[index]?.change === undefined ?
-                            <td className="grid2_td">{((liveDetail[index]?.last_price - elem.average_price_buying)/(elem.average_price_buying)).toFixed(2)}</td>
+                            <td className="grid2_td">{((liveDetail[index]?.last_price - elem.average_price)/(elem.average_price)).toFixed(2)}</td>
                             :
                             <td className="grid2_td">{liveDetail[index]?.change.toFixed(2)}</td>}
                     </tr>
