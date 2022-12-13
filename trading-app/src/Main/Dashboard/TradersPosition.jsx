@@ -27,7 +27,7 @@ function TradersPosition(){
                                     <th className="grid2_th">Product</th>
                                     <th className="grid2_th">Instrument</th>
                                     <th className="grid2_th">Quantity</th>
-                                    <th className="grid2_th">Average Price (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
+                                    <th className="grid2_th">Avg. Price (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
                                     <th className="grid2_th">LTP (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
                                     <th className="grid2_th">P&L (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
                                     <th className="grid2_th">%Change</th>
