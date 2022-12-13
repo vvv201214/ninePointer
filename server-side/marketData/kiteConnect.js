@@ -243,7 +243,7 @@ async function parameters(io, socket) {
         access_token: getAccessToken,
       });
       // console.log(ticker);
-   
+      
       ticker.autoReconnect(true, 10000000000, 5);
       ticker.connect();
       ticker.on('ticks', onTicks);
