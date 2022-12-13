@@ -53,7 +53,12 @@ export default function ClosedPnl({marketData, tradeData, data}) {
                             + Number(obj.Quantity));
                         }
 
-                        obj.closed_quantity = Math.min(Math.abs(Number(obj.Quantity)), Math.abs(Number(data[i].Quantity)));
+
+                        if(obj.closed_quantity !== undefined){
+                            obj.closed_quantity += Math.min(Math.abs(Number(obj.Quantity)), Math.abs(Number(data[i].Quantity)));
+                        } else{
+                            obj.closed_quantity = Math.min(Math.abs(Number(obj.Quantity)), Math.abs(Number(data[i].Quantity)));
+                        }
                         obj.Quantity = Number(obj.Quantity) + Number(data[i].Quantity);
                         if(Number(obj.Quantity) > 0){
                             obj.buyOrSell = "BUY";
@@ -73,7 +78,6 @@ export default function ClosedPnl({marketData, tradeData, data}) {
             }
             console.log(hash);
         
-            
         let closedPnl = [];
         for (let value of hash.values()){
             closedPnl.push(value);
@@ -130,13 +134,14 @@ export default function ClosedPnl({marketData, tradeData, data}) {
                         <th className="grid2_th">{elem.symbol}</th>
                         <th className="grid2_th">{elem.closed_quantity}</th>
                         <th className="grid2_th">{(elem.average_price_buying).toFixed(2)}</th>
-                        <th className="grid2_th">{liveDetail[index]?.last_price}</th>
+                        <th className="grid2_th">{liveDetail[index]?.last_price.toFixed(2)}</th>
                         <th className="grid2_th">{((elem.average_price_selling * elem.closed_quantity) - 
                                                     (elem.average_price_buying * elem.closed_quantity)).toFixed(2)}</th>
                         {liveDetail[index]?.change === undefined ?
-                            <td className="grid2_td">{liveDetail[index]?.change}</td>
+                            <td className="grid2_td">{((liveDetail[index]?.last_price - elem.average_price_buying)/(elem.average_price_buying)).toFixed(2)}</td>
                             :
                             <td className="grid2_td">{liveDetail[index]?.change.toFixed(2)}</td>}
+                            
                     </tr> } 
                 </>            
             )

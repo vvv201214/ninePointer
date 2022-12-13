@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { userContext } from "../../AuthContext";
 import Styles from "./AddUser.module.css";
 import UserList from "./UserList";
@@ -6,17 +6,27 @@ import UserList from "./UserList";
 
 
 export default function AddUser({algoName}) {
+    
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
     
     let date = new Date();
     const getDetails = useContext(userContext);
     let modifiedOn = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`
     let modifiedBy = getDetails.userDetails.name;
+
+    const [userName, setUserName] = useState();
+    const [entrading, setEntrading] = useState();
+    const [reTrading, setreTrading] = useState();
+
+
     
+    const [reRender, setReRender] = useState(true);
     const [permissionData, setPermissionData] = useState([]);
+
     const [modal, setModal] = useState(false);
     const [addUser, setAddUser] = useState([]);
     const toggleModal = () => {
+        setAddUser([]);
         setModal(!modal);
     };
 
@@ -29,6 +39,7 @@ export default function AddUser({algoName}) {
         return elem.algoName === algoName;
     })
 
+    console.log("addUser", addUser, "permissionDataUpdated", permissionDataUpdated, permissionData);
     let newData = addUser.concat(permissionDataUpdated);
     console.log("this is add usere", newData);
 
@@ -40,12 +51,14 @@ export default function AddUser({algoName}) {
 
     function formbtn(e, id) {
         e.preventDefault();
-        setModal(!modal);
+        // setModal(!modal);
         let flag = true;
         let newDataUpdated = newData.filter((elem)=>{
             return elem._id === id
         })
         algoData.name=newDataUpdated[0].userName;
+        algoData.tradingEnable = entrading;
+        algoData.realTrading = reTrading;
         setAlgoData(algoData);
         console.log(algoData, newDataUpdated);
 
@@ -65,9 +78,12 @@ export default function AddUser({algoName}) {
             console.log("post request");
             postReq(newDataUpdated);
         }
-    }
-    async function deletehandler(id){
 
+        setAddUser([]);
+        reRender ? setReRender(false) : setReRender(true)
+    }
+
+    async function deletehandler(id){
         const response = await fetch(`${baseUrl}api/v1/readpermission/${id}`, {
             method: "DELETE",
         });
@@ -81,6 +97,8 @@ export default function AddUser({algoName}) {
             window.alert("Delete succesfull");
             console.log("Delete succesfull");
         }
+
+        reRender ? setReRender(false) : setReRender(true)
     }
 
     async function postReq(newDataUpdated){
@@ -103,7 +121,7 @@ export default function AddUser({algoName}) {
             window.alert(permissionData.error);
             console.log("invalid entry");
         }else{
-            window.alert("entry succesfull");
+            // window.alert("entry succesfull");
             console.log("entry succesfull");
         }
     }
@@ -137,11 +155,12 @@ export default function AddUser({algoName}) {
         <>
             <button onClick={toggleModal} className={Styles.addUserBtn}>ADD USER</button>
 
+
             {modal && (
                 <div className="modal">
                     <div onClick={toggleModal} className="overlay"></div>
                     <div className={Styles.modalContent}>
-                        <UserList algoName={algoName} addUser={addUser} setAddUser={setAddUser} setPermissionData={setPermissionData}/>
+                        <UserList reRender={reRender} algoName={algoName} addUser={addUser} setAddUser={setAddUser} setPermissionData={setPermissionData}/>
                         <table className={Styles.main_instrument_table}>
                             <tr className={Styles.addUser_tr}>
                                 <th className={Styles.addUser_th}>User Name</th>
@@ -152,16 +171,16 @@ export default function AddUser({algoName}) {
                             {newData.map((elem)=>{
                                 return(
                                     <tr key={elem._id} className={Styles.addUser_tr}>
-                                        <td className={Styles.addUser_td} value={elem.userName}>{elem.userName}</td>
+                                        <td className={Styles.addUser_td}>{elem.userName}</td>
                                         <td className={Styles.addUser_td}>
-                                            <select name="" id="" className={Styles.addUser_select} onChange={(e)=>{{algoData.tradingEnable=e.target.value}}}>
+                                            <select name="" id="" value={entrading} className={Styles.addUser_select} onChange={(e)=>{{setEntrading(e.target.value)}}}>
                                                 <option value=""></option>
                                                 <option value="true">True</option>
                                                 <option value="false">False</option>
                                             </select>
                                         </td>
                                         <td className={Styles.addUser_td}>
-                                            <select name="" id="" className={Styles.addUser_select} onChange={(e)=>{{algoData.realTrading=e.target.value}}}>
+                                            <select name="" id="" value={reTrading} className={Styles.addUser_select} onChange={(e)=>{{setreTrading(e.target.value)}}}>
                                                 <option value=""></option>
                                                 <option value="true">True</option>
                                                 <option value="false">False</option>

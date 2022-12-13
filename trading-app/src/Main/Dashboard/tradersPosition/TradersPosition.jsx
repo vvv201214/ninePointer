@@ -27,10 +27,10 @@ function TraderPosition() {
             console.log("no token");
             window.alert(data);
         })
-        socket.on("wrongToken", (data)=>{
-            console.log("wrong Token");
-            window.alert(data);
-        })
+        // socket.on("wrongToken", (data)=>{
+        //     console.log("wrong Token");
+        //     window.alert(data);
+        // })
         }, []);
 
     return (

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import { TiEdit } from "react-icons/ti";
 import Styles from "./TradingAlgoEditModel.module.css";
+import axios from "axios";
 
 
 export default function TradingAlgoEditModel ({ data, id, Render }) {
@@ -21,12 +22,25 @@ export default function TradingAlgoEditModel ({ data, id, Render }) {
     const [lotMultipler, setLotMultipler] = useState();
     const [tradingAccount, setTradingAccount] = useState();
     const [status, setStatus] = useState();
+    const [mappedUser, setMappedUser] = useState([]);
    
     useEffect(() => {
         let updatedData = data.filter((elem) => {
             return elem._id === id
         })
         setEditData(updatedData)
+
+        axios.get(`${baseUrl}api/v1/readpermission`)
+        .then((res)=>{
+            let mappedUserUpdate = (res.data).filter((elem)=>{
+                console.log(elem.algoName, updatedData[0].algoName);
+                return elem.algoName === updatedData[0].algoName
+            })
+            setMappedUser(mappedUserUpdate);
+        }).catch((err)=>{
+            window.alert("Server Down");
+            return new Error(err);
+        })
     }, [])
 
     useEffect(() => {
@@ -43,7 +57,8 @@ export default function TradingAlgoEditModel ({ data, id, Render }) {
 
     }, [editData, reRender])
     console.log(editData, id);
-    console.log(editData[0].algoName, algoName);
+    console.log("mappedUser", mappedUser);
+
     const [formstate, setformstate] = useState({
         algo_Name: "",
         transaction_Change : "",
@@ -103,6 +118,11 @@ export default function TradingAlgoEditModel ({ data, id, Render }) {
             window.alert("Edit succesfull");
             console.log("Edit succesfull");
         }
+
+        mappedUser.map((elem)=>{
+            patchReqMappedUser(elem._id, algo_Name);
+        })
+
         setModal(!modal);
         reRender ? setReRender(false) : setReRender(true)
     }
@@ -124,12 +144,57 @@ export default function TradingAlgoEditModel ({ data, id, Render }) {
             console.log("Delete succesfull");
         }
 
+        mappedUser.map((elem)=>{
+            deleteReqMappedUser(elem._id);
+        })
+
         setModal(!modal);
         reRender ? setReRender(false) : setReRender(true)
     }
+
+    async function patchReqMappedUser(id, algo_Name){
+        
+        const response = await fetch(`${baseUrl}api/v1/readpermissionalgo/${id}`, {
+            method: "PATCH",
+            headers: {
+                "Accept": "application/json",
+                "content-type": "application/json"
+            },
+            body: JSON.stringify({
+                algo_Name
+            })
+        });
+
+        const permissionData = await response.json();
+
+        if (permissionData.status === 422 || permissionData.error || !permissionData) {
+            window.alert(permissionData.error);
+            console.log("Failed to Edit");
+        }else {
+            console.log(permissionData);
+            // window.alert("Edit succesfull");
+            console.log("Edit succesfull");
+        }
+    }
+    async function deleteReqMappedUser(id){
+
+        const response = await fetch(`${baseUrl}api/v1/readpermission/${id}`, {
+            method: "DELETE",
+        });
+        const permissionData = await response.json();
+
+        if(permissionData.status === 422 || permissionData.error || !permissionData){
+            window.alert(permissionData.error);
+            console.log("Failed to Delete");
+        }else {
+            console.log(permissionData);
+            // window.alert("Delete succesfull");
+            console.log("Delete succesfull");
+        }
+    }
     return (
         <>
-            <button onClick={toggleModal}><TiEdit /></button>
+            <button onClick={toggleModal} className={Styles.tiicon}><TiEdit /></button>
 
             {modal && (
                 <div className="modal">

@@ -91,6 +91,24 @@ router.patch("/readpermission/:id", async (req, res)=>{
     }
 })
 
+router.patch("/readpermissionalgo/:id", async (req, res)=>{
+    console.log(req.params)
+    console.log("this is body", req.body);
+    try{ 
+        const {id} = req.params
+        const permission = await Permission.findOneAndUpdate({_id : id}, {
+            $set:{ 
+                algoName: req.body.algo_Name
+            }
+        })
+        console.log("this is role", permission);
+        res.send(permission)
+        // res.status(201).json({massage : "data edit succesfully"});
+    } catch (e){
+        res.status(500).json({error:"Failed to edit data"});
+    }
+})
+
 router.delete("/readpermission/:id", async (req, res)=>{
     console.log(req.params)
     try{

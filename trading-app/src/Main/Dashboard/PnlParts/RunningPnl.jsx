@@ -92,21 +92,21 @@ export default function RunningPnl({marketData, tradeData, data}) {
         {
             pnlData.map((elem, index)=>{
                 return(
-                    <>
+                <>
                     {elem.Quantity !== 0 &&
                     <tr className="grid2_tr" key={elem._id}>
                         <td className="grid2_td">{elem.Product}</td>
                         <td className="grid2_td">{elem.symbol}</td>
                         <td className="grid2_td">{elem.Quantity}</td>
                         <td className="grid2_td">{(elem.average_price).toFixed(2)}</td>
-                        <td className="grid2_td">{liveDetail[index]?.last_price}</td>
+                        <td className="grid2_td">{liveDetail[index]?.last_price.toFixed(2)}</td>
                         <td className="grid2_td">{(
                             ((liveDetail[index]?.last_price)*(elem.Quantity)) - (elem.average_price*elem.Quantity)
                         ).toFixed(2)}</td>
                         {liveDetail[index]?.change === undefined ?
-                        <td className="grid2_td">{liveDetail[index]?.change}</td>
-                        :
-                        <td className="grid2_td">{liveDetail[index]?.change.toFixed(2)}</td>}
+                            <td className="grid2_td">{((liveDetail[index]?.last_price - elem.average_price)/(elem.average_price)).toFixed(2)}</td>
+                            :
+                            <td className="grid2_td">{liveDetail[index]?.change.toFixed(2)}</td>}
                     </tr>}
                 </>
                 )
