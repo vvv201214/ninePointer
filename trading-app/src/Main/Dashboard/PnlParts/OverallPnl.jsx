@@ -107,7 +107,7 @@ export default function OverallPnl({marketData, tradeData, data}) {
                 <th className="grid2_th">Product</th>
                 <th className="grid2_th">Instrument</th>
                 <th className="grid2_th">Quantity</th>
-                <th className="grid2_th">Average Price</th>
+                <th className="grid2_th">Avg. Price(₹)</th>
                 <th className="grid2_th">LTP</th>
                 <th className="grid2_th">P&L</th>
                 <th className="grid2_th">%Change</th>
