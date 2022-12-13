@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
 const mockTradeCompanySchema = new mongoose.Schema({
+    order_id:{
+        type: String,
+        required: true
+    },
     status:{
         type: String,
         required: true

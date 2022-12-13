@@ -5,17 +5,19 @@ import axios from "axios"
 import uniqid from "uniqid"
 import { userContext } from "../../AuthContext";
 
-export default function SellModel({marketData, uIdProps }) {
+export default function SellModel({marketData, uIdProps, Render }) {
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
+    const { reRender, setReRender } = Render;
     const getDetails = useContext(userContext);
     let uId = uniqid();
     let date = new Date();
-    let createdOn = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
+    let createdOn = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}`
     let createdBy = getDetails.userDetails.name;
     let userId = getDetails.userDetails.email;
     let totalAmount = 0;
     let tradeBy = getDetails.userDetails.name;
+    let dummyOrderId = `${date.getFullYear()-2000}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}${Math.floor( Math.random() * 900000000)}`
 
     const [userPermission, setUserPermission] = useState([]);
     const [bsBtn, setBsBtn] = useState(true)
@@ -169,123 +171,58 @@ export default function SellModel({marketData, uIdProps }) {
         e.preventDefault()
     }
 
-    function instrumentAlgo(lastPrice){
-        if (instrumentAlgoData.length) {
-            instrumentAlgoData.map((elem) => {
-                tradeData.map((element)=>{
-                    if(elem.IncomingInstrumentCode === element.symbol){
-                        companyTrade.realSymbol = elem.OutgoingInstrumentCode;
-                    }
-                })
-                companyTrade.real_last_price = Details.last_price; // wrong see here in buy model
-                companyTrade.realBuyOrSell = "SELL";
-                companyTrade.realQuantity = Details.Quantity;
-                companyTrade.realAmount = Details.Quantity * lastPrice;
-                companyTrade.realBrokerage = sellBrokerageCharge(brokerageData, companyTrade.realQuantity, companyTrade.realAmount );
-                
-                // Details.totalAmount = totalAmount;
-                setCompanyTrade(companyTrade)
-                // if(permission[0].isRealTradeEnable){
-                //     sendOrderReq();
-                // } else{
-                //     mockTrade();
-                // }
-                setModal(!modal);
-            })
-        } else {
-            companyTrade.real_last_price = Details.last_price;
-            companyTrade.realBuyOrSell = "SELL";
-            companyTrade.realSymbol = Details.symbol
-            companyTrade.realInstrument = Details.instrument
-            companyTrade.realQuantity = Details.Quantity;
-            companyTrade.realAmount = lastPrice * companyTrade.realQuantity;
-            companyTrade.realBrokerage = sellBrokerageCharge(brokerageData, companyTrade.realQuantity, companyTrade.realAmount);
-            
-            setCompanyTrade(companyTrade)
-            // if(permission[0].isRealTradeEnable){
-            //     sendOrderReq();
-            // } else{
-            //     mockTrade();
-            // }
-            setModal(!modal);
-        }
-    }
+
 
     function tradingAlgo(uId, lastPrice){
         // if(tradingAlgoData.length){
-            userPermissionAlgo.map((elem)=>{
+        userPermissionAlgo.map((elem)=>{
 
-                if(elem.transactionChange){
-                    companyTrade.realBuyOrSell = "BUY"
-                }else{
-                    companyTrade.realBuyOrSell = "SELL"
-                }
-                console.log("exchange", tradeData);
+            if(elem.transactionChange === "TRUE"){
+                companyTrade.realBuyOrSell = "BUY"
+            }else{
+                companyTrade.realBuyOrSell = "SELL"
+            }
+            console.log("exchange", tradeData);
 
-                let arr;
-                if (elem.instrumentChange) {
-                    console.log("in the if2");
-                    arr = tradeData.filter((elem) => {
-                        return elem.uId !== uIdProps && elem.status === "Active";
-                    })
-                    console.log(arr);
-                    companyTrade.realSymbol = arr[0].symbol
-                    companyTrade.realInstrument = arr[0].instrument
-                } else {
-                    companyTrade.realSymbol = Details.symbol
-                    companyTrade.realInstrument = Details.instrument
-                }
-                const getLastPrice = marketData.filter((elem)=>{
-                    return elem.instrument_token === arr[0].instrumentToken;
-                })
-                
-                companyTrade.realQuantity = elem.lotMultipler * (Details.Quantity);
-                accessTokenDetails = accessTokenDetails.filter((element)=>{
-                    return elem.tradingAccount === element.accountId
-                })
+            companyTrade.realSymbol = Details.symbol
+            companyTrade.realInstrument = Details.instrument
 
-                setAccessToken(accessTokenDetails);
-                apiKeyDetails = apiKeyDetails.filter((element)=>{
-                    return elem.tradingAccount === element.accountId
-                })
-                
-                setApiKey(apiKeyDetails);
-                
-                // companyTrade.real_last_price = 100
-                // companyTrade.realAmount = 800
-                companyTrade.real_last_price = getLastPrice[0].last_price;
-                companyTrade.realAmount = getLastPrice[0].last_price * companyTrade.realQuantity;
-                companyTrade.realBrokerage = sellBrokerageCharge(brokerageData, companyTrade.realQuantity, companyTrade.realAmount);
-                
-                userPermission.map((subElem)=>{
-                    if(subElem.algoName === elem.algoName){
-                        if(subElem.isRealTradeEnable || elem.isRealTrade){
-                            sendOrderReq();
-                            // mockTradeUser("yes");
-                            mockTradeCompany(elem);
-                        } else{
-                            // mockTradeUser("no");
-                            mockTradeCompany(elem);
-                        }
-                    }
-                })
-                setModal(!modal);               
+            // const getLastPrice = marketData.filter((elem)=>{
+            //     return elem.instrument_token === arr[0].instrumentToken;
+            // })
+            
+            companyTrade.realQuantity = elem.lotMultipler * (Details.Quantity);
+            accessTokenDetails = accessTokenDetails.filter((element)=>{
+                return elem.tradingAccount === element.accountId
             })
-        // }else{
-        //     companyTrade.real_last_price = Details.last_price;
-        //     companyTrade.realBuyOrSell = "SELL";
-        //     companyTrade.realSymbol = Details.symbol
-        //     companyTrade.realInstrument = Details.instrument
-        //     companyTrade.realQuantity = Details.Quantity;
-        //     companyTrade.realAmount = lastPrice * companyTrade.realQuantity;
-        //     companyTrade.realBrokerage = sellBrokerageCharge(brokerageData, companyTrade.realQuantity, companyTrade.realAmount);
 
-        //     setCompanyTrade(companyTrade)
-        //     console.log(Details);
-        //     console.log(companyTrade);
-        //     sendOrderReq();
-        //     setModal(!modal);
-        // }
+            setAccessToken(accessTokenDetails);
+            apiKeyDetails = apiKeyDetails.filter((element)=>{
+                return elem.tradingAccount === element.accountId
+            })
+            
+            setApiKey(apiKeyDetails);
+            
+            // companyTrade.real_last_price = 100
+            // companyTrade.realAmount = 800
+            companyTrade.real_last_price = lastPrice;
+            companyTrade.realAmount = companyTrade.real_last_price * companyTrade.realQuantity;
+            companyTrade.realBrokerage = sellBrokerageCharge(brokerageData, companyTrade.realQuantity, companyTrade.realAmount);
+            
+            userPermission.map((subElem)=>{
+                if(subElem.algoName === elem.algoName){
+                    if(subElem.isRealTradeEnable || elem.isRealTrade){
+                        sendOrderReq();
+                        // mockTradeUser("yes");
+                        mockTradeCompany(elem);
+                    } else{
+                        // mockTradeUser("no");
+                        mockTradeCompany(elem);
+                    }
+                }
+            })
+            setModal(!modal);               
+        })
     }
 
     async function Sell(e, uId){
@@ -317,62 +254,38 @@ export default function SellModel({marketData, uIdProps }) {
         Details.brokerageCharge = sellBrokerageCharge(brokerageData, Details.Quantity, Details.totalAmount);
         
         // Algo box applied here....
-        if(Details.exchange === "NFO"){
-            if (true) {
-                console.log("algo box should be applied");
-                setDetails(Details)
-                instrumentAlgo(Details.last_price);
-            } else {
-                companyTrade.realBuyOrSell = "SELL";
-                companyTrade.realSymbol = Details.symbol
-                companyTrade.realInstrument = Details.instrument
-                companyTrade.realQuantity = Details.Quantity;
-                companyTrade.real_last_price = Details.last_price
-                companyTrade.realAmount = Details.last_price * companyTrade.realQuantity;
-                companyTrade.realBrokerage = sellBrokerageCharge(brokerageData, companyTrade.realQuantity, companyTrade.realAmount);
-                
-                setCompanyTrade(companyTrade)
-                setDetails(Details)
-                console.log(Details);
-                console.log(companyTrade);
-        
-                sendOrderReq(); // must keep inside both if and else
-                setModal(!modal);
+        if(userPermissionAlgo.length){
+            setDetails(Details)
+            mockTradeUser("no");
+            tradingAlgo(uId, Details.last_price);
+        }else{
+            companyTrade.realBuyOrSell = "SELL";
+            companyTrade.realSymbol = Details.symbol
+            companyTrade.realInstrument = Details.instrument
+            companyTrade.realQuantity = Details.Quantity;
+            companyTrade.real_last_price = Details.last_price
+            companyTrade.realAmount = Details.last_price * companyTrade.realQuantity;
+            companyTrade.realBrokerage = sellBrokerageCharge(brokerageData, companyTrade.realQuantity, companyTrade.realAmount);
+            
+            setCompanyTrade(companyTrade)
+            setDetails(Details)
+    
+            const fakeAlgo = {
+                algoName: "no algo",
+                transactionChange: "no algo",
+                instrumentChange: "no algo",
+                exchangeChange: "no algo",
+                lotMultipler: "no algo",
+                productChange: "no algo",
+                tradingAccount: "no algo"
             }
+            mockTradeUser("no");
+            mockTradeCompany(fakeAlgo);
+            // must keep inside both if and else
+            setModal(!modal);        
+        }    
 
-
-        }else if(Details.exchange === "NSE"){
-            if(userPermissionAlgo.length){
-                setDetails(Details)
-                mockTradeUser("no");
-                tradingAlgo(uId, Details.last_price);
-            }else{
-                companyTrade.realBuyOrSell = "SELL";
-                companyTrade.realSymbol = Details.symbol
-                companyTrade.realInstrument = Details.instrument
-                companyTrade.realQuantity = Details.Quantity;
-                companyTrade.real_last_price = Details.last_price
-                companyTrade.realAmount = Details.last_price * companyTrade.realQuantity;
-                companyTrade.realBrokerage = sellBrokerageCharge(brokerageData, companyTrade.realQuantity, companyTrade.realAmount);
-                
-                setCompanyTrade(companyTrade)
-                setDetails(Details)
-        
-                const fakeAlgo = {
-                    algoName: "no algo",
-                    transactionChange: "no algo",
-                    instrumentChange: "no algo",
-                    exchangeChange: "no algo",
-                    lotMultipler: "no algo",
-                    productChange: "no algo",
-                    tradingAccount: "no algo"
-                }
-                mockTradeUser("no");
-                mockTradeCompany(fakeAlgo);
-                // must keep inside both if and else
-                setModal(!modal);        
-            }    
-        }
+        reRender ? setReRender(false) : setReRender(true)
     }
 
     async function sendOrderReq(){
@@ -402,7 +315,7 @@ export default function SellModel({marketData, uIdProps }) {
             console.log("Failed to Trade");
         }else{
             console.log(dataResp); 
-            window.alert("Trade succesfull");
+            // window.alert("Trade succesfull");
             console.log("entry succesfull");
         } 
     }
@@ -425,6 +338,11 @@ export default function SellModel({marketData, uIdProps }) {
     }
 
     async function mockTradeUser(realTrade){ // have to add some feild according to auth
+        let currentTime = `${date.getHours()}:${date.getMinutes()}`
+        if(currentTime > "15:30" && currentTime < "9:15"){
+            window.alert("Market is closed now");
+            return;
+        }
         const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price } = Details;
         // const {algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount} = algoBox
         const res = await fetch(`${baseUrl}api/v1/mocktradeuser`, {
@@ -434,7 +352,7 @@ export default function SellModel({marketData, uIdProps }) {
             },
             body: JSON.stringify({
                 exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, createdBy, userId, createdOn, uId,
-                isRealTrade:realTrade
+                isRealTrade:realTrade, order_id:dummyOrderId
                 // , algoBox: {algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount}
             })
         });
@@ -452,6 +370,11 @@ export default function SellModel({marketData, uIdProps }) {
     }
 
     async function mockTradeCompany(algoBox){
+        let currentTime = `${date.getHours()}:${date.getMinutes()}`
+        if(currentTime > "15:30" && currentTime < "9:15"){
+            window.alert("Market is closed now");
+            return;
+        }
         const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price } = Details;
         const {algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount} = algoBox;
         const {realBuyOrSell, realSymbol, realQuantity, realInstrument, realBrokerage, realAmount, real_last_price} = companyTrade;
@@ -465,7 +388,7 @@ export default function SellModel({marketData, uIdProps }) {
                 exchange, symbol: realSymbol, buyOrSell: realBuyOrSell, Quantity: realQuantity, Price, Product, OrderType, TriggerPrice, 
                 stopLoss, validity, variety, last_price: real_last_price, createdBy, userId, createdOn, uId, 
                 algoBox: {algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, 
-                productChange, tradingAccount}
+                productChange, tradingAccount}, order_id:dummyOrderId
 
             })
         });
@@ -475,7 +398,7 @@ export default function SellModel({marketData, uIdProps }) {
             console.log("Failed to Trade");
         } else {
             console.log(dataResp);
-            window.alert("Trade succesfull");
+            // window.alert("Trade succesfull");
             console.log("entry succesfull");
         }
 
@@ -496,9 +419,14 @@ export default function SellModel({marketData, uIdProps }) {
                <div className="modal">
                <div onClick={toggleModal} className="overlay"></div>
                <div className="modal-content">
-                   <div className="form_btnRagAMO">
-                   <button className={bsBtn ? "amobtn" : `bsBtn`} onClick={() => { setBsBtn(true) }}>Regular</button> <button className={bsBtn ? "bsBtn" : "amobtn"} onClick={() => { setBsBtn(false) }}>AMO</button>
-                   </div>
+               { getDetails.userDetails.role === "admin" ?
+                <div className="form_btnRagAMO">
+                    <button className={bsBtn ? "amobtn" : `bsBtn`} onClick={() => { setBsBtn(true) }}>Regular</button> <button className={bsBtn ? "bsBtn" : "amobtn"} onClick={() => { setBsBtn(false) }}>AMO</button>
+                </div>
+                :
+                <div className="form_btnRagAMO">
+                    <button className={bsBtn ? "amobtn" : `bsBtn`} onClick={() => { setBsBtn(true) }}>Regular</button>
+                </div>}
                    {bsBtn ?  <form className="Form_head" onChange={FormHandler} >
                        <div className="container_One">
                            <input type="radio" value="MIS" name="Product" className="btnRadio" onChange={(e) => { { Details.Product = e.target.value } }} /> Intraday <span style={{ color: 'gray' }}>MIS</span>
@@ -586,3 +514,45 @@ export default function SellModel({marketData, uIdProps }) {
         </>
     );
 }
+
+    // function instrumentAlgo(lastPrice){
+    //     if (instrumentAlgoData.length) {
+    //         instrumentAlgoData.map((elem) => {
+    //             tradeData.map((element)=>{
+    //                 if(elem.IncomingInstrumentCode === element.symbol){
+    //                     companyTrade.realSymbol = elem.OutgoingInstrumentCode;
+    //                 }
+    //             })
+    //             companyTrade.real_last_price = Details.last_price; // wrong see here in buy model
+    //             companyTrade.realBuyOrSell = "SELL";
+    //             companyTrade.realQuantity = Details.Quantity;
+    //             companyTrade.realAmount = Details.Quantity * lastPrice;
+    //             companyTrade.realBrokerage = sellBrokerageCharge(brokerageData, companyTrade.realQuantity, companyTrade.realAmount );
+                
+    //             // Details.totalAmount = totalAmount;
+    //             setCompanyTrade(companyTrade)
+    //             // if(permission[0].isRealTradeEnable){
+    //             //     sendOrderReq();
+    //             // } else{
+    //             //     mockTrade();
+    //             // }
+    //             setModal(!modal);
+    //         })
+    //     } else {
+    //         companyTrade.real_last_price = Details.last_price;
+    //         companyTrade.realBuyOrSell = "SELL";
+    //         companyTrade.realSymbol = Details.symbol
+    //         companyTrade.realInstrument = Details.instrument
+    //         companyTrade.realQuantity = Details.Quantity;
+    //         companyTrade.realAmount = lastPrice * companyTrade.realQuantity;
+    //         companyTrade.realBrokerage = sellBrokerageCharge(brokerageData, companyTrade.realQuantity, companyTrade.realAmount);
+            
+    //         setCompanyTrade(companyTrade)
+    //         // if(permission[0].isRealTradeEnable){
+    //         //     sendOrderReq();
+    //         // } else{
+    //         //     mockTrade();
+    //         // }
+    //         setModal(!modal);
+    //     }
+    // }

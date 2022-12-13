@@ -11,6 +11,8 @@ router.get("/getliveprice", async (req, res)=>{
   let getApiKey;
   let addUrl = '';
   let date = new Date();
+  let today = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`
+
 
   try{
     let accessTokenResp = await axios.get(`${baseUrl}api/v1/readRequestToken`)
@@ -18,12 +20,14 @@ router.get("/getliveprice", async (req, res)=>{
     
     for(let elem of accessTokenResp.data){
       for(let subElem of apiKeyResp.data){
-          if(elem.accountId === subElem.accountId && elem.status === "Active" && subElem.status === "Active"){
+          if(elem.accountId === subElem.accountId && elem.generatedOn === today && elem.status === "Active" && subElem.status === "Active"){
               getAccessToken = elem.accessToken;
               getApiKey = subElem.apiKey
           }
       }
     }
+
+    console.log("in live price file", getAccessToken, getApiKey);
 
     const resp = await axios.get(`${baseUrl}api/v1/readInstrumentDetails`);
     let ans = resp.data.filter((elem) => {

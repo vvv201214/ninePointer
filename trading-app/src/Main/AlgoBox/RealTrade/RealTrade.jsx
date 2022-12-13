@@ -92,7 +92,7 @@ export default function RealTrade({Render, id, buttonTextBool, tradingAlgo}) {
         })
     }, [])
 
-    console.log("mappedUser", mappedUser);
+    // console.log("mappedUser", mappedUser);
 
     mappedUser.map((elem)=>{
         // console.log(oneUserRunningPnl(elem));
@@ -123,7 +123,7 @@ export default function RealTrade({Render, id, buttonTextBool, tradingAlgo}) {
         axios.get(`${baseUrl}api/v1/companytradedata`)
         .then((res) => {
             let singleUserCompanyPnl = (res.data).filter((element)=>{
-                return element.createdOn.includes(fake_date1) && element.status === "COMPLETE" && element.userId === elem.userId;
+                return element.createdOn.includes(todayDate) && element.status === "COMPLETE" && element.userId === elem.userId;
             })
 
             let hash = mappedUserHelper(singleUserCompanyPnl, elem);
@@ -158,7 +158,7 @@ export default function RealTrade({Render, id, buttonTextBool, tradingAlgo}) {
                 obj.Quantity = Number(obj.Quantity) + Number(tradeDataArr[i].Quantity)
                 if(Number(obj.Quantity) > 0){
                     obj.buyOrSell = "BUY";
-                } else if((obj.Quantity) > 0){
+                } else if((obj.Quantity) < 0){
                     obj.buyOrSell = "SELL"
                 } 
 
@@ -171,6 +171,7 @@ export default function RealTrade({Render, id, buttonTextBool, tradingAlgo}) {
                     symbol: tradeDataArr[i].symbol,
                     userId: mappedUserElem.userId,
                     userName: mappedUserElem.userName,
+                    exchange: tradeDataArr[i].exchange
                 })
             }
         }
@@ -182,53 +183,34 @@ export default function RealTrade({Render, id, buttonTextBool, tradingAlgo}) {
         let perticularAlgo = tradingAlgo.filter((elem)=>{
             return elem._id === id && elem.status === "Active";
         })
-        // console.log(perticularAlgo);
-        
-            if (perticularAlgo[0].transactionChange) {
-                if(data.buyOrSell === "SELL"){
-                    companyTrade.realBuyOrSell = "BUY"
-                } else{
-                    companyTrade.realBuyOrSell = "SELL"
-                }
-            } else {
+    
+        if (perticularAlgo[0].transactionChange === "TRUE") {
+            if(data.buyOrSell === "SELL"){
                 companyTrade.realBuyOrSell = "BUY"
+            } else{
+                companyTrade.realBuyOrSell = "SELL"
             }
+        } else {
+            companyTrade.realBuyOrSell = data.buyOrSell
+        }
 
-            let oppositeInstrument;
-            if (perticularAlgo[0].instrumentChange) {
-                oppositeInstrument = tradeData.filter((elem) => {
-                    return elem.symbol !== data.symbol && elem.status === "Active";
-                })
-                companyTrade.exchange = oppositeInstrument[0].exchange;
-                companyTrade.realSymbol = oppositeInstrument[0].symbol
-                // companyTrade.realInstrument = oppositeInstrument[0].instrument
-            } else {
-                companyTrade.realSymbol = data.symbol
-                // companyTrade.realInstrument = Details.instrument
-            }
-            // const getLastPrice = marketData.filter((elem)=>{
-            //     return elem.instrument_token === arr[0].instrumentToken;
-            // })
+        companyTrade.realSymbol = data.symbol
+        companyTrade.exchange = data.exchange;
 
-            companyTrade.realQuantity = perticularAlgo[0].lotMultipler * Math.abs(data.Quantity);
-            accessTokenDetails = accessTokenDetails.filter((element) => {
-                return perticularAlgo[0].tradingAccount === element.accountId
-            })
-            setAccessToken(accessTokenDetails);
-            apiKeyDetails = apiKeyDetails.filter((element) => {
-                return perticularAlgo[0].tradingAccount === element.accountId
-            })
-            setApiKey(apiKeyDetails);
-            // companyTrade.real_last_price = getLastPrice[0].last_price;
-            // companyTrade.real_last_price = 100
-            // companyTrade.realAmount = 800
-            //companyTrade.realAmount = getLastPrice[0].last_price * companyTrade.realQuantity;
-            // companyTrade.realBrokerage = buyBrokerageCharge(brokerageData, companyTrade.realQuantity, companyTrade.realAmount);
-            
-            setCompanyTrade(companyTrade)
-            // console.log(JSON.parse(JSON.stringify(companyTrade)));
+        companyTrade.realQuantity = perticularAlgo[0].lotMultipler * Math.abs(data.Quantity);
+        accessTokenDetails = accessTokenDetails.filter((element) => {
+            return perticularAlgo[0].tradingAccount === element.accountId
+        })
+        setAccessToken(accessTokenDetails);
+        apiKeyDetails = apiKeyDetails.filter((element) => {
+            return perticularAlgo[0].tradingAccount === element.accountId
+        })
+        setApiKey(apiKeyDetails);
 
-            sendOrderReq(data.userName, data.userId);
+        setCompanyTrade(companyTrade)
+        // console.log(JSON.parse(JSON.stringify(companyTrade)));
+
+        sendOrderReq(data.userName, data.userId);
 
     }
 
@@ -260,13 +242,12 @@ export default function RealTrade({Render, id, buttonTextBool, tradingAlgo}) {
         setApiKey(apiKeyDetails);
 
         setCompanyTrade(companyTrade)
-        // console.log(JSON.parse(JSON.stringify(companyTrade)));
 
         sendOrderReq(data.userName, data.userId)
     }
 
     function takeTradeTurnOn(){
-        // console.log("allUserRunningPnl", allUserRunningPnl);
+        console.log("allUserRunningPnl", allUserRunningPnl);
         allUserRunningPnl.map((elem)=>{
             elem.map((subElem)=>{
                 takingTrade(subElem);
@@ -352,8 +333,8 @@ export default function RealTrade({Render, id, buttonTextBool, tradingAlgo}) {
             // console.log("Failed to Trade");
         } else {
             // console.log(dataResp);
-            window.alert("Trade succesfull");
-            // console.log("entry succesfull");
+            // window.alert("Trade succesfull");
+            console.log("entry succesfull");
         }
     }
   return (

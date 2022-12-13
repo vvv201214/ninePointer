@@ -13,6 +13,7 @@ function TraderPositionTable({ socket }) {
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
     const getDetails = useContext(userContext);
+    const [reRender, setReRender] = useState(true);
     const [tradeData, setTradeData] = useState([]);
     const [data, setData]  = useState([]);
     const [marketData, setMarketData] = useState([]);
@@ -20,7 +21,7 @@ function TraderPositionTable({ socket }) {
 
     let date = new Date();
     let todayDate = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`
-    let fake_date = "1-12-2022"
+    let fake_date = "12-12-2022"
 
     useEffect(() => {
 
@@ -64,14 +65,14 @@ function TraderPositionTable({ socket }) {
         // })
         
         socket.on("tick",(data)=>{
-            console.log(data);
+            console.log("this is live market data", data);
             setMarketData(data);
         })
         
         console.log(marketData);
         console.log(tradeData);
        
-    },[getDetails])
+    },[getDetails, reRender])
 
     useEffect(()=>{
         return ()=>{
@@ -113,8 +114,8 @@ function TraderPositionTable({ socket }) {
                                             <td className="grid2_td">{updatedMarketData[0]?.change.toFixed(2)}</td>}
 
                                             <td className="grid2_th companyPosition_BSbtn2"><div className="companyPosition_BSbtn">
-                                            <ByModal marketData={marketData} uIdProps={elem.uId} />
-                                            <SellModel marketData={marketData} uIdProps={elem.uId}  /></div></td>
+                                            <ByModal Render={{setReRender, reRender}} marketData={marketData} uIdProps={elem.uId} />
+                                            <SellModel Render={{setReRender, reRender}} marketData={marketData} uIdProps={elem.uId}  /></div></td>
                                         </tr>
                                     )
                                 })} 

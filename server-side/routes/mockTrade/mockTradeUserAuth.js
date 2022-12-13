@@ -7,13 +7,9 @@ router.post("/mocktradeuser", (req, res)=>{
 
     let {exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType,
          TriggerPrice, stopLoss, validity, variety, last_price, createdBy, userId,
-          createdOn, uId, isRealTrade} = req.body
-
-    // const {algoName, transactionChange, instrumentChange
-    //     , exchangeChange, lotMultipler, productChange, tradingAccount} = algoBox
+          createdOn, uId, isRealTrade, order_id} = req.body
 
     if(!exchange || !symbol || !buyOrSell || !Quantity || !Product || !OrderType || !validity || !variety || !last_price ){
-        // console.log(exchange); console.log(symbol); console.log(buyOrSell); console.log(Quantity); console.log(Product); console.log(OrderType); console.log(validity); console.log(variety); console.log(last_price); console.log(algoName); console.log(transactionChange); console.log(instrumentChange); console.log(exchangeChange); console.log(lotMultipler); console.log(productChange); console.log(tradingAccount);
         console.log("data nhi h pura");
         return res.status(422).json({error : "please fill all the feilds..."})
     }
@@ -30,9 +26,7 @@ router.post("/mocktradeuser", (req, res)=>{
         const mockTradeDetails = new MockTradeDetails({
             status:"COMPLETE", uId, createdBy, average_price: last_price, Quantity, Product, buyOrSell, order_timestamp: createdOn,
             variety, validity, exchange, order_type: OrderType, symbol, placed_by: "ninepointer", userId,
-            isRealTrade
-            // , algoBox:{algoName, transactionChange, instrumentChange, exchangeChange, 
-            // lotMultipler, productChange, tradingAccount}
+            isRealTrade, order_id
         });
 
 

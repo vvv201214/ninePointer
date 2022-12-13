@@ -7,7 +7,7 @@ router.post("/mocktradecompany", (req, res)=>{
 
     let {exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType,
          TriggerPrice, stopLoss, validity, variety, last_price, createdBy, userId,
-          createdOn, uId, algoBox} = req.body
+          createdOn, uId, algoBox, order_id} = req.body
 
     const {algoName, transactionChange, instrumentChange
         , exchangeChange, lotMultipler, productChange, tradingAccount} = algoBox
@@ -31,7 +31,7 @@ router.post("/mocktradecompany", (req, res)=>{
             status:"COMPLETE", uId, createdBy, average_price: last_price, Quantity, Product, buyOrSell, order_timestamp: createdOn,
             variety, validity, exchange, order_type: OrderType, symbol, placed_by: "ninepointer", userId,
              algoBox:{algoName, transactionChange, instrumentChange, exchangeChange, 
-            lotMultipler, productChange, tradingAccount}
+            lotMultipler, productChange, tradingAccount}, order_id
         });
 
 

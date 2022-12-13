@@ -5,10 +5,11 @@ import Styles from "./UserList.module.css"
 import axios from "axios"
 import uniqid from "uniqid";
 
-export default function UserList({addUser, setAddUser, setPermissionData, algoName}) {
+export default function UserList({addUser, setAddUser, setPermissionData, algoName, reRender}) {
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
     const [data, setData] = useState([]);
     const [permissionArr, setPermission] = useState([]);
+    // const {setReRender, reRender} = Render;
     const _id = uniqid();
 
     useEffect(()=>{
@@ -31,7 +32,8 @@ export default function UserList({addUser, setAddUser, setPermissionData, algoNa
             window.alert("Server Down");
             return new Error(err);
         })
-    },[])
+
+    },[reRender])
 
     for(let i = 0; i < data.length; i++){
         for(let j = 0; j < permissionArr.length; j++){
@@ -41,6 +43,7 @@ export default function UserList({addUser, setAddUser, setPermissionData, algoNa
             }
         }
     }
+
 
     console.log("data", data, permissionArr);
 
