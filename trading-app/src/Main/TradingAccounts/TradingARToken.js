@@ -151,8 +151,8 @@ function TradingARToken() {
                                 </div>
                             </div>
                         )}
+                        <span className="grid1_span">Active Access & Request Token</span>
                         <div className="grid_1">
-                            <span className="grid1_span">Active Access & Request Token</span>
                             <table className="grid1_table">
                                 <tr className="grid2_tr">
                                     <th className="grid2_th">Account ID</th>
@@ -176,8 +176,8 @@ function TradingARToken() {
                             </table>
                         </div>
                     </div>
+                    <span className="grid2_span">Expired Access & Request Token</span>
                     <div className="grid_2">
-                        <span className="grid2_span">Expired Access & Request Token</span>
                         <table className="grid1_table">
                             <tr className="grid2_tr">
                                 <th className="grid2_th">Account ID</th>

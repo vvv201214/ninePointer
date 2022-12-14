@@ -109,9 +109,8 @@ function ExchangeMapping(){
                                 </div>
                             </div>
                         )}
-                       
+                        <span className="grid1_span">Exchange Mapping</span>
                         <div className="grid_1">
-                            <span className="grid1_span">Exchange Mapping</span>
                             <table className="grid1_table">
                                 <tr className="grid2_tr">
                                 <th className="grid2_th">Created On</th>
@@ -146,24 +145,3 @@ function ExchangeMapping(){
     )
 }
 export default ExchangeMapping;
-
-{/* <Popup trigger={<button className="Ac_btn">Create Exchange Mapping</button>}>
-<form>
-    <label className="Ac_form" htmlFor="">Exchange Name (Incoming)</label>
-    <input type="text" className="Ac_forminput" onChange={(e)=>{{formstate.ExchangeNameIncoming = e.target.value}}} />
-    <label htmlFor="" className="Ac_form">Incoming Exchange Code</label>
-    <input type="text" className="Ac_forminput" onChange={(e)=>{{formstate.IncomingExchangeCode = e.target.value}}} />
-    <label htmlFor="" className="Ac_form">Exchange Name (Outgoing)</label>
-    <input type="text" className="Ac_forminput" onChange={(e)=>{{formstate.ExchangeNameOutgoing = e.target.value}}} />
-    <label htmlFor="" className="Ac_form">Outgoing Instrument Code</label>
-    <input type="text" className="Ac_forminput" onChange={(e)=>{{formstate.OutgoingInstrumentCode = e.target.value}}} />
-    <label htmlFor="" className="Ac_form">Status</label>
-    <select name="" id="" className="Ac_forminput" onChange={(e)=>{{formstate.Status = e.target.value}}}>
-        <option value=""></option>
-        <option value="Active">Active</option>
-        <option value="Inactive">Inactive</option>
-    </select>
-    <br />
-    <button className="ACform_tbn" onClick={formbtn}>OK</button>
-</form>
-</Popup> */}
