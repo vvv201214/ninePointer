@@ -114,7 +114,7 @@ export default function ClosedPnl({marketData, tradeData, data}) {
 
     console.log(liveDetail);
     console.log(closedPnlArr);
-
+    let Total = 0;
   return (
     <table className="grid1_table">
         <tr className="grid2_tr">
@@ -128,17 +128,19 @@ export default function ClosedPnl({marketData, tradeData, data}) {
         </tr>
         {
          closedPnlArr.map((elem, index)=>{
+            Total += Number(((elem.average_price_selling * elem.closed_quantity) - 
+            (elem.average_price_buying * elem.closed_quantity)).toFixed(2))
             return(
                 <>
                     {(elem.closed_quantity !== 0 && elem.closed_quantity !== undefined) &&
-                    <tr className="grid2_tr" key={index}>
-                        <th className="grid2_th">{elem.Product}</th>
-                        <th className="grid2_th">{elem.symbol}</th>
-                        <th className="grid2_th">{elem.closed_quantity}</th>
-                        <th className="grid2_th">{(elem.average_price_buying).toFixed(2)}</th>
-                        <th className="grid2_th">{liveDetail[index]?.last_price.toFixed(2)}</th>
-                        <th className="grid2_th">{((elem.average_price_selling * elem.closed_quantity) - 
-                                                    (elem.average_price_buying * elem.closed_quantity)).toFixed(2)}</th>
+                    <tr className="grid2_tr" style={Total>0 ? { color: "green"}:  { color: "red"} } key={index}>
+                        <td className="grid2_td" style={{color : "black"}}>{elem.Product}</td>
+                        <td className="grid2_td">{elem.symbol}</td>
+                        <td className="grid2_td">{elem.closed_quantity}</td>
+                        <td className="grid2_td">{(elem.average_price_buying).toFixed(2)}</td>
+                        <td className="grid2_td">{liveDetail[index]?.last_price.toFixed(2)}</td>
+                        <td className="grid2_td">{((elem.average_price_selling * elem.closed_quantity) - 
+                                                    (elem.average_price_buying * elem.closed_quantity)).toFixed(2)}</td>
                         {liveDetail[index]?.change === undefined ?
                             <td className="grid2_td">{((liveDetail[index]?.last_price - elem.average_price_buying)/(elem.average_price_buying)).toFixed(2)}</td>
                             :
@@ -149,6 +151,15 @@ export default function ClosedPnl({marketData, tradeData, data}) {
             )
          })   
         }
+        <tr>
+            <th ></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th>Total</th>
+            <th style={Total>0 ? {color: "green"} : {color: "red"} }>{Total.toFixed(2)}</th>
+            <th></th>
+        </tr>
     </table>
   )
 }

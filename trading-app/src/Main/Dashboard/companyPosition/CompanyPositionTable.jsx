@@ -82,14 +82,15 @@ function CompanyPositionTable({ socket, Render }) {
         }
     },[])
 
+    var changePercent ;
 
     return (
         <div>
             <div className="main_Container">
                 <div className="right_side">
                     <div className="rightside_maindiv">
+                    <span className="grid1_span">Instruments Details</span>
                         <div className="grid_1">
-                            <span className="grid1_span">Instruments Details</span>
                             <table className="grid1_table">
                             <tr className="grid2_tr">
                                     <th className="grid2_th">Trading Date</th>
@@ -102,6 +103,7 @@ function CompanyPositionTable({ socket, Render }) {
                                 let updatedMarketData = marketData.filter((subElem)=>{
                                     return elem.instrumentToken === subElem.instrument_token;
                                 })
+                              
                                 return(
                                     <tr className="grid1_table">
                                             <td className="grid2_td">{todayDate}</td>
@@ -124,16 +126,16 @@ function CompanyPositionTable({ socket, Render }) {
                                 })} 
                             </table>
                         </div>
+                        <span className="grid2_span">Overall PNL-Company</span>
                         <div className="grid_2">
-                            <span className="grid2_span">Overall PNL-Company</span>
                             <OverallPnl marketData={marketData} tradeData={tradeData} data={data}/>
                         </div>
+                        <span className="grid2_span">Running PNL-Company</span>
                         <div className="grid_2">
-                            <span className="grid2_span">Running PNL-Company</span>
-                            <RunningPnl Render={Render} marketData={marketData} tradeData={tradeData} data={data}/>
+                            <RunningPnl marketData={marketData} tradeData={tradeData} data={data}/>
                         </div>
+                        <span className="grid2_span">Closed Trades PNL-Company</span>
                         <div className="grid_2">
-                            <span className="grid2_span">Closed Trades PNL-Company</span>
                             <ClosedPnl marketData={marketData} tradeData={tradeData} data={data}/>
                         </div>
                     </div>

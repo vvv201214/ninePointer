@@ -130,8 +130,8 @@ function Instruments() {
                                 </div>
                             </div>
                         )}
+                        <span className="grid1_span">Active Instruments</span>
                         <div className="grid_1">
-                            <span className="grid1_span">Active Instruments</span>
                             <table className="grid1_table">
                                 <tr className="grid2_tr">
                                     <th className="grid2_th">Created On</th>
@@ -159,8 +159,8 @@ function Instruments() {
                                 }
                             </table>
                         </div>
+                        <span className="grid2_span">Inactive Instruments</span>
                         <div className="grid_2">
-                            <span className="grid2_span">Inactive Instruments</span>
                             <table className="grid1_table">
                                 <tr className="grid2_tr">
                                     <th className="grid2_th">Created On</th>

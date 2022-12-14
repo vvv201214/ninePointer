@@ -44,8 +44,8 @@ export default function UserSelect(id){
         <div className="main_Container">
            <div className="right_side">
                <div className="rightside_maindiv">
+               <span className="grid1_span">User Details</span>
                    <div className="grid_1">
-                       <span className="grid1_span">User Details</span>
                        <table className="grid1_table">
                            <tr className="grid2_tr">
                                <th className="grid2_th">UserName</th>

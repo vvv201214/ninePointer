@@ -26,8 +26,8 @@ function Roles() {
                 <div className="right_side">
                     <div className="rightside_maindiv">
                         <RoleButtonModel Render={{setReRender, reRender}}/>
+                        <span className="grid1_span">User Roles</span>
                         <div className="grid_1">
-                            <span className="grid1_span">User Roles</span>
                             <table className="grid1_table">
                                 <tr className="grid2_tr">
                                     <th className="grid2_th">Created On</th>
