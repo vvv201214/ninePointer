@@ -1,6 +1,6 @@
 import React from "react";
 import './CompanyPosition.css';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { io } from "socket.io-client";
 import CompanyPositionTable from "./CompanyPositionTable";
 
@@ -15,7 +15,7 @@ function CompanyPosition() {
     } catch(err){
         throw new Error(err);
     }
-    
+   
     useEffect(()=>{
 
         console.log(socket);

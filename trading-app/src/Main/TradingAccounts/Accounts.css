@@ -35,16 +35,23 @@
 .grid_1{
     min-height: 30vh;
     background: rgb(255, 255, 255);
-    border-radius: 15px;
-   
-
+    margin-left: 5px;
+    margin-right: 5px;
+    border-radius: 0 15px 15px 15px;
+    margin-bottom: 7px;
+    
 }
 .grid1_span{
+    padding: 0 10px;
     font-size: 16px;
     font-weight: bold;
     color: #187498;
     padding-left: 6px;
-    
+    background-color: white;
+    width: max-content;
+    margin-top: 7px;
+    margin-left: 5px;
+    border-radius: 10px 10px 0px 0px;
 }
 .grid1_table{
     width: 100%;
@@ -71,16 +78,25 @@
    
 } */
 .grid_2{
-    margin-top: 2rem;
     min-height: 30vh;
     background: rgb(255, 255, 255);
     border-radius: 15px;
+    margin-left: 5px;
+    margin-right: 5px;
+    border-radius: 0 15px 15px 15px;
+    margin-bottom: 7px;
 }
 .grid2_span{
+    padding: 0 10px;
     font-size: 16px;
     font-weight: bold;
     color: #187498;
     padding-left: 6px;
+    background-color: white;
+    width: max-content;
+    margin-top: 7px;
+    margin-left: 5px;
+    border-radius: 10px 10px 0px 0px;
 }
 /* .grid2_ul{
     display: flex;

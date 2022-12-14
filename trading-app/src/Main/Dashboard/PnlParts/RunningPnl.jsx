@@ -4,10 +4,11 @@ import axios from "axios";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons';  
 
-export default function RunningPnl({marketData, tradeData, data}) {
+export default function RunningPnl({marketData, tradeData, data, Render}) {
     let date = new Date();
     // let todayDate = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`
     // let fake_date = "1-12-2022"
+    // const { reRender, setReRender } = Render;
     const [pnlData, setPnlData] = useState([]);
     const [liveDetail, setLiveDetail] = useState([])
     console.log("tradedata", tradeData);
@@ -79,7 +80,7 @@ export default function RunningPnl({marketData, tradeData, data}) {
 
     console.log("this is pnl data", pnlData);
     console.log("live data", liveDetail);
-
+    let Total = 0;
   return (
     <table className="grid1_table">
         <tr className="grid2_tr">
@@ -93,11 +94,18 @@ export default function RunningPnl({marketData, tradeData, data}) {
         </tr>
         {
             pnlData.map((elem, index)=>{
+                Total += Number((
+                    ((liveDetail[index]?.last_price)*(elem.Quantity)) - (elem.average_price*elem.Quantity)
+                ).toFixed(2))
+                let updatedValue = (
+                    ((liveDetail[index]?.last_price)*(elem.Quantity)) - (elem.average_price*elem.Quantity)
+                ).toFixed(2)
+
                 return(
                 <>
                     {elem.Quantity !== 0 &&
-                    <tr className="grid2_tr" key={elem._id}>
-                        <td className="grid2_td">{elem.Product}</td>
+                    <tr className="grid2_tr"  style={updatedValue>0 ? { color: "green"}:  (updatedValue<0 ?{ color: "red"} : {color: "grey"}) } key={elem._id}>
+                        <td className="grid2_td" style={{color : "black"}}>{elem.Product}</td>
                         <td className="grid2_td">{elem.symbol}</td>
                         <td className="grid2_td">{elem.Quantity}</td>
                         <td className="grid2_td">{(elem.average_price).toFixed(2)}</td>
@@ -110,10 +118,26 @@ export default function RunningPnl({marketData, tradeData, data}) {
                             :
                             <td className="grid2_td">{liveDetail[index]?.change.toFixed(2)}</td>}
                     </tr>}
+                    {/* {reRender ? setReRender(false) : setReRender(true)} */}
                 </>
                 )
             })
         }
+        <tr>
+            <th ></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            {Total ?
+            <>
+            <th>Total</th>
+            <th style={Total>0 ? {color: "green"} : {color: "red"} }>{Total.toFixed(2)}</th>
+            </>
+            :
+            <th></th>
+            }
+            <th></th>
+        </tr>
     </table>
   )
 }

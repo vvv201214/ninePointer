@@ -27,6 +27,7 @@ function TraderPositionTable({ socket }) {
 
     useEffect(() => {
 
+        
         axios.get(`${baseUrl}api/v1/readmocktradeuser`)
         .then((res) => {
             let data = (res.data).filter((elem)=>{
@@ -87,8 +88,8 @@ function TraderPositionTable({ socket }) {
             <div className="main_Container">
                 <div className="right_side">
                     <div className="rightside_maindiv">
+                    <span className="grid1_span">Instruments Details</span>
                         <div className="grid_1">
-                            <span className="grid1_span">Instruments Details</span>
                             <table className="grid1_table">
                                 <tr className="grid2_tr">
                                     <th className="grid2_th">Trading Date</th>
@@ -111,7 +112,7 @@ function TraderPositionTable({ socket }) {
 
                                             {console.log(updatedMarketData[0], updatedMarketData[0]?.change)}
                                             {(updatedMarketData[0]?.change === undefined) ? 
-                                            <td className="grid2_td">0.00%</td>
+                                            <td className="grid2_td">{((updatedMarketData[0]?.last_price-updatedMarketData[0]?.average_price)/updatedMarketData[0]?.average_price).toFixed(2)}</td>
                                             :
                                             <td className="grid2_td">{updatedMarketData[0]?.change.toFixed(2)}</td>}
 
@@ -123,16 +124,16 @@ function TraderPositionTable({ socket }) {
                                 })} 
                             </table>
                         </div>
+                        <span className="grid2_span">Overall PNL-Trader</span>
                         <div className="grid_2">
-                            <span className="grid2_span">Overall PNL-Trader</span>
                                 <OverallPnl marketData={marketData} tradeData={tradeData} data={data}/>
                         </div>
+                        <span className="grid2_span">Running PNL-Trader</span>
                         <div className="grid_2">
-                            <span className="grid2_span">Running PNL-Trader</span>
                             <RunningPnl marketData={marketData} tradeData={tradeData} data={data}/>
                         </div>
+                        <span className="grid2_span">Closed Trades PNL-Trader</span>
                         <div className="grid_2">
-                            <span className="grid2_span">Closed Trades PNL-Trader</span>
                                 <ClosedPnl marketData={marketData} tradeData={tradeData} data={data}/>
                         </div>
                     </div>

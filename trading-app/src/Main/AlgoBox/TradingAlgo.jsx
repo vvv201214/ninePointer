@@ -139,9 +139,8 @@ function TradingAlgo(){
                                 </div>
                             </div>
                         )}
-
+                        <span className="grid1_span">Trading Algos</span>
                         <div className="grid_1">
-                            <span className="grid1_span">Trading Algos</span>
                             <table className="grid1_table">
                                 <tr className="grid2_tr">
                                     <th className="grid2_th">Created On</th>

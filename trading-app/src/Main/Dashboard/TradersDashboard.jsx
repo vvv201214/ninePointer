@@ -10,8 +10,8 @@ function TradersDashboard(){
             <div className="main_Container">
                 <div className="right_side">
                     <div className="rightside_maindiv">
+                    <span className="grid1_span">Overall PNL- Company</span>
                         <div className="grid_1">
-                            <span className="grid1_span">Overall PNL- Company</span>
                             <table className="grid1_table">
                                 <tr className="grid2_tr">
                                     <th className="grid2_th">Product</th>
@@ -24,9 +24,9 @@ function TradersDashboard(){
                                 </tr>
                             </table>
                         </div>
-
+                        
+                        <span className="grid2_span">Inactive Instruments</span>
                         <div className="grid_2">
-                            <span className="grid2_span">Inactive Instruments</span>
                             <table className="grid1_table">
                             <tr className="grid2_tr">
                                 <th className="grid2_th">Product</th>
@@ -39,8 +39,8 @@ function TradersDashboard(){
                             </tr>
                             </table>
                         </div>
+                        <span className="grid2_span">Overall PNL-Traders-Company Side</span>
                         <div className="grid_2">
-                            <span className="grid2_span">Overall PNL-Traders-Company Side</span>
                             <table className="grid1_table">
                             <tr className="grid2_tr">
                                 <th className="grid2_th">Trader Name</th>
