@@ -400,9 +400,9 @@ async function parameters(io, socket) {
     let apiKeyResp = await axios.get(`${baseUrl}api/v1/readAccountDetails`)
 
     for(let elem of accessTokenResp.data){
-      for(let subElem of apiKeyResp.data){
+      for(let subElem of apiKeyResp.data){ // && elem.generatedOn === today
         console.log("inside 2");
-          if(elem.accountId === subElem.accountId && elem.generatedOn === today && elem.status === "Active" && subElem.status === "Active"){
+          if(elem.accountId === subElem.accountId && elem.status === "Active" && subElem.status === "Active"){
               getAccessToken = elem.accessToken;
               getApiKey = subElem.apiKey
           }

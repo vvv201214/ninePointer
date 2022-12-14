@@ -15,8 +15,7 @@ function CompanyPosition() {
     } catch(err){
         throw new Error(err);
     }
-    const [reRender, setReRender] = useState(true);
-    
+   
     useEffect(()=>{
 
         console.log(socket);
@@ -33,11 +32,11 @@ function CompanyPosition() {
             window.alert(data);
         })
 
-    }, [reRender]);
+    }, []);
 
     return (
         <div>
-            <CompanyPositionTable Render={{setReRender, reRender}} socket={socket}/>
+            <CompanyPositionTable socket={socket}/>
         </div>
     )
 }

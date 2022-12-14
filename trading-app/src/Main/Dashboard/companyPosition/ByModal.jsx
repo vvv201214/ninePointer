@@ -5,7 +5,7 @@ import axios from "axios"
 import uniqid from "uniqid"
 import { userContext } from "../../AuthContext";
 
-export default function ByModal({ marketData, uIdProps, Render }) {
+export default function ByModal({ marketData, uIdProps, Render, isCompany }) {
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
     const { reRender, setReRender } = Render;
@@ -16,7 +16,7 @@ export default function ByModal({ marketData, uIdProps, Render }) {
     let createdBy = getDetails.userDetails.name;
     let userId = getDetails.userDetails.email;
     let totalAmount = 0;
-    let tradeBy = getDetails.userDetails.name;
+    let tradeBy = isCompany ? "company" : getDetails.userDetails.name;
     let dummyOrderId = `${date.getFullYear()-2000}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}${Math.floor(100000000 + Math.random() * 900000000)}`
 
     const [selected, setSelected] = useState("MIS");
@@ -273,7 +273,9 @@ export default function ByModal({ marketData, uIdProps, Render }) {
         if (userPermissionAlgo.length) {
             setDetails(Details)
             console.log("Details", Details);
-            mockTradeUser("no");
+            if(!isCompany){
+                mockTradeUser("no");
+            }
             tradingAlgo(uId, Details.last_price);
         } else {
             companyTrade.realBuyOrSell = "BUY";
@@ -296,13 +298,19 @@ export default function ByModal({ marketData, uIdProps, Render }) {
                 productChange: "no algo",
                 tradingAccount: "no algo"
             }
-            mockTradeUser("no");
+            if(!isCompany){
+                mockTradeUser("no");
+            }
             mockTradeCompany(fakeAlgo);
             // must keep inside both if and else
             setModal(!modal);
         } 
 
-        reRender ? setReRender(false) : setReRender(true)
+        // rerenderParentCallback();
+        let id = setTimeout(()=>{
+            reRender ? setReRender(false) : setReRender(true)
+        }, 1000);
+        
     }
 
     async function sendOrderReq() {
@@ -384,7 +392,7 @@ export default function ByModal({ marketData, uIdProps, Render }) {
             window.alert("Trade succesfull");
             console.log("entry succesfull");
         }
-        reRender ? setReRender(false) : setReRender(true)
+        // reRender ? setReRender(false) : setReRender(true)
     }
 
     async function mockTradeCompany(algoBox){
@@ -418,7 +426,9 @@ export default function ByModal({ marketData, uIdProps, Render }) {
             console.log("Failed to Trade");
         } else {
             console.log(dataResp);
-            // window.alert("Trade succesfull");
+            if(isCompany){
+                window.alert("Trade succesfull");
+            }
             console.log("entry succesfull");
         }
         

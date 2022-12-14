@@ -12,23 +12,24 @@ import OverallPnl from "../PnlParts/OverallPnl";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons';  
 
-function CompanyPositionTable({ socket, Render }) {
+function CompanyPositionTable({ socket }) {
     const getDetails = useContext(userContext);
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
     
     const [tradeData, setTradeData] = useState([]);
+    const [reRender, setReRender] = useState(true);
     const [marketData, setMarketData] = useState([]);
     const [data, setData] = useState([]);
     let date = new Date();
     let todayDate = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`
-    let fake_date = "12-12-2022"
+    let fake_date = "14-12-2022"
     useEffect(() => {
 
         axios.get(`${baseUrl}api/v1/readmocktradecompany`)
         .then((res) => {
             let data = (res.data).filter((elem)=>{
-                return elem.order_timestamp.includes(todayDate) && elem.status === "COMPLETE";
+                return elem.order_timestamp.includes(fake_date) && elem.status === "COMPLETE";
             })
             setData(data);
         }).catch((err)=>{
@@ -73,7 +74,7 @@ function CompanyPositionTable({ socket, Render }) {
         console.log(tradeData);
         // reRender ? setReRender(false) : setReRender(true)
         // setReRender(true);
-    },[getDetails, Render.reRender])
+    },[getDetails, reRender])
     console.log(marketData);
     useEffect(()=>{
         return ()=>{
@@ -81,8 +82,7 @@ function CompanyPositionTable({ socket, Render }) {
             socket.close();
         }
     },[])
-
-    var changePercent ;
+  
 
     return (
         <div>
@@ -117,8 +117,8 @@ function CompanyPositionTable({ socket, Render }) {
                                             <td className="grid2_td">{updatedMarketData[0]?.change.toFixed(2)}</td>}
                                             <td className="grid2_th companyPosition_BSbtn2">
                                                 <div className="companyPosition_BSbtn">
-                                                    <ByModal Render={Render} marketData={marketData} uIdProps={elem.uId} />
-                                                    <SellModel Render={Render} marketData={marketData} uIdProps={elem.uId} />
+                                                    <ByModal Render={{setReRender, reRender}} marketData={marketData} uIdProps={elem.uId} isCompany={true}/>
+                                                    <SellModel Render={{setReRender, reRender}} marketData={marketData} uIdProps={elem.uId} isCompany={true}/>
                                                 </div>
                                             </td>
                                     </tr>

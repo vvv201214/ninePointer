@@ -18,9 +18,9 @@ router.get("/getliveprice", async (req, res)=>{
     let accessTokenResp = await axios.get(`${baseUrl}api/v1/readRequestToken`)
     let apiKeyResp = await axios.get(`${baseUrl}api/v1/readAccountDetails`)
     
-    for(let elem of accessTokenResp.data){
+    for(let elem of accessTokenResp.data){//&& elem.generatedOn === today 
       for(let subElem of apiKeyResp.data){
-          if(elem.accountId === subElem.accountId && elem.generatedOn === today && elem.status === "Active" && subElem.status === "Active"){
+          if(elem.accountId === subElem.accountId && elem.status === "Active" && subElem.status === "Active"){
               getAccessToken = elem.accessToken;
               getApiKey = subElem.apiKey
           }

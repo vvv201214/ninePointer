@@ -157,9 +157,15 @@ export default function OverallPnl({marketData, tradeData, data}) {
                 <th></th>
                 <th></th>
                 <th></th>
-                <th>Total</th>
-                <th style={Total>0 ? {color: "green"} : {color: "red"} }>{Total.toFixed(2)}</th>
-                <th></th>
+                {Total ?
+            <>
+            <th>Total</th>
+            <th style={Total>0 ? {color: "green"} : {color: "red"} }>{Total.toFixed(2)}</th>
+            </>
+            :
+            <th></th>
+            }
+            <th></th>
             </tr> 
         </table>
   )

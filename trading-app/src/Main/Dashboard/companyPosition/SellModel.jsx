@@ -6,7 +6,7 @@ import uniqid from "uniqid"
 import { userContext } from "../../AuthContext";
 import Styles from "./SellModel.module.css";
 
-export default function SellModel({marketData, uIdProps, Render }) {
+export default function SellModel({marketData, uIdProps, Render, isCompany }) {
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
     const { reRender, setReRender } = Render;
@@ -278,7 +278,9 @@ export default function SellModel({marketData, uIdProps, Render }) {
         // Algo box applied here....
         if(userPermissionAlgo.length){
             setDetails(Details)
-            mockTradeUser("no");
+            if(!isCompany){
+                mockTradeUser("no");
+            }
             tradingAlgo(uId, Details.last_price);
         }else{
             companyTrade.realBuyOrSell = "SELL";
@@ -301,13 +303,17 @@ export default function SellModel({marketData, uIdProps, Render }) {
                 productChange: "no algo",
                 tradingAccount: "no algo"
             }
-            mockTradeUser("no");
+            if(!isCompany){
+                mockTradeUser("no");
+            }
             mockTradeCompany(fakeAlgo);
             // must keep inside both if and else
             setModal(!modal);        
         }    
 
-        reRender ? setReRender(false) : setReRender(true)
+        let id = setTimeout(()=>{
+            reRender ? setReRender(false) : setReRender(true)
+        }, 1000);
     }
 
     async function sendOrderReq() {
@@ -421,6 +427,9 @@ export default function SellModel({marketData, uIdProps, Render }) {
             console.log("Failed to Trade");
         } else {
             console.log(dataResp);
+            if(isCompany){
+                window.alert("Trade succesfull");
+            }
             // window.alert("Trade succesfull");
             console.log("entry succesfull");
         }
