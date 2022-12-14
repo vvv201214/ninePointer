@@ -58,7 +58,8 @@ export default function SellModel({marketData, uIdProps, Render }) {
         validity: "DAY",
         last_price: "",
         brokerageCharge: "",
-        totalAmount: ""
+        totalAmount: "",
+        instrumentToken: ""
     })
     let [accessTokenDetails, setAccessToken] = useState([]);
     let [apiKeyDetails, setApiKey] = useState([]);
@@ -261,7 +262,8 @@ export default function SellModel({marketData, uIdProps, Render }) {
             return elem.uId === uIdProps;
         })
         Details.exchange = getSomeData[0].exchange;
-        Details.symbol = getSomeData[0].symbol
+        Details.symbol = getSomeData[0].symbol;
+        Details.instrumentToken = getSomeData[0].instrumentToken;
 
         let getLivePrice = marketData.filter((elem) => {
             return getSomeData[0].instrumentToken === elem.instrument_token;
@@ -363,8 +365,9 @@ export default function SellModel({marketData, uIdProps, Render }) {
         //     window.alert("Market is closed now");
         //     return;
         // }
-        const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price } = Details;
+        const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, instrumentToken } = Details;
         // const {algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount} = algoBox
+
         const res = await fetch(`${baseUrl}api/v1/mocktradeuser`, {
             method: "POST",
             headers: {
@@ -372,7 +375,7 @@ export default function SellModel({marketData, uIdProps, Render }) {
             },
             body: JSON.stringify({
                 exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, createdBy, userId, createdOn, uId,
-                isRealTrade:realTrade, order_id:dummyOrderId
+                isRealTrade:realTrade, order_id:dummyOrderId, instrumentToken
                 // , algoBox: {algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount}
             })
         });
@@ -395,7 +398,7 @@ export default function SellModel({marketData, uIdProps, Render }) {
         //     window.alert("Market is closed now");
         //     return;
         // }
-        const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price } = Details;
+        const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, instrumentToken } = Details;
         const { algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount } = algoBox;
         const { realBuyOrSell, realSymbol, realQuantity, realInstrument, realBrokerage, realAmount, real_last_price } = companyTrade;
 
@@ -408,7 +411,7 @@ export default function SellModel({marketData, uIdProps, Render }) {
                 exchange, symbol: realSymbol, buyOrSell: realBuyOrSell, Quantity: realQuantity, Price, Product, OrderType, TriggerPrice, 
                 stopLoss, validity, variety, last_price: real_last_price, createdBy, userId, createdOn, uId, 
                 algoBox: {algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, 
-                productChange, tradingAccount}, order_id:dummyOrderId
+                productChange, tradingAccount}, order_id:dummyOrderId, instrumentToken
 
             })
         });

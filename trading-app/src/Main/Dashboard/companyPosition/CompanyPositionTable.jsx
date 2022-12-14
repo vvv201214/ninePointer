@@ -12,18 +12,17 @@ import OverallPnl from "../PnlParts/OverallPnl";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons';  
 
-function CompanyPositionTable({ socket }) {
+function CompanyPositionTable({ socket, Render }) {
     const getDetails = useContext(userContext);
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
-    const [reRender, setReRender] = useState(true);
+    
     const [tradeData, setTradeData] = useState([]);
     const [marketData, setMarketData] = useState([]);
     const [data, setData] = useState([]);
     let date = new Date();
     let todayDate = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`
     let fake_date = "12-12-2022"
-
     useEffect(() => {
 
         axios.get(`${baseUrl}api/v1/readmocktradecompany`)
@@ -72,7 +71,9 @@ function CompanyPositionTable({ socket }) {
         
         console.log(marketData);
         console.log(tradeData);
-    },[getDetails, reRender])
+        // reRender ? setReRender(false) : setReRender(true)
+        // setReRender(true);
+    },[getDetails, Render.reRender])
     console.log(marketData);
     useEffect(()=>{
         return ()=>{
@@ -109,13 +110,13 @@ function CompanyPositionTable({ socket }) {
                                             
                                             {console.log(updatedMarketData[0], updatedMarketData[0]?.change)}
                                             {(updatedMarketData[0]?.change === undefined) ? 
-                                            <td className="grid2_td">0.00%</td>
+                                            <td className="grid2_td">{((updatedMarketData[0]?.last_price-updatedMarketData[0]?.average_price)/updatedMarketData[0]?.average_price).toFixed(2)}</td>
                                             :
                                             <td className="grid2_td">{updatedMarketData[0]?.change.toFixed(2)}</td>}
                                             <td className="grid2_th companyPosition_BSbtn2">
                                                 <div className="companyPosition_BSbtn">
-                                                    <ByModal Render={{setReRender, reRender}} marketData={marketData} uIdProps={elem.uId} />
-                                                    <SellModel Render={{setReRender, reRender}} marketData={marketData} uIdProps={elem.uId} />
+                                                    <ByModal Render={Render} marketData={marketData} uIdProps={elem.uId} />
+                                                    <SellModel Render={Render} marketData={marketData} uIdProps={elem.uId} />
                                                 </div>
                                             </td>
                                     </tr>
@@ -129,14 +130,13 @@ function CompanyPositionTable({ socket }) {
                         </div>
                         <div className="grid_2">
                             <span className="grid2_span">Running PNL-Company</span>
-                            <RunningPnl marketData={marketData} tradeData={tradeData} data={data}/>
+                            <RunningPnl Render={Render} marketData={marketData} tradeData={tradeData} data={data}/>
                         </div>
                         <div className="grid_2">
                             <span className="grid2_span">Closed Trades PNL-Company</span>
                             <ClosedPnl marketData={marketData} tradeData={tradeData} data={data}/>
                         </div>
                     </div>
-           
                 </div>
             </div>
         </div>

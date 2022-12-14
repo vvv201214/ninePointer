@@ -29,21 +29,21 @@ export default function OverallPnl({marketData, tradeData, data}) {
                     obj.Quantity = Number(obj.Quantity) + Number(data[i].Quantity);
                     if(Number(obj.Quantity) >= 0){
                         obj.buyOrSell = "BUY";
-                    } else if((obj.Quantity) > 0){
+                    } else if((obj.Quantity) < 0){
                         obj.buyOrSell = "SELL"
                     }
                 } else{
                     if(Number(obj.Quantity) > 0){
                         obj.average_price_buying = obj.average_price;
                         obj.average_price_selling = Number(data[i].average_price)
-                    } else{
+                    } else if(Number(obj.Quantity) < 0){
                         obj.average_price_selling = obj.average_price;
                         obj.average_price_buying = Number(data[i].average_price)
                     }
 
                     if(Number(obj.Quantity) + Number(data[i].Quantity) === 0){
                         obj.average_price = 0;
-                    } else{
+                    } else {
                         obj.average_price = ((Number(obj.average_price) * Number(obj.Quantity)) 
                         + (Number(data[i].average_price) * Number(data[i].Quantity)))/(Number(data[i].Quantity) 
                         + Number(obj.Quantity));
@@ -55,9 +55,9 @@ export default function OverallPnl({marketData, tradeData, data}) {
                         obj.closed_quantity = Math.min(Math.abs(Number(obj.Quantity)), Math.abs(Number(data[i].Quantity)));
                     }
                     obj.Quantity = Number(obj.Quantity) + Number(data[i].Quantity);
-                    if(Number(obj.Quantity) > 0){
+                    if(Number(obj.Quantity) >= 0){
                         obj.buyOrSell = "BUY";
-                    } else if((obj.Quantity) > 0){
+                    } else if((obj.Quantity) < 0){
                         obj.buyOrSell = "SELL"
                     } 
                 }

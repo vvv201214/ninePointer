@@ -1,6 +1,6 @@
 import React from "react";
 import './CompanyPosition.css';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { io } from "socket.io-client";
 import CompanyPositionTable from "./CompanyPositionTable";
 
@@ -13,6 +13,7 @@ function CompanyPosition() {
     } catch(err){
         throw new Error(err);
     }
+    const [reRender, setReRender] = useState(true);
     
     useEffect(()=>{
 
@@ -30,11 +31,11 @@ function CompanyPosition() {
             window.alert(data);
         })
 
-    }, []);
+    }, [reRender]);
 
     return (
         <div>
-            <CompanyPositionTable socket={socket}/>
+            <CompanyPositionTable Render={{setReRender, reRender}} socket={socket}/>
         </div>
     )
 }

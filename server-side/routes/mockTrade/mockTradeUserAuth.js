@@ -2,14 +2,20 @@ const express = require("express");
 const router = express.Router();
 require("../../db/conn");
 const MockTradeDetails = require("../../models/mock-trade/mockTradeUserSchema");
+const axios = require('axios');
 
-router.post("/mocktradeuser", (req, res)=>{
+router.post("/mocktradeuser", async (req, res)=>{
 
     let {exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType,
          TriggerPrice, stopLoss, validity, variety, last_price, createdBy, userId,
-          createdOn, uId, isRealTrade, order_id} = req.body
+          createdOn, uId, isRealTrade, order_id, instrumentToken} = req.body
 
-    if(!exchange || !symbol || !buyOrSell || !Quantity || !Product || !OrderType || !validity || !variety || !last_price ){
+          console.log(req.body);
+          console.log("in the company auth");
+
+    if(!exchange || !symbol || !buyOrSell || !Quantity || !Product || !OrderType || !validity || !variety || !last_price || !instrumentToken){
+        console.log(exchange); console.log(symbol); console.log(buyOrSell); console.log(Quantity); console.log(Product); console.log(OrderType); console.log(validity); console.log(variety); console.log(last_price); console.log(instrumentToken);
+        console.log(req.body);
         console.log("data nhi h pura");
         return res.status(422).json({error : "please fill all the feilds..."})
     }
@@ -17,6 +23,34 @@ router.post("/mocktradeuser", (req, res)=>{
     if(buyOrSell === "SELL"){
         Quantity = "-"+Quantity;
     }
+
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+    let originalLastPrice;
+    let a;
+    try{
+        // async function func(){
+        
+            let liveData = await axios.get(`${baseUrl}api/v1/getliveprice`)
+            for(let elem of liveData.data){
+                if(elem.instrument_token == instrumentToken){
+
+                    originalLastPrice = elem.last_price;
+                    console.log("originalLastPrice 38 line", originalLastPrice)
+                }
+            }
+            
+            // return originalLastPrice; 
+            // originalLastPrice = await 
+        // }
+
+        //  a = func();
+
+
+    } catch(err){
+        return new Error(err);
+    }
+
+    console.log("originalLastPrice", a)
     MockTradeDetails.findOne({uId : uId})
     .then((dateExist)=>{
         if(dateExist){
@@ -24,12 +58,12 @@ router.post("/mocktradeuser", (req, res)=>{
             return res.status(422).json({error : "date already exist..."})
         }
         const mockTradeDetails = new MockTradeDetails({
-            status:"COMPLETE", uId, createdBy, average_price: last_price, Quantity, Product, buyOrSell, order_timestamp: createdOn,
+            status:"COMPLETE", uId, createdBy, average_price: originalLastPrice, Quantity, Product, buyOrSell, order_timestamp: createdOn,
             variety, validity, exchange, order_type: OrderType, symbol, placed_by: "ninepointer", userId,
-            isRealTrade, order_id
+            isRealTrade, order_id, instrumentToken
         });
 
-
+        console.log("mockTradeDetails", mockTradeDetails);
         mockTradeDetails.save().then(()=>{
             res.status(201).json({massage : "data enter succesfully"});
         }).catch((err)=> res.status(500).json({error:"Failed to enter data"}));
