@@ -122,13 +122,17 @@ export default function OverallPnl({marketData, tradeData, data}) {
                             (((liveDetail[index]?.last_price)*(elem.Quantity)) - (elem.average_price*elem.Quantity)
                             )).toFixed(2))
                 console.log(typeof(Total));
+                let updatedValue = (((elem.average_price_selling * elem.closed_quantity) - (elem.average_price_buying * elem.closed_quantity))
+                + 
+                (((liveDetail[index]?.last_price)*(elem.Quantity)) - (elem.average_price*elem.Quantity)
+                )).toFixed(2)
 
               
                       
                 return(
                     <>
                     {/* {elem.Quantity !== 0 && */}
-                    <tr className="grid2_tr" style={Total>0 ? { color: "green"}:  { color: "red"} } key={index}>
+                    <tr className="grid2_tr" style={updatedValue>0 ? { color: "green"}:  (updatedValue<0 ?{ color: "red"} : {color: "grey"}) } key={index}>
                         <td className="grid2_td" style={{color : "black"}}>{elem.Product}</td>
                         <td className="grid2_td">{elem.symbol}</td>
                         <td className="grid2_td">{elem.Quantity}</td>
