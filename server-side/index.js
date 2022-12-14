@@ -18,7 +18,7 @@ app.get('/api/v1/data', fetch);
 let newCors = process.env.NODE_ENV === "production" ? "http://3.110.187.5/" : "http://localhost:3000"
 app.use(cors({
   credentials:true,
-  origin: newCors
+  origin: "http://3.110.187.5/"
 }));
 
 app.use(express.json());

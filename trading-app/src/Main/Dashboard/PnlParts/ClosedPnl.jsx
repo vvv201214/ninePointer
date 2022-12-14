@@ -108,7 +108,6 @@ export default function ClosedPnl({marketData, tradeData, data}) {
 
         setLiveDetail(liveDetailsArr);
 
-    // })
  
     }, [marketData])
 

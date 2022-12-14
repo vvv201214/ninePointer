@@ -29,7 +29,7 @@ function CompanyPositionTable({ socket }) {
         axios.get(`${baseUrl}api/v1/readmocktradecompany`)
         .then((res) => {
             let data = (res.data).filter((elem)=>{
-                return elem.order_timestamp.includes(fake_date) && elem.status === "COMPLETE";
+                return elem.order_timestamp.includes(todayDate) && elem.status === "COMPLETE";
             })
             setData(data);
         }).catch((err)=>{
