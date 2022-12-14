@@ -130,10 +130,13 @@ export default function ClosedPnl({marketData, tradeData, data}) {
          closedPnlArr.map((elem, index)=>{
             Total += Number(((elem.average_price_selling * elem.closed_quantity) - 
             (elem.average_price_buying * elem.closed_quantity)).toFixed(2))
+
+            let updatedValue = ((elem.average_price_selling * elem.closed_quantity) - 
+            (elem.average_price_buying * elem.closed_quantity)).toFixed(2)
             return(
                 <>
                     {(elem.closed_quantity !== 0 && elem.closed_quantity !== undefined) &&
-                    <tr className="grid2_tr" style={Total>0 ? { color: "green"}:  { color: "red"} } key={index}>
+                    <tr className="grid2_tr" style={updatedValue>0 ? { color: "green"}:  (updatedValue<0 ?{ color: "red"} : {color: "grey"}) } key={index}>
                         <td className="grid2_td" style={{color : "black"}}>{elem.Product}</td>
                         <td className="grid2_td">{elem.symbol}</td>
                         <td className="grid2_td">{elem.closed_quantity}</td>

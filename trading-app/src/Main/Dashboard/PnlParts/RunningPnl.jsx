@@ -96,10 +96,14 @@ export default function RunningPnl({marketData, tradeData, data}) {
                 Total += Number((
                     ((liveDetail[index]?.last_price)*(elem.Quantity)) - (elem.average_price*elem.Quantity)
                 ).toFixed(2))
+                let updatedValue = (
+                    ((liveDetail[index]?.last_price)*(elem.Quantity)) - (elem.average_price*elem.Quantity)
+                ).toFixed(2)
+
                 return(
                 <>
                     {elem.Quantity !== 0 &&
-                    <tr className="grid2_tr" style={Total>0 ? { color: "green"}:  { color: "red"} } key={elem._id}>
+                    <tr className="grid2_tr"  style={updatedValue>0 ? { color: "green"}:  (updatedValue<0 ?{ color: "red"} : {color: "grey"}) } key={elem._id}>
                         <td className="grid2_td" style={{color : "black"}}>{elem.Product}</td>
                         <td className="grid2_td">{elem.symbol}</td>
                         <td className="grid2_td">{elem.Quantity}</td>
