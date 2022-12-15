@@ -181,14 +181,14 @@ export default function OverallPnl({marketData, tradeData, data}) {
                 <th></th>
                 <th></th>
                 <th></th>
-                {overallPnlArr.length ?
-                <>
-                <th>Total</th>
-                <th style={Total>=0 ? {color: "green"} : {color: "red"} }>{Total.toFixed(2)}</th>
-                </>
-                :
-                <th></th>
-                }
+                {Total ?
+            <>
+            <th className='pnl_Total'>TOTAL</th>
+            <th className='pnl_Total' style={Total>=0 ? {color: "green"} : {color: "red"} }>{Total.toFixed(2)}</th>
+            </>
+            :
+            <th></th>
+            }
             <th></th>
             </tr> 
         </table>

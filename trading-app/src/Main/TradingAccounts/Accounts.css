@@ -33,7 +33,8 @@
 
 }
 .grid_1{
-    min-height: 30vh;
+   
+    max-height: max-content;
     background: rgb(255, 255, 255);
     margin-left: 5px;
     margin-right: 5px;
@@ -78,7 +79,8 @@
    
 } */
 .grid_2{
-    min-height: 30vh;
+   
+    max-height: max-content;
     background: rgb(255, 255, 255);
     border-radius: 15px;
     margin-left: 5px;
@@ -120,15 +122,17 @@
     overflow: hidden;
     text-align: center;
     border-bottom: 2px solid black;
-   
+    width: fit-content;
+   font-size: 15px;
 }
 .grid2_td{
     width: 9vw;
     overflow: hidden;
     text-align: center;
     border-bottom: 2px solid black;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: bold;
+    width: fit-content;
 
 }
 .grid1_table{
@@ -186,4 +190,9 @@
 .data_td{
     border: none;
     text-align: center;
+}
+.pnl_Total{
+    font-size: 12px;
+    font-weight: bold;
+
 }
