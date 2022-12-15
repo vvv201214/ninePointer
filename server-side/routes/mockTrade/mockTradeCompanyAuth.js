@@ -9,7 +9,7 @@ router.post("/mocktradecompany", async (req, res)=>{
 
     let {exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType,
          TriggerPrice, stopLoss, validity, variety, last_price, createdBy, userId,
-          createdOn, uId, algoBox, order_id, instrumentToken, realTrade} = req.body
+          createdOn, uId, algoBox, order_id, instrumentToken, realTrade, realBuyOrSell, realQuantity} = req.body
         console.log(req.body);
         console.log("in the company auth");
     const {algoName, transactionChange, instrumentChange
@@ -23,6 +23,9 @@ router.post("/mocktradecompany", async (req, res)=>{
 
     if(buyOrSell === "SELL"){
         Quantity = "-"+Quantity;
+    }
+    if(realBuyOrSell === "SELL"){
+        realQuantity = "-"+realQuantity;
     }
 
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
@@ -59,7 +62,8 @@ router.post("/mocktradecompany", async (req, res)=>{
             return res.status(422).json({error : "date already exist..."})
         }
         const mockTradeDetails = new MockTradeDetails({
-            status:"COMPLETE", uId, createdBy, average_price: originalLastPrice, Quantity, Product, buyOrSell, order_timestamp: createdOn,
+            status:"COMPLETE", uId, createdBy, average_price: originalLastPrice, Quantity: realQuantity, 
+            Product, buyOrSell:realBuyOrSell, order_timestamp: createdOn,
             variety, validity, exchange, order_type: OrderType, symbol, placed_by: "ninepointer", userId,
              algoBox:{algoName, transactionChange, instrumentChange, exchangeChange, 
             lotMultipler, productChange, tradingAccount}, order_id, instrumentToken
