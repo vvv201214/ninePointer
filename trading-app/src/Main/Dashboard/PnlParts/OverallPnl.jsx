@@ -123,13 +123,11 @@ export default function OverallPnl({marketData, tradeData, data}) {
                             )).toFixed(2))
                 console.log(typeof(Total));
 
-                let updatedValue = 
-                    (elem.closed_quantity === undefined) ?
-                    (((liveDetail[index]?.last_price)*(elem.Quantity)) - (elem.average_price*elem.Quantity)
-                    ).toFixed(2)
-                    :
-                    (((liveDetail[index]?.last_price)*(elem.Quantity)) - (elem.average_price*elem.Quantity)).toFixed(2)
-                  
+                let updatedValue = (((elem.average_price_selling * elem.closed_quantity) - (elem.average_price_buying * elem.closed_quantity))
+                + 
+                (((liveDetail[index]?.last_price)*(elem.Quantity)) - (elem.average_price*elem.Quantity)
+                )).toFixed(2)
+                                  
                 return(
                     <>
                     {/* {elem.Quantity !== 0 && */}
