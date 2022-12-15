@@ -128,7 +128,7 @@ export default function RunningPnl({marketData, tradeData, data, Render}) {
             <th></th>
             <th></th>
             <th></th>
-            {Total ?
+            {pnlData.length ?
             <>
             <th className='pnl_Total'>TOTAL</th>
             <th className='pnl_Total'style={Total>0 ? {color: "green"} : {color: "red"} }>{Total.toFixed(2)}</th>
