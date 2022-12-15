@@ -159,8 +159,8 @@ export default function ClosedPnl({marketData, tradeData, data}) {
             <th></th>
             <th></th>
             <th></th>
-            <th>Total</th>
-            <th style={Total>0 ? {color: "green"} : {color: "red"} }>{Total.toFixed(2)}</th>
+            <th className='pnl_Total'>TOTAL</th>
+            <th className='pnl_Total' style={Total>0 ? {color: "green"} : {color: "red"} }>{Total.toFixed(2)}</th>
             <th></th>
         </tr>
     </table>
