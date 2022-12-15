@@ -235,10 +235,10 @@ export default function SellModel({marketData, uIdProps, Render, isCompany }) {
                     if(subElem.isRealTradeEnable || elem.isRealTrade){
                         sendOrderReq();
                         // mockTradeUser("yes");
-                        mockTradeCompany(elem);
+                        mockTradeCompany(elem, "yes");
                     } else{
                         // mockTradeUser("no");
-                        mockTradeCompany(elem);
+                        mockTradeCompany(elem, "no");
                     }
                 }
             })
@@ -278,9 +278,9 @@ export default function SellModel({marketData, uIdProps, Render, isCompany }) {
         // Algo box applied here....
         if(userPermissionAlgo.length){
             setDetails(Details)
-            if(!isCompany){
-                mockTradeUser("no");
-            }
+            // if(!isCompany){
+            //     mockTradeUser("no");
+            // }
             tradingAlgo(uId, Details.last_price);
         }else{
             companyTrade.realBuyOrSell = "SELL";
@@ -303,10 +303,10 @@ export default function SellModel({marketData, uIdProps, Render, isCompany }) {
                 productChange: "no algo",
                 tradingAccount: "no algo"
             }
-            if(!isCompany){
-                mockTradeUser("no");
-            }
-            mockTradeCompany(fakeAlgo);
+            // if(!isCompany){
+            //     mockTradeUser("no");
+            // }
+            mockTradeCompany(fakeAlgo, "no");
             // must keep inside both if and else
             setModal(!modal);        
         }    
@@ -398,16 +398,18 @@ export default function SellModel({marketData, uIdProps, Render, isCompany }) {
 
     }
 
-    async function mockTradeCompany(algoBox){
+    async function mockTradeCompany(algoBox, realTrade){
         // let currentTime = `${date.getHours()}:${date.getMinutes()}`
-        // if(currentTime > "15:30" && currentTime < "9:15"){
-        //     window.alert("Market is closed now");
+        // console.log("currentTime", currentTime);
+        // if(currentTime > "15:30" || currentTime < "9:15"){
+        //     console.log("current if")
+        //     // window.alert("Market is closed now");
         //     return;
         // }
+        // console.log("compny side", exchange, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount, realBuyOrSell, realSymbol, realQuantity, real_last_price);
         const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, instrumentToken } = Details;
         const { algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount } = algoBox;
         const { realBuyOrSell, realSymbol, realQuantity, realInstrument, realBrokerage, realAmount, real_last_price } = companyTrade;
-
         const res = await fetch(`${baseUrl}api/v1/mocktradecompany`, {
             method: "POST",
             headers: {
@@ -417,7 +419,7 @@ export default function SellModel({marketData, uIdProps, Render, isCompany }) {
                 exchange, symbol: realSymbol, buyOrSell: realBuyOrSell, Quantity: realQuantity, Price, Product, OrderType, TriggerPrice, 
                 stopLoss, validity, variety, last_price: real_last_price, createdBy, userId, createdOn, uId, 
                 algoBox: {algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, 
-                productChange, tradingAccount}, order_id:dummyOrderId, instrumentToken
+                productChange, tradingAccount}, order_id:dummyOrderId, instrumentToken, realTrade
 
             })
         });
@@ -430,10 +432,9 @@ export default function SellModel({marketData, uIdProps, Render, isCompany }) {
             if(isCompany){
                 window.alert("Trade succesfull");
             }
-            // window.alert("Trade succesfull");
             console.log("entry succesfull");
         }
-
+        
     }
   
     return (

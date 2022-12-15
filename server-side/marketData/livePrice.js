@@ -47,8 +47,9 @@ router.get("/getliveprice", async (req, res)=>{
   }
   
     let url = `https://api.kite.trade/quote?${addUrl}`;
-    const api_key = getApiKey;
-    const access_token = getAccessToken;
+    const api_key = getApiKey; 
+    const access_token = "ufQicNFLUWFKR84bF8LTE66xAeCQSwCH";
+    // const access_token = getAccessToken;
     let auth = 'token' + api_key + ':' + access_token;
   
     let authOptions = {
