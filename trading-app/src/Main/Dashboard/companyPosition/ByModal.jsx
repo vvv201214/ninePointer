@@ -226,11 +226,11 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany }) {
                     if(subElem.isRealTradeEnable || elem.isRealTrade){
 
                         sendOrderReq();
-                        mockTradeCompany(elem);
+                        mockTradeCompany(elem, "yes");
                         // mockTradeUser("yes");
                     } else{
                         // mockTradeUser("no");
-                        mockTradeCompany(elem);
+                        mockTradeCompany(elem, "no");
                     }
                 }
             })
@@ -273,9 +273,9 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany }) {
         if (userPermissionAlgo.length) {
             setDetails(Details)
             console.log("Details", Details);
-            if(!isCompany){
-                mockTradeUser("no");
-            }
+            // if(!isCompany){
+            //     mockTradeUser("no");
+            // }
             tradingAlgo(uId, Details.last_price);
         } else {
             companyTrade.realBuyOrSell = "BUY";
@@ -298,10 +298,10 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany }) {
                 productChange: "no algo",
                 tradingAccount: "no algo"
             }
-            if(!isCompany){
-                mockTradeUser("no");
-            }
-            mockTradeCompany(fakeAlgo);
+            // if(!isCompany){
+            //     mockTradeUser("no");
+            // }
+            mockTradeCompany(fakeAlgo, "no");
             // must keep inside both if and else
             setModal(!modal);
         } 
@@ -395,7 +395,7 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany }) {
         // reRender ? setReRender(false) : setReRender(true)
     }
 
-    async function mockTradeCompany(algoBox){
+    async function mockTradeCompany(algoBox, realTrade){
         // let currentTime = `${date.getHours()}:${date.getMinutes()}`
         // console.log("currentTime", currentTime);
         // if(currentTime > "15:30" || currentTime < "9:15"){
@@ -416,7 +416,7 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany }) {
                 exchange, symbol: realSymbol, buyOrSell: realBuyOrSell, Quantity: realQuantity, Price, Product, OrderType, TriggerPrice, 
                 stopLoss, validity, variety, last_price: real_last_price, createdBy, userId, createdOn, uId, 
                 algoBox: {algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, 
-                productChange, tradingAccount}, order_id:dummyOrderId, instrumentToken
+                productChange, tradingAccount}, order_id:dummyOrderId, instrumentToken, realTrade
 
             })
         });

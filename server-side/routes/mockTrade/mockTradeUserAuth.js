@@ -51,23 +51,23 @@ router.post("/mocktradeuser", async (req, res)=>{
     }
 
     console.log("originalLastPrice", a)
-    MockTradeDetails.findOne({uId : uId})
-    .then((dateExist)=>{
-        if(dateExist){
-            console.log("data already");
-            return res.status(422).json({error : "date already exist..."})
-        }
-        const mockTradeDetails = new MockTradeDetails({
-            status:"COMPLETE", uId, createdBy, average_price: originalLastPrice, Quantity, Product, buyOrSell, order_timestamp: createdOn,
-            variety, validity, exchange, order_type: OrderType, symbol, placed_by: "ninepointer", userId,
-            isRealTrade, order_id, instrumentToken
-        });
+//     MockTradeDetailsUser.findOne({uId : uId})
+//     .then((dateExist)=>{
+//         if(dateExist){
+//             console.log("data already");
+//             return res.status(422).json({error : "date already exist..."})
+//         }
+//         const mockTradeDetailsUser = new MockTradeDetailsUser({
+//             status:"COMPLETE", uId, createdBy, average_price: originalLastPrice, Quantity, Product, buyOrSell, order_timestamp: createdOn,
+//             variety, validity, exchange, order_type: OrderType, symbol, placed_by: "ninepointer", userId,
+//             isRealTrade, order_id, instrumentToken
+//         });
 
-        console.log("mockTradeDetails", mockTradeDetails);
-        mockTradeDetails.save().then(()=>{
-            res.status(201).json({massage : "data enter succesfully"});
-        }).catch((err)=> res.status(500).json({error:"Failed to enter data"}));
-    }).catch(err => {console.log(err, "fail")});
+//         console.log("mockTradeDetails", mockTradeDetailsUser);
+//         mockTradeDetailsUser.save().then(()=>{
+//             res.status(201).json({massage : "data enter succesfully"});
+//         }).catch((err)=> res.status(500).json({error:"Failed to enter data"}));
+//     }).catch(err => {console.log(err, "fail")});
 })
 
 router.get("/readmocktradeuser", (req, res)=>{
