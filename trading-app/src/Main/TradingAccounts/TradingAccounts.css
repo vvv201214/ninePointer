@@ -64,13 +64,16 @@ img{
    
 }
 .active{
-    color:#187498;
+    color:#187498;    
 }
+
 .navbar{
     display: flex;
     list-style: none;
     border-bottom: 2px solid black;
+    
 }
+
 a{
     text-decoration: none;
     color: rgb(0, 0, 0);
