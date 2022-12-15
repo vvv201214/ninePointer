@@ -34,7 +34,7 @@ export default function ClosedPnl({marketData, tradeData, data}) {
                         obj.Quantity = Number(obj.Quantity) + Number(data[i].Quantity);
                         if(Number(obj.Quantity) >= 0){
                             obj.buyOrSell = "BUY";
-                        } else if((obj.Quantity) > 0){
+                        } else if((obj.Quantity) < 0){
                             obj.buyOrSell = "SELL"
                         }
 
@@ -42,7 +42,7 @@ export default function ClosedPnl({marketData, tradeData, data}) {
                         if(Number(obj.Quantity) > 0){
                             obj.average_price_buying = obj.average_price;
                             obj.average_price_selling = Number(data[i].average_price)
-                        } else{
+                        } else if(Number(obj.Quantity) < 0){
                             obj.average_price_selling = obj.average_price;
                             obj.average_price_buying = Number(data[i].average_price)
                         }
@@ -62,9 +62,9 @@ export default function ClosedPnl({marketData, tradeData, data}) {
                             obj.closed_quantity = Math.min(Math.abs(Number(obj.Quantity)), Math.abs(Number(data[i].Quantity)));
                         }
                         obj.Quantity = Number(obj.Quantity) + Number(data[i].Quantity);
-                        if(Number(obj.Quantity) > 0){
+                        if(Number(obj.Quantity) >= 0){
                             obj.buyOrSell = "BUY";
-                        } else if((obj.Quantity) > 0){
+                        } else if((obj.Quantity) < 0){
                             obj.buyOrSell = "SELL"
                         } 
                     }
@@ -108,7 +108,6 @@ export default function ClosedPnl({marketData, tradeData, data}) {
 
         setLiveDetail(liveDetailsArr);
 
-    // })
  
     }, [marketData])
 
@@ -121,8 +120,8 @@ export default function ClosedPnl({marketData, tradeData, data}) {
             <th className="grid2_th">Product</th>
             <th className="grid2_th">Instruments</th>
             <th className="grid2_th">Quantity</th>
-            <th className="grid2_th">Avg. Price (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
-            <th className="grid2_th">LTP (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
+            <th className="grid2_th">Avg. buy price (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
+            <th className="grid2_th">Avg. sell price (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
             <th className="grid2_th">P&L (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
             <th className="grid2_th">%Change</th>
         </tr>
@@ -141,7 +140,7 @@ export default function ClosedPnl({marketData, tradeData, data}) {
                         <td className="grid2_td">{elem.symbol}</td>
                         <td className="grid2_td">{elem.closed_quantity}</td>
                         <td className="grid2_td">{(elem.average_price_buying).toFixed(2)}</td>
-                        <td className="grid2_td">{liveDetail[index]?.last_price.toFixed(2)}</td>
+                        <td className="grid2_td">{elem.average_price_selling.toFixed(2)}</td>
                         <td className="grid2_td">{((elem.average_price_selling * elem.closed_quantity) - 
                                                     (elem.average_price_buying * elem.closed_quantity)).toFixed(2)}</td>
                         {liveDetail[index]?.change === undefined ?
@@ -159,8 +158,14 @@ export default function ClosedPnl({marketData, tradeData, data}) {
             <th></th>
             <th></th>
             <th></th>
+            {Total ?
+            <>
             <th className='pnl_Total'>TOTAL</th>
             <th className='pnl_Total' style={Total>0 ? {color: "green"} : {color: "red"} }>{Total.toFixed(2)}</th>
+            </>
+            :
+            <th></th>
+            }
             <th></th>
         </tr>
     </table>

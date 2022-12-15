@@ -30,21 +30,21 @@ export default function OverallPnl({marketData, tradeData, data}) {
                     obj.Quantity = Number(obj.Quantity) + Number(data[i].Quantity);
                     if(Number(obj.Quantity) >= 0){
                         obj.buyOrSell = "BUY";
-                    } else if((obj.Quantity) > 0){
+                    } else if((obj.Quantity) < 0){
                         obj.buyOrSell = "SELL"
                     }
                 } else{
                     if(Number(obj.Quantity) > 0){
                         obj.average_price_buying = obj.average_price;
                         obj.average_price_selling = Number(data[i].average_price)
-                    } else{
+                    } else if(Number(obj.Quantity) < 0){
                         obj.average_price_selling = obj.average_price;
                         obj.average_price_buying = Number(data[i].average_price)
                     }
 
                     if(Number(obj.Quantity) + Number(data[i].Quantity) === 0){
                         obj.average_price = 0;
-                    } else{
+                    } else {
                         obj.average_price = ((Number(obj.average_price) * Number(obj.Quantity)) 
                         + (Number(data[i].average_price) * Number(data[i].Quantity)))/(Number(data[i].Quantity) 
                         + Number(obj.Quantity));
@@ -56,9 +56,9 @@ export default function OverallPnl({marketData, tradeData, data}) {
                         obj.closed_quantity = Math.min(Math.abs(Number(obj.Quantity)), Math.abs(Number(data[i].Quantity)));
                     }
                     obj.Quantity = Number(obj.Quantity) + Number(data[i].Quantity);
-                    if(Number(obj.Quantity) > 0){
+                    if(Number(obj.Quantity) >= 0){
                         obj.buyOrSell = "BUY";
-                    } else if((obj.Quantity) > 0){
+                    } else if((obj.Quantity) < 0){
                         obj.buyOrSell = "SELL"
                     } 
                 }
@@ -123,13 +123,12 @@ export default function OverallPnl({marketData, tradeData, data}) {
                             )).toFixed(2))
                 console.log(Total);
                 console.log(typeof(Total));
-                let updatedValue =(((elem.average_price_selling * elem.closed_quantity) - (elem.average_price_buying * elem.closed_quantity)) 
+
+                let updatedValue = (((elem.average_price_selling * elem.closed_quantity) - (elem.average_price_buying * elem.closed_quantity))
                 + 
                 (((liveDetail[index]?.last_price)*(elem.Quantity)) - (elem.average_price*elem.Quantity)
-                )).toFixed(2);
-
-                console.log(updatedValue)
-
+                )).toFixed(2)
+                                  
                 return(
                     <>
                     {/* {elem.Quantity !== 0 && */}
@@ -162,9 +161,15 @@ export default function OverallPnl({marketData, tradeData, data}) {
                 <th></th>
                 <th></th>
                 <th></th>
-                <th className='pnl_Total'>TOTAL</th>
-                <th className='pnl_Total' style={Total>0 ? {color: "green"} : {color: "red"} }>{Total.toFixed(2)}</th>
-                <th></th>
+                {Total ?
+            <>
+            <th className='pnl_Total'>TOTAL</th>
+            <th className='pnl_Total' style={Total>0 ? {color: "green"} : {color: "red"} }>{Total.toFixed(2)}</th>
+            </>
+            :
+            <th></th>
+            }
+            <th></th>
             </tr> 
         </table>
   )

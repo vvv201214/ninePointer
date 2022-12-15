@@ -5,7 +5,7 @@ import axios from "axios"
 import uniqid from "uniqid"
 import { userContext } from "../../AuthContext";
 
-export default function ByModal({ marketData, uIdProps, Render }) {
+export default function ByModal({ marketData, uIdProps, Render, isCompany }) {
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
     const { reRender, setReRender } = Render;
@@ -16,7 +16,7 @@ export default function ByModal({ marketData, uIdProps, Render }) {
     let createdBy = getDetails.userDetails.name;
     let userId = getDetails.userDetails.email;
     let totalAmount = 0;
-    let tradeBy = getDetails.userDetails.name;
+    let tradeBy = isCompany ? "company" : getDetails.userDetails.name;
     let dummyOrderId = `${date.getFullYear()-2000}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}${Math.floor(100000000 + Math.random() * 900000000)}`
 
     const [selected, setSelected] = useState("MIS");
@@ -57,7 +57,8 @@ export default function ByModal({ marketData, uIdProps, Render }) {
         validity: "DAY",
         last_price: "",
         brokerageCharge: "",
-        totalAmount: ""
+        totalAmount: "",
+        instrumentToken: ""
     })
     let [accessTokenDetails, setAccessToken] = useState([]);
     let [apiKeyDetails, setApiKey] = useState([]);
@@ -225,11 +226,11 @@ export default function ByModal({ marketData, uIdProps, Render }) {
                     if(subElem.isRealTradeEnable || elem.isRealTrade){
 
                         sendOrderReq();
-                        mockTradeCompany(elem);
+                        mockTradeCompany(elem, "yes");
                         // mockTradeUser("yes");
                     } else{
                         // mockTradeUser("no");
-                        mockTradeCompany(elem);
+                        mockTradeCompany(elem, "no");
                     }
                 }
             })
@@ -252,6 +253,7 @@ export default function ByModal({ marketData, uIdProps, Render }) {
         })
         Details.exchange = getSomeData[0].exchange;
         Details.symbol = getSomeData[0].symbol
+        Details.instrumentToken = getSomeData[0].instrumentToken;
 
         let getLivePrice = marketData.filter((elem) => {
             return getSomeData[0].instrumentToken === elem.instrument_token;
@@ -271,7 +273,9 @@ export default function ByModal({ marketData, uIdProps, Render }) {
         if (userPermissionAlgo.length) {
             setDetails(Details)
             console.log("Details", Details);
-            mockTradeUser("no");
+            // if(!isCompany){
+            //     mockTradeUser("no");
+            // }
             tradingAlgo(uId, Details.last_price);
         } else {
             companyTrade.realBuyOrSell = "BUY";
@@ -294,13 +298,19 @@ export default function ByModal({ marketData, uIdProps, Render }) {
                 productChange: "no algo",
                 tradingAccount: "no algo"
             }
-            mockTradeUser("no");
-            mockTradeCompany(fakeAlgo);
+            // if(!isCompany){
+            //     mockTradeUser("no");
+            // }
+            mockTradeCompany(fakeAlgo, "no");
             // must keep inside both if and else
             setModal(!modal);
         } 
 
-        reRender ? setReRender(false) : setReRender(true)
+        // rerenderParentCallback();
+        let id = setTimeout(()=>{
+            reRender ? setReRender(false) : setReRender(true)
+        }, 1000);
+        
     }
 
     async function sendOrderReq() {
@@ -358,8 +368,9 @@ export default function ByModal({ marketData, uIdProps, Render }) {
         // }
         // console.log(exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, createdBy, userId, createdOn, uId,
         //     realTrade, dummyOrderId);
-        const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price } = Details;
+        const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, instrumentToken } = Details;
         // const {algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount} = algoBox
+        console.log("instrumentToken", instrumentToken)
         const res = await fetch(`${baseUrl}api/v1/mocktradeuser`, {
             method: "POST",
             headers: {
@@ -367,7 +378,7 @@ export default function ByModal({ marketData, uIdProps, Render }) {
             },
             body: JSON.stringify({
                 exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, createdBy, userId, createdOn, uId,
-                isRealTrade:realTrade, order_id:dummyOrderId
+                isRealTrade:realTrade, order_id:dummyOrderId, instrumentToken
                 // , algoBox: {algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount}
             })
         });
@@ -381,10 +392,10 @@ export default function ByModal({ marketData, uIdProps, Render }) {
             window.alert("Trade succesfull");
             console.log("entry succesfull");
         }
-
+        // reRender ? setReRender(false) : setReRender(true)
     }
 
-    async function mockTradeCompany(algoBox){
+    async function mockTradeCompany(algoBox, realTrade){
         // let currentTime = `${date.getHours()}:${date.getMinutes()}`
         // console.log("currentTime", currentTime);
         // if(currentTime > "15:30" || currentTime < "9:15"){
@@ -393,10 +404,9 @@ export default function ByModal({ marketData, uIdProps, Render }) {
         //     return;
         // }
         // console.log("compny side", exchange, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount, realBuyOrSell, realSymbol, realQuantity, real_last_price);
-        const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price } = Details;
+        const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, instrumentToken } = Details;
         const { algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount } = algoBox;
         const { realBuyOrSell, realSymbol, realQuantity, realInstrument, realBrokerage, realAmount, real_last_price } = companyTrade;
-
         const res = await fetch(`${baseUrl}api/v1/mocktradecompany`, {
             method: "POST",
             headers: {
@@ -406,7 +416,7 @@ export default function ByModal({ marketData, uIdProps, Render }) {
                 exchange, symbol: realSymbol, buyOrSell: realBuyOrSell, Quantity: realQuantity, Price, Product, OrderType, TriggerPrice, 
                 stopLoss, validity, variety, last_price: real_last_price, createdBy, userId, createdOn, uId, 
                 algoBox: {algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, 
-                productChange, tradingAccount}, order_id:dummyOrderId
+                productChange, tradingAccount}, order_id:dummyOrderId, instrumentToken, realTrade
 
             })
         });
@@ -416,10 +426,12 @@ export default function ByModal({ marketData, uIdProps, Render }) {
             console.log("Failed to Trade");
         } else {
             console.log(dataResp);
-            // window.alert("Trade succesfull");
+            if(isCompany){
+                window.alert("Trade succesfull");
+            }
             console.log("entry succesfull");
         }
-
+        
     }
 
     return (

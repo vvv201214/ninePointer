@@ -18,9 +18,9 @@ router.get("/getliveprice", async (req, res)=>{
     let accessTokenResp = await axios.get(`${baseUrl}api/v1/readRequestToken`)
     let apiKeyResp = await axios.get(`${baseUrl}api/v1/readAccountDetails`)
     
-    for(let elem of accessTokenResp.data){
+    for(let elem of accessTokenResp.data){//&& elem.generatedOn === today 
       for(let subElem of apiKeyResp.data){
-          if(elem.accountId === subElem.accountId && elem.generatedOn === today && elem.status === "Active" && subElem.status === "Active"){
+          if(elem.accountId === subElem.accountId && elem.status === "Active" && subElem.status === "Active"){
               getAccessToken = elem.accessToken;
               getApiKey = subElem.apiKey
           }
@@ -47,8 +47,9 @@ router.get("/getliveprice", async (req, res)=>{
   }
   
     let url = `https://api.kite.trade/quote?${addUrl}`;
-    const api_key = getApiKey;
-    const access_token = getAccessToken;
+    const api_key = getApiKey; 
+    const access_token = "ufQicNFLUWFKR84bF8LTE66xAeCQSwCH";
+    // const access_token = getAccessToken;
     let auth = 'token' + api_key + ':' + access_token;
   
     let authOptions = {
@@ -67,6 +68,7 @@ router.get("/getliveprice", async (req, res)=>{
             let obj = {};
             obj.last_price = response.data.data[instrument].last_price;
             obj.instrument_token = response.data.data[instrument].instrument_token;
+            obj.average_price = response.data.data[instrument].average_price;
             arr.push(obj);
         //   arr.push(res.data.data[instrument].last_price);
         }

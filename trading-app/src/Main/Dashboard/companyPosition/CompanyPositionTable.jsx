@@ -16,14 +16,14 @@ function CompanyPositionTable({ socket }) {
     const getDetails = useContext(userContext);
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
-    const [reRender, setReRender] = useState(true);
+    
     const [tradeData, setTradeData] = useState([]);
+    const [reRender, setReRender] = useState(true);
     const [marketData, setMarketData] = useState([]);
     const [data, setData] = useState([]);
     let date = new Date();
     let todayDate = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`
-    let fake_date = "12-12-2022"
-
+    let fake_date = "14-12-2022"
     useEffect(() => {
 
         axios.get(`${baseUrl}api/v1/readmocktradecompany`)
@@ -72,6 +72,8 @@ function CompanyPositionTable({ socket }) {
         
         console.log(marketData);
         console.log(tradeData);
+        // reRender ? setReRender(false) : setReRender(true)
+        // setReRender(true);
     },[getDetails, reRender])
     console.log(marketData);
     useEffect(()=>{
@@ -80,8 +82,7 @@ function CompanyPositionTable({ socket }) {
             socket.close();
         }
     },[])
-
-    var changePercent ;
+  
 
     return (
         <div>
@@ -111,13 +112,13 @@ function CompanyPositionTable({ socket }) {
                                             
                                             {console.log(updatedMarketData[0], updatedMarketData[0]?.change)}
                                             {(updatedMarketData[0]?.change === undefined) ? 
-                                            <td className="grid2_td">0.00%</td>
+                                            <td className="grid2_td">{((updatedMarketData[0]?.last_price-updatedMarketData[0]?.average_price)/updatedMarketData[0]?.average_price).toFixed(2)}</td>
                                             :
                                             <td className="grid2_td">{updatedMarketData[0]?.change.toFixed(2)}</td>}
                                             <td className="grid2_th companyPosition_BSbtn2">
                                                 <div className="companyPosition_BSbtn">
-                                                    <ByModal Render={{setReRender, reRender}} marketData={marketData} uIdProps={elem.uId} />
-                                                    <SellModel Render={{setReRender, reRender}} marketData={marketData} uIdProps={elem.uId} />
+                                                    <ByModal Render={{setReRender, reRender}} marketData={marketData} uIdProps={elem.uId} isCompany={true}/>
+                                                    <SellModel Render={{setReRender, reRender}} marketData={marketData} uIdProps={elem.uId} isCompany={true}/>
                                                 </div>
                                             </td>
                                     </tr>
@@ -138,7 +139,6 @@ function CompanyPositionTable({ socket }) {
                             <ClosedPnl marketData={marketData} tradeData={tradeData} data={data}/>
                         </div>
                     </div>
-           
                 </div>
             </div>
         </div>

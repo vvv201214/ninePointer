@@ -4,10 +4,11 @@ import axios from "axios";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons';  
 
-export default function RunningPnl({marketData, tradeData, data}) {
+export default function RunningPnl({marketData, tradeData, data, Render}) {
     let date = new Date();
     // let todayDate = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`
     // let fake_date = "1-12-2022"
+    // const { reRender, setReRender } = Render;
     const [pnlData, setPnlData] = useState([]);
     const [liveDetail, setLiveDetail] = useState([])
     console.log("tradedata", tradeData);
@@ -117,6 +118,7 @@ export default function RunningPnl({marketData, tradeData, data}) {
                             :
                             <td className="grid2_td">{liveDetail[index]?.change.toFixed(2)}</td>}
                     </tr>}
+                    {/* {reRender ? setReRender(false) : setReRender(true)} */}
                 </>
                 )
             })
@@ -126,8 +128,14 @@ export default function RunningPnl({marketData, tradeData, data}) {
             <th></th>
             <th></th>
             <th></th>
+            {Total ?
+            <>
             <th className='pnl_Total'>TOTAL</th>
-            <th className='pnl_Total' style={Total>0 ? {color: "green"} : {color: "red"} }>{Total.toFixed(2)}</th>
+            <th className='pnl_Total'style={Total>0 ? {color: "green"} : {color: "red"} }>{Total.toFixed(2)}</th>
+            </>
+            :
+            <th></th>
+            }
             <th></th>
         </tr>
     </table>

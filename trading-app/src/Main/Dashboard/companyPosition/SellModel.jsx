@@ -6,7 +6,7 @@ import uniqid from "uniqid"
 import { userContext } from "../../AuthContext";
 import Styles from "./SellModel.module.css";
 
-export default function SellModel({marketData, uIdProps, Render }) {
+export default function SellModel({marketData, uIdProps, Render, isCompany }) {
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
     const { reRender, setReRender } = Render;
@@ -58,7 +58,8 @@ export default function SellModel({marketData, uIdProps, Render }) {
         validity: "DAY",
         last_price: "",
         brokerageCharge: "",
-        totalAmount: ""
+        totalAmount: "",
+        instrumentToken: ""
     })
     let [accessTokenDetails, setAccessToken] = useState([]);
     let [apiKeyDetails, setApiKey] = useState([]);
@@ -234,10 +235,10 @@ export default function SellModel({marketData, uIdProps, Render }) {
                     if(subElem.isRealTradeEnable || elem.isRealTrade){
                         sendOrderReq();
                         // mockTradeUser("yes");
-                        mockTradeCompany(elem);
+                        mockTradeCompany(elem, "yes");
                     } else{
                         // mockTradeUser("no");
-                        mockTradeCompany(elem);
+                        mockTradeCompany(elem, "no");
                     }
                 }
             })
@@ -261,7 +262,8 @@ export default function SellModel({marketData, uIdProps, Render }) {
             return elem.uId === uIdProps;
         })
         Details.exchange = getSomeData[0].exchange;
-        Details.symbol = getSomeData[0].symbol
+        Details.symbol = getSomeData[0].symbol;
+        Details.instrumentToken = getSomeData[0].instrumentToken;
 
         let getLivePrice = marketData.filter((elem) => {
             return getSomeData[0].instrumentToken === elem.instrument_token;
@@ -276,7 +278,9 @@ export default function SellModel({marketData, uIdProps, Render }) {
         // Algo box applied here....
         if(userPermissionAlgo.length){
             setDetails(Details)
-            mockTradeUser("no");
+            // if(!isCompany){
+            //     mockTradeUser("no");
+            // }
             tradingAlgo(uId, Details.last_price);
         }else{
             companyTrade.realBuyOrSell = "SELL";
@@ -299,13 +303,17 @@ export default function SellModel({marketData, uIdProps, Render }) {
                 productChange: "no algo",
                 tradingAccount: "no algo"
             }
-            mockTradeUser("no");
-            mockTradeCompany(fakeAlgo);
+            // if(!isCompany){
+            //     mockTradeUser("no");
+            // }
+            mockTradeCompany(fakeAlgo, "no");
             // must keep inside both if and else
             setModal(!modal);        
         }    
 
-        reRender ? setReRender(false) : setReRender(true)
+        let id = setTimeout(()=>{
+            reRender ? setReRender(false) : setReRender(true)
+        }, 1000);
     }
 
     async function sendOrderReq() {
@@ -363,8 +371,9 @@ export default function SellModel({marketData, uIdProps, Render }) {
         //     window.alert("Market is closed now");
         //     return;
         // }
-        const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price } = Details;
+        const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, instrumentToken } = Details;
         // const {algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount} = algoBox
+
         const res = await fetch(`${baseUrl}api/v1/mocktradeuser`, {
             method: "POST",
             headers: {
@@ -372,7 +381,7 @@ export default function SellModel({marketData, uIdProps, Render }) {
             },
             body: JSON.stringify({
                 exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, createdBy, userId, createdOn, uId,
-                isRealTrade:realTrade, order_id:dummyOrderId
+                isRealTrade:realTrade, order_id:dummyOrderId, instrumentToken
                 // , algoBox: {algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount}
             })
         });
@@ -389,16 +398,18 @@ export default function SellModel({marketData, uIdProps, Render }) {
 
     }
 
-    async function mockTradeCompany(algoBox){
+    async function mockTradeCompany(algoBox, realTrade){
         // let currentTime = `${date.getHours()}:${date.getMinutes()}`
-        // if(currentTime > "15:30" && currentTime < "9:15"){
-        //     window.alert("Market is closed now");
+        // console.log("currentTime", currentTime);
+        // if(currentTime > "15:30" || currentTime < "9:15"){
+        //     console.log("current if")
+        //     // window.alert("Market is closed now");
         //     return;
         // }
-        const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price } = Details;
+        // console.log("compny side", exchange, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount, realBuyOrSell, realSymbol, realQuantity, real_last_price);
+        const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, instrumentToken } = Details;
         const { algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount } = algoBox;
         const { realBuyOrSell, realSymbol, realQuantity, realInstrument, realBrokerage, realAmount, real_last_price } = companyTrade;
-
         const res = await fetch(`${baseUrl}api/v1/mocktradecompany`, {
             method: "POST",
             headers: {
@@ -408,7 +419,7 @@ export default function SellModel({marketData, uIdProps, Render }) {
                 exchange, symbol: realSymbol, buyOrSell: realBuyOrSell, Quantity: realQuantity, Price, Product, OrderType, TriggerPrice, 
                 stopLoss, validity, variety, last_price: real_last_price, createdBy, userId, createdOn, uId, 
                 algoBox: {algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, 
-                productChange, tradingAccount}, order_id:dummyOrderId
+                productChange, tradingAccount}, order_id:dummyOrderId, instrumentToken, realTrade
 
             })
         });
@@ -418,10 +429,12 @@ export default function SellModel({marketData, uIdProps, Render }) {
             console.log("Failed to Trade");
         } else {
             console.log(dataResp);
-            // window.alert("Trade succesfull");
+            if(isCompany){
+                window.alert("Trade succesfull");
+            }
             console.log("entry succesfull");
         }
-
+        
     }
   
     return (

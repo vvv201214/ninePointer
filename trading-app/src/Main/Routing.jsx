@@ -28,6 +28,8 @@ import TradersOrders from './Dashboard/TradersOrders';
 import TradersPosition from './Dashboard/tradersPosition/TradersPosition';
 import "./Main.css"
 import UserSelect from './User/UserSelect/UserSelect';
+import ReportsMain from './Reports/ReportsMain';
+import Reports from './Reports/Reports';
 
 
 export default function Routing() {
@@ -71,6 +73,9 @@ export default function Routing() {
                             <Route path='/main/dashboard' element={<TradersPosition/>}></Route>
                             <Route path='/main/dashboard/CompanyOrders' element={<CompanyOrders/>}></Route>
                             <Route path='/main/dashboard/TradersOrders' element={<TradersOrders info={details}/>}></Route>
+                        </Route>
+                        <Route path='/main/report' element={<ReportsMain/>}>
+                            <Route path='/main/report' element={<Reports/>}></Route>
                         </Route>
                         {/* // :
                         // <Route path='/main/dashboard' element={<DashboardMain/>}>
