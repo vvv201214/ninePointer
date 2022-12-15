@@ -112,9 +112,9 @@ function TraderPositionTable({ socket }) {
 
                                             {console.log(updatedMarketData[0], updatedMarketData[0]?.change)}
                                             {(updatedMarketData[0]?.change === undefined) ? 
-                                            <td className="grid2_td">{((updatedMarketData[0]?.last_price-updatedMarketData[0]?.average_price)/updatedMarketData[0]?.average_price).toFixed(2)}</td>
+                                            <td className="grid2_td">{(Math.abs((updatedMarketData[0]?.last_price-updatedMarketData[0]?.average_price)/updatedMarketData[0]?.average_price)).toFixed(2)}%</td>
                                             :
-                                            <td className="grid2_td">{updatedMarketData[0]?.change.toFixed(2)}</td>}
+                                            <td className="grid2_td">{updatedMarketData[0]?.change.toFixed(2)}%</td>}
 
                                             <td className="grid2_th companyPosition_BSbtn2"><div className="companyPosition_BSbtn">
                                             <ByModal Render={{setReRender, reRender}} marketData={marketData} uIdProps={elem.uId} />

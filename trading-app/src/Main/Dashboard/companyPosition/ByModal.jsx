@@ -270,7 +270,7 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany }) {
 
         // Algo box applied here....
 
-        if (userPermissionAlgo.length) {
+        if (userPermissionAlgo.length && !isCompany) {
             setDetails(Details)
             console.log("Details", Details);
             // if(!isCompany){
@@ -413,7 +413,7 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany }) {
                 "content-type": "application/json"
             },
             body: JSON.stringify({
-                exchange, symbol: realSymbol, buyOrSell: realBuyOrSell, Quantity: realQuantity, Price, Product, OrderType, TriggerPrice, 
+                exchange, symbol: realSymbol, buyOrSell, realBuyOrSell, Quantity, realQuantity, Price, Product, OrderType, TriggerPrice, 
                 stopLoss, validity, variety, last_price: real_last_price, createdBy, userId, createdOn, uId, 
                 algoBox: {algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, 
                 productChange, tradingAccount}, order_id:dummyOrderId, instrumentToken, realTrade
@@ -426,9 +426,7 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany }) {
             console.log("Failed to Trade");
         } else {
             console.log(dataResp);
-            if(isCompany){
-                window.alert("Trade succesfull");
-            }
+            window.alert("Trade succesfull");
             console.log("entry succesfull");
         }
         
