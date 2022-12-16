@@ -12,64 +12,73 @@ export default function OverallPnl({marketData, tradeData, data}) {
 
     const [overallPnlArr, setOverallPnlArr] = useState([]);
     const [liveDetail, setLiveDetail] = useState([]);
-    var Total = 0;
+    const [avgPrice, setAvgPrice] = useState([]);
 
+    var Total = 0;
+    let avgPriceArr = [];
     useEffect(()=>{
 
         console.log(data);
-
+        let AvgPriceHash = new Map();
+        avgPriceArr.push(data[0])
+        for(let i = 0; i < data.length; i++){
+            if(avgPriceArr[avgPriceArr.length-1].symbol !== data[i].symbol){
+                avgPriceArr.push(data[i]);
+                break;
+            }
+        }
+        setAvgPrice(avgPriceArr)
+        console.log("avgPriceArr", avgPriceArr);
+        
         let hash = new Map();
+
         for(let i = data.length-1; i >= 0 ; i--){
             if(hash.has(data[i].symbol)){
                 let obj = hash.get(data[i].symbol);
-                if(obj.buyOrSell === data[i].buyOrSell){
-                    obj.average_price = ((Number(obj.average_price) * Number(obj.Quantity)) 
-                    + (Number(data[i].average_price) * Number(data[i].Quantity)))/(Number(data[i].Quantity) 
-                    + Number(obj.Quantity));
-
-                    obj.Quantity = Number(obj.Quantity) + Number(data[i].Quantity);
-                    if(Number(obj.Quantity) >= 0){
-                        obj.buyOrSell = "BUY";
-                    } else if((obj.Quantity) < 0){
-                        obj.buyOrSell = "SELL"
-                    }
-                } else{
-                    if(Number(obj.Quantity) > 0){
-                        obj.average_price_buying = obj.average_price;
-                        obj.average_price_selling = Number(data[i].average_price)
-                    } else if(Number(obj.Quantity) < 0){
-                        obj.average_price_selling = obj.average_price;
-                        obj.average_price_buying = Number(data[i].average_price)
-                    }
-
-                    if(Number(obj.Quantity) + Number(data[i].Quantity) === 0){
-                        obj.average_price = 0;
-                    } else {
-                        obj.average_price = ((Number(obj.average_price) * Number(obj.Quantity)) 
-                        + (Number(data[i].average_price) * Number(data[i].Quantity)))/(Number(data[i].Quantity) 
-                        + Number(obj.Quantity));
-                    }
-
-                    if(obj.closed_quantity !== undefined){
-                        obj.closed_quantity += Math.min(Math.abs(Number(obj.Quantity)), Math.abs(Number(data[i].Quantity)));
+                if(data[i].buyOrSell === "BUY"){
+                    if(obj.totalBuy === undefined || obj.totalBuyLot === undefined){
+                        obj.totalBuy = Number(data[i].average_price) * (Number(data[i].Quantity))
+                        obj.totalBuyLot = (Number(data[i].Quantity))
                     } else{
-                        obj.closed_quantity = Math.min(Math.abs(Number(obj.Quantity)), Math.abs(Number(data[i].Quantity)));
+                        obj.totalBuy = obj.totalBuy + Number(data[i].average_price) * (Number(data[i].Quantity))
+                        obj.totalBuyLot = obj.totalBuyLot + (Number(data[i].Quantity)) 
                     }
-                    obj.Quantity = Number(obj.Quantity) + Number(data[i].Quantity);
-                    if(Number(obj.Quantity) >= 0){
-                        obj.buyOrSell = "BUY";
-                    } else if((obj.Quantity) < 0){
-                        obj.buyOrSell = "SELL"
-                    } 
+
+
+                    console.log("obj.totalBuy", obj.totalBuy, "totalBuyLot", obj.totalBuyLot)
+                } if(data[i].buyOrSell === "SELL"){
+                    if( obj.totalSell === undefined || obj.totalSellLot === undefined){
+
+                        obj.totalSell = Number(data[i].average_price) * (Number(data[i].Quantity))
+                        obj.totalSellLot = (Number(data[i].Quantity)) 
+                    } else{
+
+                        obj.totalSell = obj.totalSell + Number(data[i].average_price) * (Number(data[i].Quantity))
+                        obj.totalSellLot = obj.totalSellLot + (Number(data[i].Quantity)) 
+                    }
+
+                    console.log("obj.totalSell", obj.totalSell, "totalSellLot", obj.totalSellLot)
                 }
             }  else{
-                hash.set(data[i].symbol, {
-                    buyOrSell : data[i].buyOrSell,
-                    Quantity : Number(data[i].Quantity),
-                    average_price: Number(data[i].average_price),
-                    Product: data[i].Product,
-                    symbol: data[i].symbol
-                })
+                if(data[i].buyOrSell === "BUY"){
+                    hash.set(data[i].symbol, {
+                        totalBuy : Number(data[i].average_price) * (Number(data[i].Quantity)),
+                        totalBuyLot : (Number(data[i].Quantity)) ,
+                        totalSell: 0,
+                        totalSellLot: 0,
+                        symbol: data[i].symbol,
+                        Product: data[i].Product
+                    })
+                }if(data[i].buyOrSell === "SELL"){
+                    hash.set(data[i].symbol, {
+                        totalSell : Number(data[i].average_price) * (Number(data[i].Quantity)),
+                        totalSellLot : (Number(data[i].Quantity)) ,
+                        totalBuy : 0,
+                        totalBuyLot: 0,
+                        symbol: data[i].symbol,
+                        Product: data[i].Product
+                    })
+                }
             }
         }
         console.log(hash);
@@ -78,10 +87,6 @@ export default function OverallPnl({marketData, tradeData, data}) {
         for (let value of hash.values()){
             overallPnl.push(value);
         }
-
-
-        setOverallPnlArr(overallPnl);
-        console.log("details array", overallPnl);
 
         let liveDetailsArr = [];
         overallPnl.map((elem)=>{
@@ -100,6 +105,9 @@ export default function OverallPnl({marketData, tradeData, data}) {
             })
         })
 
+        setOverallPnlArr(overallPnl);
+        console.log("details array", overallPnl);
+
         setLiveDetail(liveDetailsArr);
 
     }, [marketData])
@@ -110,7 +118,7 @@ export default function OverallPnl({marketData, tradeData, data}) {
                 <th className="grid2_th">Product</th>
                 <th className="grid2_th">Instrument</th>
                 <th className="grid2_th">Quantity</th>
-                <th className="grid2_th">Avg. Price (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
+                <th className="grid2_th">Avg. Price(<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
                 <th className="grid2_th">LTP (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
                 <th className="grid2_th">P&L (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
                 <th className="grid2_th">%Change</th>
@@ -118,53 +126,26 @@ export default function OverallPnl({marketData, tradeData, data}) {
             {
             overallPnlArr.map((elem, index)=>{
 
-                Total+= (elem.average_price_selling === undefined || elem.average_price_buying === undefined)
-                ?
-                Number((((liveDetail[index]?.last_price)*(elem.Quantity)) - (elem.average_price*elem.Quantity)))
-                :
-                Number((((elem.average_price_selling * elem.closed_quantity) - (elem.average_price_buying * elem.closed_quantity))
-                            + 
-                            (((liveDetail[index]?.last_price)*(elem.Quantity)) - (elem.average_price*elem.Quantity)
-                            )))
+                let tempavgPriceArr = avgPrice.filter((element)=>{
+                    return elem.symbol === element.symbol;
+                })
 
+                Total += (-(elem.totalBuy+elem.totalSell-(elem.totalBuyLot+elem.totalSellLot)*liveDetail[index]?.last_price))
 
                 console.log(typeof(Total));
 
-                let updatedValue = (elem.average_price_selling === undefined || elem.average_price_buying === undefined)
-                ?
-                Number((((liveDetail[index]?.last_price)*(elem.Quantity)) - (elem.average_price*elem.Quantity))).toFixed(2)
-                :
-                Number((((elem.average_price_selling * elem.closed_quantity) - (elem.average_price_buying * elem.closed_quantity))
-                            + 
-                            (((liveDetail[index]?.last_price)*(elem.Quantity)) - (elem.average_price*elem.Quantity)
-                            ))).toFixed(2)
-
-                // let updatedValue = (((elem.average_price_selling * elem.closed_quantity) - (elem.average_price_buying * elem.closed_quantity))
-                // + 
-                // (((liveDetail[index]?.last_price)*(elem.Quantity)) - (elem.average_price*elem.Quantity)
-                // )).toFixed(2)
-                                  
-                return( // (elem.average_price).toFixed(2)
+                let updatedValue = (-(elem.totalBuy+elem.totalSell-(elem.totalBuyLot+elem.totalSellLot)*liveDetail[index]?.last_price)).toFixed(2)
+            
+                return(
                     <>
-                    {/* {elem.Quantity !== 0 && */} 
                     <tr className="grid2_tr" style={updatedValue>=0.00 ? { color: "green"}:  { color: "red"}} key={index}>
                         <td className="grid2_td" style={{color : "black"}}>{elem.Product}</td>
                         <td className="grid2_td">{elem.symbol}</td>
-                        <td className="grid2_td">{elem.Quantity}</td>
-                        {elem.average_price_buying === undefined ?
-                        <td className="grid2_td">{(elem.average_price).toFixed(2)}</td>
-                        :
-                        <td className="grid2_td">{(((elem.average_price_buying * elem.closed_quantity) + (elem.average_price * elem.Quantity))/(elem.Quantity + elem.closed_quantity)).toFixed(2)}</td>}
+                        <td className="grid2_td">{elem.totalBuyLot + elem.totalSellLot}</td>
+                        <td className="grid2_td">{(tempavgPriceArr[0].average_price).toFixed(2)}</td>
+                        
                         <td className="grid2_td">{liveDetail[index]?.last_price.toFixed(2)}</td>
-                        {elem.average_price_selling === undefined ?
-                        <td className="grid2_td">
-                            {(((liveDetail[index]?.last_price)*(elem.Quantity)) - (elem.average_price*elem.Quantity)).toFixed(2)}
-                        </td>
-                        :
-                        <th className="grid2_td">{(((elem.average_price_selling * elem.closed_quantity) - (elem.average_price_buying * elem.closed_quantity)) 
-                                                + 
-                                                (((liveDetail[index]?.last_price)*(elem.Quantity)) - (elem.average_price*elem.Quantity)
-                                                )).toFixed(2)}</th> }
+                        <td className="grid2_td">{(-(elem.totalBuy+elem.totalSell-(elem.totalBuyLot+elem.totalSellLot)*liveDetail[index]?.last_price)).toFixed(2)}</td>
 
                         {liveDetail[index]?.change === undefined ?
                         <td className="grid2_td">{(Math.abs((liveDetail[index]?.last_price-liveDetail[index]?.average_price)/liveDetail[index]?.average_price)).toFixed(2)}%</td>//{((liveDetail[index]?.last_price - elem.average_price)/(elem.last_price)).toFixed(2)}
@@ -194,5 +175,6 @@ export default function OverallPnl({marketData, tradeData, data}) {
         </table>
   )
 }
+
 
 

@@ -65,7 +65,7 @@ const mockTradeSchema = new mongoose.Schema({
         type: String,
         required: true        
     },
-    realBrokerage:{
+    brokerage:{
         type: String,        
     },
     isRealTrade:{ 

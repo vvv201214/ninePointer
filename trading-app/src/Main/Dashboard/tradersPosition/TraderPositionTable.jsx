@@ -128,14 +128,14 @@ function TraderPositionTable({ socket }) {
                         <div className="grid_2">
                                 <OverallPnl marketData={marketData} tradeData={tradeData} data={data}/>
                         </div>
-                        <span className="grid2_span">Running PNL-Trader</span>
+                        {/* <span className="grid2_span">Running PNL-Trader</span>
                         <div className="grid_2">
                             <RunningPnl marketData={marketData} tradeData={tradeData} data={data}/>
                         </div>
                         <span className="grid2_span">Closed Trades PNL-Trader</span>
                         <div className="grid_2">
                                 <ClosedPnl marketData={marketData} tradeData={tradeData} data={data}/>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>

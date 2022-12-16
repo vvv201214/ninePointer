@@ -15,7 +15,6 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany }) {
     let createdOn = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}`
     let createdBy = getDetails.userDetails.name;
     let userId = getDetails.userDetails.email;
-    let totalAmount = 0;
     let tradeBy = isCompany ? "company" : getDetails.userDetails.name;
     let dummyOrderId = `${date.getFullYear()-2000}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}${Math.floor(100000000 + Math.random() * 900000000)}`
 
@@ -58,7 +57,9 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany }) {
         last_price: "",
         brokerageCharge: "",
         totalAmount: "",
-        instrumentToken: ""
+        instrumentToken: "",
+        userBrokerage: "",
+        companyBrokerage: ""
     })
     let [accessTokenDetails, setAccessToken] = useState([]);
     let [apiKeyDetails, setApiKey] = useState([]);
@@ -346,7 +347,7 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany }) {
 
     function buyBrokerageCharge(brokerageData, quantity, totalAmount) {
         let buyBrokerage = brokerageData.filter((elem) => {
-            return elem.transaction === "BUY"
+            return elem.transaction === "BUY";
         })
         let brokerage = Number(buyBrokerage[0].brokerageCharge);
         // let totalAmount = Number(Details.last_price) * Number(quantity);
@@ -357,7 +358,7 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany }) {
         let stampDuty = totalAmount * (Number(buyBrokerage[0].stampDuty) / 100);
         let sst = totalAmount * (Number(buyBrokerage[0].sst) / 100);
         let finalCharge = brokerage + exchangeCharge + gst + sebiCharges + stampDuty + sst;
-        return finalCharge
+        return finalCharge ;
     }
 
     async function mockTradeUser(realTrade){ // have to add some feild according to auth
