@@ -39,8 +39,10 @@
     color: white;
     border: none;
     font-weight: bold;
-    height: 2rem;
-    padding: 5px;
+    font-size: 10px;
+    align-items: center;
+    height: 1.5rem;
+    padding: 2px;
 }
 .addUserBtn:hover {
     cursor:pointer;

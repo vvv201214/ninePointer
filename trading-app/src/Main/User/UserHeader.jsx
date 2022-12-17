@@ -11,9 +11,9 @@ export default function UserHeader(){
             <li>
                 <NavLink to={"/main/user/roles"}>Roles</NavLink>
             </li>
-            <li>
+            {/* <li>
                 <NavLink to={"/main/user/UserSelect"}>UserSelect</NavLink>
-            </li>
+            </li> */}
         </ul>
         <Outlet/>
     </>
