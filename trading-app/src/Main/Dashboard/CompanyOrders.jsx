@@ -29,28 +29,33 @@ function CompanyOrders(){
                                 <tr className="grid2_tr">
                                     <th className="grid2_th">Timestamp</th>
                                     <th className="grid2_th">OrderID</th>
-                                    <th className="grid2_th">Trade By</th>
+                                    <th className="grid2_th">Trader</th>
                                     <th className="grid2_th">Type</th>
                                     <th className="grid2_th">Instrument</th>
                                     <th className="grid2_th">Product</th>
                                     <th className="grid2_th">Quantity</th>
                                     <th className="grid2_th">Avg.Price (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign}/>)</th>
-                                    <th className="grid2_th">AlgoName</th>
                                     <th className="grid2_th">Status</th>
+                                    <th className="grid2_th">AlgoName</th>
+                                    <th className="grid2_th">Account</th>
+                                    
                                 </tr> 
                                 {data.map((elem)=>{
                                     return(
                                         <tr className="grid2_tr" key={elem.guid}>
                                             <td className="grid2_td">{elem.order_timestamp}</td>
                                             <td className="grid2_td">{elem.order_id}</td>
-                                            <td className="grid2_td">{elem.createdBy}</td>
-                                            <td className="grid2_td" style={elem.buyOrSell == "BUY" ? {color : "#428BCA",backgroundColor : "#b3ccff"}:{color : "red", backgroundColor : "#ffb3b3"}}>{elem.buyOrSell}</td>
+                                            <td className="grid2_td" style={{fontWeight : 800}}>{elem.createdBy}</td>
+                                            {/* <td className="grid2_td" style={elem.buyOrSell == "BUY" ? {color : "#428BCA",backgroundColor : "#b3ccff",fontWeight : 800,borderRadius : 4,textAlign : "center"}:{color : "red", backgroundColor : "#ffb3b3",fontWeight : 800,borderRadius : 4,textAlign : "center"}}>{elem.buyOrSell}</td> */}
+                                            <td className="grid2_td" style={elem.buyOrSell == "BUY" ? {color : "#428BCA",backgroundColor : "#b3ccff",fontWeight : 800,textAlign : "center"}:{color : "red", backgroundColor : "#ffb3b3",fontWeight : 800,textAlign : "center"}}>{elem.buyOrSell}</td>
                                             <td className="grid2_td">{elem.symbol}</td>
                                             <td className="grid2_td">{elem.Product}</td>
-                                            <td className="grid2_td">{elem.Quantity}</td>
+                                            <td className="grid2_td" style={elem.Quantity < 0 ? {color : "red", backgroundColor : "#ffb3b3",fontWeight : 800,textAlign : "center"}:{color : "#428BCA",backgroundColor : "#b3ccff",fontWeight : 800,textAlign : "center"}}>{elem.Quantity}</td>
                                             <td className="grid2_td">{elem.average_price}</td>
+                                            <td className="grid2_td" style={{color : "#008000",backgroundColor : "#99ff99",fontWeight : 800}}>{elem.status}</td>
                                             <td className="grid2_td">{elem.algoBox.algoName}</td>
-                                            <td className="grid2_td" style={{color : "#008000",backgroundColor : "#99ff99"}}>{elem.status}</td>
+                                            <td className="grid2_td">{elem.algoBox.tradingAccount}</td>
+                                            
                                         </tr> 
                                     )
                                 })}        
