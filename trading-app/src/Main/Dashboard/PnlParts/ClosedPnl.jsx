@@ -127,8 +127,8 @@ export default function ClosedPnl({marketData, tradeData, data}) {
             <th className="grid2_th">Product</th>
             <th className="grid2_th">Instruments</th>
             <th className="grid2_th">Quantity</th>
-            <th className="grid2_th">Avg. Buy price (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
-            <th className="grid2_th">Avg. Sell price (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
+            <th className="grid2_th">Avg. Buy Price (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
+            <th className="grid2_th">Avg. Sell Price (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
             <th className="grid2_th">P&L (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
             <th className="grid2_th">%Change</th>
         </tr>

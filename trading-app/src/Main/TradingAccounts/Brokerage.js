@@ -92,7 +92,7 @@ function Brokerage() {
             <div className="main_Container">
                 <div className="right_side">
                     <div className="rightside_maindiv">
-                        <button onClick={toggleModal} className="Ac_btn">Add Trading Parameters</button>
+                        <button onClick={toggleModal} className="Ac_btn">Create Brokerage Details</button>
                         {modal && (
                             <div className="modal">
                                 <div onClick={toggleModal} className="overlay"></div>
