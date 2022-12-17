@@ -69,6 +69,7 @@ router.get("/getliveprice", async (req, res)=>{
             obj.last_price = response.data.data[instrument].last_price;
             obj.instrument_token = response.data.data[instrument].instrument_token;
             obj.average_price = response.data.data[instrument].average_price;
+            obj.timestamp = response.data.data[instrument].timestamp
             arr.push(obj);
         //   arr.push(res.data.data[instrument].last_price);
         }

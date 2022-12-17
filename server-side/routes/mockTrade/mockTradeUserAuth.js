@@ -92,4 +92,15 @@ router.get("/readmocktradeuser/:id", (req, res)=>{
     })
 })
 
+router.get("/readmocktradeuseremail/:email", (req, res)=>{
+    const {email} = req.params
+    MockTradeDetails.find({userId: email})
+    .then((data)=>{
+        return res.status(200).send(data);
+    })
+    .catch((err)=>{
+        return res.status(422).json({error : "date not found"})
+    })
+})
+
 module.exports = router;

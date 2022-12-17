@@ -662,14 +662,14 @@ async function parameters(io, socket) {
       }
  
       async function onError(error) {
-        try{
-          let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
-            let liveData = await axios.get(`${baseUrl}api/v1/getliveprice`)
-              let ticks = liveData.data
-              socket.emit('tick', ticks);
-        } catch(err){
-          throw new Error(err)
-        }
+        // try{
+        //   let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+        //     let liveData = await axios.get(`${baseUrl}api/v1/getliveprice`)
+        //       let ticks = liveData.data
+        //       socket.emit('tick', ticks);
+        // } catch(err){
+        //   throw new Error(err)
+        // }
         console.log('Closed connection on error', error);
         // console.log(eventEmitOnError);
         // if(eventEmitOnError){

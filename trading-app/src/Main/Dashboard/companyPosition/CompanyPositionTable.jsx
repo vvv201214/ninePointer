@@ -15,16 +15,23 @@ import { faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons';
 function CompanyPositionTable({ socket }) {
     const getDetails = useContext(userContext);
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
-
     
     const [tradeData, setTradeData] = useState([]);
     const [reRender, setReRender] = useState(true);
     const [marketData, setMarketData] = useState([]);
+    const [userDetail, setUserDetail] = useState([]);
     const [data, setData] = useState([]);
     let date = new Date();
     let todayDate = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`
     let fake_date = "14-12-2022"
     useEffect(() => {
+
+        axios.get(`${baseUrl}api/v1/readuserdetails`)
+        .then((res) => {
+            setUserDetail(res.data);
+        }).catch((err)=>{
+            return new Error(err);
+        })
 
         axios.get(`${baseUrl}api/v1/readmocktradecompany`)
         .then((res) => {

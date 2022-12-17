@@ -20,34 +20,6 @@ router.post("/mocktradecompany", async (req, res)=>{
         const brokerageDetailSell = await BrokerageDetail.find({transaction:"SELL"});
 
 
-        // function buyBrokerage(totalAmount){
-        //     let brokerage = Number(brokerageDetailBuy[0].brokerageCharge);
-        //     // let totalAmount = Number(Details.last_price) * Number(quantity);
-        //     let exchangeCharge = totalAmount * (Number(brokerageDetailBuy[0].exchangeCharge) / 100);
-        //     // console.log("exchangeCharge", exchangeCharge, totalAmount, (Number(brokerageDetailBuy[0].exchangeCharge)));
-        //     let gst = (brokerage + exchangeCharge) * (Number(brokerageDetailBuy[0].gst) / 100);
-        //     let sebiCharges = totalAmount * (Number(brokerageDetailBuy[0].sebiCharge) / 100);
-        //     let stampDuty = totalAmount * (Number(brokerageDetailBuy[0].stampDuty) / 100);
-        //     // console.log("stampDuty", stampDuty);
-        //     let sst = totalAmount * (Number(brokerageDetailBuy[0].sst) / 100);
-        //     let finalCharge = brokerage + exchangeCharge + gst + sebiCharges + stampDuty + sst;
-        //     return finalCharge;
-        // }
-    
-        // function sellBrokerage(totalAmount){
-        //     let brokerage = Number(brokerageDetailSell[0].brokerageCharge);
-        //     // let totalAmount = Number(Details.last_price) * Number(quantity);
-        //     let exchangeCharge = totalAmount * (Number(brokerageDetailSell[0].exchangeCharge) / 100);
-        //     let gst = (brokerage + exchangeCharge) * (Number(brokerageDetailSell[0].gst) / 100);
-        //     let sebiCharges = totalAmount * (Number(brokerageDetailSell[0].sebiCharge) / 100);
-        //     let stampDuty = totalAmount * (Number(brokerageDetailSell[0].stampDuty) / 100);
-        //     let sst = totalAmount * (Number(brokerageDetailSell[0].sst) / 100);
-        //     let finalCharge = brokerage + exchangeCharge + gst + sebiCharges + stampDuty + sst;
-    
-        //     return finalCharge
-        // }
-
-
     if(!exchange || !symbol || !buyOrSell || !Quantity || !Product || !OrderType || !validity || !variety || !last_price || !algoName || !transactionChange || !instrumentChange || !exchangeChange || !lotMultipler || !productChange || !tradingAccount || !instrumentToken){
         console.log(Boolean(exchange)); console.log(Boolean(symbol)); console.log(Boolean(buyOrSell)); console.log(Boolean(Quantity)); console.log(Boolean(Product)); console.log(Boolean(OrderType)); console.log(Boolean(validity)); console.log(Boolean(variety)); console.log(Boolean(last_price)); console.log(Boolean(algoName)); console.log(Boolean(transactionChange)); console.log(Boolean(instrumentChange)); console.log(Boolean(exchangeChange)); console.log(Boolean(lotMultipler)); console.log(Boolean(productChange)); console.log(Boolean(tradingAccount));
         console.log("data nhi h pura");
@@ -63,15 +35,17 @@ router.post("/mocktradecompany", async (req, res)=>{
 
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
     let originalLastPrice;
-    let a;
+    let newTimeStamp = "";
     try{
         
         let liveData = await axios.get(`${baseUrl}api/v1/getliveprice`)
+        
         for(let elem of liveData.data){
+            console.log(elem)
             if(elem.instrument_token == instrumentToken){
-
+                newTimeStamp = elem.timestamp;
                 originalLastPrice = elem.last_price;
-                console.log("originalLastPrice 38 line", originalLastPrice)
+                console.log("originalLastPrice 38 line", originalLastPrice, newTimeStamp)
             }
         }
 
@@ -131,7 +105,7 @@ router.post("/mocktradecompany", async (req, res)=>{
         }
         const mockTradeDetails = new MockTradeDetails({
             status:"COMPLETE", uId, createdBy, average_price: originalLastPrice, Quantity: realQuantity, 
-            Product, buyOrSell:realBuyOrSell, order_timestamp: createdOn,
+            Product, buyOrSell:realBuyOrSell, order_timestamp: newTimeStamp,
             variety, validity, exchange, order_type: OrderType, symbol, placed_by: "ninepointer", userId,
              algoBox:{algoName, transactionChange, instrumentChange, exchangeChange, 
             lotMultipler, productChange, tradingAccount}, order_id, instrumentToken, brokerage: brokerageCompany
@@ -150,7 +124,7 @@ router.post("/mocktradecompany", async (req, res)=>{
             return res.status(422).json({error : "date already exist..."})
         }
         const mockTradeDetailsUser = new MockTradeDetailsUser({
-            status:"COMPLETE", uId, createdBy, average_price: originalLastPrice, Quantity, Product, buyOrSell, order_timestamp: createdOn,
+            status:"COMPLETE", uId, createdBy, average_price: originalLastPrice, Quantity, Product, buyOrSell, order_timestamp: newTimeStamp,
             variety, validity, exchange, order_type: OrderType, symbol, placed_by: "ninepointer", userId,
             isRealTrade: realTrade, order_id, instrumentToken, brokerage: brokerageUser
         });
