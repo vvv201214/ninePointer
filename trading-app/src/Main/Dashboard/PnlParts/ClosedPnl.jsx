@@ -12,7 +12,7 @@ export default function ClosedPnl({marketData, tradeData, data}) {
 
     const [closedPnlArr, setClosedPnlArr] = useState([]);
     const [liveDetail, setLiveDetail] = useState([]);
-
+    let showTotal = true;
     useEffect(()=>{
 
         // axios.get("http://localhost:5000/usertradedata")
@@ -120,13 +120,14 @@ export default function ClosedPnl({marketData, tradeData, data}) {
             <th className="grid2_th">Product</th>
             <th className="grid2_th">Instruments</th>
             <th className="grid2_th">Quantity</th>
-            <th className="grid2_th">Avg. Buy price (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
-            <th className="grid2_th">Avg. Sell price (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
+            <th className="grid2_th">Avg. Buy Price (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
+            <th className="grid2_th">Avg. Sell Price (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
             <th className="grid2_th">P&L (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
             <th className="grid2_th">%Change</th>
         </tr>
         {
          closedPnlArr.map((elem, index)=>{
+            elem.average_price_selling && (showTotal = false)
 
             Total+= ((elem.average_price_selling !== undefined || elem.average_price_buying !== undefined) &&
             Number((((elem.average_price_selling * elem.closed_quantity) - (elem.average_price_buying * elem.closed_quantity)))))
@@ -160,7 +161,7 @@ export default function ClosedPnl({marketData, tradeData, data}) {
             <th></th>
             <th></th>
             <th></th>
-            {closedPnlArr.length ?
+            {!showTotal ?
             <>
             <th className='pnl_Total'>TOTAL</th>
             <th className='pnl_Total' style={Total>=0 ? {color: "green"} : {color: "red"} }>{Total.toFixed(2)}</th>

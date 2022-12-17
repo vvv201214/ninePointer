@@ -10,51 +10,51 @@ import RunningPnl from "../PnlParts/RunningPnl";
 import ClosedPnl from "../PnlParts/ClosedPnl";
 import OverallPnl from "../PnlParts/OverallPnl";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons';  
+import { faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons';
 
 function CompanyPositionTable({ socket }) {
     const getDetails = useContext(userContext);
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
-    
+
     const [tradeData, setTradeData] = useState([]);
     const [reRender, setReRender] = useState(true);
     const [marketData, setMarketData] = useState([]);
     const [data, setData] = useState([]);
     let date = new Date();
-    let todayDate = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`
+    let todayDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
     let fake_date = "14-12-2022"
     useEffect(() => {
 
         axios.get(`${baseUrl}api/v1/readmocktradecompany`)
-        .then((res) => {
-            let data = (res.data).filter((elem)=>{
-                return elem.order_timestamp.includes(todayDate) && elem.status === "COMPLETE";
+            .then((res) => {
+                let data = (res.data).filter((elem) => {
+                    return elem.order_timestamp.includes(todayDate) && elem.status === "COMPLETE";
+                })
+                setData(data);
+            }).catch((err) => {
+                return new Error(err);
             })
-            setData(data);
-        }).catch((err)=>{
-            return new Error(err);
-        })
 
         axios.get(`${baseUrl}api/v1/getliveprice`)
-        .then((res) => {
-            console.log("live price data", res)
-            setMarketData(res.data)
-        }).catch((err)=>{
-            
-            return new Error(err);
-        })
+            .then((res) => {
+                console.log("live price data", res)
+                setMarketData(res.data)
+            }).catch((err) => {
+
+                return new Error(err);
+            })
 
         axios.get(`${baseUrl}api/v1/readInstrumentDetails`)
-        .then((res) => {
-            let dataArr = (res.data).filter((elem) => {
-                return elem.status === "Active"
+            .then((res) => {
+                let dataArr = (res.data).filter((elem) => {
+                    return elem.status === "Active"
+                })
+                setTradeData(dataArr)
+            }).catch((err) => {
+
+                return new Error(err);
             })
-            setTradeData(dataArr)
-        }).catch((err)=>{
-            
-            return new Error(err);
-        })
         console.log("hii");
 
         // axios.get(`${baseUrl}api/v1/ws`)
@@ -65,78 +65,95 @@ function CompanyPositionTable({ socket }) {
         //     return new Error(err);
         // })
 
-        socket.on("tick",(data)=>{
+        socket.on("tick", (data) => {
             console.log("this is live market data", data);
             setMarketData(data);
         })
-        
+
         console.log(marketData);
         console.log(tradeData);
         // reRender ? setReRender(false) : setReRender(true)
         // setReRender(true);
-    },[getDetails, reRender])
+    }, [getDetails, reRender])
     console.log(marketData);
-    useEffect(()=>{
-        return ()=>{
+    useEffect(() => {
+        return () => {
             console.log('closing');
             socket.close();
         }
-    },[])
-  
+    }, [])
+
 
     return (
         <div>
             <div className="main_Container">
                 <div className="right_side">
                     <div className="rightside_maindiv">
-                    <span className="grid1_span">Instruments Details</span>
+                        <span className="grid1_span">Instruments Details</span>
                         <div className="grid_1">
                             <table className="grid1_table">
-                            <tr className="grid2_tr">
+                                <tr className="grid2_tr">
                                     <th className="grid2_th">Trading Date</th>
-                                    <th className="grid2_th">Instrument</th>
-                                    <th className="grid2_th">LTP(<FontAwesomeIcon className='fa-xs'  icon={faIndianRupeeSign} />)</th>
+                                    <th className="grid2_th">Contract Date</th>
+                                    <th className="grid2_th"> Symbol</th>
+                                    <th className="grid2_th"> Instrument</th>
+                                    <th className="grid2_th">LTP(<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
                                     <th className="grid2_th">%Change</th>
-                                    <th className="grid2_th">Action</th> 
-                            </tr>
-                            {tradeData.map((elem, index)=>{
-                                let updatedMarketData = marketData.filter((subElem)=>{
-                                    return elem.instrumentToken === subElem.instrument_token;
-                                })
-                              
-                                return(
-                                    <tr className="grid1_table">
+                                    <th className="grid2_th">Action</th>
+                                </tr>
+                                {tradeData.map((elem, index) => {
+                                    let updatedMarketData = marketData.filter((subElem) => {
+                                        return elem.instrumentToken === subElem.instrument_token;
+                                    })
+                                    return (
+                                        <tr className="grid1_table">
                                             <td className="grid2_td">{todayDate}</td>
+                                            <td className="grid2_td">1</td>
                                             <td className="grid2_td">{elem.symbol}</td>
+                                            <td className="grid2_td">{elem.instrument}</td>
                                             <td className="grid2_td">{updatedMarketData[0]?.last_price}</td>
-                                            
+
                                             {console.log(updatedMarketData[0], updatedMarketData[0]?.change)}
-                                            {(updatedMarketData[0]?.change === undefined) ? 
-                                            <td className="grid2_td">{(Math.abs((updatedMarketData[0]?.last_price-updatedMarketData[0]?.average_price)/updatedMarketData[0]?.average_price)).toFixed(2)}%</td>
-                                            :
-                                            <td className="grid2_td">{updatedMarketData[0]?.change.toFixed(2)}%</td>}
+                                            {(updatedMarketData[0]?.change === undefined) ?
+                                                <td className="grid2_td">{(Math.abs((updatedMarketData[0]?.last_price - updatedMarketData[0]?.average_price) / updatedMarketData[0]?.average_price)).toFixed(2)}%</td>
+                                                :
+                                                <td className="grid2_td">{updatedMarketData[0]?.change.toFixed(2)}%</td>}
                                             <td className="grid2_th companyPosition_BSbtn2">
                                                 <div className="companyPosition_BSbtn">
-                                                    <ByModal Render={{setReRender, reRender}} marketData={marketData} uIdProps={elem.uId} isCompany={true}/>
-                                                    <SellModel Render={{setReRender, reRender}} marketData={marketData} uIdProps={elem.uId} isCompany={true}/>
+                                                    <ByModal Render={{ setReRender, reRender }} marketData={marketData} uIdProps={elem.uId} isCompany={true} />
+                                                    <SellModel Render={{ setReRender, reRender }} marketData={marketData} uIdProps={elem.uId} isCompany={true} />
                                                 </div>
                                             </td>
-                                    </tr>
+                                        </tr>
                                     )
-                                })} 
+                                })}
                             </table>
                         </div>
                         <span className="grid2_span">Overall PNL-Company</span>
                         <div className="grid_2">
-                            <OverallPnl marketData={marketData} tradeData={tradeData} data={data}/>
+                            <OverallPnl marketData={marketData} tradeData={tradeData} data={data} />
                         </div>
                         <span className="grid2_span">Running PNL-Company</span>
                         <div className="grid_2">
-                            <RunningPnl marketData={marketData} tradeData={tradeData} data={data}/>
+                            <RunningPnl marketData={marketData} tradeData={tradeData} data={data} />
                         </div>
                         <span className="grid2_span">Closed Trades PNL-Company</span>
                         <div className="grid_2">
-                            <ClosedPnl marketData={marketData} tradeData={tradeData} data={data}/>
+                            <ClosedPnl marketData={marketData} tradeData={tradeData} data={data} />
+                        </div>
+                        <span className="grid2_span">Traders PNL-Company</span>
+                        <div className="grid_2">
+                            <table className="grid1_table">
+                                <tr className="grid2_tr">
+                                    <th className="grid2_th">Trader Name</th>
+                                    <th className="grid2_th">Overall PNL (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
+                                    <th className="grid2_th">Running PNL (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
+                                    <th className="grid2_th">Closed PNL(<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
+                                    <th className="grid2_th">Tran. Cost(<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
+                                    <th className="grid2_th"> Net PNL (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
+                                </tr>
+                            </table>
+                            <button className="DetailsBtn">Details</button>
                         </div>
                     </div>
                 </div>
