@@ -40,6 +40,14 @@ const instrumentSchema = new mongoose.Schema({
     instrumentToken:{
         type: Number,
         required : true
+    },
+    contractDate:{
+        type: String,
+        required : true
+    },
+    maxLot:{
+        type: Number,
+        required : true
     }
 })
 

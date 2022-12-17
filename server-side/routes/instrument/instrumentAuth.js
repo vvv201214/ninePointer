@@ -10,7 +10,7 @@ const fetchToken = require("../../marketData/generateSingleToken");
 router.post("/instrument", async (req, res)=>{
 
     try{
-        const {instrument, exchange, symbol, status, uId, createdOn, lastModified, createdBy, lotSize} = req.body;
+        const {instrument, exchange, symbol, status, uId, createdOn, lastModified, createdBy, lotSize, contractDate, maxLot} = req.body;
         console.log(req.body);
 
         let instrumentToken = await fetchToken(exchange, symbol);
@@ -28,7 +28,7 @@ router.post("/instrument", async (req, res)=>{
                 console.log("data already");
                 return res.status(422).json({error : "date already exist..."})
             }
-            const instruments = new Instrument({instrument, exchange, symbol, status, uId, createdOn, lastModified, createdBy, lotSize, instrumentToken});
+            const instruments = new Instrument({instrument, exchange, symbol, status, uId, createdOn, lastModified, createdBy, lotSize, instrumentToken, contractDate, maxLot});
             console.log("instruments", instruments)
             instruments.save().then(()=>{
                 res.status(201).json({massage : "data enter succesfully"});
@@ -82,6 +82,8 @@ router.put("/readInstrumentDetails/:id", async (req, res)=>{
                 lastModified: req.body.lastModified,  
                 lotSize: req.body.LotSize,
                 instrumentToken: token,
+                contractDate: req.body.contractDate, 
+                maxLot: req.body.body.maxLot
             }
         })
         console.log("this is role", instrument);

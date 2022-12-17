@@ -63,14 +63,15 @@ router.get("/getliveprice", async (req, res)=>{
       try{
 
         const response = await axios.get(url, authOptions);
-        console.log("its json data of livePrice", JSON.stringify(response.data));
+        // console.log("its json data of livePrice", JSON.stringify((response.data).data));
         for (instrument in response.data.data) {
             let obj = {};
             obj.last_price = response.data.data[instrument].last_price;
             obj.instrument_token = response.data.data[instrument].instrument_token;
-            obj.average_price = response.data.data[instrument].average_price;
+            obj.average_price = response.data.data[instrument].ohlc.close;
             obj.timestamp = response.data.data[instrument].timestamp
             arr.push(obj);
+            console.log("ohcl",response.data.data[instrument].ohlc.close)
         //   arr.push(res.data.data[instrument].last_price);
         }
         // console.log("this is arr", JSON.stringify(arr))

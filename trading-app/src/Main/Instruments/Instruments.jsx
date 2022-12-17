@@ -75,7 +75,7 @@ function Instruments() {
 
 
 
-        const { Instrument, Exchange, Status, Symbole, LotSize } = formstate;
+        const { Instrument, Exchange, Status, Symbole, LotSize, contractDate, maxLot } = formstate;
 
         const res = await fetch(`${baseUrl}api/v1/instrument`, {
             method: "POST",
@@ -83,7 +83,7 @@ function Instruments() {
                 "content-type": "application/json"
             },
             body: JSON.stringify({
-                instrument: Instrument, exchange: Exchange, status: Status, symbol: Symbole, lotSize: LotSize, lastModified, uId, createdBy, createdOn
+                instrument: Instrument, exchange: Exchange, status: Status, symbol: Symbole, lotSize: LotSize, lastModified, uId, createdBy, createdOn, contractDate, maxLot
             })
         });
 
