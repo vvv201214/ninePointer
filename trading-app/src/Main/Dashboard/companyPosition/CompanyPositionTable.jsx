@@ -112,7 +112,7 @@ function CompanyPositionTable({ socket }) {
                                             <td className="grid2_td">{elem.contractDate}</td>
                                             <td className="grid2_td">{elem.symbol}</td>
                                             <td className="grid2_td">{elem.instrument}</td>
-                                            <td className="grid2_td">₹{updatedMarketData[0]?.last_price}</td>
+                                            <td className="grid2_td">₹{(updatedMarketData[0]?.last_price).toFixed(2)}</td>
 
                                             {console.log(updatedMarketData[0], updatedMarketData[0]?.change)}
                                             {(updatedMarketData[0]?.change === undefined) ?

@@ -158,13 +158,13 @@ export default function TradersPnlCompany({marketData, tradeData}) {
                             <>
                             <td className="grid2_td">{(elem.name)}</td>
                             {!elem.pnl ?
-                            <td className="grid2_td">{elem.pnl > 0 ? "+₹" + (elem.pnl.toFixed(2)).toLocaleString(undefined, {maximumFractionDigits:2}) : "-₹" + ((-elem.pnl).toFixed(2)).toLocaleString(undefined, {maximumFractionDigits:2})} </td>
+                            <td className="grid2_td">{elem.pnl > 0 ? "+₹" + (Number(elem.pnl).toFixed(2)).toLocaleString(undefined, {maximumFractionDigits:2, toFixed:2}) : "-₹" + ((-elem.pnl).toFixed(2)).toLocaleString(undefined, {maximumFractionDigits:2,toFixed:2})} </td>
                             :
-                            <td className="grid2_td">{elem.pnl > 0 ? "+₹" + (elem.pnl.toFixed(2)).toLocaleString(undefined, {maximumFractionDigits:2}) : "-₹" + ((-elem.pnl).toFixed(2)).toLocaleString(undefined, {maximumFractionDigits:2})} </td>}
+                            <td className="grid2_td">{elem.pnl > 0 ? "+₹" + (Number(elem.pnl).toFixed(2)).toLocaleString(undefined, {maximumFractionDigits:2,toFixed:2}) : "-₹" + ((-elem.pnl).toFixed(2)).toLocaleString(undefined, {maximumFractionDigits:2,toFixed:2})} </td>}
                             {/* <td className="grid2_td">Running PNL </td>
                             <td className="grid2_td">Closed PNL</td> */}
                             <td className="grid2_td">₹0.00</td>
-                            <td className="grid2_td"> {netpnl > 0 ? "+₹" + (netpnl.toFixed(2)).toLocaleString(undefined, {maximumFractionDigits:2}) : "-₹" + ((-netpnl).toFixed(2)).toLocaleString(undefined, {maximumFractionDigits:2})} </td>
+                            <td className="grid2_td"> {netpnl > 0 ? "+₹" + (Number(netpnl).toFixed(2)).toLocaleString(undefined, {maximumFractionDigits:2,toFixed:2}) : "-₹" + ((-netpnl).toFixed(2)).toLocaleString(undefined, {maximumFractionDigits:2,toFixed:2})} </td>
                             </>
                             }
                         </tr>
