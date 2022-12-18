@@ -15,7 +15,7 @@ function TradersPosition(){
                                     <th className="grid2_th">Trading Date</th>
                                     <th className="grid2_th">Instrument</th>
                                     <th className="grid2_th">LTP (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
-                                    <th className="grid2_th">%Change</th>
+                                    <th className="grid2_th">Change(%)</th>
                                     <th className="grid2_th">Action</th>
                                 </tr> 
                             </table>

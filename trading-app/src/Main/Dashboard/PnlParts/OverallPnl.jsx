@@ -177,7 +177,7 @@ export default function OverallPnl({marketData, tradeData, data}) {
                 <th className='pnl_Total'>{totalTransactionCost.toFixed(2)}</th>
                 <th className='pnl_Total'>Total</th>
                 <th className='pnl_Total' style={Total>=0 ? {color: "green"} : {color: "red"} }>{Total>=0 ? "+₹" + (Total.toFixed(2)) : "-₹" + ((-Total).toFixed(2))}</th>
-                <th className='pnl_Total'>{(Total-totalTransactionCost).toFixed(2)}</th>
+                <th className='pnl_Total'>Net P&L: {(Total-totalTransactionCost).toFixed(2)}</th>
                 </>
                 :
                 <th></th>
