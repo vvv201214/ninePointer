@@ -155,7 +155,7 @@ export default function AddUser({algoName}) {
 
     return (
         <>
-            <button onClick={toggleModal} className={Styles.addUserBtn}>ADD USER</button>
+            <button onClick={toggleModal} className={Styles.addUserBtn}>Map Users</button>
 
 
             {modal && (

@@ -149,6 +149,9 @@ body.active-modal {
     padding: 2px;
 
 }
+.bsInputSelect{
+    height: 28.5px;
+}
 
 .bsBtn {
     border: none;

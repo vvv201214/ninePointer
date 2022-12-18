@@ -111,7 +111,7 @@ function Instruments() {
                                 <div className={Styles.modalContent}>
                                     <div className={Styles.form_btn}>
                                         <form className={Styles.main_instrument_form}>
-                                        <label className={Styles.Ac_form} htmlFor="">Contract Date</label>
+                                            <label className={Styles.Ac_form} htmlFor="">Contract Date</label>
                                             <input type="date" className={Styles.Ac_forminput} onChange={(e) => { { formstate.contractDate = e.target.value } }} />
                                             <label className={Styles.Ac_form} htmlFor="">Instrument</label>
                                             <input type="text" className={Styles.Ac_forminput} onChange={(e) => { { formstate.Instrument = e.target.value } }} />
