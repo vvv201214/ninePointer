@@ -127,15 +127,15 @@ export default function TraderPosition() {
                                 })}
                             </table>
                         </div>
-                        <span className="grid2_span">Overall PNL-Company</span>
+                        <span className="grid2_span">Overall PNL-Traders</span>
                         <div className="grid_2">
                             <OverallPnl marketData={marketData} tradeData={tradeData} data={data} />
                         </div>
-                        <span className="grid2_span">Running PNL-Company</span>
+                        <span className="grid2_span">Running PNL-Traders</span>
                         <div className="grid_2">
                             <RunningPnl marketData={marketData} tradeData={tradeData} data={data} />
                         </div>
-                        <span className="grid2_span">Closed Trades PNL-Company</span>
+                        <span className="grid2_span">Closed Trades PNL-Traders</span>
                         <div className="grid_2">
                             <ClosedPnl marketData={marketData} tradeData={tradeData} data={data} />
                         </div>

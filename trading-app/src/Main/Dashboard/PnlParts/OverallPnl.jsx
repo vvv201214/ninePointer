@@ -171,11 +171,11 @@ export default function OverallPnl({marketData, tradeData, data}) {
                 <th></th>
                 {overallPnlArr.length ?
                 <>
-                <th>Transaction Cost</th>
-                <th>{totalTransactionCost.toFixed(2)}</th>
+                <th className='pnl_Total'>Transaction Cost</th>
+                <th className='pnl_Total'>{totalTransactionCost.toFixed(2)}</th>
                 <th className='pnl_Total'>TOTAL</th>
                 <th className='pnl_Total' style={Total>=0 ? {color: "green"} : {color: "red"} }>{Total.toFixed(2)}</th>
-                <th>{(Total-totalTransactionCost).toFixed(2)}</th>
+                <th className='pnl_Total'>{(Total-totalTransactionCost).toFixed(2)}</th>
                 </>
                 :
                 <th></th>
