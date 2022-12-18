@@ -44,7 +44,7 @@ export default function SellModel({marketData, uIdProps, Render, isCompany, symb
         instrumentToken: ""
     })
 
-    const [selected, setSelected] = useState("MIS");
+    const [selected, setSelected] = useState("NRML");
     Details.Product = selected;
     const radioHandler = (e) => {
         console.log(e.target.value);
