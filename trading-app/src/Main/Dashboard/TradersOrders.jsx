@@ -35,16 +35,16 @@ function TradersOrders({info}){
 
                 (updated).sort((a, b)=> {
 
-                    if(a.order_timestamp.includes("16-12-2022")){
-                        let firstDateSplit = (a.order_timestamp).split(" ");
-                        let secondDateSplit = firstDateSplit[0].split("-");
-                        a.order_timestamp = `${secondDateSplit[2]}-${secondDateSplit[1]}-${secondDateSplit[0]} ${firstDateSplit[1]}`
+                    // if(!a.order_timestamp.includes("16-12-2022")){
+                    //     let firstDateSplit = (a.order_timestamp).split(" ");
+                    //     let secondDateSplit = firstDateSplit[0].split("-");
+                    //     a.order_timestamp = `${secondDateSplit[2]}-${secondDateSplit[1]}-${secondDateSplit[0]} ${firstDateSplit[1]}`
     
-                    } if(b.order_timestamp.includes("16-12-2022")){
-                        let firstDateSplit = (b.order_timestamp).split(" ");
-                        let secondDateSplit = firstDateSplit[0].split("-");
-                        b.order_timestamp = `${secondDateSplit[2]}-${secondDateSplit[1]}-${secondDateSplit[0]} ${firstDateSplit[1]}`
-                    }
+                    // } if(!b.order_timestamp.includes("16-12-2022")){
+                    //     let firstDateSplit = (b.order_timestamp).split(" ");
+                    //     let secondDateSplit = firstDateSplit[0].split("-");
+                    //     b.order_timestamp = `${secondDateSplit[2]}-${secondDateSplit[1]}-${secondDateSplit[0]} ${firstDateSplit[1]}`
+                    // }
                     if (a.order_timestamp < b.order_timestamp) {
                       return 1;
                     }

@@ -9,8 +9,8 @@ export default function OverallPnl({marketData, tradeData, data}) {
     let date = new Date();
     let todayDate = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}` ;
     let fake_date = "1-12-2022"
-    let [totalTransactionCost, setTotalTransactionCost] = useState(0);
-    // let totalTransactionCost;
+    // let [totalTransactionCost, setTotalTransactionCost] = useState(0);
+    let totalTransactionCost = 0;
     const [overallPnlArr, setOverallPnlArr] = useState([]);
     const [liveDetail, setLiveDetail] = useState([]);
     const [avgPrice, setAvgPrice] = useState([]);
@@ -31,10 +31,12 @@ export default function OverallPnl({marketData, tradeData, data}) {
         setAvgPrice(avgPriceArr)
         console.log("avgPriceArr", avgPriceArr);
         
+
         let hash = new Map();
 
         for(let i = data.length-1; i >= 0 ; i--){
-            console.log("totalTransactionCost", totalTransactionCost);
+            
+            
             if(hash.has(data[i].symbol)){
                 let obj = hash.get(data[i].symbol);
                 if(data[i].buyOrSell === "BUY"){
@@ -115,9 +117,9 @@ export default function OverallPnl({marketData, tradeData, data}) {
     }, [marketData])
 
     data.map((elem)=>{
-        totalTransactionCost += totalTransactionCost + Number(elem.brokerage);
-        // setTotalTransactionCost((totalTransactionCost)=> totalTransactionCost+elem.brokerage);
+        totalTransactionCost += Number(elem.brokerage);
     })
+    console.log("totalTransactionCost", totalTransactionCost);
 
   return (
         <table className="grid1_table">
@@ -167,17 +169,18 @@ export default function OverallPnl({marketData, tradeData, data}) {
            <tr>
                 <th></th>
                 <th></th>
-                <th className='pnl_Total'>Transaction Cost</th>
-                <th className='pnl_Total'>{totalTransactionCost.toFixed(2)}</th>
                 {overallPnlArr.length ?
                 <>
+                <th>Transaction Cost</th>
+                <th>{totalTransactionCost.toFixed(2)}</th>
                 <th className='pnl_Total'>TOTAL</th>
                 <th className='pnl_Total' style={Total>=0 ? {color: "green"} : {color: "red"} }>{Total.toFixed(2)}</th>
+                <th>{(Total-totalTransactionCost).toFixed(2)}</th>
                 </>
                 :
                 <th></th>
                 }
-                <th></th>
+                
                 <th></th>
                 </tr> 
         </table>

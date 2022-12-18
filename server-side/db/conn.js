@@ -9,6 +9,7 @@ const DB = "mongodb+srv://vvv201214:5VPljkBBPd4Kg9bJ@cluster0.j7ieec6.mongodb.ne
 // const DB = process.env.DATABASE;
 
 mongoose.connect(devDB, {
+    // mongoose.connect(DB, {
     useNewUrlParser: true,
     
     useUnifiedTopology: true,

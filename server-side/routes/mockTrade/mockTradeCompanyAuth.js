@@ -45,13 +45,20 @@ router.post("/mocktradecompany", async (req, res)=>{
             if(elem.instrument_token == instrumentToken){
                 newTimeStamp = elem.timestamp;
                 originalLastPrice = elem.last_price;
-                console.log("originalLastPrice 38 line", originalLastPrice, newTimeStamp)
+                console.log("originalLastPrice 38 line", originalLastPrice)
             }
         }
+
+        let firstDateSplit = (newTimeStamp).split(" ");
+        let secondDateSplit = firstDateSplit[0].split("-");
+        newTimeStamp = `${secondDateSplit[2]}-${secondDateSplit[1]}-${secondDateSplit[0]} ${firstDateSplit[1]}`
+
 
     } catch(err){
         return new Error(err);
     }
+
+    console.log("newTimeStamp", newTimeStamp);
 
 
     function buyBrokerage(totalAmount){
@@ -108,7 +115,8 @@ router.post("/mocktradecompany", async (req, res)=>{
             Product, buyOrSell:realBuyOrSell, order_timestamp: newTimeStamp,
             variety, validity, exchange, order_type: OrderType, symbol, placed_by: "ninepointer", userId,
              algoBox:{algoName, transactionChange, instrumentChange, exchangeChange, 
-            lotMultipler, productChange, tradingAccount}, order_id, instrumentToken, brokerage: brokerageCompany
+            lotMultipler, productChange, tradingAccount}, order_id, instrumentToken, brokerage: brokerageCompany,
+            tradeBy: createdBy
         });
 
         console.log("mockTradeDetails comapny", mockTradeDetails);
@@ -126,7 +134,8 @@ router.post("/mocktradecompany", async (req, res)=>{
         const mockTradeDetailsUser = new MockTradeDetailsUser({
             status:"COMPLETE", uId, createdBy, average_price: originalLastPrice, Quantity, Product, buyOrSell, order_timestamp: newTimeStamp,
             variety, validity, exchange, order_type: OrderType, symbol, placed_by: "ninepointer", userId,
-            isRealTrade: realTrade, order_id, instrumentToken, brokerage: brokerageUser
+            isRealTrade: realTrade, order_id, instrumentToken, brokerage: brokerageUser, 
+            tradeBy: createdBy
         });
 
         console.log("mockTradeDetails", mockTradeDetailsUser);
@@ -153,6 +162,17 @@ router.get("/readmocktradecompany/:id", (req, res)=>{
     console.log(req.params)
     const {id} = req.params
     MockTradeDetails.findOne({_id : id})
+    .then((data)=>{
+        return res.status(200).send(data);
+    })
+    .catch((err)=>{
+        return res.status(422).json({error : "date not found"})
+    })
+})
+
+router.get("/readmocktradecompanyemail/:email", (req, res)=>{
+    const {email} = req.params
+    MockTradeDetails.find({userId: email})
     .then((data)=>{
         return res.status(200).send(data);
     })

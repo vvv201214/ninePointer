@@ -20,25 +20,18 @@ function CompanyPositionTable({ socket }) {
     const [tradeData, setTradeData] = useState([]);
     const [reRender, setReRender] = useState(true);
     const [marketData, setMarketData] = useState([]);
-    const [userDetail, setUserDetail] = useState([]);
     const [data, setData] = useState([]);
     let date = new Date();
-    let todayDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
-    let fake_date = "14-12-2022"
+    let todayDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
+    let fake_date = "16-12-2022"
     useEffect(() => {
-
-        axios.get(`${baseUrl}api/v1/readuserdetails`)
-        .then((res) => {
-            setUserDetail(res.data);
-        }).catch((err)=>{
-            return new Error(err);
-        })
 
         axios.get(`${baseUrl}api/v1/readmocktradecompany`)
             .then((res) => {
                 let data = (res.data).filter((elem) => {
-                    return elem.order_timestamp.includes(todayDate) && elem.status === "COMPLETE";
+                    return elem.order_timestamp.includes(fake_date) && elem.status === "COMPLETE";
                 })
+                console.log("data", data)
                 setData(data);
             }).catch((err) => {
                 return new Error(err);
@@ -116,7 +109,7 @@ function CompanyPositionTable({ socket }) {
                                     return (
                                         <tr className="grid1_table">
                                             <td className="grid2_td">{todayDate}</td>
-                                            <td className="grid2_td">1</td>
+                                            <td className="grid2_td">{elem.contractDate}</td>
                                             <td className="grid2_td">{elem.symbol}</td>
                                             <td className="grid2_td">{elem.instrument}</td>
                                             <td className="grid2_td">{updatedMarketData[0]?.last_price}</td>
@@ -141,18 +134,16 @@ function CompanyPositionTable({ socket }) {
                         <div className="grid_2">
                             <OverallPnl marketData={marketData} tradeData={tradeData} data={data} />
                         </div>
-                        <span className="grid2_span">Running PNL-Company</span>
+                        {/* <span className="grid2_span">Running PNL-Company</span>
                         <div className="grid_2">
                             <RunningPnl marketData={marketData} tradeData={tradeData} data={data} />
                         </div>
                         <span className="grid2_span">Closed Trades PNL-Company</span>
                         <div className="grid_2">
                             <ClosedPnl marketData={marketData} tradeData={tradeData} data={data} />
-                        </div>
+                        </div> */}
                         <span className="grid2_span">Traders PNL-Company</span>
-                        <div className="grid_2">
-                            <TradersPnlCompany />
-                        </div>
+                            <TradersPnlCompany marketData={marketData} tradeData={tradeData}/>
                     </div>
                 </div>
             </div>
