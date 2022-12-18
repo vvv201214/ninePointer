@@ -20,25 +20,7 @@ export default function SellModel({marketData, uIdProps, Render, isCompany }) {
     let tradeBy = getDetails.userDetails.name;
     let dummyOrderId = `${date.getFullYear()-2000}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}${Math.floor(100000000+ Math.random() * 900000000)}`
 
-    const [selected, setSelected] = useState("MIS");
-    const radioHandler = (e) => {
-        console.log(e.target.value);
-        setSelected(e.target.value);
-        Details.Product = e.target.value
-        console.log(Details.Product);
-    }
-
-    const [marketselected, setMarketselected] = useState("MARKET");
-    const radioHandlerTwo = (e) => {
-        setMarketselected(e.target.value);
-        Details.OrderType = e.target.value;
-    }
-
-    const [validitySelected, setValiditySelected] = useState("DAY");
-    const radioHandlerthree = (e) => {
-        setValiditySelected(e.target.value);
-        Details.validity = e.target.value;
-    }
+   
 
     const [userPermission, setUserPermission] = useState([]);
     const [bsBtn, setBsBtn] = useState(true)
@@ -49,18 +31,44 @@ export default function SellModel({marketData, uIdProps, Render, isCompany }) {
         ceOrPe: "",
         buyOrSell: "",
         variety: "",
-        Product: "MIS",
+        Product: "",
         Quantity: "",
         Price: "",
-        OrderType: "MARKET",
+        OrderType: "",
         TriggerPrice: "",
         stopLoss: "",
-        validity: "DAY",
+        validity: "",
         last_price: "",
         brokerageCharge: "",
         totalAmount: "",
         instrumentToken: ""
     })
+
+    const [selected, setSelected] = useState("MIS");
+    Details.Product = selected;
+    const radioHandler = (e) => {
+        console.log(e.target.value);
+        setSelected(e.target.value);
+        Details.Product = e.target.value
+        console.log(Details.Product);
+    }
+
+    const [marketselected, setMarketselected] = useState("MARKET");
+    Details.OrderType = marketselected
+    const radioHandlerTwo = (e) => {
+        setMarketselected(e.target.value);
+        Details.OrderType = e.target.value;
+    }
+
+    const [validitySelected, setValiditySelected] = useState("DAY");
+    Details.validity = validitySelected
+    const radioHandlerthree = (e) => {
+        setValiditySelected(e.target.value);
+        Details.validity = e.target.value;
+    }
+
+
+
     let [accessTokenDetails, setAccessToken] = useState([]);
     let [apiKeyDetails, setApiKey] = useState([]);
     const [tradeData, setTradeData] = useState([]);
@@ -76,6 +84,16 @@ export default function SellModel({marketData, uIdProps, Render, isCompany }) {
         realAmount: "",
         real_last_price: "",
     })
+
+    let lotSize = 50;
+    let maxLot = 1000;
+    let finalLot = maxLot/lotSize;
+    let optionData = [];
+    for(let i =1; i<= finalLot; i++){
+        optionData.push( <option value={i * lotSize}>{ i * lotSize}</option>)
+        
+    }
+    console.log(optionData)
 
     useEffect(() => {
 
@@ -126,6 +144,8 @@ export default function SellModel({marketData, uIdProps, Render, isCompany }) {
 
                 return new Error(err);
             })
+
+          
 
         axios.get(`${baseUrl}api/v1/readInstrumentDetails`)
             .then((res) => {
@@ -293,6 +313,7 @@ export default function SellModel({marketData, uIdProps, Render, isCompany }) {
             
             setCompanyTrade(companyTrade)
             setDetails(Details)
+            
     
             const fakeAlgo = {
                 algoName: "no algo",
@@ -315,7 +336,7 @@ export default function SellModel({marketData, uIdProps, Render, isCompany }) {
             reRender ? setReRender(false) : setReRender(true)
         }, 1000);
     }
-
+    console.log(Details)
     async function sendOrderReq() {
         const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, brokerageCharge } = Details;
         const { realBuyOrSell, realSymbol, realQuantity, realInstrument, realBrokerage, realAmount, real_last_price } = companyTrade;
@@ -399,6 +420,7 @@ export default function SellModel({marketData, uIdProps, Render, isCompany }) {
     }
 
     async function mockTradeCompany(algoBox, realTrade){
+        
         // let currentTime = `${date.getHours()}:${date.getMinutes()}`
         // console.log("currentTime", currentTime);
         // if(currentTime > "15:30" || currentTime < "9:15"){
@@ -467,13 +489,20 @@ export default function SellModel({marketData, uIdProps, Render, isCompany }) {
                             <div className="container_two">
                                 <div className="form_inputContain">
                                     <label htmlFor="" className="bsLabel">Quantity</label>
-                                    <input type="text" className="bsInput" onChange={(e) => { { Details.Quantity = (e.target.value) } }} />
-
+                                    <select type="number" className="bsInput bsInputSelect" onChange={(e) => { { Details.Quantity = (e.target.value) } }} >
+                                    <option value=""></option>
+                                    {optionData.map((elem)=>{
+                                        return(
+                                            <option>{elem.props.children}</option>
+                                        )
+                                    }) 
+                                    }   
+                                    </select>
                                     <label htmlFor="" className="bsLabel" >Price</label>
-                                    <input type="text" className="bsInput" onChange={(e) => { { Details.Price = e.target.value } }} />
+                                    <input type="number" className="bsInput" onChange={(e) => { { Details.Price = e.target.value } }} />
 
                                     <label htmlFor="" className="bsLabel">Trigger Price</label>
-                                    <input type="text" className="bsInput" onChange={(e) => { { Details.TriggerPrice = e.target.value } }} />
+                                    <input type="number" className="bsInput" onChange={(e) => { { Details.TriggerPrice = e.target.value } }} />
                                 </div>
                                 <div className="form_checkbox">
                                     <input type="radio" value="MARKET" checked={marketselected === 'MARKET'} name="OrderType" className="btnRadio1" onChange={radioHandlerTwo} /> Market
@@ -504,13 +533,13 @@ export default function SellModel({marketData, uIdProps, Render, isCompany }) {
                                 <div className="container_two">
                                     <div className="form_inputContain">
                                         <label htmlFor="" className="bsLabel">Quantity</label>
-                                        <input type="text" className="bsInput" onChange={(e) => { { Details.Quantity = e.target.value } }} />
+                                        <input type="number" className="bsInput" onChange={(e) => { { Details.Quantity = e.target.value } }} />
 
                                         <label htmlFor="" className="bsLabel" >Price</label>
-                                        <input type="text" className="bsInput" onChange={(e) => { { Details.Price = e.target.value } }} />
+                                        <input type="number" className="bsInput" onChange={(e) => { { Details.Price = e.target.value } }} />
 
                                         <label htmlFor="" className="bsLabel">Trigger Price</label>
-                                        <input type="text" className="bsInput" onChange={(e) => { { Details.TriggerPrice = e.target.value } }} />
+                                        <input type="number" className="bsInput" onChange={(e) => { { Details.TriggerPrice = e.target.value } }} />
 
                                     </div>
                                     <div className="form_checkbox">

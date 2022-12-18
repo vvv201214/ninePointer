@@ -12,8 +12,9 @@ function Instruments() {
 
     let uId = uniqid();
     let date = new Date();
-    let createdOn = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
-    let lastModified = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
+    let createdOn = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}`
+    let lastModified = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}`
+
 
     let createdBy = "prateek"
 
@@ -111,7 +112,7 @@ function Instruments() {
                                 <div className={Styles.modalContent}>
                                     <div className={Styles.form_btn}>
                                         <form className={Styles.main_instrument_form}>
-                                        <label className={Styles.Ac_form} htmlFor="">Contract Date</label>
+                                            <label className={Styles.Ac_form} htmlFor="">Contract Date</label>
                                             <input type="date" className={Styles.Ac_forminput} onChange={(e) => { { formstate.contractDate = e.target.value } }} />
                                             <label className={Styles.Ac_form} htmlFor="">Instrument</label>
                                             <input type="text" className={Styles.Ac_forminput} onChange={(e) => { { formstate.Instrument = e.target.value } }} />
