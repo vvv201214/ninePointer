@@ -24,12 +24,13 @@ function Instruments() {
 
 
     const [formstate, setformstate] = useState({
-
+        contractDate:"",
         Instrument: "",
         Exchange: "",
         Status: "",
         Symbole: "",
         LotSize: "",
+        maxLot:"",
         LastModifiedOn: ""
     });
 
@@ -74,7 +75,7 @@ function Instruments() {
 
 
 
-        const { Instrument, Exchange, Status, Symbole, LotSize } = formstate;
+        const { Instrument, Exchange, Status, Symbole, LotSize, contractDate, maxLot } = formstate;
 
         const res = await fetch(`${baseUrl}api/v1/instrument`, {
             method: "POST",
@@ -82,7 +83,7 @@ function Instruments() {
                 "content-type": "application/json"
             },
             body: JSON.stringify({
-                instrument: Instrument, exchange: Exchange, status: Status, symbol: Symbole, lotSize: LotSize, lastModified, uId, createdBy, createdOn
+                instrument: Instrument, exchange: Exchange, status: Status, symbol: Symbole, lotSize: LotSize, lastModified, uId, createdBy, createdOn, contractDate, maxLot
             })
         });
 
@@ -110,6 +111,8 @@ function Instruments() {
                                 <div className={Styles.modalContent}>
                                     <div className={Styles.form_btn}>
                                         <form className={Styles.main_instrument_form}>
+                                        <label className={Styles.Ac_form} htmlFor="">Contract Date</label>
+                                            <input type="date" className={Styles.Ac_forminput} onChange={(e) => { { formstate.contractDate = e.target.value } }} />
                                             <label className={Styles.Ac_form} htmlFor="">Instrument</label>
                                             <input type="text" className={Styles.Ac_forminput} onChange={(e) => { { formstate.Instrument = e.target.value } }} />
                                             <label className={Styles.Ac_form} htmlFor="">Exchange</label>
@@ -117,7 +120,9 @@ function Instruments() {
                                             <label className={Styles.Ac_form} htmlFor="">Symbol</label>
                                             <input type="text" className={Styles.Ac_forminput} onChange={(e) => { { formstate.Symbole = e.target.value.toUpperCase() } }} />
                                             <label htmlFor="" className={Styles.Ac_form}>Lot Size</label>
-                                            <input type="text" className={Styles.Ac_forminput} onChange={(e) => { { formstate.LotSize = e.target.value } }} />
+                                            <input type="number" className={Styles.Ac_forminput} onChange={(e) => { { formstate.LotSize = e.target.value } }} />
+                                            <label htmlFor="" className={Styles.Ac_form}>Max Lot</label>
+                                            <input type="number" className={Styles.Ac_forminput} onChange={(e) => { { formstate.maxLot = e.target.value } }} />
                                             <label htmlFor="" className={Styles.Ac_form}>Status</label>
                                             <select name="" id="" className={Styles.Ac_forminput} onChange={(e) => { { formstate.Status = e.target.value } }}>
                                                 <option value=""></option>
@@ -135,10 +140,12 @@ function Instruments() {
                             <table className="grid1_table">
                                 <tr className="grid2_tr">
                                     <th className="grid2_th">Created On</th>
+                                    <th className="grid2_th">Contract Date</th>
                                     <th className="grid2_th">Instrument</th>
                                     <th className="grid2_th">Exchange</th>
                                     <th className="grid2_th">Symbol</th>
                                     <th className="grid2_th">Lot Size</th>
+                                    <th className="grid2_th">Max Lot</th>
                                     <th className="grid2_th">Status</th>
                                     <th className="grid2_th">Last Modified</th>
                                 </tr>
@@ -147,10 +154,12 @@ function Instruments() {
                                         return (
                                             <tr className="grid2_tr">
                                                 <td className="grid2_td"><span className="Editbutton"><InstrumentsEditModel data={activeData} id={elem._id} Render={{setReRender, reRender}}/></span>{elem.createdOn}</td>
+                                                <td className="grid2_td">{elem.contractDate}</td>
                                                 <td className="grid2_td">{elem.instrument}</td>
                                                 <td className="grid2_td">{elem.exchange}</td>
                                                 <td className="grid2_td">{elem.symbol}</td>
                                                 <td className="grid2_td">{elem.lotSize}</td>
+                                                <td className="grid2_td">{elem.maxLot}</td>
                                                 <td className="grid2_td">{elem.status}</td>
                                                 <td className="grid2_td">{elem.lastModified}</td>
                                             </tr>
@@ -164,10 +173,12 @@ function Instruments() {
                             <table className="grid1_table">
                                 <tr className="grid2_tr">
                                     <th className="grid2_th">Created On</th>
+                                    <th className="grid2_th">Contract Date</th>
                                     <th className="grid2_th">Instrument</th>
                                     <th className="grid2_th">Exchange</th>
                                     <th className="grid2_th">Symbol</th>
                                     <th className="grid2_th">Lot Size</th>
+                                    <th className="grid2_th">Max Lot</th>
                                     <th className="grid2_th">Status</th>
                                     <th className="grid2_th">Last Modified</th>
                                 </tr>
@@ -175,10 +186,12 @@ function Instruments() {
                                     return (
                                         <tr className="grid2_tr">
                                             <td className="grid2_td"><span className="Editbutton"><InstrumentsEditModel data={inactiveData} id={elem._id} Render={{setReRender, reRender}}/></span>{elem.createdOn}</td>
+                                            <td className="grid2_td">{elem.contractDate}</td>
                                             <td className="grid2_td">{elem.instrument}</td>
                                             <td className="grid2_td">{elem.exchange}</td>
                                             <td className="grid2_td">{elem.symbol}</td>
                                             <td className="grid2_td">{elem.lotSize}</td>
+                                            <td className="grid2_td">{elem.maxLot}</td>
                                             <td className="grid2_td">{elem.status}</td>
                                             <td className="grid2_td">{elem.lastModified}</td>
                                         </tr>

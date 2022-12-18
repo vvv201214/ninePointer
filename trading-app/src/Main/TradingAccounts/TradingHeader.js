@@ -8,9 +8,9 @@ export default function TradingHeader() {
             <li>
                 <NavLink to={"/main/tradingAccount"}>Accounts</NavLink>
             </li>
-            <li>
+            {/* <li>
                 <NavLink to={"/main/tradingAccount/Tradingparameters"}>Trading Parameters</NavLink>
-            </li>
+            </li> */}
             <li>
                 <NavLink to={"/main/tradingAccount/brokerage"}>Brokerage</NavLink>
             </li>

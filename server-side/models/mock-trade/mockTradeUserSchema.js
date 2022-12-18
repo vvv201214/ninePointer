@@ -65,7 +65,7 @@ const mockTradeSchema = new mongoose.Schema({
         type: String,
         required: true        
     },
-    realBrokerage:{
+    brokerage:{
         type: String,        
     },
     isRealTrade:{ 
@@ -73,6 +73,10 @@ const mockTradeSchema = new mongoose.Schema({
         required: true  
     },
     instrumentToken:{
+        type: String,
+        required: true        
+    },
+    tradeBy:{
         type: String,
         required: true        
     }

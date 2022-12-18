@@ -61,16 +61,20 @@ const mockTradeCompanySchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    userId:{ // instrumentToken
+    userId:{
         type: String,
         required: true        
     },
-    realBrokerage:{
+    brokerage:{
         type: String,        
     },
     instrumentToken:{
         type: String, 
         required: true 
+    },
+    tradeBy:{
+        type: String,
+        required: true        
     },
     algoBox:{
         algoName:{

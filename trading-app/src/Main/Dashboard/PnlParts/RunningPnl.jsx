@@ -10,6 +10,7 @@ export default function RunningPnl({marketData, tradeData, data, Render}) {
     // let fake_date = "1-12-2022"
     // const { reRender, setReRender } = Render;
     const [pnlData, setPnlData] = useState([]);
+    let showTotal = true;
     const [liveDetail, setLiveDetail] = useState([])
     console.log("tradedata", tradeData);
     console.log("market data", marketData);
@@ -94,6 +95,8 @@ export default function RunningPnl({marketData, tradeData, data, Render}) {
         </tr>
         {
             pnlData.map((elem, index)=>{
+
+                elem.Quantity && (showTotal=false)
                 Total += Number((
                     ((liveDetail[index]?.last_price)*(elem.Quantity)) - (elem.average_price*elem.Quantity)
                 ))
@@ -127,7 +130,7 @@ export default function RunningPnl({marketData, tradeData, data, Render}) {
             <th></th>
             <th></th>
             <th></th>
-            {pnlData.length ?
+            {!showTotal && pnlData.length ?
             <>
             <th className='pnl_Total'>TOTAL</th>
             <th className='pnl_Total'style={Total>=0 ? {color: "green"} : {color: "red"} }>{Total.toFixed(2)}</th>
@@ -140,3 +143,5 @@ export default function RunningPnl({marketData, tradeData, data, Render}) {
     </table>
   )
 }
+
+

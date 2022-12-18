@@ -50,12 +50,18 @@ export default function ClosedPnl({marketData, tradeData, data}) {
                         if(Number(obj.Quantity) + Number(data[i].Quantity) === 0){
                             obj.average_price = 0;
                         } else{
-                            obj.average_price = ((Number(obj.average_price) * Number(obj.Quantity)) 
-                            + (Number(data[i].average_price) * Number(data[i].Quantity)))/(Number(data[i].Quantity) 
-                            + Number(obj.Quantity));
+                            if(Math.abs(Number(obj.Quantity)) > Math.abs(Number(data[i].Quantity))){
+                                obj.average_price = obj.average_price;
+                            } else if(Math.abs(Number(obj.Quantity)) < Math.abs(Number(data[i].Quantity))){
+                                obj.average_price = data[i].average_price
+                            }
+                            // obj.average_price = ((Number(obj.average_price) * Number(obj.Quantity)) 
+                            // + (Number(data[i].average_price) * Number(data[i].Quantity)))/(Number(data[i].Quantity) 
+                            // + Number(obj.Quantity));
                         }
-
-
+                        obj.closed_quantity = Math.min(Math.abs(Number(obj.Quantity)), Math.abs(Number(data[i].Quantity)))
+                        obj.pnl += ((obj.average_price_selling * obj.closed_quantity) - (obj.average_price_buying * obj.closed_quantity));
+                        console.log("ele.pnl", obj.pnl)
                         if(obj.closed_quantity !== undefined){
                             obj.closed_quantity += Math.min(Math.abs(Number(obj.Quantity)), Math.abs(Number(data[i].Quantity)));
                         } else{
@@ -74,7 +80,8 @@ export default function ClosedPnl({marketData, tradeData, data}) {
                         Quantity : Number(data[i].Quantity),
                         average_price: Number(data[i].average_price),
                         Product: data[i].Product,
-                        symbol: data[i].symbol
+                        symbol: data[i].symbol,
+                        
                     })
                 }
             }
@@ -127,6 +134,7 @@ export default function ClosedPnl({marketData, tradeData, data}) {
         </tr>
         {
          closedPnlArr.map((elem, index)=>{
+            
             elem.average_price_selling && (showTotal = false)
 
             Total+= ((elem.average_price_selling !== undefined || elem.average_price_buying !== undefined) &&
@@ -144,8 +152,7 @@ export default function ClosedPnl({marketData, tradeData, data}) {
                         <td className="grid2_td">{elem.closed_quantity}</td>
                         <td className="grid2_td">{(elem.average_price_buying).toFixed(2)}</td>
                         <td className="grid2_td">{elem.average_price_selling.toFixed(2)}</td>
-                        <td className="grid2_td">{((elem.average_price_selling * elem.closed_quantity) - 
-                                                    (elem.average_price_buying * elem.closed_quantity)).toFixed(2)}</td>
+                        <td className="grid2_td">{(elem.pnl).toFixed(2)}</td>
                         {liveDetail[index]?.change === undefined ?
                             <td className="grid2_td">{((liveDetail[index]?.last_price - elem.average_price_buying)/(elem.average_price_buying)).toFixed(2)}%</td>
                             :
@@ -174,3 +181,6 @@ export default function ClosedPnl({marketData, tradeData, data}) {
     </table>
   )
 }
+
+//((elem.average_price_selling * elem.closed_quantity) - 
+// (elem.average_price_buying * elem.closed_quantity))

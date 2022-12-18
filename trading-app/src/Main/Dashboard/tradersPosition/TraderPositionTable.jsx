@@ -19,11 +19,11 @@ function TraderPositionTable({ socket }) {
     const [tradeData, setTradeData] = useState([]);
     const [data, setData]  = useState([]);
     const [marketData, setMarketData] = useState([]);
-    const [permission, setPermission] = useState([]);
 
     let date = new Date();
-    let todayDate = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`
-    let fake_date = "12-12-2022"
+    let todayDate = `${date.getFullYear()}-${date.getDate()}-${date.getMonth()+1}`
+    // let fake_date = "2022-12-16"
+    let fake_date = "16-12-2022";
 
     useEffect(() => {
 
@@ -31,7 +31,7 @@ function TraderPositionTable({ socket }) {
         axios.get(`${baseUrl}api/v1/readmocktradeuser`)
         .then((res) => {
             let data = (res.data).filter((elem)=>{
-                return elem.order_timestamp.includes(todayDate) && elem.status === "COMPLETE" && elem.userId === getDetails.userDetails.email;
+                return elem.order_timestamp.includes(fake_date) && elem.status === "COMPLETE" && elem.userId === getDetails.userDetails.email;
             })
             setData(data);
         }).catch((err)=>{
@@ -128,14 +128,14 @@ function TraderPositionTable({ socket }) {
                         <div className="grid_2">
                                 <OverallPnl marketData={marketData} tradeData={tradeData} data={data}/>
                         </div>
-                        <span className="grid2_span">Running PNL-Trader</span>
+                        {/* <span className="grid2_span">Running PNL-Trader</span>
                         <div className="grid_2">
                             <RunningPnl marketData={marketData} tradeData={tradeData} data={data}/>
                         </div>
                         <span className="grid2_span">Closed Trades PNL-Trader</span>
                         <div className="grid_2">
                                 <ClosedPnl marketData={marketData} tradeData={tradeData} data={data}/>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>
