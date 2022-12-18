@@ -31,7 +31,7 @@ function TraderPositionTable({ socket }) {
         axios.get(`${baseUrl}api/v1/readmocktradeuser`)
         .then((res) => {
             let data = (res.data).filter((elem)=>{
-                return elem.order_timestamp.includes(todayDate) && elem.status === "COMPLETE" && elem.userId === getDetails.userDetails.email;
+                return elem.order_timestamp.includes(fake_date) && elem.status === "COMPLETE" && elem.userId === getDetails.userDetails.email;
             })
             setData(data);
         }).catch((err)=>{
@@ -119,8 +119,8 @@ function TraderPositionTable({ socket }) {
                                             <td className="grid2_td">{updatedMarketData[0]?.change.toFixed(2)}%</td>}
 
                                             <td className="grid2_th companyPosition_BSbtn2"><div className="companyPosition_BSbtn">
-                                            <ByModal Render={{setReRender, reRender}} marketData={marketData} uIdProps={elem.uId} />
-                                            <SellModel Render={{setReRender, reRender}} marketData={marketData} uIdProps={elem.uId}  /></div></td>
+                                            <ByModal symbol={elem.instrument} Render={{setReRender, reRender}} marketData={marketData} uIdProps={elem.uId} />
+                                            <SellModel symbol={elem.instrument} Render={{setReRender, reRender}} marketData={marketData} uIdProps={elem.uId}  /></div></td>
                                         </tr>
                                     )
                                 })} 

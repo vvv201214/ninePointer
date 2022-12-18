@@ -23,13 +23,13 @@ function CompanyPositionTable({ socket }) {
     const [data, setData] = useState([]);
     let date = new Date();
     let todayDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
-    // let fake_date = "16-12-2022"
+    let fake_date = "16-12-2022"
     useEffect(() => {
 
         axios.get(`${baseUrl}api/v1/readmocktradecompany`)
             .then((res) => {
                 let data = (res.data).filter((elem) => {
-                    return elem.order_timestamp.includes(todayDate) && elem.status === "COMPLETE";
+                    return elem.order_timestamp.includes(fake_date) && elem.status === "COMPLETE";
                 })
                 console.log("data", data)
                 setData(data);
@@ -124,8 +124,8 @@ function CompanyPositionTable({ socket }) {
                                                 <td className="grid2_td">{updatedMarketData[0]?.change.toFixed(2)}%</td>}
                                             <td className="grid2_th companyPosition_BSbtn2">
                                                 <div className="companyPosition_BSbtn">
-                                                    <ByModal Render={{ setReRender, reRender }} marketData={marketData} uIdProps={elem.uId} isCompany={true} />
-                                                    <SellModel Render={{ setReRender, reRender }} marketData={marketData} uIdProps={elem.uId} isCompany={true} />
+                                                    <ByModal symbol={elem.instrument} Render={{ setReRender, reRender }} marketData={marketData} uIdProps={elem.uId} isCompany={true} />
+                                                    <SellModel symbol={elem.instrument} Render={{ setReRender, reRender }} marketData={marketData} uIdProps={elem.uId} isCompany={true} />
                                                 </div>
                                             </td>
                                         </tr>

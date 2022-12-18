@@ -6,7 +6,7 @@ import uniqid from "uniqid"
 import { userContext } from "../../AuthContext";
 import Styles from "./SellModel.module.css";
 
-export default function SellModel({marketData, uIdProps, Render, isCompany }) {
+export default function SellModel({marketData, uIdProps, Render, isCompany, symbol }) {
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
     const { reRender, setReRender } = Render;
@@ -480,6 +480,7 @@ export default function SellModel({marketData, uIdProps, Render, isCompany }) {
                 <div className="form_btnRagAMO">
                     <button className={bsBtn ? "amobtn" : `bsBtn`} onClick={() => { setBsBtn(true) }}>Regular</button>
                 </div>}
+                <span>{symbol}</span> 
 
                         {bsBtn ? <form className="Form_head" onChange={FormHandler} >
                             <div className="container_One">

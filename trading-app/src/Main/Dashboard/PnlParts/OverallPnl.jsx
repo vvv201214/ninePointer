@@ -119,7 +119,7 @@ export default function OverallPnl({marketData, tradeData, data}) {
     data.map((elem)=>{
         totalTransactionCost += Number(elem.brokerage);
     })
-    console.log("totalTransactionCost", totalTransactionCost);
+    console.log("totalTransactionCost", totalTransactionCost, avgPrice);
 
   return (
         <table className="grid1_table">

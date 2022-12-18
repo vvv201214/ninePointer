@@ -70,9 +70,12 @@ router.put("/readInstrumentDetails/:id", async (req, res)=>{
     console.log( req.body)
     let {Exchange, Symbole, contract_Date} = req.body;
     
-    let firstDateSplit = (contract_Date).split(" ");
-    let secondDateSplit = firstDateSplit[0].split("-");
-    contract_Date = `${secondDateSplit[2]}-${secondDateSplit[1]}-${secondDateSplit[0]}`
+    if(contract_Date !== undefined){
+        let firstDateSplit = (contract_Date).split(" ");
+        let secondDateSplit = firstDateSplit[0].split("-");
+        contract_Date = `${secondDateSplit[2]}-${secondDateSplit[1]}-${secondDateSplit[0]}`
+    }
+
 
     // const token = 1232444;
     // console.log(token, req.body)
