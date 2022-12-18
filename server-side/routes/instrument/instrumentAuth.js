@@ -82,7 +82,7 @@ router.put("/readInstrumentDetails/:id", async (req, res)=>{
                 lastModified: req.body.lastModified,  
                 lotSize: req.body.LotSize,
                 instrumentToken: token,
-                contractDate: req.body.contractDate, 
+                contractDate: req.body.contract_Date, 
                 maxLot: req.body.body.maxLot
             }
         })
