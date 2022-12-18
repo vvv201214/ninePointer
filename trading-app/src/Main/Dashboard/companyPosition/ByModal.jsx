@@ -42,7 +42,7 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany }) {
         companyBrokerage: ""
     })
 
-    const [selected, setSelected] = useState("MIS");
+    const [selected, setSelected] = useState("NRML");
     Details.Product = selected;
     const radioHandler = (e) => {
         console.log(e.target.value);
@@ -82,15 +82,15 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany }) {
         realAmount: "",
         real_last_price: "",
     })
-
-    let lotSize = 50;
-    let maxLot = 1000;
-    let finalLot = maxLot/lotSize;
-    let optionData = [];
-    for(let i =1; i<= finalLot; i++){
-        optionData.push( <option value={i * lotSize} key={i}>{ i * lotSize}</option>)
+  
+        
+       
+   
+    function quantityFunction(e){ 
+        Details.Quantity = (e.target.value)
     }
-    console.log(optionData);
+    
+    // console.log(optionData);
 
     useEffect(() => {
 
@@ -163,6 +163,16 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany }) {
 
         setTradeData([...tradeData])
     }, [getDetails])
+
+
+    
+    let lotSize = 50;
+    let maxLot =  1800;
+    let finalLot = maxLot/lotSize;
+    let optionData = [];
+    for(let i =1; i<= finalLot; i++){
+    optionData.push( <option value={i * lotSize} key={i}>{ i * lotSize}</option>)
+    }
 
 
 
@@ -478,7 +488,7 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany }) {
                                 <div className="container_two">
                                     <div className="form_inputContain">
                                         <label htmlFor="" className="bsLabel">Quantity</label>
-                                        <select type="number" className="bsInput bsInputSelect" onChange={(e) => { { Details.Quantity = (e.target.value) } }} >
+                                        <select type="number" className="bsInput bsInputSelect" onChange={(e)=>quantityFunction(e)} >
                                             <option value=""></option>
                                     {optionData.map((elem)=>{
                                         return(
