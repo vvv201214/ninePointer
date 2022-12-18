@@ -143,28 +143,28 @@ export default function TradersPnlCompany({marketData, tradeData}) {
         <table className="grid1_table">
             <tr className="grid2_tr">
                 <th className="grid2_th">Trader Name</th>
-                <th className="grid2_th">Overall PNL (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
+                <th className="grid2_th">Overall PNL</th>
                 {/* <th className="grid2_th">Running PNL (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
                 <th className="grid2_th">Closed PNL(<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th> */}
-                <th className="grid2_th">Tran. Cost(<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
-                <th className="grid2_th"> Net PNL (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
+                <th className="grid2_th">Tran. Cost</th>
+                <th className="grid2_th"> Net PNL</th>
             </tr>
             {
                 detailPnl.map((elem, index)=>{
-
+                let netpnl = (elem.pnl - elem.brokerage);
                     return(
-                        <tr key={elem._id}>
+                        <tr style={elem.pnl>=0.00 ? { color: "green"}:  { color: "red"}} key={elem._id}>
                             {elem.name &&
                             <>
                             <td className="grid2_td">{(elem.name)}</td>
                             {!elem.pnl ?
-                            <td className="grid2_td">{(elem.pnl)} </td>
+                            <td className="grid2_td">{elem.pnl > 0 ? "+₹" + (elem.pnl.toFixed(2)).toLocaleString(undefined, {maximumFractionDigits:2}) : "-₹" + ((-elem.pnl).toFixed(2)).toLocaleString(undefined, {maximumFractionDigits:2})} </td>
                             :
-                            <td className="grid2_td">{(elem.pnl).toFixed(2)} </td>}
+                            <td className="grid2_td">{elem.pnl > 0 ? "+₹" + (elem.pnl.toFixed(2)).toLocaleString(undefined, {maximumFractionDigits:2}) : "-₹" + ((-elem.pnl).toFixed(2)).toLocaleString(undefined, {maximumFractionDigits:2})} </td>}
                             {/* <td className="grid2_td">Running PNL </td>
                             <td className="grid2_td">Closed PNL</td> */}
-                            <td className="grid2_td">0</td>
-                            <td className="grid2_td"> {(elem.pnl - elem.brokerage).toFixed(2)} </td>
+                            <td className="grid2_td">₹0.00</td>
+                            <td className="grid2_td"> {netpnl > 0 ? "+₹" + (netpnl.toFixed(2)).toLocaleString(undefined, {maximumFractionDigits:2}) : "-₹" + ((-netpnl).toFixed(2)).toLocaleString(undefined, {maximumFractionDigits:2})} </td>
                             </>
                             }
                         </tr>

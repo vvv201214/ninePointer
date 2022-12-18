@@ -98,7 +98,7 @@ function CompanyPositionTable({ socket }) {
                                     <th className="grid2_th">Contract Date</th>
                                     <th className="grid2_th"> Symbol</th>
                                     <th className="grid2_th"> Instrument</th>
-                                    <th className="grid2_th">LTP(<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
+                                    <th className="grid2_th">LTP</th>
                                     <th className="grid2_th">%Change</th>
                                     <th className="grid2_th">Action</th>
                                 </tr>
@@ -112,7 +112,7 @@ function CompanyPositionTable({ socket }) {
                                             <td className="grid2_td">{elem.contractDate}</td>
                                             <td className="grid2_td">{elem.symbol}</td>
                                             <td className="grid2_td">{elem.instrument}</td>
-                                            <td className="grid2_td">{updatedMarketData[0]?.last_price}</td>
+                                            <td className="grid2_td">₹{updatedMarketData[0]?.last_price}</td>
 
                                             {console.log(updatedMarketData[0], updatedMarketData[0]?.change)}
                                             {(updatedMarketData[0]?.change === undefined) ?
