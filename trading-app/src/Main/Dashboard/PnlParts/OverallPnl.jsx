@@ -130,7 +130,7 @@ export default function OverallPnl({marketData, tradeData, data}) {
                 <th className="grid2_th">Avg. Price</th>
                 <th className="grid2_th">LTP</th>
                 <th className="grid2_th">P&L</th>
-                <th className="grid2_th">%Change</th>
+                <th className="grid2_th">Change(%)</th>
             </tr> 
             {
             overallPnlArr.map((elem, index)=>{
@@ -143,19 +143,21 @@ export default function OverallPnl({marketData, tradeData, data}) {
 
                 console.log(typeof(Total));
 
-                let updatedValue = (-(elem.totalBuy+elem.totalSell-(elem.totalBuyLot+elem.totalSellLot)*liveDetail[index]?.last_price)).toFixed(2)
-            
+                let updatedValue = (-(elem.totalBuy+elem.totalSell-(elem.totalBuyLot+elem.totalSellLot)*liveDetail[index]?.last_price));
+                // updatedValue = updatedValue.toFixed(2);
+                console.log(updatedValue);
+                console.log((-updatedValue).toLocaleString(undefined, {maximumFractionDigits:2}));
                 return(
                     <>
                     <tr className="grid2_tr" style={updatedValue>=0.00 ? { color: "green"}:  { color: "red"}} key={index}>
                         <td className="grid2_td" style={{color : "black"}}>{elem.Product}</td>
                         <td className="grid2_td">{elem.symbol}</td>
                         <td className="grid2_td">{elem.totalBuyLot + elem.totalSellLot}</td>
-                        <td className="grid2_td">₹{(tempavgPriceArr[0].average_price).toFixed(2)}</td>
+                        <td className="grid2_td">₹{tempavgPriceArr[0].average_price.toFixed(2)}</td>
                         
                         <td className="grid2_td">₹{liveDetail[index]?.last_price.toFixed(2)}</td>
                         {/* <td className="grid2_td">{(-(elem.totalBuy+elem.totalSell-(elem.totalBuyLot+elem.totalSellLot)*liveDetail[index]?.last_price)).toFixed(2)}</td> */}
-                        <td className="grid2_td">{Number(updatedValue) > 0 ? "+₹" + Number(updatedValue).toLocaleString(undefined, {maximumFractionDigits:2}) : "-₹" + (Number(-updatedValue).toLocaleString(undefined, {maximumFractionDigits:2}))}</td>
+                        <td className="grid2_td">{updatedValue > 0.00 ? "+₹" + (updatedValue.toFixed(2)): "-₹" + ((-updatedValue).toFixed(2))}</td>
                         {liveDetail[index]?.change === undefined ?
                         <td className="grid2_td">{(Math.abs((liveDetail[index]?.last_price-liveDetail[index]?.average_price)/liveDetail[index]?.average_price)).toFixed(2)}%</td>//{((liveDetail[index]?.last_price - elem.average_price)/(elem.last_price)).toFixed(2)}
                         :
@@ -171,11 +173,11 @@ export default function OverallPnl({marketData, tradeData, data}) {
                 <th></th>
                 {overallPnlArr.length ?
                 <>
-                <th className='pnl_Total' >Transaction Cost</th>
-                <th className='pnl_Total' >{totalTransactionCost.toFixed(2)}</th>
-                <th className='pnl_Total'>TOTAL</th>
-                <th className='pnl_Total' style={Total>=0 ? {color: "green"} : {color: "red"} }>{Total>=0 ? "₹" + Total.toFixed(2) : "-₹" + -Total.toFixed(2)}</th>
-                <th className='pnl_Total' >{(Total-totalTransactionCost).toFixed(2)}</th>
+                <th className='pnl_Total'>Transaction Cost</th>
+                <th className='pnl_Total'>{totalTransactionCost.toFixed(2)}</th>
+                <th className='pnl_Total'>Total</th>
+                <th className='pnl_Total' style={Total>=0 ? {color: "green"} : {color: "red"} }>{Total>=0 ? "+₹" + (Total.toFixed(2)) : "-₹" + ((-Total).toFixed(2))}</th>
+                <th className='pnl_Total'>{(Total-totalTransactionCost).toFixed(2)}</th>
                 </>
                 :
                 <th></th>

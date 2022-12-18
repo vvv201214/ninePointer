@@ -22,7 +22,7 @@ export default function TradersPnlCompany({marketData, tradeData}) {
     let numberOfTrade = 0;
     let lotUsed = 0;
     let totalOverAllPnl = 0;
-    let totalNumberLots = 0;
+    let totalNumberTrade = 0;
     let totalLotsUsed = 0;
     let totalTransCost = 0;
     let totalNetPnl = 0;
@@ -160,23 +160,26 @@ export default function TradersPnlCompany({marketData, tradeData}) {
                 <th className="grid2_th">Tran. Cost(<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
                 <th className="grid2_th"> Net PNL (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
             </tr>
+            
             {
+
                 detailPnl.map((elem, index)=>{
-                    totalOverAllPnl = 0;
-                    totalNumberLots = 0;
-                    totalLotsUsed = 0;
-                    totalTransCost = 0;
-                    totalNetPnl = 0;
+                    totalOverAllPnl += elem.pnl && elem.pnl;
+                    totalNumberTrade += elem.numberOfTrade;
+                    totalLotsUsed += elem.lotUsed;
+                    totalTransCost += (elem.brokerage);
+                    
                     let netpnl = (elem.pnl - elem.brokerage);
+                    totalNetPnl += netpnl;
                     return(
                         <tr style={netpnl>=0.00 ? { color: "green"}:  { color: "red"}} key={elem._id}>
                             {elem.name &&
                             <>
                             <td className="grid2_td">{(elem.name)}</td>
                             {!elem.pnl ?
-                            <td className="grid2_td">{elem.pnl > 0 ? "+₹" + (Number(elem.pnl).toFixed(2)).toLocaleString(undefined, {maximumFractionDigits:2, toFixed:2}) : "-₹" + ((-elem.pnl).toFixed(2)).toLocaleString(undefined, {maximumFractionDigits:2,toFixed:2})} </td>
+                            <td className="grid2_td">{elem.pnl > 0 ? "+₹" + (Number(elem.pnl)) : "-₹" + ((-elem.pnl))} </td>
                             :
-                            <td className="grid2_td">{elem.pnl > 0 ? "+₹" + (Number(elem.pnl).toFixed(2)).toLocaleString(undefined, {maximumFractionDigits:2,toFixed:2}) : "-₹" + ((-elem.pnl).toFixed(2)).toLocaleString(undefined, {maximumFractionDigits:2,toFixed:2})} </td>}
+                            <td className="grid2_td">{elem.pnl > 0 ? "+₹" + (Number(elem.pnl).toFixed(2)) : "-₹" + ((-elem.pnl).toFixed(2))} </td>}
                             {/* <td className="grid2_td">Running PNL </td>
                             <td className="grid2_td">Closed PNL</td> */}
                             <td className="grid2_td">{elem.numberOfTrade}</td>
@@ -187,9 +190,27 @@ export default function TradersPnlCompany({marketData, tradeData}) {
                             </>
                             }
                         </tr>
+                        
                     )
                 })
             }
+            <tr>
+                <th className='pnl_Total'>Total</th>
+                {detailPnl.length ?
+                <>
+                <th className='pnl_Total'>₹{totalOverAllPnl.toFixed(2)}</th>
+                <th className='pnl_Total'>₹{totalNumberTrade}</th>
+                <th className='pnl_Total'>₹{totalLotsUsed}</th>
+                <th className='pnl_Total'>+₹{totalTransCost.toFixed(2)}</th>
+                <th className='pnl_Total'>₹{totalNetPnl.toFixed(2)}</th>
+                </>
+                :
+                <th></th>
+                 }
+                
+                <th></th>
+                </tr> 
+            
         </table>
     <button className="DetailsBtn">Details</button>
     </div>

@@ -14,7 +14,7 @@ router.post("/instrument", async (req, res)=>{
         console.log(req.body);
 
         let instrumentToken = await fetchToken(exchange, symbol);
-        console.log(instrumentToken);
+        console.log("instrumentToken", instrumentToken);
         if(!instrument || !exchange || !symbol || !status || !uId || !createdOn || !lastModified || !createdBy || !lotSize || !instrumentToken){
             console.log(instrumentToken);
             console.log(req.body);
