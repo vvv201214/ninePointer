@@ -22,6 +22,7 @@
     margin: 2%;
     display: inline;
 }
+
 .formInput{
     border-radius: 3px;
     width: 7rem;
@@ -37,9 +38,13 @@
     border: none;
 
 }
-.formButton{
+
+.btn_div{
     margin: 2%;
-    float: right;
+    margin-left: -5px;
+}
+.formButton{
+    margin-left: 20%;
     font-size: 14px;
     padding: 5px 10px;
     border-radius: 8px;

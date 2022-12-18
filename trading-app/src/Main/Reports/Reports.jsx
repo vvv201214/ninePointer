@@ -11,9 +11,9 @@ export default function Reports() {
                             <div className={Styles.form_div}>
                                 <form action="">
                                     <label htmlFor="" className={Styles.formLable}>Start Date</label>
-                                    <input type="date" className={Styles.formInput} />
+                                    <input type="date"  className={Styles.formInput} />
                                     <label htmlFor="" className={Styles.formLable}>End Date</label>
-                                    <input type="date" className={Styles.formInput} />
+                                    <input type="date"  className={Styles.formInput} />
                                     <label htmlFor="" className={Styles.formLable}>Trader</label>
                                     <select name="" id="" className={Styles.formSelect} >
                                         <option value="">Select User</option>
@@ -22,7 +22,7 @@ export default function Reports() {
                                 </form>
                             </div>
                             <div className={Styles.btn_div}>
-                                <span className={Styles.formLable}>Gross P&L</span> <input type="text" className={Styles.formInput} />
+                                <span className={`${Styles.formLable}`}>Gross P&L</span> <input type="text" className={`${Styles.formInput} ${Styles.formInput1}`} />
                                 <span className={Styles.formLable}>Transaction Cost</span> <input type="text" className={Styles.formInput} />
                                 <span className={Styles.formLable}>Net P&L</span> <input type="text" className={Styles.formInput} />
                                 <button className={Styles.formButton}> Download Report</button>

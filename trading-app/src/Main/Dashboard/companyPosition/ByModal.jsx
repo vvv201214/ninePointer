@@ -18,26 +18,6 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany }) {
     let tradeBy = isCompany ? "company" : getDetails.userDetails.name;
     let dummyOrderId = `${date.getFullYear()-2000}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}${Math.floor(100000000 + Math.random() * 900000000)}`
 
-    const [selected, setSelected] = useState("MIS");
-    const radioHandler = (e) => {
-        console.log(e.target.value);
-        setSelected(e.target.value);
-        Details.Product = e.target.value
-        console.log(Details.Product);
-    }
-
-    const [marketselected, setMarketselected] = useState("MARKET");
-    const radioHandlerTwo = (e)=>{
-        setMarketselected(e.target.value);
-        Details.OrderType = e.target.value
-    }
-
-    const [validitySelected, setValiditySelected] = useState("DAY");
-    const radioHandlerthree = (e)=>{
-        setValiditySelected(e.target.value);
-        Details.validity = e.target.value;
-    }
-
     const [userPermission, setUserPermission] = useState([]);
     const [bsBtn, setBsBtn] = useState(true)
     const [modal, setModal] = useState(false);
@@ -47,13 +27,13 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany }) {
         ceOrPe: "",
         buyOrSell: "",
         variety: "",
-        Product: "MIS",
+        Product: "",
         Quantity: "",
         Price: "",
-        OrderType: "MARKET",
+        OrderType: "",
         TriggerPrice: "",
         stopLoss: "",
-        validity: "DAY",
+        validity: "",
         last_price: "",
         brokerageCharge: "",
         totalAmount: "",
@@ -61,6 +41,31 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany }) {
         userBrokerage: "",
         companyBrokerage: ""
     })
+
+    const [selected, setSelected] = useState("MIS");
+    Details.Product = selected;
+    const radioHandler = (e) => {
+        console.log(e.target.value);
+        setSelected(e.target.value);
+        Details.Product = e.target.value;
+        console.log(Details.Product);
+    }
+    const [marketselected, setMarketselected] = useState("MARKET");
+    Details.OrderType = marketselected
+    const radioHandlerTwo = (e)=>{
+        console.log(e.target.value);
+        setMarketselected(e.target.value);
+        Details.OrderType = e.target.value;
+        console.log(Details.OrderType)
+    }
+
+    const [validitySelected, setValiditySelected] = useState("DAY");
+    Details.validity = validitySelected
+    const radioHandlerthree = (e)=>{
+        setValiditySelected(e.target.value);
+        Details.validity = e.target.value;
+    }
+
     let [accessTokenDetails, setAccessToken] = useState([]);
     let [apiKeyDetails, setApiKey] = useState([]);
     const [tradeData, setTradeData] = useState([]);
@@ -77,6 +82,15 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany }) {
         realAmount: "",
         real_last_price: "",
     })
+
+    let lotSize = 50;
+    let maxLot = 1000;
+    let finalLot = maxLot/lotSize;
+    let optionData = [];
+    for(let i =1; i<= finalLot; i++){
+        optionData.push( <option value={i * lotSize} key={i}>{ i * lotSize}</option>)
+    }
+    console.log(optionData);
 
     useEffect(() => {
 
@@ -397,6 +411,7 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany }) {
     }
 
     async function mockTradeCompany(algoBox, realTrade){
+        console.log(Details);
         // let currentTime = `${date.getHours()}:${date.getMinutes()}`
         // console.log("currentTime", currentTime);
         // if(currentTime > "15:30" || currentTime < "9:15"){
@@ -462,19 +477,27 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany }) {
                         {bsBtn ?
                             <form className="Form_head" onChange={FormHandler} >
                                 <div className="container_One">
-                                    <input type="radio" value="MIS" checked={selected === 'MIS'} name="Product" className="btnRadio" onChange={radioHandler} /> Intraday <span style={{ color: 'gray' }}>MIS</span>
-                                    <input type="radio" value="NRML" checked={selected === 'NRML'} name="Product" className="btnRadio" onChange={radioHandler} /> Overnight <span style={{ color: 'gray' }}>NRML</span>
+                                    <input type="radio" value="MIS" checked={selected === 'MIS'} name="Product" className="btnRadio" onChange={radioHandler} /> Intraday &nbsp;  <span style={{ color: 'gray' }}>MIS</span>
+                                    <input type="radio" value="NRML" checked={selected === 'NRML'} name="Product" className="btnRadio" onChange={radioHandler} /> Overnight &nbsp;  <span style={{ color: 'gray' }}>NRML</span>
                                 </div>
                                 <div className="container_two">
                                     <div className="form_inputContain">
                                         <label htmlFor="" className="bsLabel">Quantity</label>
-                                        <input type="text" className="bsInput" onChange={(e) => { { Details.Quantity = e.target.value } }} />
+                                        <select type="number" className="bsInput bsInputSelect" onChange={(e) => { { Details.Quantity = (e.target.value) } }} >
+                                            <option value=""></option>
+                                    {optionData.map((elem)=>{
+                                        return(
+                                            <option>{elem.props.children}</option>
+                                        )
+                                    }) 
+                                    }   
+                                    </select>
 
                                         <label htmlFor="" className="bsLabel" >Price</label>
-                                        <input type="text" className="bsInput" onChange={(e) => { { Details.Price = e.target.value } }} />
+                                        <input type="number" className="bsInput" onChange={(e) => { { Details.Price = e.target.value } }} />
 
                                         <label htmlFor="" className="bsLabel">Trigger Price</label>
-                                        <input type="text" className="bsInput" onChange={(e) => { { Details.TriggerPrice = e.target.value } }} />
+                                        <input type="number" className="bsInput" onChange={(e) => { { Details.TriggerPrice = e.target.value } }} />
                                     </div>
                                     <div className="form_checkbox">
                                         <input type="radio" value="MARKET" checked={marketselected === 'MARKET'} name="OrderType" className="btnRadio1" onChange={radioHandlerTwo} /> Market
@@ -506,13 +529,13 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany }) {
                                 <div className="container_two">
                                     <div className="form_inputContain">
                                         <label htmlFor="" className="bsLabel">Quantity</label>
-                                        <input type="text" className="bsInput" onChange={(e) => { { Details.Quantity = e.target.value } }} />
+                                        <input type="number" className="bsInput" onChange={(e) => { { Details.Quantity = e.target.value } }} />
 
                                         <label htmlFor="" className="bsLabel" >Price</label>
-                                        <input type="text" className="bsInput" onChange={(e) => { { Details.Price = e.target.value } }} />
+                                        <input type="number" className="bsInput" onChange={(e) => { { Details.Price = e.target.value } }} />
 
                                         <label htmlFor="" className="bsLabel">Trigger Price</label>
-                                        <input type="text" className="bsInput" onChange={(e) => { { Details.TriggerPrice = e.target.value } }} />
+                                        <input type="number" className="bsInput" onChange={(e) => { { Details.TriggerPrice = e.target.value } }} />
                                     </div>
                                     <div className="form_checkbox">
                                         <input type="radio" value="MARKET" checked={marketselected === 'MARKET'} name="OrderType" className="btnRadio1" onChange={radioHandlerTwo} /> Market
