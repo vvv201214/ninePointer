@@ -17,6 +17,7 @@ export default function TradersPnlCompany({marketData, tradeData}) {
     let todayDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
     // let fake_date = "2022-12-16";
     let fake_date = "16-12-2022";
+
     let totalPnl = 0;
     let transactionCost = 0;
     let numberOfTrade = 0;
@@ -37,7 +38,7 @@ export default function TradersPnlCompany({marketData, tradeData}) {
         axios.get(`${baseUrl}api/v1/readmocktradecompany`)
         .then((res) => {
             let data = (res.data).filter((elem) => {
-                return elem.order_timestamp.includes(fake_date) && elem.status === "COMPLETE";
+                return elem.order_timestamp.includes(todayDate) && elem.status === "COMPLETE";
             })
             setAllTrade(data);
         }).catch((err)=>{

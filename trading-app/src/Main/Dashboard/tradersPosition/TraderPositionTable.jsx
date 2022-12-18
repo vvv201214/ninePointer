@@ -31,7 +31,7 @@ function TraderPositionTable({ socket }) {
         axios.get(`${baseUrl}api/v1/readmocktradeuser`)
         .then((res) => {
             let data = (res.data).filter((elem)=>{
-                return elem.order_timestamp.includes(fake_date) && elem.status === "COMPLETE" && elem.userId === getDetails.userDetails.email;
+                return elem.order_timestamp.includes(todayDate) && elem.status === "COMPLETE" && elem.userId === getDetails.userDetails.email;
             })
             setData(data);
         }).catch((err)=>{
