@@ -51,7 +51,7 @@ function CompanyOrders(){
                                 <tr className="grid2_tr">
                                     <th className="grid2_th">Timestamp</th>
                                     <th className="grid2_th">OrderID</th>
-                                    <th className="grid2_th">Trade By</th>
+                                    <th className="grid2_th">Trader</th>
                                     <th className="grid2_th">Type</th>
                                     <th className="grid2_th">Instrument</th>
                                     <th className="grid2_th">Product</th>
