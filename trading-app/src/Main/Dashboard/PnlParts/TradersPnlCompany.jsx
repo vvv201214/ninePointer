@@ -21,6 +21,11 @@ export default function TradersPnlCompany({marketData, tradeData}) {
     let transactionCost = 0;
     let numberOfTrade = 0;
     let lotUsed = 0;
+    let totalOverAllPnl = 0;
+    let totalNumberLots = 0;
+    let totalLotsUsed = 0;
+    let totalTransCost = 0;
+    let totalNetPnl = 0;
     useEffect(()=>{
         axios.get(`${baseUrl}api/v1/readuserdetails`)
         .then((res) => {
@@ -147,7 +152,7 @@ export default function TradersPnlCompany({marketData, tradeData}) {
         <table className="grid1_table">
             <tr className="grid2_tr">
                 <th className="grid2_th">Trader Name</th>
-                <th className="grid2_th">Overall PNL (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
+                <th className="grid2_th">Overall PNL</th>
                 {/* <th className="grid2_th">Running PNL (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
                 <th className="grid2_th">Closed PNL(<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th> */}
                 <th className="grid2_th"># of Trades</th>
@@ -157,22 +162,28 @@ export default function TradersPnlCompany({marketData, tradeData}) {
             </tr>
             {
                 detailPnl.map((elem, index)=>{
-
+                    totalOverAllPnl = 0;
+                    totalNumberLots = 0;
+                    totalLotsUsed = 0;
+                    totalTransCost = 0;
+                    totalNetPnl = 0;
+                    let netpnl = (elem.pnl - elem.brokerage);
                     return(
-                        <tr key={elem._id}>
+                        <tr style={netpnl>=0.00 ? { color: "green"}:  { color: "red"}} key={elem._id}>
                             {elem.name &&
                             <>
-                                <td className="grid2_td">{(elem.name)}</td>
-                                {!elem.pnl ?
-                                <td className="grid2_td">{(elem.pnl)} </td>
-                                :
-                                <td className="grid2_td">{(elem.pnl).toFixed(2)} </td>}
-                                {/* <td className="grid2_td">Running PNL </td>
-                                <td className="grid2_td">Closed PNL</td> */}
-                                <td className="grid2_td">{elem.numberOfTrade}</td>
-                                <td className="grid2_td">{elem.lotUsed}</td>
-                                <td className="grid2_td">{elem.brokerage}</td>
-                                <td className="grid2_td"> {(elem.pnl - elem.brokerage).toFixed(2)} </td>
+                            <td className="grid2_td">{(elem.name)}</td>
+                            {!elem.pnl ?
+                            <td className="grid2_td">{elem.pnl > 0 ? "+₹" + (Number(elem.pnl).toFixed(2)).toLocaleString(undefined, {maximumFractionDigits:2, toFixed:2}) : "-₹" + ((-elem.pnl).toFixed(2)).toLocaleString(undefined, {maximumFractionDigits:2,toFixed:2})} </td>
+                            :
+                            <td className="grid2_td">{elem.pnl > 0 ? "+₹" + (Number(elem.pnl).toFixed(2)).toLocaleString(undefined, {maximumFractionDigits:2,toFixed:2}) : "-₹" + ((-elem.pnl).toFixed(2)).toLocaleString(undefined, {maximumFractionDigits:2,toFixed:2})} </td>}
+                            {/* <td className="grid2_td">Running PNL </td>
+                            <td className="grid2_td">Closed PNL</td> */}
+                            <td className="grid2_td">{elem.numberOfTrade}</td>
+                            <td className="grid2_td">{elem.lotUsed}</td>
+                            <td className="grid2_td">₹{(elem.brokerage).toFixed(2)}</td>
+                            {/* <td className="grid2_td">0.00</td> */}
+                            <td className="grid2_td"> {netpnl > 0 ? "+₹" + (Number(netpnl).toFixed(2)).toLocaleString(undefined, {maximumFractionDigits:2,toFixed:2}) : "-₹" + ((-netpnl).toFixed(2)).toLocaleString(undefined, {maximumFractionDigits:2,toFixed:2})} </td>
                             </>
                             }
                         </tr>

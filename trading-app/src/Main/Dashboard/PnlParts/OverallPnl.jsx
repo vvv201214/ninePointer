@@ -2,7 +2,7 @@ import React from 'react'
 import { useState, useEffect } from 'react';
 import axios from "axios";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons';  
+import { faContactCard, faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons';  
 
 export default function OverallPnl({marketData, tradeData, data}) {
 
@@ -127,9 +127,9 @@ export default function OverallPnl({marketData, tradeData, data}) {
                 <th className="grid2_th">Product</th>
                 <th className="grid2_th">Instrument</th>
                 <th className="grid2_th">Quantity</th>
-                <th className="grid2_th">Avg. Price(<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
-                <th className="grid2_th">LTP (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
-                <th className="grid2_th">P&L (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
+                <th className="grid2_th">Avg. Price</th>
+                <th className="grid2_th">LTP</th>
+                <th className="grid2_th">P&L</th>
                 <th className="grid2_th">%Change</th>
             </tr> 
             {
@@ -151,11 +151,11 @@ export default function OverallPnl({marketData, tradeData, data}) {
                         <td className="grid2_td" style={{color : "black"}}>{elem.Product}</td>
                         <td className="grid2_td">{elem.symbol}</td>
                         <td className="grid2_td">{elem.totalBuyLot + elem.totalSellLot}</td>
-                        <td className="grid2_td">{(tempavgPriceArr[0].average_price).toFixed(2)}</td>
+                        <td className="grid2_td">₹{(tempavgPriceArr[0].average_price).toFixed(2)}</td>
                         
-                        <td className="grid2_td">{liveDetail[index]?.last_price.toFixed(2)}</td>
-                        <td className="grid2_td">{(-(elem.totalBuy+elem.totalSell-(elem.totalBuyLot+elem.totalSellLot)*liveDetail[index]?.last_price)).toFixed(2)}</td>
-
+                        <td className="grid2_td">₹{liveDetail[index]?.last_price.toFixed(2)}</td>
+                        {/* <td className="grid2_td">{(-(elem.totalBuy+elem.totalSell-(elem.totalBuyLot+elem.totalSellLot)*liveDetail[index]?.last_price)).toFixed(2)}</td> */}
+                        <td className="grid2_td">{Number(updatedValue) > 0 ? "+₹" + Number(updatedValue).toLocaleString(undefined, {maximumFractionDigits:2}) : "-₹" + (Number(-updatedValue).toLocaleString(undefined, {maximumFractionDigits:2}))}</td>
                         {liveDetail[index]?.change === undefined ?
                         <td className="grid2_td">{(Math.abs((liveDetail[index]?.last_price-liveDetail[index]?.average_price)/liveDetail[index]?.average_price)).toFixed(2)}%</td>//{((liveDetail[index]?.last_price - elem.average_price)/(elem.last_price)).toFixed(2)}
                         :
@@ -171,11 +171,11 @@ export default function OverallPnl({marketData, tradeData, data}) {
                 <th></th>
                 {overallPnlArr.length ?
                 <>
-                <th>Transaction Cost</th>
-                <th>{totalTransactionCost.toFixed(2)}</th>
+                <th className='pnl_Total' >Transaction Cost</th>
+                <th className='pnl_Total' >{totalTransactionCost.toFixed(2)}</th>
                 <th className='pnl_Total'>TOTAL</th>
-                <th className='pnl_Total' style={Total>=0 ? {color: "green"} : {color: "red"} }>{Total.toFixed(2)}</th>
-                <th>{(Total-totalTransactionCost).toFixed(2)}</th>
+                <th className='pnl_Total' style={Total>=0 ? {color: "green"} : {color: "red"} }>{Total>=0 ? "₹" + Total.toFixed(2) : "-₹" + -Total.toFixed(2)}</th>
+                <th className='pnl_Total' >{(Total-totalTransactionCost).toFixed(2)}</th>
                 </>
                 :
                 <th></th>
