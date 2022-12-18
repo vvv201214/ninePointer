@@ -22,7 +22,7 @@ function CompanyPositionTable({ socket }) {
     const [marketData, setMarketData] = useState([]);
     const [data, setData] = useState([]);
     let date = new Date();
-    let todayDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
+    let todayDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
     let fake_date = "16-12-2022"
     useEffect(() => {
 
