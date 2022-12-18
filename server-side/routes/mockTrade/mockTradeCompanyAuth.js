@@ -116,7 +116,7 @@ router.post("/mocktradecompany", async (req, res)=>{
             variety, validity, exchange, order_type: OrderType, symbol, placed_by: "ninepointer", userId,
              algoBox:{algoName, transactionChange, instrumentChange, exchangeChange, 
             lotMultipler, productChange, tradingAccount}, order_id, instrumentToken, brokerage: brokerageCompany,
-            tradeBy: createdBy
+            tradeBy: createdBy, isRealTrade: realTrade
         });
 
         console.log("mockTradeDetails comapny", mockTradeDetails);
@@ -173,6 +173,17 @@ router.get("/readmocktradecompany/:id", (req, res)=>{
 router.get("/readmocktradecompanyemail/:email", (req, res)=>{
     const {email} = req.params
     MockTradeDetails.find({userId: email})
+    .then((data)=>{
+        return res.status(200).send(data);
+    })
+    .catch((err)=>{
+        return res.status(422).json({error : "date not found"})
+    })
+})
+
+router.get("/readmocktradecompanyDate", (req, res)=>{
+    const {email} = req.params
+    MockTradeDetails.find({order_timestamp:{$gte: new Date("2022-12-16 00:00:00"),$lt: new Date("2022-12-16 23:59:00")}})
     .then((data)=>{
         return res.status(200).send(data);
     })

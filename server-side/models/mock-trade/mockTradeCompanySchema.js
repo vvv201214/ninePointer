@@ -76,6 +76,10 @@ const mockTradeCompanySchema = new mongoose.Schema({
         type: String,
         required: true        
     },
+    isRealTrade:{ 
+        type: Boolean,
+        required: true  
+    },
     algoBox:{
         algoName:{
             type: String,

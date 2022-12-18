@@ -279,15 +279,10 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany }) {
         Details.totalAmount = Details.last_price * Details.Quantity;
         Details.brokerageCharge = buyBrokerageCharge(brokerageData, Details.Quantity, Details.totalAmount);
 
-
-        // Details.last_price = 100;
-
-
         // Algo box applied here....
 
         if (userPermissionAlgo.length && !isCompany) {
             setDetails(Details)
-            console.log("Details", Details);
             // if(!isCompany){
             //     mockTradeUser("no");
             // }

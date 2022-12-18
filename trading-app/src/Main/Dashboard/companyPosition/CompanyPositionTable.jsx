@@ -22,7 +22,7 @@ function CompanyPositionTable({ socket }) {
     const [marketData, setMarketData] = useState([]);
     const [data, setData] = useState([]);
     let date = new Date();
-    let todayDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
+    let todayDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
     let fake_date = "16-12-2022"
     useEffect(() => {
 
@@ -98,8 +98,8 @@ function CompanyPositionTable({ socket }) {
                                     <th className="grid2_th">Contract Date</th>
                                     <th className="grid2_th"> Symbol</th>
                                     <th className="grid2_th"> Instrument</th>
-                                    <th className="grid2_th">LTP(<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
-                                    <th className="grid2_th">%Change</th>
+                                    <th className="grid2_th">LTP</th>
+                                    <th className="grid2_th">Change(%)</th>
                                     <th className="grid2_th">Action</th>
                                 </tr>
                                 {tradeData.map((elem, index) => {
@@ -112,7 +112,10 @@ function CompanyPositionTable({ socket }) {
                                             <td className="grid2_td">{elem.contractDate}</td>
                                             <td className="grid2_td">{elem.symbol}</td>
                                             <td className="grid2_td">{elem.instrument}</td>
-                                            <td className="grid2_td">{updatedMarketData[0]?.last_price}</td>
+                                            {(updatedMarketData[0]?.last_price) === undefined ?
+                                            <td className="grid2_td">₹{(updatedMarketData[0]?.last_price)}</td>
+                                            :
+                                            <td className="grid2_td">₹{(updatedMarketData[0]?.last_price).toFixed(2)}</td>}
 
                                             {console.log(updatedMarketData[0], updatedMarketData[0]?.change)}
                                             {(updatedMarketData[0]?.change === undefined) ?

@@ -13,7 +13,7 @@ import { faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons';
 
 function TraderPositionTable({ socket }) {
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
-
+    const setDetails = useContext(userContext);
     const getDetails = useContext(userContext);
     const [reRender, setReRender] = useState(true);
     const [tradeData, setTradeData] = useState([]);
@@ -21,7 +21,7 @@ function TraderPositionTable({ socket }) {
     const [marketData, setMarketData] = useState([]);
 
     let date = new Date();
-    let todayDate = `${date.getFullYear()}-${date.getDate()}-${date.getMonth()+1}`
+    let todayDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
     // let fake_date = "2022-12-16"
     let fake_date = "16-12-2022";
 
@@ -53,6 +53,7 @@ function TraderPositionTable({ socket }) {
                     return  elem.status === "Active"
                 })
                 setTradeData(dataArr)
+                setDetails.setTradeData(dataArr);
             }).catch((err)=>{
                 
                 return new Error(err);
@@ -70,6 +71,7 @@ function TraderPositionTable({ socket }) {
         socket.on("tick",(data)=>{
             console.log("this is live market data", data);
             setMarketData(data);
+            setDetails.setMarketData(data);
         })
         
         console.log(marketData);
