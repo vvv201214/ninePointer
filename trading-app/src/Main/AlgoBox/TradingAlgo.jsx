@@ -145,7 +145,7 @@ function TradingAlgo(){
                                 <tr className="grid2_tr">
                                     <th className="grid2_th">Created On</th>
                                     <th className="grid2_th">Algo Name</th>
-                                    <th className="grid2_th">ADD USER</th>
+                                    <th className="grid2_th">Users</th>
                                     <th className="grid2_th">Transaction Change</th>
                                     <th className="grid2_th">Instrument Change</th>
                                     <th className="grid2_th">Exchange Change</th>
