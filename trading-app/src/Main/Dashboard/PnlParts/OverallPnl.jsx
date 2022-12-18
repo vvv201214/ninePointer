@@ -155,7 +155,10 @@ export default function OverallPnl({marketData, tradeData, data}) {
                         <td className="grid2_td">{elem.totalBuyLot + elem.totalSellLot}</td>
                         <td className="grid2_td">₹{tempavgPriceArr[0].average_price.toFixed(2)}</td>
                         
-                        <td className="grid2_td">₹{liveDetail[index]?.last_price.toFixed(2)}</td>
+                        {(liveDetail[0]?.last_price) === undefined ?
+                        <td className="grid2_td">₹{(liveDetail[0]?.last_price)}</td>
+                        :
+                        <td className="grid2_td">₹{(liveDetail[0]?.last_price).toFixed(2)}</td>}
                         {/* <td className="grid2_td">{(-(elem.totalBuy+elem.totalSell-(elem.totalBuyLot+elem.totalSellLot)*liveDetail[index]?.last_price)).toFixed(2)}</td> */}
                         <td className="grid2_td">{updatedValue > 0.00 ? "+₹" + (updatedValue.toFixed(2)): "-₹" + ((-updatedValue).toFixed(2))}</td>
                         {liveDetail[index]?.change === undefined ?
