@@ -32,7 +32,6 @@ function TraderPositionTable({ socket }) {
         .then((res) => {
             let data = (res.data).filter((elem)=>{
                 return elem.order_timestamp.includes(todayDate) && elem.status === "COMPLETE";
-                return elem.order_timestamp.includes(todayDate) && elem.status === "COMPLETE" && elem.userId === getDetails.userDetails.email;
             })
             setData(data);
         }).catch((err)=>{

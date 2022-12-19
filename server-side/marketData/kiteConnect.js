@@ -13,8 +13,8 @@ let newCors = process.env.NODE_ENV === "production" ? "http://3.110.187.5/" : "h
 const io = new Server(9000, {
   cors: {
 
-    origin: newCors,
-    // origin: "http://3.110.187.5/",
+    // origin: newCors,
+    origin: "http://3.110.187.5/",
 
     methods: ['GET', 'POST', 'PATCH'],
   },
@@ -82,7 +82,7 @@ async function parameters(io, socket) {
       });
       // console.log(ticker);
       
-      ticker.autoReconnect(true, 10000000000, 5);
+      ticker.autoReconnect(true, 10000000000000, 5);
       ticker.connect();
       ticker.on('ticks', onTicks);
       ticker.on('connect', subscribe);
