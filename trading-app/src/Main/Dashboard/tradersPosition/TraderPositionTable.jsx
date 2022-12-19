@@ -28,9 +28,10 @@ function TraderPositionTable({ socket }) {
     useEffect(() => {
 
         
-        axios.get(`${baseUrl}api/v1/readmocktradeuser`)
+        axios.get(`${baseUrl}api/v1/readmocktradeuseremail/${getDetails.userDetails.email}`)
         .then((res) => {
             let data = (res.data).filter((elem)=>{
+                return elem.order_timestamp.includes(todayDate) && elem.status === "COMPLETE";
                 return elem.order_timestamp.includes(todayDate) && elem.status === "COMPLETE" && elem.userId === getDetails.userDetails.email;
             })
             setData(data);
@@ -125,8 +126,8 @@ function TraderPositionTable({ socket }) {
                                             <td className="grid2_td">{updatedMarketData[0]?.change.toFixed(2)}%</td>}
 
                                             <td className="grid2_th companyPosition_BSbtn2"><div className="companyPosition_BSbtn">
-                                            <ByModal symbol={elem.instrument} Render={{setReRender, reRender}} marketData={marketData} uIdProps={elem.uId} />
-                                            <SellModel symbol={elem.instrument} Render={{setReRender, reRender}} marketData={marketData} uIdProps={elem.uId}  /></div></td>
+                                            <ByModal symbol={elem.instrument} ltp={(updatedMarketData[0]?.last_price)} maxlot={(elem.maxLot)} lotsize={(elem.lotSize)} Render={{setReRender, reRender}} marketData={marketData} uIdProps={elem.uId} />
+                                            <SellModel symbol={elem.instrument} ltp={(updatedMarketData[0]?.last_price)} maxlot={(elem.maxLot)} lotsize={(elem.lotSize)} Render={{setReRender, reRender}} marketData={marketData} uIdProps={elem.uId}  /></div></td>
                                         </tr>
                                     )
                                 })} 

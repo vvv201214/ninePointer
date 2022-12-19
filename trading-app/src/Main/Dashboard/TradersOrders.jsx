@@ -26,11 +26,12 @@ function TradersOrders({info}){
         //         return new Error(err);
         //     })            
         // }else if(info.role === "user"){
-            axios.get(`${baseUrl}api/v1/readmocktradeuser`)
+            axios.get(`${baseUrl}api/v1/readmocktradeuseremail/${info.email}`)
             .then((res)=>{
-                let updated = (res.data).filter((elem)=>{
-                    return info.email === elem.userId;
-                })
+                let updated = (res.data)
+                // .filter((elem)=>{
+                //     return info.email === elem.userId;
+                // })
                 console.log(updated);
 
                 (updated).sort((a, b)=> {

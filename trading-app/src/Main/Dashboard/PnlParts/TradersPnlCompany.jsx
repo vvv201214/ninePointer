@@ -412,8 +412,10 @@ export default function TradersPnlCompany({marketData, tradeData}) {
                     let netpnl = (elem.pnl - elem.brokerage);
                     totalNetPnl += netpnl;
                     return(
-                        <tr style={netpnl>= 0.00 ? { color: "green"}: { color: "red"}} key={elem._id}>
-                            {elem.name &&
+                        <>
+                        {(elem.name !== "")  &&
+                        <tr style={netpnl>=0.00 ? { color: "green"}:  { color: "red"}} key={elem._id}>
+                            
                             <>
                             <td className="grid2_td" >{(elem.name)}</td>
                             {!elem.pnl ?
@@ -428,20 +430,23 @@ export default function TradersPnlCompany({marketData, tradeData}) {
                             {/* /* <td className="grid2_td">0.00</td> */}
                             <td className="grid2_td"> {netpnl > 0 ? "+₹" + (Number(netpnl).toFixed(2)).toLocaleString(undefined, {maximumFractionDigits:2,toFixed:2}) : "-₹" + ((-netpnl).toFixed(2)).toLocaleString(undefined, {maximumFractionDigits:2,toFixed:2})} </td>
                             </>
-                             }
-                        </tr>  
+                          
+                        </tr>
+                        }
+                       </>
+                        
                     )
                 })
             }
             <tr>
                 <th className='pnl_Total'>Total</th>
-                {detailPnl.length ?
+                {detailPnl.length ? // ₹{totalOverAllPnl.toFixed(2)}
                 <>
-                <th className='pnl_Total'>₹{totalOverAllPnl.toFixed(2)}</th>
-                <th className='pnl_Total'>₹{totalNumberTrade}</th>
-                <th className='pnl_Total'>₹{totalLotsUsed}</th>
-                <th className='pnl_Total'>+₹{totalTransCost.toFixed(2)}</th>
-                <th className='pnl_Total'>₹{totalNetPnl.toFixed(2)}</th>
+                <th className='pnl_Total'style={totalOverAllPnl>=0 ? {color: "green"} : {color: "red"} }>{totalOverAllPnl>=0 ? "+₹" + (totalOverAllPnl.toFixed(2)) : "-₹" + ((-totalOverAllPnl).toFixed(2))}</th>
+                <th className='pnl_Total'>{totalNumberTrade}</th>
+                <th className='pnl_Total'>{totalLotsUsed}</th>
+                <th className='pnl_Total'>₹{totalTransCost.toFixed(2)}</th> 
+                <th className='pnl_Total' style={totalNetPnl>=0 ? {color: "green"} : {color: "red"} }>{totalNetPnl>=0 ? "+₹" + (totalNetPnl.toFixed(2)) : "-₹" + ((-totalNetPnl).toFixed(2))}</th>
                 </>
                 :
                 <th></th>
@@ -455,27 +460,3 @@ export default function TradersPnlCompany({marketData, tradeData}) {
     </div>
   )
 }
-
-// if(data[i].buyOrSell === "BUY"){
-//     if(obj.totalBuy === undefined || obj.totalBuyLot === undefined){
-//         obj.totalBuy = Number(data[i].average_price) * (Number(data[i].Quantity))
-//         obj.totalBuyLot = (Number(data[i].Quantity))
-//     } else{
-//         obj.totalBuy = obj.totalBuy + Number(data[i].average_price) * (Number(data[i].Quantity))
-//         obj.totalBuyLot = obj.totalBuyLot + (Number(data[i].Quantity)) 
-//     }
-
-//     console.log("obj.totalBuy", obj.totalBuy, "totalBuyLot", obj.totalBuyLot)
-// } if(data[i].buyOrSell === "SELL"){
-//     if( obj.totalSell === undefined || obj.totalSellLot === undefined){
-
-//         obj.totalSell = Number(data[i].average_price) * (Number(data[i].Quantity))
-//         obj.totalSellLot = (Number(data[i].Quantity)) 
-//     } else{
-
-//         obj.totalSell = obj.totalSell + Number(data[i].average_price) * (Number(data[i].Quantity))
-//         obj.totalSellLot = obj.totalSellLot + (Number(data[i].Quantity)) 
-//     }
-
-//     // console.log("obj.totalSell", obj.totalSell, "totalSellLot", obj.totalSellLot)
-// }
