@@ -113,7 +113,7 @@ async function parameters(io, socket) {
       function onTicks(ticks) {
 
         if(token.length === ticks.length){
-          console.log('Ticks', ticks);
+          // console.log('Ticks', ticks);
           socket.emit('tick', ticks);
           // console.log(socket);
         }

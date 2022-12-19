@@ -1,4 +1,3 @@
-
 import React, { useContext, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons';
@@ -6,7 +5,7 @@ import { useEffect } from 'react';
 import axios from "axios";
 
 
-export default function TradersPnlCompany({marketData, tradeData}) {
+export default function TradersPNLTrader({marketData, tradeData}) {
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
     
     const [userDetail, setUserDetail] = useState([]);
@@ -35,7 +34,7 @@ export default function TradersPnlCompany({marketData, tradeData}) {
             return new Error(err);
         })
 
-        axios.get(`${baseUrl}api/v1/readmocktradecompany`)
+        axios.get(`${baseUrl}api/v1/readmocktradeuser`)
         .then((res) => {
             let data = (res.data).filter((elem) => {
                 return elem.order_timestamp.includes(todayDate) && elem.status === "COMPLETE";
