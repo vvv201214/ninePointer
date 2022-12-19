@@ -67,8 +67,6 @@ export default function SellModel({marketData, uIdProps, Render, isCompany, symb
         Details.validity = e.target.value;
     }
 
-
-
     let [accessTokenDetails, setAccessToken] = useState([]);
     let [apiKeyDetails, setApiKey] = useState([]);
     const [tradeData, setTradeData] = useState([]);
@@ -480,7 +478,7 @@ export default function SellModel({marketData, uIdProps, Render, isCompany, symb
                 <div className="form_btnRagAMO">
                     <button className={bsBtn ? "amobtn" : `bsBtn`} onClick={() => { setBsBtn(true) }}>Regular</button>
                 </div>}
-                <span>{symbol}</span> <span>{ltp}</span>
+                <span className="headingSymbol">{symbol}</span> <span className="headingSymbol">{ltp}</span>
 
                         {bsBtn ? <form className="Form_head" onChange={FormHandler} >
                             <div className="container_One">

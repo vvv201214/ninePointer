@@ -91,7 +91,8 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany, symbo
     for(let i =1; i<= finalLot; i++){
         optionData.push( <option value={i * lotSize} key={i}>{ i * lotSize}</option>)
     }
-    console.log(optionData);
+    
+    // console.log(optionData);
 
     useEffect(() => {
 
@@ -478,7 +479,7 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany, symbo
                         <div className="form_btnRagAMO">
                             <button className={bsBtn ? "amobtn" : `bsBtn`} onClick={() => { setBsBtn(true) }}>Regular</button>
                         </div>}
-                        <span>{symbol}</span> <span>{ltp}</span>
+                        <span className="headingSymbol">{symbol}</span> <span className="headingSymbol">{ltp}</span>
                         {bsBtn ?
                             <form className="Form_head" onChange={FormHandler} >
                                 <div className="container_One">
