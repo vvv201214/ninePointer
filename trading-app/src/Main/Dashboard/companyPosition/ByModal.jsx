@@ -5,7 +5,7 @@ import axios from "axios"
 import uniqid from "uniqid"
 import { userContext } from "../../AuthContext";
 
-export default function ByModal({ marketData, uIdProps, Render, isCompany }) {
+export default function ByModal({ marketData, uIdProps, Render, isCompany, symbol }) {
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
     const { reRender, setReRender } = Render;
@@ -17,7 +17,8 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany }) {
     let userId = getDetails.userDetails.email;
     let tradeBy = isCompany ? "company" : getDetails.userDetails.name;
     let dummyOrderId = `${date.getFullYear()-2000}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}${Math.floor(100000000 + Math.random() * 900000000)}`
-
+    let perticularInstrumentData = "";
+    let perticularMarketData = 0;
     const [userPermission, setUserPermission] = useState([]);
     const [bsBtn, setBsBtn] = useState(true)
     const [modal, setModal] = useState(false);
@@ -82,12 +83,13 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany }) {
         realAmount: "",
         real_last_price: "",
     })
-  
-        
-       
-   
-    function quantityFunction(e){ 
-        Details.Quantity = (e.target.value)
+
+    let lotSize = 50;
+    let maxLot = 1800;
+    let finalLot = maxLot/lotSize;
+    let optionData = [];
+    for(let i =1; i<= finalLot; i++){
+        optionData.push( <option value={i * lotSize} key={i}>{ i * lotSize}</option>)
     }
     
     // console.log(optionData);
@@ -162,17 +164,13 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany }) {
             })
 
         setTradeData([...tradeData])
+
+
+        perticularInstrumentData = tradeData.filter((elem) => {
+            return elem.uId === uIdProps;
+        })
+        console.log(perticularInstrumentData);
     }, [getDetails])
-
-
-    
-    let lotSize = 50;
-    let maxLot =  1800;
-    let finalLot = maxLot/lotSize;
-    let optionData = [];
-    for(let i =1; i<= finalLot; i++){
-    optionData.push( <option value={i * lotSize} key={i}>{ i * lotSize}</option>)
-    }
 
 
 
@@ -453,6 +451,8 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany }) {
         
     }
 
+    console.log(perticularInstrumentData);
+
     return (
         <>
             {userPermission[0] === undefined ?
@@ -464,6 +464,7 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany }) {
                     BUY
                 </button>}
 
+                
 
             {modal && (
                 <div className="modal">
@@ -478,7 +479,7 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany }) {
                         <div className="form_btnRagAMO">
                             <button className={bsBtn ? "amobtn" : `bsBtn`} onClick={() => { setBsBtn(true) }}>Regular</button>
                         </div>}
-                                    
+                        <span>{symbol}</span>  
                         {bsBtn ?
                             <form className="Form_head" onChange={FormHandler} >
                                 <div className="container_One">
@@ -488,7 +489,7 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany }) {
                                 <div className="container_two">
                                     <div className="form_inputContain">
                                         <label htmlFor="" className="bsLabel">Quantity</label>
-                                        <select type="number" className="bsInput bsInputSelect" onChange={(e)=>quantityFunction(e)} >
+                                        <select type="number" className="bsInput bsInputSelect" onChange={(e) => { { Details.Quantity = (e.target.value) } }} >
                                             <option value=""></option>
                                     {optionData.map((elem)=>{
                                         return(
