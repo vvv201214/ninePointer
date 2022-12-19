@@ -98,31 +98,31 @@ function TradingAlgo(){
                                         <form className={Styles.main_instrument_form}>
                                             <label className={Styles.Ac_form} htmlFor="">Algo Name</label>
                                             <input type="text" className={Styles.Ac_forminput} onChange={(e)=>{{formstate.algoName = e.target.value}}} />
-                                            <label htmlFor="" className={Styles.Ac_form}>Transaction Change</label>
+                                            <label htmlFor="" className={Styles.Ac_form}>Transaction</label>
                                             <select name="" id="" className={Styles.Ac_forminput} onChange={(e)=>{{formstate.transactionChange = e.target.value}}}>
                                                 <option value=""></option>
                                                 <option value="TRUE">TRUE</option>
                                                 <option value="FALSE">FALSE</option>
                                             </select>
-                                            <label htmlFor="" className={Styles.Ac_form}>Instrument Change</label>
+                                            <label htmlFor="" className={Styles.Ac_form}>Instrument</label>
                                             <select name="" id="" className={Styles.Ac_forminput} onChange={(e)=>{{formstate.instrumentChange = e.target.value}}}>
                                                 <option value=""></option>
                                                 <option value="TRUE">TRUE</option>
                                                 <option value="FALSE">FALSE</option>
                                             </select>
-                                            <label htmlFor="" className={Styles.Ac_form}>Exchange Change</label>
+                                            <label htmlFor="" className={Styles.Ac_form}>Exchange</label>
                                             <select name="" id="" className={Styles.Ac_forminput} onChange={(e)=>{{formstate.exchangeChange = e.target.value}}}>
                                                 <option value=""></option>
                                                 <option value="TRUE">TRUE</option>
                                                 <option value="FALSE">FALSE</option>
                                             </select>
-                                            <label htmlFor="" className={Styles.Ac_form}>Product Change</label>
+                                            <label htmlFor="" className={Styles.Ac_form}>Product</label>
                                             <select name="" id="" className={Styles.Ac_forminput} onChange={(e)=>{{formstate.productChange = e.target.value}}}>
                                                 <option value=""></option>
                                                 <option value="TRUE">TRUE</option>
                                                 <option value="FALSE">FALSE</option>
                                             </select>
-                                            <label htmlFor="" className={Styles.Ac_form}>Lot Multipler</label>
+                                            <label htmlFor="" className={Styles.Ac_form}>Multipler</label>
                                             <input type="text" className={Styles.Ac_forminput} onChange={(e)=>{{formstate.lotMultipler = e.target.value}}} />
                                             <label htmlFor="" className={Styles.Ac_form}>Trading Account</label>
                                             <input type="text" className={Styles.Ac_forminput} onChange={(e)=>{{formstate.tradingAccount = e.target.value}}} />
@@ -146,11 +146,11 @@ function TradingAlgo(){
                                     <th className="grid2_th">Created On</th>
                                     <th className="grid2_th">Algo Name</th>
                                     <th className="grid2_th">Users</th>
-                                    <th className="grid2_th">Transaction Change</th>
-                                    <th className="grid2_th">Instrument Change</th>
-                                    <th className="grid2_th">Exchange Change</th>
-                                    <th className="grid2_th">Product Change</th>
-                                    <th className="grid2_th">Lot Multiplier</th>
+                                    <th className="grid2_th">Transaction</th>
+                                    <th className="grid2_th">Instrument</th>
+                                    <th className="grid2_th">Exchange</th>
+                                    <th className="grid2_th">Product</th>
+                                    <th className="grid2_th">Multiplier</th>
                                     <th className="grid2_th">Real Trade</th>
                                     <th className="grid2_th">Trading Account</th>
                                     <th className="grid2_th">Status</th>

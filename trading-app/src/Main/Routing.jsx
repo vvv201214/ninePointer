@@ -30,6 +30,8 @@ import "./Main.css"
 import UserSelect from './User/UserSelect/UserSelect';
 import ReportsMain from './Reports/ReportsMain';
 import Reports from './Reports/Reports';
+import AdminDashboardMain from './AdminDashboard/AdminDashboardMain';
+import AdminDashboard from './AdminDashboard/AdminDashboard';
 
 
 export default function Routing() {
@@ -76,6 +78,9 @@ export default function Routing() {
                         </Route>
                         <Route path='/main/report' element={<ReportsMain/>}>
                             <Route path='/main/report' element={<Reports/>}></Route>
+                        </Route>
+                        <Route path='/main/admindashboard' element={<AdminDashboardMain/>}>
+                            <Route path='/main/admindashboard' element={<AdminDashboard/>}></Route>
                         </Route>
                         {/* // :
                         // <Route path='/main/dashboard' element={<DashboardMain/>}>
