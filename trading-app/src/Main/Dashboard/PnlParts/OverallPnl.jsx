@@ -15,6 +15,7 @@ export default function OverallPnl({marketData, tradeData, data}) {
     const [liveDetail, setLiveDetail] = useState([]);
     const [avgPrice, setAvgPrice] = useState([]);
 
+
     var Total = 0;
     let avgPriceArr = [];
     useEffect(()=>{
@@ -114,12 +115,14 @@ export default function OverallPnl({marketData, tradeData, data}) {
 
         setLiveDetail(liveDetailsArr);
 
+        console.log(liveDetailsArr);
+
     }, [marketData])
 
     data.map((elem)=>{
         totalTransactionCost += Number(elem.brokerage);
     })
-    console.log("totalTransactionCost", totalTransactionCost, avgPrice);
+    console.log("totalTransactionCost", totalTransactionCost, avgPrice, liveDetail);
 
   return (
         <table className="grid1_table">
@@ -134,6 +137,7 @@ export default function OverallPnl({marketData, tradeData, data}) {
             </tr> 
             {
             overallPnlArr.map((elem, index)=>{
+
 
                 let tempavgPriceArr = avgPrice.filter((element)=>{
                     return elem.symbol === element.symbol;
@@ -155,10 +159,10 @@ export default function OverallPnl({marketData, tradeData, data}) {
                         <td className="grid2_td">{elem.totalBuyLot + elem.totalSellLot}</td>
                         <td className="grid2_td">₹{tempavgPriceArr[0].average_price.toFixed(2)}</td>
                         
-                        {(liveDetail[0]?.last_price) === undefined ?
-                        <td className="grid2_td">₹{(liveDetail[0]?.last_price)}</td>
+                        {(liveDetail[index]?.last_price) === undefined ?
+                        <td className="grid2_td">₹{(liveDetail[index]?.last_price)}</td>
                         :
-                        <td className="grid2_td">₹{(liveDetail[0]?.last_price).toFixed(2)}</td>}
+                        <td className="grid2_td">₹{(liveDetail[index]?.last_price).toFixed(2)}</td>}
                         {/* <td className="grid2_td">{(-(elem.totalBuy+elem.totalSell-(elem.totalBuyLot+elem.totalSellLot)*liveDetail[index]?.last_price)).toFixed(2)}</td> */}
                         <td className="grid2_td">{updatedValue > 0.00 ? "+₹" + (updatedValue.toFixed(2)): "-₹" + ((-updatedValue).toFixed(2))}</td>
                         {liveDetail[index]?.change === undefined ?
@@ -171,6 +175,7 @@ export default function OverallPnl({marketData, tradeData, data}) {
                 )
             })   
             }
+
            <tr>
                 <th></th>
                 <th></th>
@@ -180,9 +185,9 @@ export default function OverallPnl({marketData, tradeData, data}) {
                 <th className='pnl_Total'>{totalTransactionCost.toFixed(2)}</th>
                 <th className='pnl_Total'>Total</th>
                 <th className='pnl_Total' style={Total>=0 ? {color: "green"} : {color: "red"} }>{Total>=0 ? "+₹" + (Total.toFixed(2)) : "-₹" + ((-Total).toFixed(2))}</th>
-                <th className='pnl_Total'>{(Total-totalTransactionCost).toFixed(2)}</th>
+                <th className='pnl_Total' style={(Total-totalTransactionCost)>=0 ? {color: "green"} : {color: "red"} }>{(Total-totalTransactionCost)>=0 ? "+₹" + ((Total-totalTransactionCost).toFixed(2)) : "-₹" + ((-(Total-totalTransactionCost)).toFixed(2))}</th>
                 </>
-                :
+                : // {(Total-totalTransactionCost).toFixed(2)}
                 <th></th>
                 }
                 
