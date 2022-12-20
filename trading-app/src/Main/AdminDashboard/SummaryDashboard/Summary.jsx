@@ -1,7 +1,21 @@
-import React from "react";
-import Styles from "./AdminDashboard.module.css";
+import Styles from "./Summary.module.css";
+import React, { useContext, useState } from "react";
+import { useEffect } from "react";
+import axios from "axios";
+import { userContext } from "../../AuthContext";
 
-export default function AdminDashboard() {
+
+export default function Summary() {
+    const getDetails = useContext(userContext);
+    const [userDetail, setUserDetail] = useState([]);
+    const [userTradeDetails, setUserTradeDetails] = useState([]);
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+    let [firstDate, setFirstDate] = useState("");
+    const [selectUserState, setSelectUserState] = useState("All User");
+    let secondDate = "";
+    let userId = (getDetails.userDetails.role === "admin") && getDetails.userDetails.email;
+
+
     return (
         <div className={Styles.topbox}>
             

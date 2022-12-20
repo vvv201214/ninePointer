@@ -139,13 +139,7 @@ function CompanyPositionTable({ socket }) {
                             <ClosedPnl marketData={marketData} tradeData={tradeData} data={data} />
                         </div> */}
                         <span className="grid2_span">Traders PNL-Company(Mock)</span>
-                            <TradersPnlCompany marketData={marketData} tradeData={tradeData}/>
-                            <span className="grid2_span">Overall P&L-Company(Live)</span>
-                        <div className="grid_2">
-                            <OverallPnl marketData={marketData} tradeData={tradeData} data={data} />
-                        </div>
-                        <span className="grid2_span">Traders PNL-Company(Live)</span>
-                            <TradersPnlCompany marketData={marketData} tradeData={tradeData}/>
+                            <TradersPnlCompany marketData={marketData} tradeData={tradeData}/>          
                     </div>
                 </div>
             </div>

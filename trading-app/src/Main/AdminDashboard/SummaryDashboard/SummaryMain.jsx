@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 import { useEffect } from "react";
-import { userContext } from "../AuthContext";
-import ReportsHeader from "./AdminDashboardHeader";
+import { userContext } from "../../AuthContext";
+import ReportsHeader from "./SummaryHeader";
 
-function AdminDashboardMain(){
+function SummaryMain(){
     const getDetails = useContext(userContext);
     useEffect(()=>{
         console.log(getDetails)
@@ -19,4 +19,4 @@ function AdminDashboardMain(){
         </>
     )
 }
-export default AdminDashboardMain;
+export default SummaryMain;

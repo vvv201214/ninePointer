@@ -30,8 +30,8 @@ import "./Main.css"
 import UserSelect from './User/UserSelect/UserSelect';
 import ReportsMain from './Reports/ReportsMain';
 import Reports from './Reports/Reports';
-import AdminDashboardMain from './AdminDashboard/AdminDashboardMain';
-import AdminDashboard from './AdminDashboard/AdminDashboard';
+import SummaryMain from './AdminDashboard/SummaryDashboard/SummaryMain';
+import Summary from './AdminDashboard/SummaryDashboard/Summary';
 import TraderPosition from './Dashboard/TraderPosition';
 
 
@@ -81,8 +81,8 @@ export default function Routing() {
                         <Route path='/main/report' element={<ReportsMain/>}>
                             <Route path='/main/report' element={<Reports/>}></Route>
                         </Route>
-                        <Route path='/main/admindashboard' element={<AdminDashboardMain/>}>
-                            <Route path='/main/admindashboard' element={<AdminDashboard/>}></Route>
+                        <Route path='/main/admindashboard/summary' element={<SummaryMain/>}>
+                            <Route path='/main/admindashboard/summary' element={<Summary/>}></Route>
                         </Route>
                         {/* // :
                         // <Route path='/main/dashboard' element={<DashboardMain/>}>
