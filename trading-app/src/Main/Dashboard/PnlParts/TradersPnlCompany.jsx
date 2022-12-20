@@ -22,9 +22,11 @@ export default function TradersPnlCompany({marketData, tradeData}) {
     let transactionCost = 0;
     let numberOfTrade = 0;
     let lotUsed = 0;
+    let runninglots = 0;
     let totalOverAllPnl = 0;
     let totalNumberTrade = 0;
     let totalLotsUsed = 0;
+    let totalrunninglots = 0;
     let totalTransCost = 0;
     let totalNetPnl = 0;
     useEffect(()=>{
@@ -129,6 +131,8 @@ export default function TradersPnlCompany({marketData, tradeData}) {
             console.log(elem.totalBuy,elem.totalSell,elem.totalBuyLot,elem.totalSellLot, liveDetailsArr[index]?.last_price)
             totalPnl += (-(elem.totalBuy+elem.totalSell-(elem.totalBuyLot+elem.totalSellLot)*liveDetailsArr[index]?.last_price))
             lotUsed += Math.abs(elem.totalBuyLot) + Math.abs(elem.totalSellLot);
+            runninglots += elem.totalBuyLot + elem.totalSellLot;
+            console.log(runninglots);
         })
 
         let newObj = {
@@ -136,14 +140,17 @@ export default function TradersPnlCompany({marketData, tradeData}) {
             pnl: totalPnl,
             name: name,
             numberOfTrade: numberOfTrade,
-            lotUsed: lotUsed
+            lotUsed: lotUsed,
+            runninglots: runninglots
         }
-        console.log(transactionCost, totalPnl, name);
+        console.log(transactionCost, totalPnl, name, runninglots);
         detailPnl.push(JSON.parse(JSON.stringify(newObj)));
         transactionCost = 0;
         totalPnl = 0;
         numberOfTrade = 0;
         lotUsed = 0;
+        runninglots = 0;
+        // runninglots = 0;
     })
 
     detailPnl.sort((a, b)=> {
@@ -168,6 +175,7 @@ export default function TradersPnlCompany({marketData, tradeData}) {
                 {/* <th className="grid2_th">Running PNL (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
                 <th className="grid2_th">Closed PNL(<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th> */}
                 <th className="grid2_th"># of Trades</th>
+                <th className="grid2_th"> Running Lots</th>
                 <th className="grid2_th"> Lots Used</th>
                 <th className="grid2_th">Tran. Cost(<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
                 <th className="grid2_th"> Net PNL (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
@@ -180,6 +188,7 @@ export default function TradersPnlCompany({marketData, tradeData}) {
                     totalNumberTrade += elem.numberOfTrade;
                     totalLotsUsed += elem.lotUsed;
                     totalTransCost += (elem.brokerage);
+                    totalrunninglots += elem.runninglots;
                     
                     let netpnl = (elem.pnl - elem.brokerage);
                     totalNetPnl += netpnl;
@@ -189,7 +198,7 @@ export default function TradersPnlCompany({marketData, tradeData}) {
                         <tr style={netpnl>=0.00 ? { color: "green"}:  { color: "red"}} key={elem._id}>
                             
                             <>
-                            <td className="grid2_td" >{(elem.name)}</td>
+                            <td className="grid2_td" style={elem.runninglots === 0.00 ? {fontWeight:700, background : "#efebeb", borderRadius:5}:{fontWeight:700,background : "white"}}>{(elem.name)}</td>
                             {!elem.pnl ?
                             <td className="grid2_td">{elem.pnl > 0 ? "+₹" + (Number(elem.pnl)) : "-₹" +  ((-elem.pnl))} </td>
                             :
@@ -197,6 +206,7 @@ export default function TradersPnlCompany({marketData, tradeData}) {
                             {/* <td className="grid2_td">Running PNL </td>
                             <td className="grid2_td">Closed PNL</td> */}
                             <td className="grid2_td">{elem.numberOfTrade}</td>
+                            <td className="grid2_td">{elem.runninglots}</td>
                             <td className="grid2_td">{elem.lotUsed}</td>
                             <td className="grid2_td">₹{(elem.brokerage).toFixed(2)}</td>
                             {/* /* <td className="grid2_td">0.00</td> */}
@@ -216,6 +226,7 @@ export default function TradersPnlCompany({marketData, tradeData}) {
                 <>
                 <th className='pnl_Total'style={totalOverAllPnl>=0 ? {color: "green"} : {color: "red"} }>{totalOverAllPnl>=0 ? "+₹" + (totalOverAllPnl.toFixed(2)) : "-₹" + ((-totalOverAllPnl).toFixed(2))}</th>
                 <th className='pnl_Total'>{totalNumberTrade}</th>
+                <th className='pnl_Total'>{totalrunninglots}</th>
                 <th className='pnl_Total'>{totalLotsUsed}</th>
                 <th className='pnl_Total'>₹{totalTransCost.toFixed(2)}</th> 
                 <th className='pnl_Total' style={totalNetPnl>=0 ? {color: "green"} : {color: "red"} }>{totalNetPnl>=0 ? "+₹" + (totalNetPnl.toFixed(2)) : "-₹" + ((-totalNetPnl).toFixed(2))}</th>
