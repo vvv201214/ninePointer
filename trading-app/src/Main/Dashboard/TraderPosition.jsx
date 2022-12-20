@@ -42,14 +42,14 @@ export default function TraderPosition() {
     //             return new Error(err);
     //         })
 
-    // axios.get(`${baseUrl}api/v1/getliveprice`)
-    //     .then((res) => {
-    //         console.log("live price data", res)
-    //         setMarketData(res.data)
-    //     }).catch((err) => {
+    axios.get(`${baseUrl}api/v1/getliveprice`)
+        .then((res) => {
+            console.log("live price data", res)
+            setMarketData(res.data)
+        }).catch((err) => {
 
-    //         return new Error(err);
-    //     })
+            return new Error(err);
+        })
 
     axios.get(`${baseUrl}api/v1/readInstrumentDetails`)
         .then((res) => {
@@ -112,7 +112,7 @@ export default function TraderPosition() {
                                     return (
                                         <tr className="grid1_table">
                                             <td className="grid2_td">{todayDate}</td>
-                                            <td className="grid2_td">1</td>
+                                            <td className="grid2_td">{elem.contractDate}</td>
                                             <td className="grid2_td">{elem.symbol}</td>
                                             <td className="grid2_td">{elem.instrument}</td>
                                             <td className="grid2_td">{updatedMarketData[0]?.last_price}</td>

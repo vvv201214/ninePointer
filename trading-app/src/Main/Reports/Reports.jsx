@@ -488,12 +488,12 @@ export default function Reports() {
                                 </form>
                             </div>
                             <div className={Styles.btn_div}>
-                                <span className={`${Styles.formLable}`}>Gross P&L</span> <input type="text" className={`${Styles.formInput} ${Styles.formInput1}`} />
-                                <span className={Styles.formLable}>Transaction Cost</span> <input type="text" className={Styles.formInput} />
-                                <span className={Styles.formLable}>Net P&L</span> <input type="text" className={Styles.formInput} />
+                                <span className={`${Styles.formLable}`}>Gross P&L</span> <input type="number" className={`${Styles.formInput} ${Styles.formInput1}`} />
+                                <span className={Styles.formLable}>Transaction Cost</span> <input type="number" className={Styles.formInput} />
+                                <span className={Styles.formLable}>Net P&L</span> <input type="number" className={Styles.formInput} />
                                 <button className={Styles.formButton}> Download Report</button>
 
-                            </div>
+                            </div> 
                         </div>
                         <div className={Styles.grid_1}>
                             <table className="grid1_table">
