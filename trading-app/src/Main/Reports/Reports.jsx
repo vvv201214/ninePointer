@@ -41,6 +41,7 @@ export default function Reports() {
     let numberOfTrade = 0;
     let lotUsed = 0;
     let name = "";
+    let runninglots = 0;
 
     let detailArr = [];
 
@@ -176,13 +177,14 @@ export default function Reports() {
                             })
                             
                             console.log(singleDateData, `${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`);
-                            let newObj = pnlCalculation(singleDateData);
-                            newObj.date = `${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`;
+                            let newObj = pnlCalculationUser(singleDateData);
+                            // newObj.date = `${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`;
         
                             console.log(newObj);
-                            if(newObj.numberOfTrade){
-                                detailPnl.push(JSON.parse(JSON.stringify(newObj)));
-                            }
+                            detailPnl.push(JSON.parse(JSON.stringify(newObj)));
+                            // if(newObj.numberOfTrade){
+                                
+                            // }
                             
                             transactionCost = 0;
                             totalPnl = 0;
@@ -346,10 +348,20 @@ export default function Reports() {
 
         console.log(liveDetailsArr)
         overallPnl.map((elem, index)=>{
-            name = elem.name;
+            if(selectUserState === "All user"){
+                name = "All User"
+            }else{
+                name = elem.name;
+            }
+                if(elem.totalBuyLot+elem.totalSellLot === 0){
+                    totalPnl += -(elem.totalBuy+elem.totalSell)
+                }else{
+                    totalPnl += (-(elem.totalBuy+elem.totalSell-(elem.totalBuyLot+elem.totalSellLot)*liveDetailsArr[index]?.last_price))
+
+                }
+            
             console.log( liveDetailsArr[index]?.last_price)
             console.log(elem.totalBuy,elem.totalSell,elem.totalBuyLot,elem.totalSellLot, liveDetailsArr[index]?.last_price)
-            totalPnl += (-(elem.totalBuy+elem.totalSell-(elem.totalBuyLot+elem.totalSellLot)*liveDetailsArr[index]?.last_price))
             lotUsed += Math.abs(elem.totalBuyLot) + Math.abs(elem.totalSellLot);
         })
 
@@ -438,10 +450,143 @@ export default function Reports() {
 
     }
 
+    function pnlCalculationUser(allTrade){
+        userDetail.map((elem)=>{
+
+            let data = allTrade.filter((element)=>{
+                return elem.email === element.userId;
+            })
+    
+    
+            let hash = new Map();
+    
+            for(let i = data.length-1; i >= 0 ; i--){
+                numberOfTrade += 1;
+                transactionCost += Number(data[i].brokerage);
+                if(hash.has(data[i].symbol)){
+                    let obj = hash.get(data[i].symbol);
+                    if(data[i].buyOrSell === "BUY"){
+                        if(obj.totalBuy === undefined || obj.totalBuyLot === undefined){
+                            obj.totalBuy = Number(data[i].average_price) * (Number(data[i].Quantity))
+                            obj.totalBuyLot = (Number(data[i].Quantity))
+                        } else{
+                            obj.totalBuy = obj.totalBuy + Number(data[i].average_price) * (Number(data[i].Quantity))
+                            obj.totalBuyLot = obj.totalBuyLot + (Number(data[i].Quantity)) 
+                        }
+    
+                    } if(data[i].buyOrSell === "SELL"){
+                        if( obj.totalSell === undefined || obj.totalSellLot === undefined){
+    
+                            obj.totalSell = Number(data[i].average_price) * (Number(data[i].Quantity))
+                            obj.totalSellLot = (Number(data[i].Quantity)) 
+                        } else{
+    
+                            obj.totalSell = obj.totalSell + Number(data[i].average_price) * (Number(data[i].Quantity))
+                            obj.totalSellLot = obj.totalSellLot + (Number(data[i].Quantity)) 
+                        }
+                    }
+                }  else{
+                    if(data[i].buyOrSell === "BUY"){
+                        hash.set(data[i].symbol, {
+                            totalBuy : Number(data[i].average_price) * (Number(data[i].Quantity)),
+                            totalBuyLot : (Number(data[i].Quantity)) ,
+                            totalSell: 0,
+                            totalSellLot: 0,
+                            symbol: data[i].symbol,
+                            Product: data[i].Product,
+                            name: data[0].createdBy,
+                            date: data[0].order_timestamp
+                        })
+                    }if(data[i].buyOrSell === "SELL"){
+                        hash.set(data[i].symbol, {
+                            totalSell : Number(data[i].average_price) * (Number(data[i].Quantity)),
+                            totalSellLot : (Number(data[i].Quantity)) ,
+                            totalBuy : 0,
+                            totalBuyLot: 0,
+                            symbol: data[i].symbol,
+                            Product: data[i].Product,
+                            name: data[0].createdBy,
+                            date: data[0].order_timestamp
+                        })
+                    }
+                }
+            }
+    
+            let overallPnl = [];
+            for (let value of hash.values()){
+                overallPnl.push(value);
+            }
+            let liveDetailsArr = [];
+            overallPnl.map((elem)=>{
+                tradeData.map((element)=>{
+                    if(element.symbol === elem.symbol){
+                        marketData.map((subElem)=>{
+                            if(subElem !== undefined && subElem.instrument_token === element.instrumentToken){
+                                liveDetailsArr.push(subElem)
+                            }
+                        })
+                    }
+                })
+            })
+    
+            let name = "";
+            let date = "";
+            overallPnl.map((elem, index)=>{
+                date = elem.date;
+                name = elem.name;
+                if(elem.totalBuyLot+elem.totalSellLot === 0){
+                    totalPnl += -(elem.totalBuy+elem.totalSell)
+                }else{
+                    totalPnl += (-(elem.totalBuy+elem.totalSell-(elem.totalBuyLot+elem.totalSellLot)*liveDetailsArr[index]?.last_price))
+
+                }
+                console.log(elem.totalBuy,elem.totalSell,elem.totalBuyLot,elem.totalSellLot, liveDetailsArr[index]?.last_price)
+                // totalPnl += (-(elem.totalBuy+elem.totalSell-(elem.totalBuyLot+elem.totalSellLot)*liveDetailsArr[index]?.last_price))
+                lotUsed += Math.abs(elem.totalBuyLot) + Math.abs(elem.totalSellLot);
+                runninglots += elem.totalBuyLot + elem.totalSellLot;
+                console.log(runninglots);
+            })
+
+            
+    
+            let newObj = {
+                brokerage: transactionCost,
+                pnl: totalPnl,
+                name: name,
+                numberOfTrade: numberOfTrade,
+                lotUsed: lotUsed,
+                runninglots: runninglots,
+                date: (date.split(" "))[0]
+            }
+
+            console.log("overallPnl", overallPnl, newObj)
+            console.log(transactionCost, totalPnl, name, runninglots);
+            detailPnl.push(JSON.parse(JSON.stringify(newObj)));
+            transactionCost = 0;
+            totalPnl = 0;
+            numberOfTrade = 0;
+            lotUsed = 0;
+            runninglots = 0;
+            // runninglots = 0;
+        })
+
+        // detailPnl.sort((a, b)=> {
+        //     return b.pnl-a.pnl
+        //   });
+    
+        return detailPnl;
+    }
+
     
     detailPnlArr.map((elem)=>{
-        allBrokerage = allBrokerage + Number(elem.brokerage);
-        allGross = allGross + elem.pnl;
+        if(elem.brokerage){
+            allBrokerage = allBrokerage + Number(elem.brokerage);
+        }
+
+        if(elem.pnl){
+            allGross = allGross + Number(elem.pnl);
+        }
+
         allNet =  (allGross - allBrokerage);
         console.log(detailPnlArr, allBrokerage, allGross, allNet)
 
@@ -512,6 +657,8 @@ export default function Reports() {
                                     allNet = allNet + (allGross - allBrokerage);
                                     // setTotalBrokerage(allBrokerage); setTotalGross(allGross); setTotalNetPnl(allNet);
                                     return(
+                                        <>
+                                        {elem.name &&
                                         <tr>
                                             <td className="grid2_td">{elem.name}</td>
                                             <td className="grid2_td">{elem.date}</td>
@@ -520,7 +667,8 @@ export default function Reports() {
                                             <td className="grid2_td">{elem.pnl - elem.brokerage}</td>
                                             <td className="grid2_td">{elem.numberOfTrade}</td>
                                             <td className="grid2_td">{elem.lotUsed}</td>
-                                        </tr>
+                                        </tr>}
+                                        </>
                                     )
                                 })}
                             </table>
