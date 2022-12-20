@@ -1,18 +1,19 @@
 .Companyorder_ul{
     display: flex;
-    
+   
 
 }
 .Companyorder_li{
     list-style: none;
-    margin: 7px 2px 2px 2px;
+    margin: 10px 2px 1px 5px;
+    background-color: rgb(236, 227, 227);
+    font-size: 14px;
+    border-radius: 5px;
+    
 }
 .Companyorder_li :hover{
     cursor: pointer;
 }
-.Companyorder_li :active{
-    background: white;
-}
-.active{
-    background-color: white;
-}
+/* .Companyorder_div{
+   
+} */

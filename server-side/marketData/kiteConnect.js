@@ -82,7 +82,7 @@ async function parameters(io, socket) {
       });
       // console.log(ticker);
       
-      ticker.autoReconnect(true, 10000000000, 5);
+      ticker.autoReconnect(true, 10000000000000, 5);
       ticker.connect();
       ticker.on('ticks', onTicks);
       ticker.on('connect', subscribe);
@@ -113,7 +113,7 @@ async function parameters(io, socket) {
       function onTicks(ticks) {
 
         if(token.length === ticks.length){
-          console.log('Ticks', ticks);
+          // console.log('Ticks', ticks);
           socket.emit('tick', ticks);
           // console.log(socket);
         }
