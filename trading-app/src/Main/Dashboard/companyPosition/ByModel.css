@@ -94,23 +94,24 @@ body.active-modal {
 }
 
 .btnRadio1 {
-    margin-top: 5px;
+  
     margin-right: 9px;
     margin-left: auto;
-    padding: 5px;
+    
+    align-content: center;
 
 }
 
 .btnRadio {
-    margin-top: 5px;
     margin-right: 12px;
     margin-left: 10px;
+    align-content: center;
 }
 
 .btnRadio2 {
-    margin-top: 5px;
-    /* margin-right: 10px;
-    margin-left: 10px; */
+    margin-right: 7px;
+    margin-left: 5px;
+   align-content: center;
 }
 
 .lable1_radiobtn{

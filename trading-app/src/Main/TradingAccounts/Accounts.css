@@ -58,6 +58,8 @@
 .grid1_table{
     width: 100%;
     border: none;
+    border-collapse: collapse;
+   
     
 }
 /* .grid1_ul{
@@ -119,6 +121,9 @@
    align-items: center;
 
 } */
+.grid2_tr{
+    white-space: nowrap;
+}
 .grid2_th {
     width: 9vw;
     overflow: hidden;
@@ -126,6 +131,7 @@
     border-bottom: 1px solid #aba8a8;
     width: fit-content;
    font-size: 15px;
+  
    
 }
 
@@ -137,12 +143,16 @@
     border-spacing: 3px;
     font-size: 12px;
     font-weight: 400;
+    border-spacing: 3px;
     width: fit-content;
+    padding: 0.5px;
+    white-space: nowrap;
 }
 
 .grid1_table{
     width: 100%;
     border: none;
+    table-layout: auto;
 }
   
 .form_popup{

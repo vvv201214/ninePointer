@@ -33,6 +33,8 @@ import Reports from './Reports/Reports';
 import SummaryMain from './AdminDashboard/SummaryDashboard/SummaryMain';
 import Summary from './AdminDashboard/SummaryDashboard/Summary';
 import TraderPosition from './Dashboard/TraderPosition';
+import TodaysTradesMock from './Dashboard/CompanyOrderTabs/TodaysTradesMock';
+import HistoryTradesMock from './Dashboard/CompanyOrderTabs/HistoryTradesMock';
 
 
 export default function Routing() {
@@ -75,7 +77,10 @@ export default function Routing() {
                             <Route path='/main/dashboard/CompanyPosition' element={<CompanyPosition/>}></Route>
                             <Route path='/main/dashboard/TraderPosition' element={<TraderPosition/>}></Route>
                             <Route path='/main/dashboard' element={<TradersPosition/>}></Route>
-                            <Route path='/main/dashboard/CompanyOrders' element={<CompanyOrders/>}></Route>
+                            <Route path='/main/dashboard/CompanyOrders' element={<CompanyOrders/>}> 
+                                <Route path='/main/dashboard/CompanyOrders' element={<TodaysTradesMock/>} ></Route>
+                                <Route path='/main/dashboard/CompanyOrders/HistoryTradesMock' element={<HistoryTradesMock/>} ></Route>
+                                </Route>
                             <Route path='/main/dashboard/TradersOrders' element={<TradersOrders info={details}/>}></Route>
                         </Route>
                         <Route path='/main/report' element={<ReportsMain/>}>

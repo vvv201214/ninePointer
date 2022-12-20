@@ -613,13 +613,9 @@ export default function Reports() {
                                     <input type="date" className={Styles.formInput} onChange={(e)=>{firstDateChange(e)}}/>
                                     <label htmlFor="" className={Styles.formLable}>End Date</label>
                                     <input type="date" className={Styles.formInput} onChange={(e)=>{secondDateChange(e)}}/>
-                                    <label htmlFor="" className={Styles.formLable}>Trader</label>
-                                    { getDetails.userDetails.role === "user" ?
-                                        <select name="" id="" className={Styles.formSelect} onChange={(e)=>{selectUser(e)}} >
-                                            <option value="">{getDetails.userDetails.name}</option>
-                                        </select>
-                                    :
-                                    getDetails.userDetails.role === "admin" &&
+                                    {getDetails.userDetails.role === "admin" &&
+                                    <>
+                                     <label htmlFor="" className={Styles.formLable}>Trader</label>
                                     <select name="" id="" className={Styles.formSelect} onChange={(e)=>{selectUser(e)}} >
                                         <option value="">Select User</option>
                                         {userDetail.map((elem)=>{
@@ -628,25 +624,30 @@ export default function Reports() {
                                             )
                                         })}
                                         <option value="">All User</option>
-                                    </select> }
+                                    </select> 
+                                    </>
+                                     }
                                 </form>
                             </div>
                             <div className={Styles.btn_div}>
-                                <span className={`${Styles.formLable}`}>Gross P&L</span> <span>{allGross}</span> <input type="text" className={`${Styles.formInput} ${Styles.formInput1}`} />
-                                <span className={Styles.formLable}>Transaction Cost</span> <span>{allBrokerage}</span> <input type="text" className={Styles.formInput} />
-                                <span className={Styles.formLable}>Net P&L</span> <span>{allNet}</span> <input type="text" className={Styles.formInput} />
+                                <span className={`${Styles.formLable}`}>Gross P&L</span>
+                                <input style={allGross> 0.00 ? { color: "green"}:  allGross === 0.00 ? { color: "grey"} : { color: "red"}   } type="text" value={allGross >0.00 ? "+₹" + (allGross.toFixed(2)): allGross=== 0? "" :"-₹" + (-(allGross).toFixed(2))} className={`${Styles.formInput} ${Styles.formInput1}`}/>
+                                <span className={Styles.formLable}>Transaction Cost </span>
+                                <input type="text" value={ allBrokerage ===0? " " : "₹" + (allBrokerage.toFixed(2))} className={`${Styles.formInput} ${Styles.formInput1}`} />
+                                <span className={Styles.formLable}>Net P&L</span>
+                                <input style={allNet>0.00 ? { color: "green"}: allBrokerage===0.00 ? { color: "grey"}: { color: "red"}} type="text" value={allNet >0.00 ? "+₹" + (allNet.toFixed(2)): allNet===0? " " : "-₹" + (-(allNet).toFixed(2))} className={`${Styles.formInput} ${Styles.formInput1}`} />
+                                
                                 <button className={Styles.formButton}> Download Report</button>
-
-                            </div>
+                            </div> 
                         </div>
                         <div className={Styles.grid_1}>
                             <table className="grid1_table">
                                 <tr className="grid2_tr">
                                     <th className="grid2_th">Trader Name</th>
                                     <th className="grid2_th">Date</th>
-                                    <th className="grid2_th">Gross P&L(₹)</th>
-                                    <th className="grid2_th">Transaction Cost(₹)</th>
-                                    <th className="grid2_th">Net PNL(₹)</th>
+                                    <th className="grid2_th">Gross P&L</th>
+                                    <th className="grid2_th">Transaction Cost</th>
+                                    <th className="grid2_th">Net P&L</th>
                                     <th className="grid2_th"># of Trades</th>
                                     <th className="grid2_th"># of Lots Used</th>
                                     {/* <th className="grid2_th">{detailPnl[0].name}</th> */}
@@ -662,9 +663,14 @@ export default function Reports() {
                                         <tr>
                                             <td className="grid2_td">{elem.name}</td>
                                             <td className="grid2_td">{elem.date}</td>
-                                            <td className="grid2_td">{elem.pnl}</td>
-                                            <td className="grid2_td">{elem.brokerage}</td>
-                                            <td className="grid2_td">{elem.pnl - elem.brokerage}</td>
+                                            {elem.pnl !== undefined &&
+                                            <td className="grid2_td" style={elem.pnl>=0.00 ? { color: "green"}:  { color: "red"}}>{elem.pnl >0.00 ? "+₹" + (elem.pnl.toFixed(2)): "-₹" + (-(elem.pnl).toFixed(2)) }</td>}
+                                            {!elem.brokerage ?
+                                            <td className="grid2_td" >{elem.brokerage >0.00 ? "+₹" + (elem.brokerage): "-₹" + (-(elem.brokerage)) }</td>
+                                            :
+                                            <td className="grid2_td" >{elem.brokerage >0.00 ? "+₹" + (elem.brokerage.toFixed(2)): "-₹" + (-(elem.brokerage).toFixed(2)) }</td>}
+                                            {(elem.pnl - elem.brokerage) !== undefined &&
+                                            <td className="grid2_td" style={(elem.pnl - elem.brokerage)>=0.00 ? { color: "green"}:  { color: "red"}}> {elem.pnl - elem.brokerage > 0.00 ? "+₹" + (elem.pnl - elem.brokerage).toFixed(2): "-₹" + (-(elem.pnl - elem.brokerage).toFixed(2))}</td>}
                                             <td className="grid2_td">{elem.numberOfTrade}</td>
                                             <td className="grid2_td">{elem.lotUsed}</td>
                                         </tr>}
