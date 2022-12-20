@@ -28,10 +28,10 @@ function TraderPositionTable({ socket }) {
     useEffect(() => {
 
         
-        axios.get(`${baseUrl}api/v1/readmocktradeuser`)
+        axios.get(`${baseUrl}api/v1/readmocktradeuseremail/${getDetails.userDetails.email}`)
         .then((res) => {
             let data = (res.data).filter((elem)=>{
-                return elem.order_timestamp.includes(fake_date) && elem.status === "COMPLETE" && elem.userId === getDetails.userDetails.email;
+                return elem.order_timestamp.includes(todayDate) && elem.status === "COMPLETE";
             })
             setData(data);
         }).catch((err)=>{
@@ -95,8 +95,10 @@ function TraderPositionTable({ socket }) {
                             <table className="grid1_table">
                                 <tr className="grid2_tr">
                                     <th className="grid2_th">Trading Date</th>
+                                    <th className="grid2_th">Contract Date</th>
+                                    <th className="grid2_th"> Symbol</th>
                                     <th className="grid2_th">Instrument</th>
-                                    <th className="grid2_th">LTP (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
+                                    <th className="grid2_th">LTP</th>
                                     <th className="grid2_th">%Change</th>
                                     <th className="grid2_th">Action</th>
                                 </tr>
@@ -109,9 +111,13 @@ function TraderPositionTable({ socket }) {
                                 return(
                                         <tr className="grid2_tr" key={elem.uId}>
                                             <td className="grid2_td">{todayDate}</td>
+                                            <td className="grid2_td">{elem.contractDate}</td>
                                             <td className="grid2_td">{elem.symbol}</td>
-                                            <td className="grid2_td">{updatedMarketData[0]?.last_price}</td>
-
+                                            <td className="grid2_td">{elem.instrument}</td>
+                                            {(updatedMarketData[0]?.last_price) === undefined ?
+                                            <td className="grid2_td">₹{(updatedMarketData[0]?.last_price)}</td>
+                                            :
+                                            <td className="grid2_td">₹{(updatedMarketData[0]?.last_price).toFixed(2)}</td>}
                                             {console.log(updatedMarketData[0], updatedMarketData[0]?.change)}
                                             {(updatedMarketData[0]?.change === undefined) ? 
                                             <td className="grid2_td">{(Math.abs((updatedMarketData[0]?.last_price-updatedMarketData[0]?.average_price)/updatedMarketData[0]?.average_price)).toFixed(2)}%</td>
@@ -119,8 +125,8 @@ function TraderPositionTable({ socket }) {
                                             <td className="grid2_td">{updatedMarketData[0]?.change.toFixed(2)}%</td>}
 
                                             <td className="grid2_th companyPosition_BSbtn2"><div className="companyPosition_BSbtn">
-                                            <ByModal Render={{setReRender, reRender}} marketData={marketData} uIdProps={elem.uId} />
-                                            <SellModel Render={{setReRender, reRender}} marketData={marketData} uIdProps={elem.uId}  /></div></td>
+                                            <ByModal symbol={elem.instrument} ltp={(updatedMarketData[0]?.last_price)} maxlot={(elem.maxLot)} lotsize={(elem.lotSize)} Render={{setReRender, reRender}} marketData={marketData} uIdProps={elem.uId} />
+                                            <SellModel symbol={elem.instrument} ltp={(updatedMarketData[0]?.last_price)} maxlot={(elem.maxLot)} lotsize={(elem.lotSize)} Render={{setReRender, reRender}} marketData={marketData} uIdProps={elem.uId}  /></div></td>
                                         </tr>
                                     )
                                 })} 

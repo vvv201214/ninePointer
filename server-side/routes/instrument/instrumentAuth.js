@@ -5,16 +5,18 @@ const Instrument = require("../../models/Instruments/instrumentSchema");
 const axios = require('axios');
 const fetchToken = require("../../marketData/generateSingleToken");
 
-
-
 router.post("/instrument", async (req, res)=>{
 
     try{
-        const {instrument, exchange, symbol, status, uId, createdOn, lastModified, createdBy, lotSize, contractDate, maxLot} = req.body;
+        let {instrument, exchange, symbol, status, uId, createdOn, lastModified, createdBy, lotSize, contractDate, maxLot} = req.body;
         console.log(req.body);
 
         let instrumentToken = await fetchToken(exchange, symbol);
         console.log("instrumentToken", instrumentToken);
+        let firstDateSplit = (contractDate).split(" ");
+        let secondDateSplit = firstDateSplit[0].split("-");
+        contractDate = `${secondDateSplit[2]}-${secondDateSplit[1]}-${secondDateSplit[0]}`
+
         if(!instrument || !exchange || !symbol || !status || !uId || !createdOn || !lastModified || !createdBy || !lotSize || !instrumentToken){
             console.log(instrumentToken);
             console.log(req.body);
@@ -66,8 +68,15 @@ router.get("/readInstrumentDetails/:id", (req, res)=>{
 router.put("/readInstrumentDetails/:id", async (req, res)=>{
     console.log(req.params)
     console.log( req.body)
-    const {Exchange, Symbole} = req.body;
+    let {Exchange, Symbole, contract_Date} = req.body;
     
+    if(contract_Date !== undefined){
+        let firstDateSplit = (contract_Date).split(" ");
+        let secondDateSplit = firstDateSplit[0].split("-");
+        contract_Date = `${secondDateSplit[2]}-${secondDateSplit[1]}-${secondDateSplit[0]}`
+    }
+
+
     // const token = 1232444;
     // console.log(token, req.body)
     try{ 
@@ -82,8 +91,8 @@ router.put("/readInstrumentDetails/:id", async (req, res)=>{
                 lastModified: req.body.lastModified,  
                 lotSize: req.body.LotSize,
                 instrumentToken: token,
-                contractDate: req.body.contractDate, 
-                maxLot: req.body.body.maxLot
+                contractDate: req.body.contract_Date, 
+                maxLot: req.body.maxLot
             }
         })
         console.log("this is role", instrument);

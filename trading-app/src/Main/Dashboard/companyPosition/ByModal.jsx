@@ -5,7 +5,7 @@ import axios from "axios"
 import uniqid from "uniqid"
 import { userContext } from "../../AuthContext";
 
-export default function ByModal({ marketData, uIdProps, Render, isCompany }) {
+export default function ByModal({ marketData, uIdProps, Render, isCompany, symbol, ltp, maxlot, lotsize }) {
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
     const { reRender, setReRender } = Render;
@@ -17,7 +17,8 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany }) {
     let userId = getDetails.userDetails.email;
     let tradeBy = isCompany ? "company" : getDetails.userDetails.name;
     let dummyOrderId = `${date.getFullYear()-2000}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}${Math.floor(100000000 + Math.random() * 900000000)}`
-
+    let perticularInstrumentData = "";
+    let perticularMarketData = 0;
     const [userPermission, setUserPermission] = useState([]);
     const [bsBtn, setBsBtn] = useState(true)
     const [modal, setModal] = useState(false);
@@ -42,7 +43,7 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany }) {
         companyBrokerage: ""
     })
 
-    const [selected, setSelected] = useState("MIS");
+    const [selected, setSelected] = useState("NRML");
     Details.Product = selected;
     const radioHandler = (e) => {
         console.log(e.target.value);
@@ -83,14 +84,15 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany }) {
         real_last_price: "",
     })
 
-    let lotSize = 50;
-    let maxLot = 1000;
+    let lotSize = lotsize;
+    let maxLot = maxlot;
     let finalLot = maxLot/lotSize;
     let optionData = [];
     for(let i =1; i<= finalLot; i++){
         optionData.push( <option value={i * lotSize} key={i}>{ i * lotSize}</option>)
     }
-    console.log(optionData);
+    
+    // console.log(optionData);
 
     useEffect(() => {
 
@@ -162,6 +164,12 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany }) {
             })
 
         setTradeData([...tradeData])
+
+
+        perticularInstrumentData = tradeData.filter((elem) => {
+            return elem.uId === uIdProps;
+        })
+        console.log(perticularInstrumentData);
     }, [getDetails])
 
 
@@ -443,6 +451,8 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany }) {
         
     }
 
+    console.log(perticularInstrumentData);
+
     return (
         <>
             {userPermission[0] === undefined ?
@@ -454,6 +464,7 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany }) {
                     BUY
                 </button>}
 
+                
 
             {modal && (
                 <div className="modal">
@@ -468,7 +479,7 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany }) {
                         <div className="form_btnRagAMO">
                             <button className={bsBtn ? "amobtn" : `bsBtn`} onClick={() => { setBsBtn(true) }}>Regular</button>
                         </div>}
-                                    
+                        <span className="headingSymbol">{symbol}</span> <span className="headingSymbol">{ltp}</span>
                         {bsBtn ?
                             <form className="Form_head" onChange={FormHandler} >
                                 <div className="container_One">

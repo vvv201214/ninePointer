@@ -8,6 +8,9 @@ import { faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons';
 function TradersOrders({info}){
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
+    let date = new Date();
+    let todayDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
+
     console.log(info)
     const [data, setData] = useState([]);
     
@@ -26,10 +29,11 @@ function TradersOrders({info}){
         //         return new Error(err);
         //     })            
         // }else if(info.role === "user"){
-            axios.get(`${baseUrl}api/v1/readmocktradeuser`)
+            axios.get(`${baseUrl}api/v1/readmocktradeuseremail/${info.email}`)
             .then((res)=>{
-                let updated = (res.data).filter((elem)=>{
-                    return info.email === elem.userId;
+                let updated = (res.data)
+                .filter((elem)=>{
+                    return elem.order_timestamp.includes(todayDate);
                 })
                 console.log(updated);
 
@@ -77,6 +81,7 @@ function TradersOrders({info}){
                                     <th className="grid2_th">Product</th>
                                     <th className="grid2_th">Quantity</th>
                                     <th className="grid2_th">Avg.Price (<FontAwesomeIcon className='fa-xs'  icon={faIndianRupeeSign} />)</th>
+                                    <th className="grid2_th">Trans. Cost</th>
                                     <th className="grid2_th">Status</th>
                                 </tr> 
 
@@ -91,6 +96,7 @@ function TradersOrders({info}){
                                             <td className="grid2_td">{elem.Product}</td>
                                             <td className="grid2_td">{elem.Quantity}</td>
                                             <td className="grid2_td">{elem.average_price}</td>
+                                            <td className="grid2_td">{Number(elem.brokerage).toFixed(2)}</td>
                                             <td className="grid2_td" style={{color : "#008000",backgroundColor : "#99ff99"}}>{elem.status}</td>
                                         </tr> 
                                     )
@@ -106,6 +112,7 @@ function TradersOrders({info}){
                                             <td className="grid2_td">{elem.Product}</td>
                                             <td className="grid2_td">{elem.Quantity}</td>
                                             <td className="grid2_td">{elem.average_price}</td>
+                                            <td className="grid2_td">{Number(elem.brokerage).toFixed(2)}</td>
                                             <td className="grid2_td" style={{color : "#008000",backgroundColor : "#99ff99"}}>{elem.status}</td>
                                         </tr> 
                                     )

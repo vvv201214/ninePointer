@@ -29,7 +29,7 @@ function CompanyPositionTable({ socket }) {
         axios.get(`${baseUrl}api/v1/readmocktradecompany`)
             .then((res) => {
                 let data = (res.data).filter((elem) => {
-                    return elem.order_timestamp.includes(fake_date) && elem.status === "COMPLETE";
+                    return elem.order_timestamp.includes(todayDate) && elem.status === "COMPLETE";
                 })
                 console.log("data", data)
                 setData(data);
@@ -57,14 +57,6 @@ function CompanyPositionTable({ socket }) {
                 return new Error(err);
             })
         console.log("hii");
-
-        // axios.get(`${baseUrl}api/v1/ws`)
-        // .then((res)=>{
-        //     console.log("vijay", (res.data)[0].last_price);
-        // }).catch((err)=>{
-        //     window.alert("Server Down");
-        //     return new Error(err);
-        // })
 
         socket.on("tick", (data) => {
             console.log("this is live market data", data);
@@ -124,8 +116,8 @@ function CompanyPositionTable({ socket }) {
                                                 <td className="grid2_td">{updatedMarketData[0]?.change.toFixed(2)}%</td>}
                                             <td className="grid2_th companyPosition_BSbtn2">
                                                 <div className="companyPosition_BSbtn">
-                                                    <ByModal Render={{ setReRender, reRender }} marketData={marketData} uIdProps={elem.uId} isCompany={true} />
-                                                    <SellModel Render={{ setReRender, reRender }} marketData={marketData} uIdProps={elem.uId} isCompany={true} />
+                                                    <ByModal symbol={elem.instrument} ltp={(updatedMarketData[0]?.last_price)} maxlot={(elem.maxLot)} lotsize={(elem.lotSize)} Render={{ setReRender, reRender }} marketData={marketData} uIdProps={elem.uId} isCompany={true} />
+                                                    <SellModel symbol={elem.instrument} ltp={(updatedMarketData[0]?.last_price)} maxlot={(elem.maxLot)} lotsize={(elem.lotSize)} Render={{ setReRender, reRender }} marketData={marketData} uIdProps={elem.uId} isCompany={true} />
                                                 </div>
                                             </td>
                                         </tr>
