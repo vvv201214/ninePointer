@@ -15,6 +15,7 @@ import TradersPnlCompany from "../PnlParts/TradersPnlCompany";
 
 function CompanyPositionTable({ socket }) {
     const getDetails = useContext(userContext);
+    const setDetails = useContext(userContext);
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
     
     const [tradeData, setTradeData] = useState([]);
@@ -40,9 +41,9 @@ function CompanyPositionTable({ socket }) {
         axios.get(`${baseUrl}api/v1/getliveprice`)
             .then((res) => {
                 console.log("live price data", res)
-                setMarketData(res.data)
+                setMarketData(res.data);
+                setDetails.setMarketData(data);
             }).catch((err) => {
-
                 return new Error(err);
             })
 
@@ -61,6 +62,7 @@ function CompanyPositionTable({ socket }) {
         socket.on("tick", (data) => {
             console.log("this is live market data", data);
             setMarketData(data);
+            setDetails.setMarketData(data);
         })
 
         console.log(marketData);
