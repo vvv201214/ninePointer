@@ -128,19 +128,22 @@
     width: 9vw;
     overflow: hidden;
     text-align: center;
-    border-bottom: 2px solid #aba8a8;
+    border-bottom: 1px solid #aba8a8;
     width: fit-content;
    font-size: 15px;
   
    
 }
+
 .grid2_td{
     width: 9vw;
     overflow: hidden;
     text-align: center;
-    border-bottom: 0.5px solid black;
+    border-bottom: 1px solid #aba8a8;
+    border-spacing: 3px;
     font-size: 12px;
     font-weight: 400;
+    border-spacing: 3px;
     width: fit-content;
     padding: 0.5px;
     white-space: nowrap;

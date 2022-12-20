@@ -48,7 +48,7 @@ async function parameters(io, socket) {
     for(let elem of accessTokenResp.data){
       for(let subElem of apiKeyResp.data){
         console.log("inside 2");
-          if(elem.accountId === subElem.accountId && elem.status === "Active" && subElem.status === "Active"){
+          if(elem.accountId === subElem.accountId && elem.generatedOn === today && elem.status === "Active" && subElem.status === "Active"){
               getAccessToken = elem.accessToken;
               getApiKey = subElem.apiKey
           }
