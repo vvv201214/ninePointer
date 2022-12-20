@@ -454,6 +454,12 @@ export default function Reports() {
     function selectUser(e){
         e.preventDefault();
         setSelectUserState(e.target.value);
+        let user = userDetail.filter((elem)=>{
+            return elem.name === selectUserState;
+        })
+        
+        let userId = user[0].email;
+        console.log(userId)
         // secondDateChange(e)
     }
 
