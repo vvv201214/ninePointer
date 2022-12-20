@@ -1,4 +1,3 @@
-
 import React, { useContext, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons';
@@ -6,7 +5,7 @@ import { useEffect } from 'react';
 import axios from "axios";
 
 
-export default function TradersPnlCompany({marketData, tradeData}) {
+export default function TradersPNLTrader({marketData, tradeData}) {
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
     
     const [userDetail, setUserDetail] = useState([]);
@@ -35,7 +34,7 @@ export default function TradersPnlCompany({marketData, tradeData}) {
             return new Error(err);
         })
 
-        axios.get(`${baseUrl}api/v1/readmocktradecompany`)
+        axios.get(`${baseUrl}api/v1/readmocktradeuser`)
         .then((res) => {
             let data = (res.data).filter((elem) => {
                 return elem.order_timestamp.includes(todayDate) && elem.status === "COMPLETE";
@@ -189,9 +188,9 @@ export default function TradersPnlCompany({marketData, tradeData}) {
                         <tr style={netpnl>=0.00 ? { color: "green"}:  { color: "red"}} key={elem._id}>
                             
                             <>
-                            <td className="grid2_td" >{(elem.name)}</td>
+                            <td className="grid2_td">{(elem.name)}</td>
                             {!elem.pnl ?
-                            <td className="grid2_td">{elem.pnl > 0 ? "+₹" + (Number(elem.pnl)) : "-₹" +  ((-elem.pnl))} </td>
+                            <td className="grid2_td">{elem.pnl > 0 ? "+₹" + (Number(elem.pnl)) : "-₹" + ((-elem.pnl))} </td>
                             :
                             <td className="grid2_td">{elem.pnl > 0 ? "+₹" + (Number(elem.pnl).toFixed(2)) : "-₹" + ((-elem.pnl).toFixed(2))} </td>}
                             {/* <td className="grid2_td">Running PNL </td>
@@ -199,7 +198,7 @@ export default function TradersPnlCompany({marketData, tradeData}) {
                             <td className="grid2_td">{elem.numberOfTrade}</td>
                             <td className="grid2_td">{elem.lotUsed}</td>
                             <td className="grid2_td">₹{(elem.brokerage).toFixed(2)}</td>
-                            {/* /* <td className="grid2_td">0.00</td> */}
+                            {/* <td className="grid2_td">0.00</td> */}
                             <td className="grid2_td"> {netpnl > 0 ? "+₹" + (Number(netpnl).toFixed(2)).toLocaleString(undefined, {maximumFractionDigits:2,toFixed:2}) : "-₹" + ((-netpnl).toFixed(2)).toLocaleString(undefined, {maximumFractionDigits:2,toFixed:2})} </td>
                             </>
                           
