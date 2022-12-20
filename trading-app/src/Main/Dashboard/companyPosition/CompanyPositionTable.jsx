@@ -22,14 +22,14 @@ function CompanyPositionTable({ socket }) {
     const [marketData, setMarketData] = useState([]);
     const [data, setData] = useState([]);
     let date = new Date();
-    let todayDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
-    let fake_date = "16-12-2022"
+    let todayDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
+    // let fake_date = "16-12-2022"
     useEffect(() => {
 
         axios.get(`${baseUrl}api/v1/readmocktradecompany`)
             .then((res) => {
                 let data = (res.data).filter((elem) => {
-                    return elem.order_timestamp.includes(fake_date) && elem.status === "COMPLETE";
+                    return elem.order_timestamp.includes(todayDate) && elem.status === "COMPLETE";
                 })
                 console.log("data", data)
                 setData(data);
@@ -112,7 +112,10 @@ function CompanyPositionTable({ socket }) {
                                             <td className="grid2_td">{elem.contractDate}</td>
                                             <td className="grid2_td">{elem.symbol}</td>
                                             <td className="grid2_td">{elem.instrument}</td>
-                                            <td className="grid2_td">₹{(updatedMarketData[0]?.last_price.toFixed(2))}</td>
+                                            {(updatedMarketData[0]?.last_price) === undefined ?
+                                            <td className="grid2_td">₹{(updatedMarketData[0]?.last_price)}</td>
+                                            :
+                                            <td className="grid2_td">₹{(updatedMarketData[0]?.last_price).toFixed(2)}</td>}
 
                                             {console.log(updatedMarketData[0], updatedMarketData[0]?.change)}
                                             {(updatedMarketData[0]?.change === undefined) ?

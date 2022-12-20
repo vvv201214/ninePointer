@@ -543,8 +543,8 @@ let newCors = process.env.NODE_ENV === "production" ? "http://3.110.187.5/" : "h
 const io = new Server(9000, {
   cors: {
 
-    origin: newCors,
-    // origin: "http://3.110.187.5/",
+    // origin: newCors,
+    origin: "http://3.110.187.5/",
 
     methods: ['GET', 'POST', 'PATCH'],
   },
@@ -578,7 +578,7 @@ async function parameters(io, socket) {
     for(let elem of accessTokenResp.data){
       for(let subElem of apiKeyResp.data){
         console.log("inside 2");
-          if(elem.accountId === subElem.accountId && elem.status === "Active" && subElem.status === "Active"){
+          if(elem.accountId === subElem.accountId && elem.generatedOn === today && elem.status === "Active" && subElem.status === "Active"){
               getAccessToken = elem.accessToken;
               getApiKey = subElem.apiKey
           }

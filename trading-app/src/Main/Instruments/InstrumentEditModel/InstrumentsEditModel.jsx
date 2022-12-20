@@ -13,10 +13,12 @@ export default function InstrumentsEditModel({ data, id, Render }) {
     const { reRender, setReRender } = Render;
     const [editData, setEditData] = useState(data);
 
+    const [contractDate, setcontractDate] =useState();
     const [instrument, setInstrument] = useState();
     const [exchange, setexchange] = useState();
     const [symbol, setsymbol] = useState();
     const [lotSize, setlotSize] = useState();
+    const [maxlot, setMaxlot] = useState();
     const [status, setStatus] = useState();
 
     useEffect(() => {
@@ -29,21 +31,25 @@ export default function InstrumentsEditModel({ data, id, Render }) {
     useEffect(() => {
         console.log("edit data", editData);
 
+        setcontractDate(editData[0].contractDate);
         setInstrument(editData[0].instrument)
         setexchange(editData[0].exchange);
         setsymbol(editData[0].symbol);
         setlotSize(editData[0].lotSize);
+        setMaxlot(editData[0].maxLot);
         setStatus(editData[0].status);
 
     }, [editData, reRender])
     console.log(editData, id);
     console.log(editData[0].instrument, instrument);
     const [formstate, setformstate] = useState({
+        contract_Date:"",
         Instrument: "",
         Exchange: "",
         Status: "",
         Symbole: "",
         LotSize: "",
+        maxLot:"",
         LastModifiedOn: ""
     });
 
@@ -61,17 +67,18 @@ export default function InstrumentsEditModel({ data, id, Render }) {
 
     async function formbtn(e) {
         e.preventDefault();
-
+        formstate.contract_Date = contractDate;
         formstate.Instrument = instrument;
         formstate.Exchange = exchange;
         formstate.Symbole = symbol;
         formstate.LotSize = lotSize;
+        formstate.maxLot = maxlot;
         formstate.Status = status;
         setModal(!modal);
         setformstate(formstate);
 
 
-        const { Instrument, Exchange, Symbole,LotSize, Status } = formstate;
+        const { contract_Date,Instrument, Exchange, Symbole,LotSize,maxLot, Status } = formstate;
 
         const res = await fetch(`${baseUrl}api/v1/readInstrumentDetails/${id}`, {
             method: "PUT",
@@ -80,7 +87,7 @@ export default function InstrumentsEditModel({ data, id, Render }) {
                 "content-type": "application/json"
             },
             body: JSON.stringify({
-                Instrument, Exchange, Symbole,LotSize, Status, lastModified
+                contract_Date ,Instrument, Exchange, Symbole,LotSize, maxLot, Status, lastModified
             })
         });
         const dataResp = await res.json();
@@ -126,6 +133,8 @@ export default function InstrumentsEditModel({ data, id, Render }) {
                     <div onClick={toggleModal} className="overlay"></div>
                     <div className={Styles.modalContent}>
                         <form className={Styles.main_instrument_form}>
+                            <label className={Styles.Ac_form} htmlFor="">Contract Date</label>
+                            <input type="date" value={contractDate} className={Styles.Ac_forminput} onChange={(e) => { { setcontractDate (e.target.value) } }} />
                             <label className={Styles.Ac_form} htmlFor="">Instrument</label>
                             <input type="text" value={instrument} className={Styles.Ac_forminput} onChange={(e) => { { setInstrument(e.target.value) } }} />
                             <label className={Styles.Ac_form} htmlFor="">Exchange</label>
@@ -134,6 +143,8 @@ export default function InstrumentsEditModel({ data, id, Render }) {
                             <input type="text" value={symbol} className={Styles.Ac_forminput} onChange={(e) => { { setsymbol(e.target.value).toUpperCase() } }} />
                             <label htmlFor="" className={Styles.Ac_form}>Lot Size</label>
                             <input type="text" value={lotSize} className={Styles.Ac_forminput} onChange={(e) => { { setlotSize(e.target.value) } }} />
+                            <label htmlFor="" className={Styles.Ac_form}>Max Lot</label>
+                            <input type="number" value={maxlot} className={Styles.Ac_forminput} onChange={(e) => { { setMaxlot (e.target.value) } }} />
                             <label htmlFor="" className={Styles.Ac_form}>Status</label>
                             <select name="" id="" value={status} className={Styles.Ac_forminput} onChange={(e) => { { setStatus(e.target.value) } }}>
                                 <option value=""></option>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons';
 import { useEffect } from 'react';
@@ -7,7 +7,7 @@ import axios from "axios";
 
 export default function TradersPnlCompany({marketData, tradeData}) {
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
-
+    
     const [userDetail, setUserDetail] = useState([]);
     const [allTrade, setAllTrade] = useState([]);
 
@@ -17,8 +17,16 @@ export default function TradersPnlCompany({marketData, tradeData}) {
     let todayDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
     // let fake_date = "2022-12-16";
     let fake_date = "16-12-2022";
+
     let totalPnl = 0;
     let transactionCost = 0;
+    let numberOfTrade = 0;
+    let lotUsed = 0;
+    let totalOverAllPnl = 0;
+    let totalNumberTrade = 0;
+    let totalLotsUsed = 0;
+    let totalTransCost = 0;
+    let totalNetPnl = 0;
     useEffect(()=>{
         axios.get(`${baseUrl}api/v1/readuserdetails`)
         .then((res) => {
@@ -30,11 +38,9 @@ export default function TradersPnlCompany({marketData, tradeData}) {
         axios.get(`${baseUrl}api/v1/readmocktradecompany`)
         .then((res) => {
             let data = (res.data).filter((elem) => {
-                return elem.order_timestamp.includes(fake_date) && elem.status === "COMPLETE";
+                return elem.order_timestamp.includes(todayDate) && elem.status === "COMPLETE";
             })
-            console.log(data);
             setAllTrade(data);
-            console.log(allTrade);
         }).catch((err)=>{
             return new Error(err);
         })
@@ -46,11 +52,11 @@ export default function TradersPnlCompany({marketData, tradeData}) {
             return elem.email === element.userId;
         })
 
-        console.log(data);
 
         let hash = new Map();
 
         for(let i = data.length-1; i >= 0 ; i--){
+            numberOfTrade += 1;
             transactionCost += Number(data[i].brokerage);
             if(hash.has(data[i].symbol)){
                 let obj = hash.get(data[i].symbol);
@@ -122,18 +128,22 @@ export default function TradersPnlCompany({marketData, tradeData}) {
             name = elem.name;
             console.log(elem.totalBuy,elem.totalSell,elem.totalBuyLot,elem.totalSellLot, liveDetailsArr[index]?.last_price)
             totalPnl += (-(elem.totalBuy+elem.totalSell-(elem.totalBuyLot+elem.totalSellLot)*liveDetailsArr[index]?.last_price))
-            console.log("totalPnl", totalPnl)
+            lotUsed += Math.abs(elem.totalBuyLot) + Math.abs(elem.totalSellLot);
         })
 
         let newObj = {
             brokerage: transactionCost,
             pnl: totalPnl,
-            name: name
+            name: name,
+            numberOfTrade: numberOfTrade,
+            lotUsed: lotUsed
         }
         console.log(transactionCost, totalPnl, name);
         detailPnl.push(JSON.parse(JSON.stringify(newObj)));
         transactionCost = 0;
         totalPnl = 0;
+        numberOfTrade = 0;
+        lotUsed = 0;
     })
 
     console.log(detailPnl);
@@ -146,27 +156,38 @@ export default function TradersPnlCompany({marketData, tradeData}) {
                 <th className="grid2_th">Overall PNL</th>
                 {/* <th className="grid2_th">Running PNL (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
                 <th className="grid2_th">Closed PNL(<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th> */}
-                <th className="grid2_th">Tran. Cost</th>
-                <th className="grid2_th"> Net PNL</th>
+                <th className="grid2_th"># of Trades</th>
+                <th className="grid2_th"> Lots Used</th>
+                <th className="grid2_th">Tran. Cost(<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
+                <th className="grid2_th"> Net PNL (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
             </tr>
             
             {
 
                 detailPnl.map((elem, index)=>{
-                let netpnl = (elem.pnl - elem.brokerage);
+                    totalOverAllPnl += elem.pnl && elem.pnl;
+                    totalNumberTrade += elem.numberOfTrade;
+                    totalLotsUsed += elem.lotUsed;
+                    totalTransCost += (elem.brokerage);
+                    
+                    let netpnl = (elem.pnl - elem.brokerage);
+                    totalNetPnl += netpnl;
                     return(
-                        <tr style={elem.pnl>=0.00 ? { color: "green"}:  { color: "red"}} key={elem._id}>
+                        <tr style={netpnl>=0.00 ? { color: "green"}:  { color: "red"}} key={elem._id}>
                             {elem.name &&
                             <>
                             <td className="grid2_td">{(elem.name)}</td>
                             {!elem.pnl ?
-                            <td className="grid2_td">{elem.pnl > 0 ? "+₹" + (Number(elem.pnl).toFixed(2)) : "-₹" + ((-elem.pnl).toFixed(2))} </td>
+                            <td className="grid2_td">{elem.pnl > 0 ? "+₹" + (Number(elem.pnl)) : "-₹" + ((-elem.pnl))} </td>
                             :
                             <td className="grid2_td">{elem.pnl > 0 ? "+₹" + (Number(elem.pnl).toFixed(2)) : "-₹" + ((-elem.pnl).toFixed(2))} </td>}
                             {/* <td className="grid2_td">Running PNL </td>
                             <td className="grid2_td">Closed PNL</td> */}
-                            <td className="grid2_td">₹0.00</td>
-                            <td className="grid2_td"> {netpnl > 0 ? "+₹" + (Number(netpnl).toFixed(2)) : "-₹" + ((-netpnl).toFixed(2))} </td>
+                            <td className="grid2_td">{elem.numberOfTrade}</td>
+                            <td className="grid2_td">{elem.lotUsed}</td>
+                            <td className="grid2_td">₹{(elem.brokerage).toFixed(2)}</td>
+                            {/* <td className="grid2_td">0.00</td> */}
+                            <td className="grid2_td"> {netpnl > 0 ? "+₹" + (Number(netpnl).toFixed(2)).toLocaleString(undefined, {maximumFractionDigits:2,toFixed:2}) : "-₹" + ((-netpnl).toFixed(2)).toLocaleString(undefined, {maximumFractionDigits:2,toFixed:2})} </td>
                             </>
                             }
                         </tr>
@@ -176,14 +197,17 @@ export default function TradersPnlCompany({marketData, tradeData}) {
             }
             <tr>
                 <th className='pnl_Total'>Total</th>
-                {/* {overallPnlArr.length ? */}
+                {detailPnl.length ?
                 <>
-                <th className='pnl_Total'>+₹0.00</th>
-                <th className='pnl_Total'>₹0.00</th>
-                <th className='pnl_Total'>+₹0.00</th>
+                <th className='pnl_Total'>₹{totalOverAllPnl.toFixed(2)}</th>
+                <th className='pnl_Total'>₹{totalNumberTrade}</th>
+                <th className='pnl_Total'>₹{totalLotsUsed}</th>
+                <th className='pnl_Total'>+₹{totalTransCost.toFixed(2)}</th>
+                <th className='pnl_Total'>₹{totalNetPnl.toFixed(2)}</th>
                 </>
+                :
                 <th></th>
-                {/* } */}
+                 }
                 
                 <th></th>
                 </tr> 
