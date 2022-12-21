@@ -15,7 +15,7 @@ function ReportsMain(){
             <h1 className="header_para">{`Hello ${getDetails.userDetails.name}! Welcome Back`}</h1>
                 <button className="logo_btn" >ninepointer</button>
             </div>
-            {/* <ReportsHeader role = {getDetails.userDetails.role}/> */}
+            <ReportsHeader role = {getDetails.userDetails.role}/>
         </>
     )
 }
