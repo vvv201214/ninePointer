@@ -19,13 +19,18 @@ export default function Reports() {
         throw new Error(err);
     }
 
+    let date = new Date();
+    let valueInSecondDate = `${(date.getFullYear())}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
+
+    let valueInFirstDate = `${(date.getFullYear())}-${String(date.getMonth() + 1).padStart(2, '0')}-01`
+
     const getDetails = useContext(userContext);
     const [detailPnlArr, setDetailPnl] = useState([]);
     const [userDetail, setUserDetail] = useState([]);
     const [tradeData, setTradeData] = useState([]);
     const [userTradeDetails, setUserTradeDetails] = useState([]);
-    let [firstDate, setFirstDate] = useState("");
-    let [secondDate, setSecondDate] = useState("");
+    let [firstDate, setFirstDate] = useState(valueInFirstDate);
+    let [secondDate, setSecondDate] = useState(valueInSecondDate);
     const [selectUserState, setSelectUserState] = useState("All User");
     const [marketData, setMarketData] = useState([]);
 
@@ -91,11 +96,11 @@ export default function Reports() {
     function firstDateChange(e){
         e.preventDefault();
         setFirstDate((e.target.value));
-        if((firstDate > secondDate)){
+        if((e.target.value > secondDate) && secondDate){
             window.alert("Date range is not valid")
             return;
         }
-        console.log(userDetail)
+        console.log(firstDate > secondDate, firstDate , secondDate)
         firstDateSplit = (e.target.value).split("-");
         firstDate = `${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}`
         setFirstDate(firstDate);
@@ -316,6 +321,10 @@ export default function Reports() {
     
     function secondDateChange(e){
         e.preventDefault();
+        if(((firstDate > e.target.value) && firstDate)){
+            window.alert("Date range is not valid")
+            return;
+        }
         console.log(userDetail)
         firstDateSplit = (firstDate).split("-");
         firstDate = `${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}`
@@ -324,10 +333,7 @@ export default function Reports() {
         let secondDateSplit = (e.target.value).split("-");
         secondDate = `${secondDateSplit[0]}-${secondDateSplit[1]}-${secondDateSplit[2]}`
         setSecondDate(secondDate);
-        if((firstDate > secondDate)){
-            window.alert("Date range is not valid")
-            return;
-        }
+
         console.log(firstDate ,secondDate);
         console.log(firstDate < secondDate);
 
@@ -649,6 +655,7 @@ export default function Reports() {
         firstDateSplit = (firstDate).split("-");
 
         console.log("e.target.value", e.target.value);
+
         if(e.target.value === "All User"){
 
             axios.get(`${baseUrl}api/v1/readmocktradeuser`)
@@ -715,17 +722,14 @@ export default function Reports() {
             }).catch((err)=>{
                 return new Error(err);
             })
+
         } else{
             let data = userDetail.filter((elem)=>{
-                return elem.name === (e.target.value)
+                return elem.name === e.target.value
             })
-
-            console.log(data);
 
             axios.get(`${baseUrl}api/v1/readmocktradeuseremail/${data[0].email}`)
             .then((res) => {
-
-                console.log(res.data, firstDate, secondDate);
                 let filteredData = (res.data).filter((elem)=>{
                     let timeStamp = elem.order_timestamp;
                     let oneDateSplit = (timeStamp).split(" ");
@@ -735,7 +739,6 @@ export default function Reports() {
                     return timeStamp >= firstDate && timeStamp <= secondDate;
                 })
                 console.log(filteredData);
-                console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` , secondDate)
                 if(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
                     while(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
                         // let firstDateDigit = Number(firstDateSplit[2]);
@@ -748,7 +751,7 @@ export default function Reports() {
                         console.log(singleDateData, `${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`);
                         let newObj = pnlCalculation(singleDateData);
                         newObj.date = `${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`;
-
+    
                         console.log(newObj);
                         if(newObj.numberOfTrade){
                             detailPnl.push(JSON.parse(JSON.stringify(newObj)));
@@ -761,6 +764,7 @@ export default function Reports() {
                     
                         console.log(detailPnl);
                         setDetailPnl(detailPnl)
+                        
                         if((firstDateSplit[2]) < 9){
                             (firstDateSplit[2]) = `0${Number(firstDateSplit[2]) + 1}`
                         }
@@ -782,13 +786,13 @@ export default function Reports() {
                         }
                     }
                 } 
+                
             }).catch((err)=>{
-                console.log("cant fetch data from api")
+                return new Error(err);
             })
+            
         }
     }
-
-
 
     function pnlCalculationUser(allTrade){
         let detailPnl = [];
@@ -912,13 +916,12 @@ export default function Reports() {
         })
 
         detailPnl.sort((a, b)=> {
-            return b.pnl-a.pnl
+            return (b.pnl-b.brokerage)-(a.pnl-a.brokerage)
           });
     
         return detailPnl;
     }
 
-    
     detailPnlArr.map((elem)=>{
         if(elem.brokerage){
             allBrokerage = allBrokerage + Number(elem.brokerage);
@@ -940,6 +943,34 @@ export default function Reports() {
         totalArr.push(obj);
     })
 
+    if(selectUserState === "All User"){
+        detailPnlArr.map((element)=>{
+            if(element){
+                element.map((elem)=>{
+                    if(elem.brokerage){
+                        allBrokerage = allBrokerage + Number(elem.brokerage);
+                    }
+            
+                    if(elem.pnl){
+                        allGross = allGross + Number(elem.pnl);
+                    }
+            
+                    allNet =  (allGross - allBrokerage);
+                    console.log(allBrokerage, allGross, allNet)
+            
+                    // let obj = {
+                    //     allBrokerage: allBrokerage,
+                    //     allGross: allGross,
+                    //     allNet: allNet
+                    // }
+                    // console.log(obj)
+                    // totalArr.push(obj);
+                })
+            }
+        })
+    }
+
+
     console.log(detailPnlArr, totalArr)
 
     return (
@@ -951,9 +982,9 @@ export default function Reports() {
                             <div className={Styles.form_div}>
                                 <form action="">
                                     <label htmlFor="" className={Styles.formLable}>Start Date</label>
-                                    <input type="date" className={Styles.formInput} onChange={(e)=>{firstDateChange(e)}}/>
-                                    <label htmlFor="" className={Styles.formLable}>End Date</label>
-                                    <input type="date" className={Styles.formInput} onChange={(e)=>{secondDateChange(e)}}/>
+                                    <input type="date" value={firstDate} className={Styles.formInput} onChange={(e)=>{firstDateChange(e)}}/>
+                                    <label htmlFor=""  className={Styles.formLable}>End Date</label>
+                                    <input type="date" value={secondDate} className={Styles.formInput} onChange={(e)=>{secondDateChange(e)}}/>
                                     {getDetails.userDetails.role === "admin" &&
                                     <>
                                      <label htmlFor="" className={Styles.formLable}>Trader</label>
@@ -964,7 +995,7 @@ export default function Reports() {
                                                 <option value={elem.name}>{elem.name}</option>
                                             )
                                         })}
-                                        <option value="All User">All User</option>
+                                        {/* <option value="All User">All User</option> */}
                                     </select> 
                                     </>
                                      }
@@ -972,11 +1003,11 @@ export default function Reports() {
                             </div>
                             <div className={Styles.btn_div}>
                                 <span className={`${Styles.formLable}`}>Gross P&L</span>
-                                <input style={allGross> 0.00 ? { color: "green"}:  allGross === 0.00 ? { color: "grey"} : { color: "red"}   } type="text" value={allGross >0.00 ? "+₹" + (allGross.toFixed(2)): allGross=== 0? "" :"-₹" + (-(allGross).toFixed(2))} className={`${Styles.formInput} ${Styles.formInput1}`}/>
+                                <input style={allGross> 0.00 ? { color: "green"}:  allGross === 0.00 ? { color: "grey"} : { color: "red"}   } type="text" value={allGross >0.00 ? "+₹" + (allGross.toFixed(2)): allGross=== 0? "" :"-₹" + ((-(allGross)).toFixed(2))} className={`${Styles.formInput} ${Styles.formInput1}`}/>
                                 <span className={Styles.formLable}>Transaction Cost </span>
                                 <input type="text" value={ allBrokerage ===0? " " : "₹" + (allBrokerage.toFixed(2))} className={`${Styles.formInput} ${Styles.formInput1}`} />
                                 <span className={Styles.formLable}>Net P&L</span>
-                                <input style={allNet>0.00 ? { color: "green"}: allBrokerage===0.00 ? { color: "grey"}: { color: "red"}} type="text" value={allNet >0.00 ? "+₹" + (allNet.toFixed(2)): allNet===0? " " : "-₹" + (-(allNet).toFixed(2))} className={`${Styles.formInput} ${Styles.formInput1}`} />
+                                <input style={allNet>0.00 ? { color: "green"}: allBrokerage===0.00 ? { color: "grey"}: { color: "red"}} type="text" value={allNet >0.00 ? "+₹" + (allNet.toFixed(2)): allNet===0? " " : "-₹" + ((-(allNet)).toFixed(2))} className={`${Styles.formInput} ${Styles.formInput1}`} />
                                 
                                 <button className={Styles.formButton}> Download Report</button>
                             </div> 
@@ -996,40 +1027,39 @@ export default function Reports() {
                                 {selectUserState === "All User" && getDetails.userDetails.role === "admin" ? 
                                 
                                 detailPnlArr.map((element)=>{
-                                    // allBrokerage = allBrokerage + Number(elem.brokerage);
-                                    // allGross = allGross + elem.pnl;
-                                    // allNet = allNet + (allGross - allBrokerage);
+                                    allBrokerage = allBrokerage + Number(element.brokerage);
+                                    allGross = allGross + element.pnl;
+                                    allNet = allNet + (allGross - allBrokerage);
                                     console.log(element, selectUserState)
+                                    
                                     return(
-                                    element.map((elem)=>{
-                                        console.log(elem)
-                                        return(
-                                            <>
-                                            {elem.name &&
-                                            <tr>
-                                                <td className="grid2_td">{elem.name}</td>
-                                                <td className="grid2_td">{elem.date}</td>
-                                                {!elem.pnl ?
-                                                <td className="grid2_td" style={elem.pnl>=0.00 ? { color: "green"}:  { color: "red"}}>{elem.pnl >0.00 ? "+₹" + (elem.pnl): "-₹" + (-(elem.pnl)) }</td>
-                                                :
-                                                <td className="grid2_td" style={elem.pnl>=0.00 ? { color: "green"}:  { color: "red"}}>{elem.pnl >0.00 ? "+₹" + (elem.pnl.toFixed(2)): "-₹" + (-(elem.pnl).toFixed(2)) }</td>}
-                                                {!elem.brokerage ?
-                                                <td className="grid2_td" >{elem.brokerage >0.00 ? "+₹" + (elem.brokerage): "-₹" + (-(elem.brokerage)) }</td>
-                                                :
-                                                <td className="grid2_td" >{elem.brokerage >0.00 ? "+₹" + (elem.brokerage.toFixed(2)): "-₹" + (-(elem.brokerage).toFixed(2)) }</td>}
-                                                {(elem.pnl - elem.brokerage) !== undefined &&
-                                                <td className="grid2_td" style={(elem.pnl - elem.brokerage)>=0.00 ? { color: "green"}:  { color: "red"}}> {elem.pnl - elem.brokerage > 0.00 ? "+₹" + (elem.pnl - elem.brokerage).toFixed(2): "-₹" + (-(elem.pnl - elem.brokerage).toFixed(2))}</td>}
-                                                <td className="grid2_td">{elem.numberOfTrade}</td>
-                                                <td className="grid2_td">{elem.lotUsed}</td>
-                                            </tr>}
-                                            </>
-                                        )
-                                    })
+                                        element.map((elem)=>{
+                                            console.log(elem)
+                                            return(
+                                                <>
+                                                {elem.name &&
+                                                <tr>
+                                                    <td className="grid2_td">{elem.name}</td>
+                                                    <td className="grid2_td">{elem.date}</td>
+                                                    {!elem.pnl ?
+                                                    <td className="grid2_td" style={elem.pnl>=0.00 ? { color: "green"}:  { color: "red"}}>{elem.pnl >0.00 ? "+₹" + (elem.pnl): "-₹" + (-(elem.pnl)) }</td>
+                                                    :
+                                                    <td className="grid2_td" style={elem.pnl>=0.00 ? { color: "green"}:  { color: "red"}}>{elem.pnl >0.00 ? "+₹" + (elem.pnl.toFixed(2)): "-₹" + ((-(elem.pnl)).toFixed(2)) }</td>}
+                                                    {!elem.brokerage ?
+                                                    <td className="grid2_td" >{elem.brokerage >0.00 ? "₹" + (elem.brokerage) : "₹" + 0.00}</td>
+                                                    :
+                                                    <td className="grid2_td" >{elem.brokerage >0.00 ? "₹" + (elem.brokerage).toFixed(2) : "₹" + 0.00}</td>}
+                                                    {(elem.pnl - elem.brokerage) !== undefined &&
+                                                    <td className="grid2_td" style={(elem.pnl - elem.brokerage)>=0.00 ? { color: "green"}:  { color: "red"}}> {elem.pnl - elem.brokerage > 0.00 ? "+₹" + (elem.pnl - elem.brokerage).toFixed(2): "-₹" + ((-(elem.pnl - elem.brokerage)).toFixed(2))}</td>}
+                                                    <td className="grid2_td">{elem.numberOfTrade}</td>
+                                                    <td className="grid2_td">{elem.lotUsed}</td>
+                                                </tr>}
+                                                </>
+                                            )
+                                        })
                                     )
-
                                 })
                                 :
-                                
                                 detailPnlArr.map((elem)=>{
                                     allBrokerage = allBrokerage + Number(elem.brokerage);
                                     allGross = allGross + elem.pnl;
@@ -1042,15 +1072,15 @@ export default function Reports() {
                                             <td className="grid2_td">{elem.name}</td>
                                             <td className="grid2_td">{elem.date}</td>
                                             {!elem.pnl ?
-                                                <td className="grid2_td" style={elem.pnl>=0.00 ? { color: "green"}:  { color: "red"}}>{elem.pnl >0.00 ? "+₹" + (elem.pnl): "-₹" + (-(elem.pnl)) }</td>
-                                                :
-                                                <td className="grid2_td" style={elem.pnl>=0.00 ? { color: "green"}:  { color: "red"}}>{elem.pnl >0.00 ? "+₹" + (elem.pnl.toFixed(2)): "-₹" + (-(elem.pnl).toFixed(2)) }</td>}
-                                            {!elem.brokerage ?
-                                            <td className="grid2_td" >{elem.brokerage >0.00 ? "+₹" + (elem.brokerage): "-₹" + (-(elem.brokerage)) }</td>
+                                            <td className="grid2_td" style={elem.pnl>=0.00 ? { color: "green"}:  { color: "red"}}>{elem.pnl >0.00 ? "+₹" + (elem.pnl): "-₹" + (-(elem.pnl)) }</td>
                                             :
-                                            <td className="grid2_td" >{elem.brokerage >0.00 ? "+₹" + (elem.brokerage.toFixed(2)): "-₹" + (-(elem.brokerage).toFixed(2)) }</td>}
+                                            <td className="grid2_td" style={elem.pnl>=0.00 ? { color: "green"}:  { color: "red"}}>{elem.pnl >0.00 ? "+₹" + (elem.pnl.toFixed(2)): "-₹" + ((-(elem.pnl)).toFixed(2)) }</td>}
+                                            {!elem.brokerage ?
+                                            <td className="grid2_td" >{elem.brokerage >0.00 ? "₹" + (elem.brokerage) : "₹" + 0.00}</td>
+                                            :
+                                            <td className="grid2_td" >{elem.brokerage >0.00 ? "₹" + (elem.brokerage).toFixed(2) : "₹" + 0.00}</td>}
                                             {(elem.pnl - elem.brokerage) !== undefined &&
-                                            <td className="grid2_td" style={(elem.pnl - elem.brokerage)>=0.00 ? { color: "green"}:  { color: "red"}}> {elem.pnl - elem.brokerage > 0.00 ? "+₹" + (elem.pnl - elem.brokerage).toFixed(2): "-₹" + (-(elem.pnl - elem.brokerage).toFixed(2))}</td>}
+                                            <td className="grid2_td" style={(elem.pnl - elem.brokerage)>=0.00 ? { color: "green"}:  { color: "red"}}> {elem.pnl - elem.brokerage > 0.00 ? "+₹" + (elem.pnl - elem.brokerage).toFixed(2): "-₹" + ((-(elem.pnl - elem.brokerage)).toFixed(2))}</td>}
                                             <td className="grid2_td">{elem.numberOfTrade}</td>
                                             <td className="grid2_td">{elem.lotUsed}</td>
                                         </tr>}

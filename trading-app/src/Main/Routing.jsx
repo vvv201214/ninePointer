@@ -32,9 +32,11 @@ import ReportsMain from './Reports/ReportsMain';
 import Reports from './Reports/Reports';
 import SummaryMain from './AdminDashboard/SummaryDashboard/SummaryMain';
 import Summary from './AdminDashboard/SummaryDashboard/Summary';
-import TraderPosition from './Dashboard/newTraderPosition/TraderPosition';
+import TraderPosition from './Dashboard/newTraderPosition/NewTraderPosition';
 import TodaysTradesMock from './Dashboard/CompanyOrderTabs/TodaysTradesMock';
 import HistoryTradesMock from './Dashboard/CompanyOrderTabs/HistoryTradesMock';
+import TodaysTrades from './Dashboard/TraderOrdersTabs/TodaysTrades';
+import HistoryTrades from './Dashboard/TraderOrdersTabs/HistoryTrades';
 
 
 export default function Routing() {
@@ -81,7 +83,10 @@ export default function Routing() {
                                 <Route path='/main/dashboard/CompanyOrders' element={<TodaysTradesMock/>} ></Route>
                                 <Route path='/main/dashboard/CompanyOrders/HistoryTradesMock' element={<HistoryTradesMock/>} ></Route>
                                 </Route>
-                            <Route path='/main/dashboard/TradersOrders' element={<TradersOrders info={details}/>}></Route>
+                            <Route path='/main/dashboard/TradersOrders' element={<TradersOrders />}>
+                                <Route path='/main/dashboard/TradersOrders' element={<TodaysTrades info={details}/>} ></Route>
+                                <Route path='/main/dashboard/TradersOrders/HistoryTrades' element={<HistoryTrades info={details}/>} ></Route>
+                            </Route>
                         </Route>
                         <Route path='/main/report' element={<ReportsMain/>}>
                             <Route path='/main/report' element={<Reports/>}></Route>

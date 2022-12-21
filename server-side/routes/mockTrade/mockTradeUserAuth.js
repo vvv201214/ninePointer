@@ -115,11 +115,11 @@ router.get("/readmocktradeuserpnl/:email/:status", (req, res)=>{
     })
 })
 
-router.get("/readmocktradeuserDate", (req, res)=>{
+router.get("/readmocktradeuserDate/:email", (req, res)=>{
+    const {email} = req.params
     let date = new Date();
     let todayDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
-    const {email} = req.params
-    MockTradeDetails.find({order_timestamp: {$regex: todayDate}})
+    MockTradeDetails.find({order_timestamp: {$regex: todayDate}, userId: {$regex: email}})
     .then((data)=>{
         return res.status(200).send(data);
     })
