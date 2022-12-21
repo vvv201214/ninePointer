@@ -99,7 +99,7 @@ function TraderPositionTable({ socket }) {
                                     <th className="grid2_th"> Symbol</th>
                                     <th className="grid2_th">Instrument</th>
                                     <th className="grid2_th">LTP</th>
-                                    <th className="grid2_th">%Change</th>
+                                    <th className="grid2_th">Change(%)</th>
                                     <th className="grid2_th">Action</th>
                                 </tr>
 

@@ -130,7 +130,7 @@ export default function ClosedPnl({marketData, tradeData, data}) {
             <th className="grid2_th">Avg. Buy Price (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
             <th className="grid2_th">Avg. Sell Price (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
             <th className="grid2_th">P&L (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
-            <th className="grid2_th">%Change</th>
+            <th className="grid2_th">Change(%)</th>
         </tr>
         {
          closedPnlArr.map((elem, index)=>{
@@ -170,7 +170,7 @@ export default function ClosedPnl({marketData, tradeData, data}) {
             <th></th>
             {!showTotal ?
             <>
-            <th className='pnl_Total'>TOTAL</th>
+            <th className='pnl_Total'>Total</th>
             <th className='pnl_Total' style={Total>=0 ? {color: "green"} : {color: "red"} }>{Total.toFixed(2)}</th>
             </>
             :

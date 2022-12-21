@@ -33,6 +33,8 @@ import Reports from './Reports/Reports';
 import SummaryMain from './AdminDashboard/SummaryDashboard/SummaryMain';
 import Summary from './AdminDashboard/SummaryDashboard/Summary';
 import TraderPosition from './Dashboard/newTraderPosition/NewTraderPosition';
+import UserFundsMain from './UserFunds/UserFundsMain';
+import UserFunds from './UserFunds/UserFunds';
 import TodaysTradesMock from './Dashboard/CompanyOrderTabs/TodaysTradesMock';
 import HistoryTradesMock from './Dashboard/CompanyOrderTabs/HistoryTradesMock';
 import TodaysTrades from './Dashboard/TraderOrdersTabs/TodaysTrades';
@@ -93,6 +95,9 @@ export default function Routing() {
                         </Route>
                         <Route path='/main/admindashboard/summary' element={<SummaryMain/>}>
                             <Route path='/main/admindashboard/summary' element={<Summary/>}></Route>
+                        </Route>
+                        <Route path='/main/userfunds' element={<UserFundsMain/>}>
+                            <Route path='/main/userfunds' element={<UserFunds/>}></Route>
                         </Route>
                         {/* // :
                         // <Route path='/main/dashboard' element={<DashboardMain/>}>

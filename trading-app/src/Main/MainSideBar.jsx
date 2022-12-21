@@ -13,6 +13,7 @@ export default function MainSideBar({name}) {
                 <div className="sidebar_items"><NavLink to="/main/instrument" style={({isActive}) => isActive?{color:'white'} :{color:'black'} }>Instruments</NavLink></div>
                 <div className="sidebar_items"><NavLink to="/main/tradingAccount" style={({isActive}) => isActive?{color:'white'} :{color:'black'} }>Trading Accounts</NavLink></div>
                 <div className="sidebar_items"><NavLink to="/main/user" style={({isActive}) => isActive?{color:'white'} :{color:'black'} }>Users</NavLink></div>
+                <div className="sidebar_items"><NavLink to="/main/funds" style={({isActive}) => isActive?{color:'white'} :{color:'black'} }>Funds</NavLink></div>
                 <div className="sidebar_items"><NavLink to="/main/report" style={({isActive}) => isActive?{color:'white'} :{color:'black'} }>Reports</NavLink></div>
                 <div className="sidebar_items"><NavLink to="/main/algobox" style={({isActive}) => isActive?{color:'white'} :{color:'black'} }>Algo Box</NavLink></div>
                 
