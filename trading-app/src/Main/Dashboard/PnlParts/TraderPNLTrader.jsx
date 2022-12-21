@@ -163,13 +163,13 @@ export default function TradersPNLTrader({marketData, tradeData}) {
         <table className="grid1_table">
             <tr className="grid2_tr">
                 <th className="grid2_th">Trader Name</th>
-                <th className="grid2_th">Overall PNL</th>
+                <th className="grid2_th">Gorss P&L</th>
                 {/* <th className="grid2_th">Running PNL (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
                 <th className="grid2_th">Closed PNL(<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th> */}
                 <th className="grid2_th"># of Trades</th>
                 <th className="grid2_th"> Lots Used</th>
-                <th className="grid2_th">Tran. Cost(<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
-                <th className="grid2_th"> Net PNL (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
+                <th className="grid2_th">Tran. Cost</th>
+                <th className="grid2_th">Net P&L</th>
             </tr>
             
             {

@@ -33,6 +33,8 @@ import Reports from './Reports/Reports';
 import SummaryMain from './AdminDashboard/SummaryDashboard/SummaryMain';
 import Summary from './AdminDashboard/SummaryDashboard/Summary';
 import TraderPosition from './Dashboard/TraderPosition';
+import UserFundsMain from './UserFunds/UserFundsMain';
+import UserFunds from './UserFunds/UserFunds';
 
 
 export default function Routing() {
@@ -83,6 +85,9 @@ export default function Routing() {
                         </Route>
                         <Route path='/main/admindashboard/summary' element={<SummaryMain/>}>
                             <Route path='/main/admindashboard/summary' element={<Summary/>}></Route>
+                        </Route>
+                        <Route path='/main/userfunds' element={<UserFundsMain/>}>
+                            <Route path='/main/userfunds' element={<UserFunds/>}></Route>
                         </Route>
                         {/* // :
                         // <Route path='/main/dashboard' element={<DashboardMain/>}>
