@@ -53,7 +53,7 @@ function TraderPositionTable({ socket }) {
                     return  elem.status === "Active"
                 })
                 setTradeData(dataArr)
-                //setDetails.setTradeData(dataArr);
+                // setDetails.setTradeData(dataArr);
             }).catch((err)=>{
                 
                 return new Error(err);
@@ -71,7 +71,7 @@ function TraderPositionTable({ socket }) {
         socket.on("tick",(data)=>{
             console.log("this is live market data", data);
             setMarketData(data);
-            //setDetails.setMarketData(data);
+            // setDetails.setMarketData(data);
         })
         
         console.log(marketData);

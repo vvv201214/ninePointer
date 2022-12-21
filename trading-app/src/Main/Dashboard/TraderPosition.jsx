@@ -92,7 +92,6 @@ export default function TraderPosition() {
             <div className="main_Container">
                 <div className="right_side">
                     <div className="rightside_maindiv">
-
                         <span className="grid2_span">Overall PNL-Traders</span>
                         <div className="grid_2">
                             <OverallPnl marketData={marketData} tradeData={tradeData} data={data} />

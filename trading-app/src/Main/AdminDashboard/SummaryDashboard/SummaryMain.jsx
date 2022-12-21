@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 import { useEffect } from "react";
-import { userContext } from "../AuthContext";
-import ReportsHeader from "./ReportsHeader";
+import { userContext } from "../../AuthContext";
+import ReportsHeader from "./SummaryHeader";
 
-function ReportsMain(){
+function SummaryMain(){
     const getDetails = useContext(userContext);
     useEffect(()=>{
         console.log(getDetails)
@@ -19,4 +19,4 @@ function ReportsMain(){
         </>
     )
 }
-export default ReportsMain;
+export default SummaryMain;

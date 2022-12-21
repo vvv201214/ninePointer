@@ -1,0 +1,47 @@
+.topbox{
+   
+    width:100%;
+    margin: 5px;
+}
+
+.topboxlive{
+   
+    width:33.33%;
+    background-color: white;
+    padding: 50px;
+    margin: 5px;
+    border-radius: 5px;
+}
+
+
+.topboxmock{
+   
+    width:33.33%;
+    background-color: white;
+    padding: 50px;
+    margin: 5px;
+    border-radius: 5px;
+
+
+}
+
+.blinkitlive{
+   
+    color:black;
+    animation: blinker 1s linear infinite;
+
+}
+
+.blinkitmock{
+   
+    color:black;
+    font-weight: 800px;
+    animation: blinker 1s linear infinite;
+
+}
+
+@keyframes blinker {
+    50% {
+      opacity: 0;
+    }
+  }
