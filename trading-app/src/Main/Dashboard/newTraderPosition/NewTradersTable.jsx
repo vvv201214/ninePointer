@@ -60,6 +60,10 @@ export default function NewTradersTable({socket}) {
       })
   console.log("hii");
 
+    socket.on("tick",(data)=>{
+      console.log("this is live market data", data);
+      setMarketData(data);
+    })
       // reRender ? setReRender(false) : setReRender(true)
       // setReRender(true);
   }, [getDetails])
