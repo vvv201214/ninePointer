@@ -11,11 +11,13 @@ export default function CompanyOrders(){
                 <li className={style.Companyorder_li}>
                     <NavLink to={"/main/dashboard/CompanyOrders"}>Today's Trades(Mock)</NavLink>
                 </li>
-                {/* <li className={style.Companyorder_li}>
+                <li className={style.Companyorder_li}>
                     <NavLink to={"/main/dashboard/CompanyOrders/HistoryTradesMock"}>History Trades(Mock)</NavLink>
-                </li> */}
+                </li>
             </ul>
         <Outlet/>
         </div>
     )
 }
+
+

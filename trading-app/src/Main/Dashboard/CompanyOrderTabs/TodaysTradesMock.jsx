@@ -1,29 +1,17 @@
 import React from "react";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons';  
 
 function TodaysTradesMock(){
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
     const [data, setData] = useState([]);
     useEffect(()=>{
-        axios.get(`${baseUrl}api/v1/readmocktradecompany`)
+        axios.get(`${baseUrl}api/v1/readmocktradecompanyDate`)
         .then((res)=>{
 
             (res.data).sort((a, b)=> {
 
-                // if(a.order_timestamp.includes("16-12-2022")){
-                //     let firstDateSplit = (a.order_timestamp).split(" ");
-                //     let secondDateSplit = firstDateSplit[0].split("-");
-                //     a.order_timestamp = `${secondDateSplit[2]}-${secondDateSplit[1]}-${secondDateSplit[0]} ${firstDateSplit[1]}`
-
-                // } if(b.order_timestamp.includes("16-12-2022")){
-                //     let firstDateSplit = (b.order_timestamp).split(" ");
-                //     let secondDateSplit = firstDateSplit[0].split("-");
-                //     b.order_timestamp = `${secondDateSplit[2]}-${secondDateSplit[1]}-${secondDateSplit[0]} ${firstDateSplit[1]}`
-                // }
                 if (a.order_timestamp < b.order_timestamp) {
                   return 1;
                 }
@@ -38,7 +26,7 @@ function TodaysTradesMock(){
             window.alert("Server Down");
             return new Error(err);
         })
-    })
+    },[])
 
     return(
         <div>

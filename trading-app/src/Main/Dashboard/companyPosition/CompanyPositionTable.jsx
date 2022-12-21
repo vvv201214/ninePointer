@@ -42,7 +42,7 @@ function CompanyPositionTable({ socket }) {
             .then((res) => {
                 console.log("live price data", res)
                 setMarketData(res.data);
-                setDetails.setMarketData(data);
+                // setDetails.setMarketData(data);
             }).catch((err) => {
                 return new Error(err);
             })
@@ -62,7 +62,7 @@ function CompanyPositionTable({ socket }) {
         socket.on("tick", (data) => {
             console.log("this is live market data", data);
             setMarketData(data);
-            setDetails.setMarketData(data);
+            // setDetails.setMarketData(data);
         })
 
         console.log(marketData);

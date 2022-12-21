@@ -6,6 +6,7 @@ import { faContactCard, faIndianRupeeSign } from '@fortawesome/free-solid-svg-ic
 
 export default function OverallPnl({marketData, tradeData, data}) {
 
+    
     let date = new Date();
     let todayDate = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}` ;
     let fake_date = "1-12-2022"
@@ -132,7 +133,7 @@ export default function OverallPnl({marketData, tradeData, data}) {
                 <th className="grid2_th">Quantity</th>
                 <th className="grid2_th">Avg. Price</th>
                 <th className="grid2_th">LTP</th>
-                <th className="grid2_th">P&L</th>
+                <th className="grid2_th">Gross P&L</th>
                 <th className="grid2_th">Change(%)</th>
             </tr> 
             {
@@ -182,10 +183,10 @@ export default function OverallPnl({marketData, tradeData, data}) {
                 {overallPnlArr.length ?
                 <>
                 <th className='pnl_Total'>Transaction Cost</th>
-                <th className='pnl_Total'>{totalTransactionCost.toFixed(2)}</th>
-                <th className='pnl_Total'>Total</th>
+                <th className='pnl_Total'>₹{totalTransactionCost.toFixed(2)}</th>
+                <th className='pnl_Total'>Gross P&L</th>
                 <th className='pnl_Total' style={Total>=0 ? {color: "green"} : {color: "red"} }>{Total>=0 ? "+₹" + (Total.toFixed(2)) : "-₹" + ((-Total).toFixed(2))}</th>
-                <th className='pnl_Total' style={(Total-totalTransactionCost)>=0 ? {color: "green"} : {color: "red"} }>{(Total-totalTransactionCost)>=0 ? "+₹" + ((Total-totalTransactionCost).toFixed(2)) : "-₹" + ((-(Total-totalTransactionCost)).toFixed(2))}</th>
+                <th className='pnl_Total' style={(Total-totalTransactionCost)>=0 ? {color: "green"} : {color: "red"} }>Net P&L : {(Total-totalTransactionCost)>=0 ? "+₹" + ((Total-totalTransactionCost).toFixed(2)) : "-₹" + ((-(Total-totalTransactionCost)).toFixed(2))}</th>
                 </>
                 : // {(Total-totalTransactionCost).toFixed(2)}
                 <th></th>
