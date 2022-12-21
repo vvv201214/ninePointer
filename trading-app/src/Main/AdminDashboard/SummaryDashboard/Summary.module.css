@@ -41,7 +41,7 @@
 }
 
 .liveBoxone {
-    min-width: 50%;
+    width: 50%;
     border: 7px solid rgb(0, 128, 0, 0.3);
     border-radius: 10px;
     margin: 0.3%;
