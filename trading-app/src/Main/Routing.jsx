@@ -32,7 +32,7 @@ import ReportsMain from './Reports/ReportsMain';
 import Reports from './Reports/Reports';
 import SummaryMain from './AdminDashboard/SummaryDashboard/SummaryMain';
 import Summary from './AdminDashboard/SummaryDashboard/Summary';
-import TraderPosition from './Dashboard/TraderPosition';
+import TraderPosition from './Dashboard/newTraderPosition/TraderPosition';
 import TodaysTradesMock from './Dashboard/CompanyOrderTabs/TodaysTradesMock';
 import HistoryTradesMock from './Dashboard/CompanyOrderTabs/HistoryTradesMock';
 

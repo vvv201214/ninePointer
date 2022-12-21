@@ -182,8 +182,10 @@ router.get("/readmocktradecompanyemail/:email", (req, res)=>{
 })
 
 router.get("/readmocktradecompanyDate", (req, res)=>{
+    let date = new Date();
+    let todayDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
     const {email} = req.params
-    MockTradeDetails.find({order_timestamp:{$gte: new Date("2022-12-16 00:00:00"),$lt: new Date("2022-12-16 23:59:00")}})
+    MockTradeDetails.find({order_timestamp: {$regex: todayDate}})
     .then((data)=>{
         return res.status(200).send(data);
     })

@@ -1,21 +1,13 @@
 import React, { useContext, useState, useEffect } from "react";
 import axios from "axios"
-import OverallPnl from "./PnlParts/OverallPnl";
-import RunningPnl from "./PnlParts/RunningPnl";
-import ClosedPnl from "./PnlParts/ClosedPnl";
-import TradersPNLTrader from "./PnlParts/TraderPNLTrader";
-import { userContext } from "../AuthContext";
+import OverallPnl from "../PnlParts/OverallPnl";
+import RunningPnl from "../PnlParts/RunningPnl";
+import ClosedPnl from "../PnlParts/ClosedPnl";
+import TradersPNLTrader from "../PnlParts/TraderPNLTrader";
+import { userContext } from "../../AuthContext";
 import { io } from "socket.io-client";
 
-export default function TraderPosition() {
-
-    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:9000/"
-    let socket;
-    try{
-        socket = io.connect(`${baseUrl}`)
-    } catch(err){
-        throw new Error(err);
-    }
+export default function TraderPosition({socket}) {
 
     const getDetails = useContext(userContext);
 
