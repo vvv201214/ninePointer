@@ -115,4 +115,17 @@ router.get("/readmocktradeuserpnl/:email/:status", (req, res)=>{
     })
 })
 
+router.get("/readmocktradeuserDate/:email", (req, res)=>{
+    const {email} = req.params
+    let date = new Date();
+    let todayDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
+    MockTradeDetails.find({order_timestamp: {$regex: todayDate}, userId: {$regex: email}})
+    .then((data)=>{
+        return res.status(200).send(data);
+    })
+    .catch((err)=>{
+        return res.status(422).json({error : "date not found"})
+    })
+})
+
 module.exports = router;

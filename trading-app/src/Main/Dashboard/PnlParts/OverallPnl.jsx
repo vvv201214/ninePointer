@@ -6,6 +6,7 @@ import { faContactCard, faIndianRupeeSign } from '@fortawesome/free-solid-svg-ic
 
 export default function OverallPnl({marketData, tradeData, data}) {
 
+    
     let date = new Date();
     let todayDate = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}` ;
     let fake_date = "1-12-2022"

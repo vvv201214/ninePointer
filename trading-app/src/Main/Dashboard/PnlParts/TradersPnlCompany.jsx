@@ -153,15 +153,12 @@ export default function TradersPnlCompany({marketData, tradeData}) {
         // runninglots = 0;
     })
 
-    detailPnl.sort((a, b)=> {
-        // if ((a.pnl) < (b.pnl)) {
-        //   return 1;
-        // }
-        // if ((a.pnl) < (b.pnl)) {
-        //   return -1;
-        // }
-        // return 0;
-        return b.pnl-a.pnl
+    // detailPnl.sort((a, b)=> {
+    //     return b.pnl-a.pnl
+    //   });
+
+      detailPnl.sort((a, b)=> {
+        return (b.pnl-b.brokerage)-(a.pnl-a.brokerage)
       });
 
     console.log(detailPnl);
