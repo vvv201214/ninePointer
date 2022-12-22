@@ -34,12 +34,12 @@ export default function TradersPNLTrader({marketData, tradeData}) {
             return new Error(err);
         })
 
-        axios.get(`${baseUrl}api/v1/readmocktradeuser`)
+        axios.get(`${baseUrl}api/v1/readmocktradeuserDate`)
         .then((res) => {
-            let data = (res.data).filter((elem) => {
-                return elem.order_timestamp.includes(todayDate) && elem.status === "COMPLETE";
-            })
-            setAllTrade(data);
+            // let data = (res.data).filter((elem) => {
+            //     return elem.order_timestamp.includes(todayDate) && elem.status === "COMPLETE";
+            // })
+            setAllTrade(res.data);
         }).catch((err)=>{
             return new Error(err);
         })
@@ -50,7 +50,6 @@ export default function TradersPNLTrader({marketData, tradeData}) {
         let data = allTrade.filter((element)=>{
             return elem.email === element.userId;
         })
-
 
         let hash = new Map();
 

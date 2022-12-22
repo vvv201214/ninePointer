@@ -8,8 +8,6 @@ import RunningPnl from "../PnlParts/RunningPnl";
 import ClosedPnl from "../PnlParts/ClosedPnl";
 import OverallPnl from "../PnlParts/OverallPnl";
 import { userContext } from "../../AuthContext";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons';
 
 function TraderPositionTable({ socket }) {
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
@@ -26,12 +24,12 @@ function TraderPositionTable({ socket }) {
     let fake_date = "16-12-2022";
 
     useEffect(() => {
-        axios.get(`${baseUrl}api/v1/readmocktradeuseremail/${getDetails.userDetails.email}`)
+        axios.get(`${baseUrl}api/v1/readmocktradeuserDate/${getDetails.userDetails.email}`)
         .then((res) => {
-            let data = (res.data).filter((elem)=>{
-                return elem.order_timestamp.includes(todayDate) && elem.status === "COMPLETE";
-            })
-            setData(data);
+            // let data = (res.data).filter((elem)=>{
+            //     return elem.order_timestamp.includes(todayDate) && elem.status === "COMPLETE";
+            // })
+            setData(res.data);
         }).catch((err)=>{
             return new Error(err);
         })

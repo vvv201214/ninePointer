@@ -17,19 +17,19 @@ export default function HistoryTrades({info}) {
             axios.get(`${baseUrl}api/v1/readmocktradeuseremail/${info.email}`)
             .then((res)=>{
                 let updated = (res.data)
-                console.log(updated);
+                // console.log(updated);
 
-                (updated).sort((a, b)=> {
+                // (updated).sort((a, b)=> {
 
 
-                    if (a.order_timestamp < b.order_timestamp) {
-                      return 1;
-                    }
-                    if (a.order_timestamp > b.order_timestamp) {
-                      return -1;
-                    }
-                    return 0;
-                  });
+                //     if (a.order_timestamp < b.order_timestamp) {
+                //       return 1;
+                //     }
+                //     if (a.order_timestamp > b.order_timestamp) {
+                //       return -1;
+                //     }
+                //     return 0;
+                //   });
                 setData(updated);
             }).catch((err)=>{
                 window.alert("Server Down");

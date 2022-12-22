@@ -95,11 +95,12 @@ export default function Reports() {
 
     function firstDateChange(e){
         e.preventDefault();
-        setFirstDate((e.target.value));
+        
         if((e.target.value > secondDate) && secondDate){
             window.alert("Date range is not valid")
             return;
         }
+        setFirstDate((e.target.value));
         console.log(firstDate > secondDate, firstDate , secondDate)
         firstDateSplit = (e.target.value).split("-");
         firstDate = `${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}`

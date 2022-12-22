@@ -27,13 +27,13 @@ function CompanyPositionTable({ socket }) {
     let fake_date = "16-12-2022"
     useEffect(() => {
 
-        axios.get(`${baseUrl}api/v1/readmocktradecompany`)
+        axios.get(`${baseUrl}api/v1/readmocktradecompanyDate`)
             .then((res) => {
-                let data = (res.data).filter((elem) => {
-                    return elem.order_timestamp.includes(todayDate) && elem.status === "COMPLETE";
-                })
-                console.log("data", data)
-                setData(data);
+                // let data = (res.data).filter((elem) => {
+                //     return elem.order_timestamp.includes(todayDate) && elem.status === "COMPLETE";
+                // })
+                console.log("data", res.data)
+                setData(res.data);
             }).catch((err) => {
                 return new Error(err);
             })
@@ -65,11 +65,12 @@ function CompanyPositionTable({ socket }) {
             // setDetails.setMarketData(data);
         })
 
+
         console.log(marketData);
         console.log(tradeData);
         // reRender ? setReRender(false) : setReRender(true)
         // setReRender(true);
-    }, [getDetails, reRender])
+    }, [getDetails])
     console.log(marketData);
     useEffect(() => {
         return () => {

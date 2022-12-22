@@ -10,16 +10,16 @@ function TodaysTradesMock(){
         axios.get(`${baseUrl}api/v1/readmocktradecompanyDate`)
         .then((res)=>{
 
-            (res.data).sort((a, b)=> {
+            // (res.data).sort((a, b)=> {
 
-                if (a.order_timestamp < b.order_timestamp) {
-                  return 1;
-                }
-                if (a.order_timestamp > b.order_timestamp) {
-                  return -1;
-                }
-                return 0;
-              });
+            //     if (a.order_timestamp < b.order_timestamp) {
+            //       return 1;
+            //     }
+            //     if (a.order_timestamp > b.order_timestamp) {
+            //       return -1;
+            //     }
+            //     return 0;
+            //   });
 
             setData(res.data);
         }).catch((err)=>{

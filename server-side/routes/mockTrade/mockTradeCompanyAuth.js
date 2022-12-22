@@ -153,6 +153,16 @@ router.get("/readmocktradecompany", (req, res)=>{
         if(err){
             return res.status(500).send(err);
         }else{
+            (data).sort((a, b)=> {
+
+                if (a.order_timestamp < b.order_timestamp) {
+                  return 1;
+                }
+                if (a.order_timestamp > b.order_timestamp) {
+                  return -1;
+                }
+                return 0;
+              });
             return res.status(200).send(data);
         }
     }).sort({$natural:-1})
@@ -187,6 +197,7 @@ router.get("/readmocktradecompanyDate", (req, res)=>{
     const {email} = req.params
     MockTradeDetails.find({order_timestamp: {$regex: todayDate}})
     .then((data)=>{
+        data.reverse();
         return res.status(200).send(data);
     })
     .catch((err)=>{
