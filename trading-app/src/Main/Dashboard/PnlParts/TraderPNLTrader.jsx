@@ -134,7 +134,7 @@ export default function TradersPNLTrader({marketData, tradeData}) {
             pnl: totalPnl,
             name: name,
             numberOfTrade: numberOfTrade,
-            lotUsed: lotUsed
+            lotUsed: lotUsed,
         }
         console.log(transactionCost, totalPnl, name);
         detailPnl.push(JSON.parse(JSON.stringify(newObj)));

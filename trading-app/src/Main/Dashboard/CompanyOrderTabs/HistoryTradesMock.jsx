@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import CompanyOrderPegination from "./CompanyOrderPegination/CompanyOrderPegination";
 
 
-export default function HistoryTradesMock(){
+export default function HistoryTradesMock({setOrderCountHistoryCompany}){
 
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
@@ -36,6 +36,7 @@ export default function HistoryTradesMock(){
             //   });
 
             setData(res.data);
+            setOrderCountHistoryCompany((res.data).length);
         }).catch((err)=>{
             window.alert("Server Down");
             return new Error(err);

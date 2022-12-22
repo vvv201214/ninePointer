@@ -3,7 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import CompanyOrderPegination from "../CompanyOrderTabs/CompanyOrderPegination/CompanyOrderPegination";
 
-function TodaysTrades({info}){
+function TodaysTrades({info, setOrderCountTodayUser}){
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
     let date = new Date();
@@ -55,6 +55,7 @@ function TodaysTrades({info}){
                 //     return 0;
                 //   });
                 setData(updated);
+                setOrderCountTodayUser((res.data).length);
             }).catch((err)=>{
                 window.alert("Server Down");
                 return new Error(err);

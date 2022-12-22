@@ -106,6 +106,16 @@ router.get("/readmocktradeuseremail/:email", (req, res)=>{
     const {email} = req.params
     MockTradeDetails.find({userId: email})
     .then((data)=>{
+        (data).sort((a, b)=> {
+
+            if (a.order_timestamp < b.order_timestamp) {
+              return 1;
+            }
+            if (a.order_timestamp > b.order_timestamp) {
+              return -1;
+            }
+            return 0;
+          });
         return res.status(200).send(data);
     })
     .catch((err)=>{
@@ -129,9 +139,20 @@ router.get("/readmocktradeuserDate/:email", (req, res)=>{
     const {email} = req.params
     let date = new Date();
     let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
+    console.log(todayDate);
     MockTradeDetails.find({order_timestamp: {$regex: todayDate}, userId: {$regex: email}})
     .then((data)=>{
-        res.reverse();
+        (data).sort((a, b)=> {
+
+            if (a.order_timestamp < b.order_timestamp) {
+              return 1;
+            }
+            if (a.order_timestamp > b.order_timestamp) {
+              return -1;
+            }
+            return 0;
+          });
+        data.reverse();
         return res.status(200).send(data);
     })
     .catch((err)=>{
@@ -145,6 +166,16 @@ router.get("/readmocktradeuserDate", (req, res)=>{
     const {email} = req.params
     MockTradeDetails.find({order_timestamp: {$regex: todayDate}})
     .then((data)=>{
+        (data).sort((a, b)=> {
+
+            if (a.order_timestamp < b.order_timestamp) {
+              return 1;
+            }
+            if (a.order_timestamp > b.order_timestamp) {
+              return -1;
+            }
+            return 0;
+          });
         return res.status(200).send(data);
     })
     .catch((err)=>{

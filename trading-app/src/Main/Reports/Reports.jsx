@@ -22,7 +22,7 @@ export default function Reports() {
     let date = new Date();
     let valueInSecondDate = `${(date.getFullYear())}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
 
-    let valueInFirstDate = `${(date.getFullYear())}-${String(date.getMonth() + 1).padStart(2, '0')}-01`
+    let valueInFirstDate = `${(date.getFullYear())}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
 
     const getDetails = useContext(userContext);
     const [detailPnlArr, setDetailPnl] = useState([]);
@@ -1068,23 +1068,23 @@ export default function Reports() {
                                         // setTotalBrokerage(allBrokerage); setTotalGross(allGross); setTotalNetPnl(allNet);
                                         return (
                                             <>
-                                                {elem.name &&
-                                                    <tr>
-                                                        <td className="grid2_td">{elem.name}</td>
-                                                        <td className="grid2_td">{elem.date}</td>
-                                                        {!elem.pnl ?
-                                                            <td className="grid2_td" style={elem.pnl >= 0.00 ? { color: "green" } : { color: "red" }}>{elem.pnl > 0.00 ? "+₹" + (elem.pnl) : "-₹" + (-(elem.pnl))}</td>
-                                                            :
-                                                            <td className="grid2_td" style={elem.pnl >= 0.00 ? { color: "green" } : { color: "red" }}>{elem.pnl > 0.00 ? "+₹" + (elem.pnl.toFixed(2)) : "-₹" + ((-(elem.pnl)).toFixed(2))}</td>}
-                                                        {!elem.brokerage ?
-                                                            <td className="grid2_td" >{elem.brokerage > 0.00 ? "₹" + (elem.brokerage) : "₹" + 0.00}</td>
-                                                            :
-                                                            <td className="grid2_td" >{elem.brokerage > 0.00 ? "₹" + (elem.brokerage).toFixed(2) : "₹" + 0.00}</td>}
-                                                        {(elem.pnl - elem.brokerage) !== undefined &&
-                                                            <td className="grid2_td" style={(elem.pnl - elem.brokerage) >= 0.00 ? { color: "green" } : { color: "red" }}> {elem.pnl - elem.brokerage > 0.00 ? "+₹" + (elem.pnl - elem.brokerage).toFixed(2) : "-₹" + ((-(elem.pnl - elem.brokerage)).toFixed(2))}</td>}
-                                                        <td className="grid2_td">{elem.numberOfTrade}</td>
-                                                        <td className="grid2_td">{elem.lotUsed}</td>
-                                                    </tr>}
+                                            {elem.name &&
+                                            <tr>
+                                                <td className="grid2_td">{elem.name}</td>
+                                                <td className="grid2_td">{elem.date}</td>
+                                                {!elem.pnl ?
+                                                <td className="grid2_td" style={elem.pnl>=0.00 ? { color: "green"}:  { color: "red"}}>{elem.pnl >0.00 ? "+₹" + (elem.pnl): "-₹" + (-(elem.pnl)) }</td>
+                                                :
+                                                <td className="grid2_td" style={elem.pnl>=0.00 ? { color: "green"}:  { color: "red"}}>{elem.pnl >0.00 ? "+₹" + (elem.pnl.toFixed(2)): "-₹" + ((-(elem.pnl)).toFixed(2)) }</td>}
+                                                {!elem.brokerage ?
+                                                <td className="grid2_td" >{elem.brokerage >0.00 ? "₹" + (elem.brokerage) : "₹" + 0.00}</td>
+                                                :
+                                                <td className="grid2_td" >{elem.brokerage >0.00 ? "+₹" + (elem.brokerage.toFixed(2)): "-₹" + (-(elem.brokerage).toFixed(2)) }</td>}
+                                                {(elem.pnl - elem.brokerage) !== undefined &&
+                                                <td className="grid2_td" style={(elem.pnl - elem.brokerage)>=0.00 ? { color: "green"}:  { color: "red"}}> {elem.pnl - elem.brokerage > 0.00 ? "+₹" + (elem.pnl - elem.brokerage).toFixed(2): "-₹" + ((-(elem.pnl - elem.brokerage)).toFixed(2))}</td>}
+                                                <td className="grid2_td">{elem.numberOfTrade}</td>
+                                                <td className="grid2_td">{elem.lotUsed}</td>
+                                            </tr>}
                                             </>
                                         )
                                     })}

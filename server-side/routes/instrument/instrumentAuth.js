@@ -9,88 +9,6 @@ const Account = require("../../models/Trading Account/accountSchema");
 var KiteTicker = require('kiteconnect').KiteTicker;
 
 
-
-
-let date = new Date();
-let today = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`
-
-  async function accessToken(){
-    let getAccessToken = await RequestToken.find();
-    return getAccessToken;
-  }
- 
-  async function apiKey(){
-    let apiKey = await Account.find();
-    return apiKey;
-  }
-
-  var accessTokenResp = [];
-  accessToken().then((res)=>{
-    // console.log("res", res)
-    accessTokenResp = res;
-    // console.log("accessTokenResp", accessTokenResp);
-  })
-
-  let apiKeyResp = []
-  apiKey().then((res)=>{
-    // console.log("res", res)
-    apiKeyResp = res;
-    // console.log("apiKeyResp", apiKeyResp);
-  })
-
-  let getAccessToken;
-  let getApiKey;
-  setTimeout(()=>{
-
-    console.log("getAccessToken", accessTokenResp);
-
-
-       for(let elem of accessTokenResp){
-       for(let subElem of apiKeyResp){
-         console.log("inside 2");
-           if(elem.accountId === subElem.accountId && elem.generatedOn === today && elem.status === "Active" && subElem.status === "Active"){
-               getAccessToken = elem.accessToken;
-               getApiKey = subElem.apiKey
-           }
-       }
-     }
- 
-     console.log(getAccessToken, getApiKey);
- 
- 
-    var ticker = new KiteTicker({
-            // api_key: 'nq0gipdzk0yexyko',
-            // access_token: 'SRsDbH6dcBo7kce85M3tagzOj5s4aGX5',
-            api_key: getApiKey,
-            access_token: getAccessToken,
-          });
-    
-    
-    // let eventEmitOnError ;
-    
-    // let newCors = process.env.NODE_ENV === "production" ? "http://3.110.187.5/" : "http://localhost:3000"
-    // const io = new Server(9000, {
-    //   cors: {
-    
-    //     origin: newCors,
-    //     //  origin: "http://3.110.187.5/",
-    
-    //     methods: ['GET', 'POST', 'PATCH'],
-    //   },
-    // });
-    // let socket1 = '';
-    // io.on("connection", (socket) => {
-    //   console.log('client socket is' + socket.id);
-    //   // socket1 = socket;
-    //   socket.on('hi', (data) => {
-    //     eventEmitOnError = data;
-    //     // console.log(data);
-    //     parameters(io, socket, ticker);
-    //   });
-    // });
-  },4000)
-
-
 router.post("/instrument", async (req, res)=>{
 
     try{
@@ -119,7 +37,6 @@ router.post("/instrument", async (req, res)=>{
             const instruments = new Instrument({instrument, exchange, symbol, status, uId, createdOn, lastModified, createdBy, lotSize, instrumentToken, contractDate, maxLot});
             console.log("instruments", instruments)
             instruments.save().then(()=>{
-                ticker.disconnect();
                 res.status(201).json({massage : "data enter succesfully"});
             }).catch((err)=> res.status(500).json({error:"Failed to enter data"}));
         }).catch(err => {console.log(err, "fail")});

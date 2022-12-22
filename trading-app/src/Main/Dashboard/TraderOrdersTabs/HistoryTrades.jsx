@@ -3,7 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import CompanyOrderPegination from "../CompanyOrderTabs/CompanyOrderPegination/CompanyOrderPegination";
 
-export default function HistoryTrades({info}) {
+export default function HistoryTrades({info, setOrderCountHistoryUser}) {
 
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
@@ -28,23 +28,11 @@ export default function HistoryTrades({info}) {
         console.log(info.role)
             axios.get(`${baseUrl}api/v1/readmocktradeuseremail/${info.email}`)
             .then((res)=>{
-                let updated = (res.data)
-                // console.log(updated);
-
-                // (updated).sort((a, b)=> {
-
-
-                //     if (a.order_timestamp < b.order_timestamp) {
-                //       return 1;
-                //     }
-                //     if (a.order_timestamp > b.order_timestamp) {
-                //       return -1;
-                //     }
-                //     return 0;
-                //   });
-                setData(updated);
+                
+                setData((res.data));
+                setOrderCountHistoryUser((res.data).length);
             }).catch((err)=>{
-                window.alert("Server Down");
+                window.alert("Server Down of ");
                 return new Error(err);
             }) 
        
