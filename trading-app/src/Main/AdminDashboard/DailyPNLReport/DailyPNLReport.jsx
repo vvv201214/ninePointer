@@ -1,12 +1,12 @@
 import React, { useContext, useState } from "react";
 import { useEffect } from "react";
-import Styles from "./Reports.module.css";
+import Styles from "./DailyPNLReport.module.css";
 import axios from "axios";
-import { userContext } from "../AuthContext";
+import { userContext } from "../../AuthContext";
 import { io } from "socket.io-client";
 
 
-export default function Reports() {
+export default function DailyPNLReport() {
     let baseUrl1 = process.env.NODE_ENV === "production" ? "/" : "http://localhost:9000/"
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
@@ -84,6 +84,10 @@ export default function Reports() {
         }).catch((err)=>{
             return new Error(err);
         })
+        
+        
+
+
     }, [getDetails])
 
     useEffect(() => {
@@ -112,7 +116,7 @@ export default function Reports() {
         console.log(firstDate < secondDate);
 
         if(getDetails.userDetails.role === "user"){
-            axios.get(`${baseUrl}api/v1/readmocktradeuseremail/${userId}`)
+            axios.get(`${baseUrl}api/v1/readmocktradecompanyemail/${userId}`)
             .then((res) => {
                 let filteredData = (res.data).filter((elem)=>{
                     let timeStamp = elem.order_timestamp;
@@ -178,7 +182,7 @@ export default function Reports() {
             console.log(selectUserState);
             if(selectUserState === "All User"){
 
-                axios.get(`${baseUrl}api/v1/readmocktradeuser`)
+                axios.get(`${baseUrl}api/v1/readmocktradecompany`)
                 .then((res) => {
                     let filteredData = (res.data).filter((elem)=>{
                         let timeStamp = elem.order_timestamp;
@@ -248,7 +252,7 @@ export default function Reports() {
                     return elem.name === selectUserState
                 })
 
-                axios.get(`${baseUrl}api/v1/readmocktradeuseremail/${data[0].email}`)
+                axios.get(`${baseUrl}api/v1/readmocktradecompanyemail/${data[0].email}`)
                 .then((res) => {
                     let filteredData = (res.data).filter((elem)=>{
                         let timeStamp = elem.order_timestamp;
@@ -338,7 +342,7 @@ export default function Reports() {
         console.log(firstDate < secondDate);
 
         if(getDetails.userDetails.role === "user"){
-            axios.get(`${baseUrl}api/v1/readmocktradeuseremail/${userId}`)
+            axios.get(`${baseUrl}api/v1/readmocktradecompanyemail/${userId}`)
             .then((res) => {
                 let filteredData = (res.data).filter((elem)=>{
                     let timeStamp = elem.order_timestamp;
@@ -404,7 +408,7 @@ export default function Reports() {
             console.log(selectUserState);
             if(selectUserState === "All User"){
 
-                axios.get(`${baseUrl}api/v1/readmocktradeuser`)
+                axios.get(`${baseUrl}api/v1/readmocktradecompany`)
                 .then((res) => {
                     let filteredData = (res.data).filter((elem)=>{
                         let timeStamp = elem.order_timestamp;
@@ -474,7 +478,7 @@ export default function Reports() {
                     return elem.name === selectUserState
                 })
 
-                axios.get(`${baseUrl}api/v1/readmocktradeuseremail/${data[0].email}`)
+                axios.get(`${baseUrl}api/v1/readmocktradecompanyemail/${data[0].email}`)
                 .then((res) => {
                     let filteredData = (res.data).filter((elem)=>{
                         let timeStamp = elem.order_timestamp;
@@ -658,7 +662,7 @@ export default function Reports() {
 
         if(e.target.value === "All User"){
 
-            axios.get(`${baseUrl}api/v1/readmocktradeuser`)
+            axios.get(`${baseUrl}api/v1/readmocktradecompany`)
             .then((res) => {
                 let filteredData = (res.data).filter((elem)=>{
                     let timeStamp = elem.order_timestamp;
@@ -728,7 +732,7 @@ export default function Reports() {
                 return elem.name === e.target.value
             })
 
-            axios.get(`${baseUrl}api/v1/readmocktradeuseremail/${data[0].email}`)
+            axios.get(`${baseUrl}api/v1/readmocktradecompanyemail/${data[0].email}`)
             .then((res) => {
                 let filteredData = (res.data).filter((elem)=>{
                     let timeStamp = elem.order_timestamp;
@@ -1015,7 +1019,6 @@ export default function Reports() {
                         <div className={Styles.grid_1}>
                             <table className="grid1_table">
                                 <tr className="grid2_tr">
-                                    <th className="grid2_th">Trader Name</th>
                                     <th className="grid2_th">Date</th>
                                     <th className="grid2_th">Gross P&L</th>
                                     <th className="grid2_th">Transaction Cost</th>
@@ -1039,7 +1042,6 @@ export default function Reports() {
                                                 <>
                                                 {elem.name &&
                                                 <tr>
-                                                    <td className="grid2_td">{elem.name}</td>
                                                     <td className="grid2_td">{elem.date}</td>
                                                     {!elem.pnl ?
                                                     <td className="grid2_td" style={elem.pnl>=0.00 ? { color: "green"}:  { color: "red"}}>{elem.pnl >0.00 ? "+₹" + (elem.pnl): "-₹" + (-(elem.pnl)) }</td>
@@ -1069,7 +1071,6 @@ export default function Reports() {
                                         <>
                                         {elem.name &&
                                         <tr>
-                                            <td className="grid2_td">{elem.name}</td>
                                             <td className="grid2_td">{elem.date}</td>
                                             {!elem.pnl ?
                                             <td className="grid2_td" style={elem.pnl>=0.00 ? { color: "green"}:  { color: "red"}}>{elem.pnl >0.00 ? "+₹" + (elem.pnl): "-₹" + (-(elem.pnl)) }</td>

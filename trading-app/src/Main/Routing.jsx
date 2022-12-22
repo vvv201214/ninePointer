@@ -33,6 +33,7 @@ import Reports from './Reports/Reports';
 import SummaryMain from './AdminDashboard/SummaryDashboard/SummaryMain';
 import Summary from './AdminDashboard/SummaryDashboard/Summary';
 import PNLReport from './AdminDashboard/PNLReport/PNLReport';
+import DailyPNLReport from './AdminDashboard/DailyPNLReport/DailyPNLReport';
 import TraderPosition from './Dashboard/newTraderPosition/NewTraderPosition';
 import UserFundsMain from './UserFunds/UserFundsMain';
 import UserFunds from './UserFunds/UserFunds';
@@ -97,6 +98,7 @@ export default function Routing() {
                         <Route path='/main/admindashboard/summary' element={<SummaryMain/>}>
                             <Route path='/main/admindashboard/summary' element={<Summary/>}></Route>
                             <Route path='/main/admindashboard/summary/pnlreport' element={<PNLReport/>}></Route>
+                            <Route path='/main/admindashboard/summary/dailypnlreport' element={<DailyPNLReport/>}></Route>
                         </Route>
                         <Route path='/main/userfunds' element={<UserFundsMain/>}>
                             <Route path='/main/userfunds' element={<UserFunds/>}></Route>

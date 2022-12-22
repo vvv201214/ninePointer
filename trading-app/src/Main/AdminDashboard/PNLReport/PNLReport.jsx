@@ -22,7 +22,7 @@ export default function PNLReport() {
     let date = new Date();
     let valueInSecondDate = `${(date.getFullYear())}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
 
-    let valueInFirstDate = `${(date.getFullYear())}-${String(date.getMonth() + 1).padStart(2, '0')}-01`
+    let valueInFirstDate = `${(date.getFullYear())}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
 
     const getDetails = useContext(userContext);
     const [detailPnlArr, setDetailPnl] = useState([]);
@@ -84,6 +84,10 @@ export default function PNLReport() {
         }).catch((err)=>{
             return new Error(err);
         })
+        
+        
+
+
     }, [getDetails])
 
     useEffect(() => {
