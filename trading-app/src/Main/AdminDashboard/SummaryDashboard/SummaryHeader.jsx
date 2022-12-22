@@ -8,8 +8,9 @@ export default function SummaryHeader({role}) {
         <div>
             <ul className='navbar'>
                 <li>
-                    <NavLink to={"/main/admindashboard/summarydashboard/summary"}>Summary</NavLink>
-                    <NavLink to={"/main/admindashboard/summarydashboard/summary"}>Daily P&L</NavLink>
+                    <NavLink to={"/main/admindashboard/summary"}>Summary</NavLink>
+                    <NavLink to={"/main/admindashboard/summary/pnlreport"}>Company Daily P&L(Trader-Wise)</NavLink>
+                    <NavLink to={"/main/admindashboard/summary/dailypnlreport"}>Company Daily P&L</NavLink>
                 </li>
             </ul>
            
