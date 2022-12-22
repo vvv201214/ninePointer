@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import CompanyOrderPegination from "../CompanyOrderTabs/CompanyOrderPegination/CompanyOrderPegination";
 
 export default function HistoryTrades({info}) {
 
@@ -11,6 +12,17 @@ export default function HistoryTrades({info}) {
 
     console.log(info)
     const [data, setData] = useState([]);
+
+    const[showPerPage, setShowPerPage] = useState(50)
+    const[pegination, setPegination] = useState({
+        start:0,
+        end:showPerPage,
+    })
+
+    const onPeginationOnChange= (start, end) => {
+        setPegination({start : start, end: end,})
+
+    }
     
     useEffect(()=>{
         console.log(info.role)
@@ -61,7 +73,7 @@ export default function HistoryTrades({info}) {
                                 </tr>
 
                                 {info.role === "user" ?
-                                    data.map((elem) => {
+                                    data.slice(pegination.start,  pegination.end).map((elem) => {
                                         return (
                                             <tr className="grid2_tr" key={elem.guid}>
                                                 <td className="grid2_td">{elem.order_timestamp}</td>
@@ -77,7 +89,7 @@ export default function HistoryTrades({info}) {
                                         )
                                     })
                                     :
-                                    data.map((elem) => {
+                                    data.slice(pegination.start,  pegination.end).map((elem) => {
                                         return (
                                             <tr className="grid2_tr" key={elem.guid}>
                                                 <td className="grid2_td">{elem.order_timestamp}</td>
@@ -93,6 +105,9 @@ export default function HistoryTrades({info}) {
                                         )
                                     })}
                             </table>
+                            <CompanyOrderPegination showPerPage={showPerPage} 
+                            onPeginationOnChange={onPeginationOnChange}
+                            total={data.length}/>
                         </div>
                     </div>
                 </div>
