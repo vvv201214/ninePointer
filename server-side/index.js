@@ -10,7 +10,7 @@ app.use(require("cookie-parser")());
 dotenv.config({ path: './config.env' });
 
 console.log(kiteConnect);
-app.get('/api/v1/ws', kiteConnect);
+app.get('/api/v1/ws', kiteConnect.parameters);
 app.get('/api/v1/data', fetch);
 
 // app.get('/ws', kiteConnect);
@@ -19,8 +19,8 @@ let newCors = process.env.NODE_ENV === "production" ? "http://3.110.187.5/" : "h
 app.use(cors({
   credentials:true,
 
-  origin: "http://3.110.187.5/"
-  // origin: newCors
+  // origin: "http://3.110.187.5/"
+  origin: newCors
 
 }));
 

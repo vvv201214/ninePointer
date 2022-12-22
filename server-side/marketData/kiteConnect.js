@@ -244,7 +244,7 @@ const Account = require("../models/Trading Account/accountSchema");
      console.log(getAccessToken, getApiKey);
  
  
-    let ticker = new KiteTicker({
+    var ticker = new KiteTicker({
             // api_key: 'nq0gipdzk0yexyko',
             // access_token: 'SRsDbH6dcBo7kce85M3tagzOj5s4aGX5',
             api_key: getApiKey,
@@ -256,8 +256,8 @@ const Account = require("../models/Trading Account/accountSchema");
     const io = new Server(9000, {
       cors: {
     
-        // origin: newCors,
-         origin: "http://3.110.187.5/",
+        origin: newCors,
+        //  origin: "http://3.110.187.5/",
     
         methods: ['GET', 'POST', 'PATCH'],
       },
@@ -274,12 +274,27 @@ const Account = require("../models/Trading Account/accountSchema");
     
     });
 
-    // return ticker;
+    
   },4000)
+
+
+//   return ticker;
 // }
 
 // let ticker = kiteTickerFunc();
-console.log("ticker", ticker);
+// console.log("ticker", ticker);
+
+console.log("ticker", ticker)
+async function tikerFunc(){
+  let token = await fetchData(getApiKey, getAccessToken);
+
+    var items = token;
+    console.log("check tiker")
+    console.log('subscribe', ticker.subscribe(items));
+    ticker.setMode(ticker.modeFull, items);
+  
+}
+
 
 async function parameters(io, socket, ticker) {
 
@@ -407,7 +422,7 @@ async function parameters(io, socket, ticker) {
   }
 
 }
-module.exports = {parameters, kiteTickerFunc};
+module.exports = {parameters, tikerFunc};
 
 
 
