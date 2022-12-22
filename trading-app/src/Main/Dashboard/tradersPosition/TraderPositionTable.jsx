@@ -21,13 +21,11 @@ function TraderPositionTable({ socket }) {
     const [marketData, setMarketData] = useState([]);
 
     let date = new Date();
-    let todayDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
+    let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
     // let fake_date = "2022-12-16"
     let fake_date = "16-12-2022";
 
     useEffect(() => {
-
-        
         axios.get(`${baseUrl}api/v1/readmocktradeuseremail/${getDetails.userDetails.email}`)
         .then((res) => {
             let data = (res.data).filter((elem)=>{

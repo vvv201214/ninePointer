@@ -943,7 +943,7 @@ export default function Reports() {
         totalArr.push(obj);
     })
 
-    if(selectUserState === "All User"){
+    if(selectUserState === "All User" && getDetails.userDetails.role === "admin"){
         detailPnlArr.map((element)=>{
             if(element){
                 element.map((elem)=>{
