@@ -7,7 +7,9 @@ export default function DashboardHeader({role}) {
     <>
         <div>
             {role === "admin" ?
-            <ul className='navbar'>
+            
+                <div className='navbarlinks'>
+                <ul className='navbar'>
                 <li>
                     <NavLink to={"/main/dashboard/tradersdashboard"}>Dashboard</NavLink>
                 </li>
@@ -15,28 +17,35 @@ export default function DashboardHeader({role}) {
                     <NavLink to={"/main/dashboard"}>Positions</NavLink>
                 </li>
                 <li>
-                    <NavLink to={"/main/dashboard/TradersOrders"}>TradeBook</NavLink>
+                    <NavLink to={"/main/dashboard/TradersOrders"}>Orders</NavLink>
                 </li>
                 <li>
-                    <NavLink to={"/main/dashboard/CompanyPosition"}>Company Position</NavLink>
+                    <NavLink to={"/main/dashboard/CompanyPosition"}>Position(Company)</NavLink>
                 </li>
                 <li>
-                    <NavLink to={"/main/dashboard/TraderPosition"}>Traders Position</NavLink>
+                    <NavLink to={"/main/dashboard/TraderPosition"}>Position(Traders)</NavLink>
                 </li>
                 <li>
-                    <NavLink to={"/main/dashboard/CompanyOrders"}>Company TradeBook</NavLink>
+                    <NavLink to={"/main/dashboard/CompanyOrders"}>Orders(Company)</NavLink>
                 </li>
+                <li>
+                    <NavLink to={"/main/dashboard/CompanyOrders"}>Orders(Traders)</NavLink>
+                </li>
+                </ul>
+                </div>
                
-            </ul>
+            
             :
+            <div className='navbarlinks'>
             <ul className='navbar'>
                 <li>
                     <NavLink to={"/main/dashboard"}>Positions</NavLink>
                 </li>
                 <li>
-                    <NavLink to={"/main/dashboard/TradersOrders"}>TradeBook</NavLink>
+                    <NavLink to={"/main/dashboard/TradersOrders"}>Orders</NavLink>
                 </li>
-            </ul> }
+            </ul> 
+            </div>}
 
             <Outlet/>
         </div>

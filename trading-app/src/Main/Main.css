@@ -4,11 +4,11 @@
 }
 
 .main_content_new{
-    flex: .80;
+    flex: .85;
   
 
 }
 .sidebar_new{
-    flex: .20;
+    flex: .15;
     /* border: 5px solid purple; */
 }

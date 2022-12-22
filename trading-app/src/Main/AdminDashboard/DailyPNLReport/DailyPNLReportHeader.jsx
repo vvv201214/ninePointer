@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { NavLink, Outlet } from 'react-router-dom';
 
-export default function PNLReportHeader({role}) {
+export default function DailyPNLReportHeader({role}) {
 
   return (
     <>

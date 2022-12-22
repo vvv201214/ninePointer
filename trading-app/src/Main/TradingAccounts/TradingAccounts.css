@@ -4,26 +4,31 @@
 }
 body {
     height: 100%;
-    background-color: #d9d9d9;
+    background-color: #ffffff;
+    box-shadow: #f0efef;
   
 }
 
-.main_Container {
+/* .main_Container {
     display: flex;
    
-}
+} */
 .leftsidebar {
     min-height: 100%;
     max-height: 100%;
-    min-width: 20%;
-    max-width: 20%;
+    min-width: 15%;
+    max-width: 15%;
     display: flex;
     flex-direction: column;
     justify-content:space-around;
-    margin-right: -1rem;
-    background-color:#187498;
-    border-radius: 5px;
+    /* margin-right: -1rem; */
+    background-color: #ffffff;
+    /* border-radius: 5px; */
     position: fixed;
+    box-shadow: inset 2px 0px 0px 0px #eee;
+    box-shadow: inset 0px 2px 0px 0px #eee;
+    box-shadow: inset 0px 0px 2px 0px #eee;
+    box-shadow: inset 0px 0px 0px 2px #eee;
    
 }
 
@@ -43,21 +48,38 @@ img{
 .sidbar_h6{
     text-align: center;
     padding-top: 5px;
-    color: #f6f6f6;
+    color: #000000;
 }
 .sidebar_items{
    width: auto;
    height: auto;
    text-align: center;
-   padding-top: 5px;
+   /* padding-top: 5px; */
    padding-bottom: 5px;
    margin-top: 1rem;
    background-color: #f6f6f6;
-   border-radius: 20px;
-   margin-left: 1rem;
-   margin-right: 1rem;
+   /* border-radius: 20px; */
+   /* margin-left: 1rem; */
+   /* margin-right: 1rem; */
    border: none;
    
+}
+
+.sidebar_heading{
+
+    width: auto;
+    height: auto;
+    text-align: left;
+    /* padding-top: 5px; */
+    padding-bottom: 1px;
+    margin-top: 1rem;
+    /* margin-left: 1rem; */
+    font-size: 0.75rem;
+    background-color: #f6f6f6;
+    /* border-radius: 20px; */
+    /* margin-left: 1rem; */
+    /* margin-right: 1rem; */
+    border: none;
 }
 .sidebar_items:has(> a.active){
     background-color:#5479FC;
@@ -70,13 +92,14 @@ img{
 .navbar{
     display: flex;
     list-style: none;
-    border-bottom: 2px solid black;
+    border-bottom: 2px solid #f6f6f6;
+    float:right;
     
 }
 a{
     text-decoration: none;
     color: rgb(0, 0, 0);
-    font-size: 16px;
+    font-size: 0.75rem;
     text-align: center;
     margin-right: 1rem;
     margin-left: 5px;
@@ -104,13 +127,14 @@ a{
 }
 
 .User_header {
-    min-height: 3rem;
-    max-height: 5rem;
+    min-height: 1rem;
+    max-height: 1rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #428BCA;
-    border-radius: 5px;
+    background-color: #ffffff;
+    padding: 5px;
+    /* border-radius: 5px; */
 }
 .header_para{
     min-width: 50%;
@@ -118,7 +142,7 @@ a{
     min-height: 9%;
     max-height: 15%;
     margin-left: 5px;
-    font-size: 2rem;
+    font-size: 0.75rem;
     padding: 12px;
     
 }
