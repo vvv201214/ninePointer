@@ -631,7 +631,7 @@ export default function Reports() {
                             </div>
                             <div className={Styles.btn_div}>
                                 <span className={`${Styles.formLable}`}>Gross P&L</span>
-                                <input style={allGross> 0.00 ? { color: "green"}:  allGross === 0.00 ? { color: "grey"} : { color: "red"}   } type="text" value={allGross >0.00 ? "+₹" + (allGross.toFixed(2)): allGross=== 0? "" :"-₹" + (-(allGross).toFixed(2))} className={`${Styles.formInput} ${Styles.formInput1}`}/>
+                                <input style={allGross> 0.00 ? { color: "green"}:  allGross === 0.00 ? { color: "grey"} : { color: "red"}   } type="text" value={allGross >0.00 ? "+₹" + (allGross.toFixed(2)): allGross=== 0? " " : "-₹" + (-(allGross).toFixed(2))} className={`${Styles.formInput} ${Styles.formInput1}`}/>
                                 <span className={Styles.formLable}>Transaction Cost </span>
                                 <input type="text" value={ allBrokerage ===0? " " : "₹" + (allBrokerage.toFixed(2))} className={`${Styles.formInput} ${Styles.formInput1}`} />
                                 <span className={Styles.formLable}>Net P&L</span>
@@ -668,7 +668,7 @@ export default function Reports() {
                                             {!elem.brokerage ?
                                             <td className="grid2_td" >{elem.brokerage >0.00 ? "+₹" + (elem.brokerage): "-₹" + (-(elem.brokerage)) }</td>
                                             :
-                                            <td className="grid2_td" >{elem.brokerage >0.00 ? "+₹" + (elem.brokerage.toFixed(2)): "-₹" + (-(elem.brokerage).toFixed(2)) }</td>}
+                                            <td className="grid2_td" >₹{elem.brokerage.toFixed(2)}</td>}
                                             {(elem.pnl - elem.brokerage) !== undefined &&
                                             <td className="grid2_td" style={(elem.pnl - elem.brokerage)>=0.00 ? { color: "green"}:  { color: "red"}}> {elem.pnl - elem.brokerage > 0.00 ? "+₹" + (elem.pnl - elem.brokerage).toFixed(2): "-₹" + (-(elem.pnl - elem.brokerage).toFixed(2))}</td>}
                                             <td className="grid2_td">{elem.numberOfTrade}</td>
