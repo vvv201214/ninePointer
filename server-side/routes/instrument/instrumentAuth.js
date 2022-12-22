@@ -6,7 +6,7 @@ const axios = require('axios');
 const fetchToken = require("../../marketData/generateSingleToken");
 const RequestToken = require("../../models/Trading Account/requestTokenSchema");
 const Account = require("../../models/Trading Account/accountSchema");
-var KiteTicker = require('kiteconnect').KiteTicker;
+var ticker = require('../../marketData/kiteConnect')
 
 
 router.post("/instrument", async (req, res)=>{

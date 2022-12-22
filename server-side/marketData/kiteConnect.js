@@ -192,7 +192,11 @@ var KiteTicker = require('kiteconnect').KiteTicker;
 const RequestToken = require("../models/Trading Account/requestTokenSchema");
 const Account = require("../models/Trading Account/accountSchema");
 
-let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+
+
+// function kiteTickerFunc(){
+
+  let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
   let date = new Date();
   let today = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`
 
@@ -226,12 +230,10 @@ let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:50
   let getApiKey;
   setTimeout(()=>{
 
-    console.log("getAccessToken", accessTokenResp);
-
-
+    // console.log("getAccessToken", accessTokenResp);
        for(let elem of accessTokenResp){
        for(let subElem of apiKeyResp){
-         console.log("inside 2");
+        //  console.log("inside 2");
            if(elem.accountId === subElem.accountId && elem.generatedOn === today && elem.status === "Active" && subElem.status === "Active"){
                getAccessToken = elem.accessToken;
                getApiKey = subElem.apiKey
@@ -242,7 +244,7 @@ let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:50
      console.log(getAccessToken, getApiKey);
  
  
-    var ticker = new KiteTicker({
+    let ticker = new KiteTicker({
             // api_key: 'nq0gipdzk0yexyko',
             // access_token: 'SRsDbH6dcBo7kce85M3tagzOj5s4aGX5',
             api_key: getApiKey,
@@ -250,14 +252,12 @@ let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:50
           });
     
     
-    let eventEmitOnError ;
-    
     let newCors = process.env.NODE_ENV === "production" ? "http://3.110.187.5/" : "http://localhost:3000"
     const io = new Server(9000, {
       cors: {
     
-        origin: newCors,
-        //  origin: "http://3.110.187.5/",
+        // origin: newCors,
+         origin: "http://3.110.187.5/",
     
         methods: ['GET', 'POST', 'PATCH'],
       },
@@ -273,10 +273,13 @@ let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:50
       });
     
     });
-    
 
+    // return ticker;
   },4000)
+// }
 
+// let ticker = kiteTickerFunc();
+console.log("ticker", ticker);
 
 async function parameters(io, socket, ticker) {
 
@@ -404,7 +407,7 @@ async function parameters(io, socket, ticker) {
   }
 
 }
-module.exports = parameters;
+module.exports = {parameters, kiteTickerFunc};
 
 
 
