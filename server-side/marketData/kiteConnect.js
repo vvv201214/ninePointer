@@ -291,8 +291,10 @@ async function tikerFunc(){
   //   console.log("check tiker")
   //   console.log('subscribe', ticker.subscribe(items));
   //   ticker.setMode(ticker.modeFull, items);
+  console.log(ticker)
   ticker.disconnect();
   ticker.connect();
+  // ticker.reconnect();
   
 }
 
