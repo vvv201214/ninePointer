@@ -1,4 +1,3 @@
-
 var KiteConnect = require('kiteconnect').KiteConnect;
 const express = require('express');
 const router = express.Router();
@@ -180,6 +179,3 @@ async function parameters(io, socket) {
 
 }
 module.exports = parameters;
-
-
-

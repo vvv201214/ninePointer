@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import CompanyOrderPegination from '../CompanyOrderTabs/CompanyOrderPegination/CompanyOrderPegination';
 import axios from 'axios';
 
-const HistoryTradersTrade = () => {
+const HistoryTradersTrade = ({setOrderCountHistoryCompany}) => {
 
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/";
 
@@ -22,6 +22,7 @@ const HistoryTradersTrade = () => {
             const res = await axios.get(`${baseUrl}api/v1/readmocktradeuser`);
             console.log(res.data);
             setData(res.data);
+            setOrderCountHistoryCompany((res.data).length)
         }
         getData();
     }, [])

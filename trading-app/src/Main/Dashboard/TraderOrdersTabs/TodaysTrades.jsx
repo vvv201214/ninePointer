@@ -3,7 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import CompanyOrderPegination from "../CompanyOrderTabs/CompanyOrderPegination/CompanyOrderPegination";
 
-function TodaysTrades({info}){
+function TodaysTrades({info, setOrderCountTodayUser}){
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
     let date = new Date();
@@ -29,12 +29,12 @@ function TodaysTrades({info}){
             axios.get(`${baseUrl}api/v1/readmocktradeuserDate/${info.email}`)
             .then((res)=>{
                 let updated = (res.data)
-                .filter((elem)=>{
-                    return elem.order_timestamp.includes(todayDate);
-                })
+                // .filter((elem)=>{
+                //     return elem.order_timestamp.includes(todayDate);
+                // })
                 console.log(updated);
 
-                (updated).sort((a, b)=> {
+                // (updated).sort((a, b)=> {
 
                     // if(!a.order_timestamp.includes("16-12-2022")){
                     //     let firstDateSplit = (a.order_timestamp).split(" ");
@@ -46,15 +46,16 @@ function TodaysTrades({info}){
                     //     let secondDateSplit = firstDateSplit[0].split("-");
                     //     b.order_timestamp = `${secondDateSplit[2]}-${secondDateSplit[1]}-${secondDateSplit[0]} ${firstDateSplit[1]}`
                     // }
-                    if (a.order_timestamp < b.order_timestamp) {
-                      return 1;
-                    }
-                    if (a.order_timestamp > b.order_timestamp) {
-                      return -1;
-                    }
-                    return 0;
-                  });
+                //     if (a.order_timestamp < b.order_timestamp) {
+                //       return 1;
+                //     }
+                //     if (a.order_timestamp > b.order_timestamp) {
+                //       return -1;
+                //     }
+                //     return 0;
+                //   });
                 setData(updated);
+                setOrderCountTodayUser((res.data).length);
             }).catch((err)=>{
                 window.alert("Server Down");
                 return new Error(err);

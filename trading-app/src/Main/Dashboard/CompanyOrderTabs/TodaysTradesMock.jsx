@@ -3,7 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import CompanyOrderPegination from "./CompanyOrderPegination/CompanyOrderPegination";
 
-function TodaysTradesMock(){
+function TodaysTradesMock({setOrderCountTodayCompany}){
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
     const [data, setData] = useState([]);
@@ -22,18 +22,8 @@ function TodaysTradesMock(){
         axios.get(`${baseUrl}api/v1/readmocktradecompanyDate`)
         .then((res)=>{
 
-            (res.data).sort((a, b)=> {
-
-                if (a.order_timestamp < b.order_timestamp) {
-                  return 1;
-                }
-                if (a.order_timestamp > b.order_timestamp) {
-                  return -1;
-                }
-                return 0;
-              });
-
             setData(res.data);
+            setOrderCountTodayCompany((res.data).length);
         }).catch((err)=>{
             window.alert("Server Down");
             return new Error(err);

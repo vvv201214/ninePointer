@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import CompanyOrderPegination from "./CompanyOrderPegination/CompanyOrderPegination";
 
 
-export default function HistoryTradesMock(){
+export default function HistoryTradesMock({setOrderCountHistoryCompany}){
 
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
@@ -24,18 +24,19 @@ export default function HistoryTradesMock(){
         axios.get(`${baseUrl}api/v1/readmocktradecompany`)
         .then((res)=>{
 
-            (res.data).sort((a, b)=> {
+            // (res.data).sort((a, b)=> {
 
-                if (a.order_timestamp < b.order_timestamp) {
-                  return 1;
-                }
-                if (a.order_timestamp > b.order_timestamp) {
-                  return -1;
-                }
-                return 0;
-              });
+            //     if (a.order_timestamp < b.order_timestamp) {
+            //       return 1;
+            //     }
+            //     if (a.order_timestamp > b.order_timestamp) {
+            //       return -1;
+            //     }
+            //     return 0;
+            //   });
 
             setData(res.data);
+            setOrderCountHistoryCompany((res.data).length);
         }).catch((err)=>{
             window.alert("Server Down");
             return new Error(err);

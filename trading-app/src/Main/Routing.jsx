@@ -31,6 +31,8 @@ import ReportsMain from './Reports/ReportsMain';
 import Reports from './Reports/Reports';
 import SummaryMain from './AdminDashboard/SummaryDashboard/SummaryMain';
 import Summary from './AdminDashboard/SummaryDashboard/Summary';
+import PNLReport from './AdminDashboard/PNLReport/PNLReport';
+import DailyPNLReport from './AdminDashboard/DailyPNLReport/DailyPNLReport';
 import TraderPosition from './Dashboard/newTraderPosition/NewTraderPosition';
 import UserFundsMain from './UserFunds/UserFundsMain';
 import UserFunds from './UserFunds/UserFunds';
@@ -45,6 +47,11 @@ import HistoryTradersTrade from './Dashboard/TradersTradeBook/HistoryTradersTrad
 
 
 export default function Routing() {
+
+    const [orderCountHistoryCompany, setOrderCountHistoryCompany] = useState(0);
+    const [orderCountHistoryUser, setOrderCountHistoryUser] = useState(0);
+    const [orderCountTodayCompany, setOrderCountTodayCompany] = useState(0);
+    const [orderCountTodayUser, setOrderCountTodayUser] = useState(0);
     const [details, setDetails] = useState({});
     return (
         <AuthContext>
@@ -86,17 +93,17 @@ export default function Routing() {
                                 <Route path='/main/dashboard/TraderPosition/' element={<TraderPosition />}></Route>
                                 <Route path='/main/dashboard/positions/' element={<TradersPosition />}></Route>
 
-                                <Route path='/main/dashboard/CompanyOrders' element={<CompanyOrders />}>
-                                    <Route path='/main/dashboard/CompanyOrders/' element={<TodaysTradesMock />} ></Route>
-                                    <Route path='/main/dashboard/CompanyOrders/HistoryTradesMock/' element={<HistoryTradesMock />} ></Route>
-                                </Route>
-                                <Route path='/main/dashboard/TradersOrders' element={<TradersOrders />}>
-                                    <Route path='/main/dashboard/TradersOrders/' element={<TodaysTrades info={details} />} ></Route>
-                                    <Route path='/main/dashboard/TradersOrders/HistoryTrades/' element={<HistoryTrades info={details} />} ></Route>
-                                </Route>
-                                <Route path='/main/dashboard/TradersTradeBook' element={<TradersTradeBook />}>
-                                    <Route path='/main/dashboard/TradersTradeBook/' element={<TodaysTradersTrade/>} ></Route>
-                                    <Route path='/main/dashboard/TradersTradeBook/HistoryTradersTrade/' element={<HistoryTradersTrade/>} ></Route>
+                                <Route path='/main/dashboard/CompanyOrders' element={<CompanyOrders orderCountHistoryCompany={orderCountHistoryCompany} orderCountTodayCompany={orderCountTodayCompany}/>}> 
+                                <Route path='/main/dashboard/CompanyOrders' element={<TodaysTradesMock setOrderCountTodayCompany={setOrderCountTodayCompany}/>} ></Route>
+                                <Route path='/main/dashboard/CompanyOrders/HistoryTradesMock' element={<HistoryTradesMock setOrderCountHistoryCompany={setOrderCountHistoryCompany}/>} ></Route>
+                            </Route>
+                            <Route path='/main/dashboard/TradersOrders' element={<TradersOrders orderCountHistoryUser={orderCountHistoryUser} orderCountTodayUser={orderCountTodayUser}/>}>
+                                <Route path='/main/dashboard/TradersOrders' element={<TodaysTrades info={details} setOrderCountTodayUser={setOrderCountTodayUser}/>} ></Route>
+                                <Route path='/main/dashboard/TradersOrders/HistoryTrades' element={<HistoryTrades info={details} setOrderCountHistoryUser={setOrderCountHistoryUser}/>} ></Route>
+                            </Route>
+                                <Route path='/main/dashboard/TradersTradeBook' element={<TradersTradeBook orderCountHistoryCompany={orderCountHistoryCompany} orderCountTodayCompany={orderCountTodayCompany} />}>
+                                    <Route path='/main/dashboard/TradersTradeBook/' element={<TodaysTradersTrade setOrderCountTodayCompany={setOrderCountTodayCompany}/>} ></Route>
+                                    <Route path='/main/dashboard/TradersTradeBook/HistoryTradersTrade/' element={<HistoryTradersTrade info={details} setOrderCountHistoryUser={setOrderCountHistoryUser}/>} ></Route>
                                 </Route>
 
                             </Route>
