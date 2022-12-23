@@ -105,8 +105,11 @@ router.put("/readInstrumentDetails/:id", async (req, res)=>{
             }
         })
         console.log("this is role", instrument);
-        tikerFunc();
-        console.log("tikerFunc");
+        if(instrument[0].status === "Active"){
+            tikerFunc();
+            console.log("tikerFunc");
+        }
+
         res.send(instrument)
     } catch (e){
         res.status(500).json({error:"Failed to edit data Check access token"});

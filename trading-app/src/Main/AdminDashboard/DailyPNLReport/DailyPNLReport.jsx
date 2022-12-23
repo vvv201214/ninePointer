@@ -115,211 +115,133 @@ export default function DailyPNLReport() {
         console.log(firstDate ,secondDate);
         console.log(firstDate < secondDate);
 
-        if(getDetails.userDetails.role === "user"){
-            axios.get(`${baseUrl}api/v1/readmocktradecompanyemail/${userId}`)
-            .then((res) => {
-                let filteredData = (res.data).filter((elem)=>{
-                    let timeStamp = elem.order_timestamp;
-                    let oneDateSplit = (timeStamp).split(" ");
-                    let twoDateSplit = oneDateSplit[0].split("-");
-                    timeStamp = `${twoDateSplit[2]}-${twoDateSplit[1]}-${twoDateSplit[0]}`
 
-                    return timeStamp >= firstDate && timeStamp <= secondDate;
-                })
-                console.log(filteredData);
-                if(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
-                    while(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
-                    // let firstDateDigit = Number(firstDateSplit[2]);
-                        // let secondDateDigit = Number(secondDateSplit[2]);
-                        let singleDateData = filteredData.filter((elem)=>{
-                            let splitting = (elem.order_timestamp).split(" ");
-                            return splitting[0] === (`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`)
-                        })
-                        
-                        console.log(singleDateData, `${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`);
-                        let newObj = pnlCalculation(singleDateData);
-                        newObj.date = `${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`;
-    
-                        console.log(newObj);
-                        if(newObj.numberOfTrade){
-                            detailPnl.push(JSON.parse(JSON.stringify(newObj)));
-                        }
-                        
-                        transactionCost = 0;
-                        totalPnl = 0;
-                        numberOfTrade = 0;
-                        lotUsed = 0;
+        // axios.get(`${baseUrl}api/v1/readmocktradecompany`)
+        // .then((res) => {
+        //     let filteredData = (res.data).filter((elem)=>{
+        //         let timeStamp = elem.order_timestamp;
+        //         let oneDateSplit = (timeStamp).split(" ");
+        //         let twoDateSplit = oneDateSplit[0].split("-");
+        //         timeStamp = `${twoDateSplit[2]}-${twoDateSplit[1]}-${twoDateSplit[0]}`
+
+        //         return timeStamp >= firstDate && timeStamp <= secondDate;
+        //     })
+        //     console.log(filteredData);
+        //     if(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
+        //         while(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
+        //             console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` , secondDate)
+        //             // let firstDateDigit = Number(firstDateSplit[2]);
+        //             // let secondDateDigit = Number(secondDateSplit[2]);
+        //             let singleDateData = filteredData.filter((elem)=>{
+        //                 let splitting = (elem.order_timestamp).split(" ");
+        //                 return splitting[0] === (`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`)
+        //             })
                     
-                        console.log(detailPnl);
-                        setDetailPnl(detailPnl)
+        //             console.log(singleDateData, `${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`);
+        //             let newObj = pnlCalculation(singleDateData);
+        //             // newObj.date = `${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`;
+
+        //             console.log(newObj);
+        //             detailPnl.push(JSON.parse(JSON.stringify(newObj)));
+        //             // if(newObj.numberOfTrade){
                         
-                        if((firstDateSplit[2]) < 9){
-                            (firstDateSplit[2]) = `0${Number(firstDateSplit[2]) + 1}`
-                        }
-                        else if((firstDateSplit[2]) === 31){
-                            (firstDateSplit[2]) = `01`;
-                            
-                            console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}`)
-                            if((firstDateSplit[1]) < 9){
-                                (firstDateSplit[1]) = `0${Number(firstDateSplit[1]) + 1}`;
-                            }
-                            else if((firstDateSplit[1]) === 13){
-                                (firstDateSplit[1]) = `01`;
-                                (firstDateSplit[0]) = Number(firstDateSplit[0])+ 1;
-                            }else{
-                                (firstDateSplit[1]) = Number(firstDateSplit[1]) + 1;
-                            }
-                        }else{
-                            (firstDateSplit[2]) = Number(firstDateSplit[2]) + 1;
-                        }
+        //             // }
+                    
+        //             transactionCost = 0;
+        //             totalPnl = 0;
+        //             numberOfTrade = 0;
+        //             lotUsed = 0;
+                
+        //             console.log(detailPnl);
+        //             setDetailPnl(detailPnl)
+        //             if((firstDateSplit[2]) < 9){
+        //                 (firstDateSplit[2]) = `0${Number(firstDateSplit[2]) + 1}`
+        //             }
+        //             else if((firstDateSplit[2]) === 31){
+        //                 (firstDateSplit[2]) = `01`;
+                        
+        //                 console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}`)
+        //                 if((firstDateSplit[1]) < 9){
+        //                     (firstDateSplit[1]) = `0${Number(firstDateSplit[1]) + 1}`;
+        //                 }
+        //                 else if((firstDateSplit[1]) === 13){
+        //                     (firstDateSplit[1]) = `01`;
+        //                     (firstDateSplit[0]) = Number(firstDateSplit[0])+ 1;
+        //                 }else{
+        //                     (firstDateSplit[1]) = Number(firstDateSplit[1]) + 1;
+        //                 }
+        //             }else{
+        //                 (firstDateSplit[2]) = Number(firstDateSplit[2]) + 1;
+        //             }
+                    
+        //         }
+        //     } 
+    
+        // }).catch((err)=>{
+        //     return new Error(err);
+        // })
+        if(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
+            while(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
+                console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` , secondDate)
+                // let firstDateDigit = Number(firstDateSplit[2]);
+                // let secondDateDigit = Number(secondDateSplit[2]);
+
+
+                axios.get(`${baseUrl}api/v1/readmocktradecompanypariculardate/${`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`}`)
+                .then((res)=>{
+                    let newObj = pnlCalculation(res.data);
+
+                    console.log(newObj);
+
+                    detailPnl.push(JSON.parse(JSON.stringify(newObj)));
+                    // if(newObj.numberOfTrade){
+                        
+                    // }
+                    
+                    transactionCost = 0;
+                    totalPnl = 0;
+                    numberOfTrade = 0;
+                    lotUsed = 0;
+                
+                    console.log(detailPnl);
+                    setDetailPnl(detailPnl)
+                }).catch((err)=>{
+                    return new Error(err);
+                })
+
+
+                // let singleDateData = filteredData.filter((elem)=>{
+                //     let splitting = (elem.order_timestamp).split(" ");
+                //     return splitting[0] === (`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`)
+                // })
+                
+                // console.log(singleDateData, `${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`);
+                
+                // newObj.date = `${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`;
+
+
+                if((firstDateSplit[2]) < 9){
+                    (firstDateSplit[2]) = `0${Number(firstDateSplit[2]) + 1}`
+                }
+                else if((firstDateSplit[2]) === 31){
+                    (firstDateSplit[2]) = `01`;
+                    
+                    console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}`)
+                    if((firstDateSplit[1]) < 9){
+                        (firstDateSplit[1]) = `0${Number(firstDateSplit[1]) + 1}`;
                     }
-                } 
-              
-            }).catch((err)=>{
-                return new Error(err);
-            })
-        } else if(getDetails.userDetails.role === "admin"){
-            console.log(selectUserState);
-            if(selectUserState === "All User"){
-
-                axios.get(`${baseUrl}api/v1/readmocktradecompany`)
-                .then((res) => {
-                    let filteredData = (res.data).filter((elem)=>{
-                        let timeStamp = elem.order_timestamp;
-                        let oneDateSplit = (timeStamp).split(" ");
-                        let twoDateSplit = oneDateSplit[0].split("-");
-                        timeStamp = `${twoDateSplit[2]}-${twoDateSplit[1]}-${twoDateSplit[0]}`
-
-                        return timeStamp >= firstDate && timeStamp <= secondDate;
-                    })
-                    console.log(filteredData);
-                    if(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
-                        while(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
-                            console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` , secondDate)
-                            // let firstDateDigit = Number(firstDateSplit[2]);
-                            // let secondDateDigit = Number(secondDateSplit[2]);
-                            let singleDateData = filteredData.filter((elem)=>{
-                                let splitting = (elem.order_timestamp).split(" ");
-                                return splitting[0] === (`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`)
-                            })
-                            
-                            console.log(singleDateData, `${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`);
-                            let newObj = pnlCalculationUser(singleDateData);
-                            // newObj.date = `${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`;
-        
-                            console.log(newObj);
-                            detailPnl.push(JSON.parse(JSON.stringify(newObj)));
-                            // if(newObj.numberOfTrade){
-                                
-                            // }
-                            
-                            transactionCost = 0;
-                            totalPnl = 0;
-                            numberOfTrade = 0;
-                            lotUsed = 0;
-                        
-                            console.log(detailPnl);
-                            setDetailPnl(detailPnl)
-                            if((firstDateSplit[2]) < 9){
-                                (firstDateSplit[2]) = `0${Number(firstDateSplit[2]) + 1}`
-                            }
-                            else if((firstDateSplit[2]) === 31){
-                                (firstDateSplit[2]) = `01`;
-                                
-                                console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}`)
-                                if((firstDateSplit[1]) < 9){
-                                    (firstDateSplit[1]) = `0${Number(firstDateSplit[1]) + 1}`;
-                                }
-                                else if((firstDateSplit[1]) === 13){
-                                    (firstDateSplit[1]) = `01`;
-                                    (firstDateSplit[0]) = Number(firstDateSplit[0])+ 1;
-                                }else{
-                                    (firstDateSplit[1]) = Number(firstDateSplit[1]) + 1;
-                                }
-                            }else{
-                                (firstDateSplit[2]) = Number(firstDateSplit[2]) + 1;
-                            }
-                            
-                        }
-                    } 
-            
-                }).catch((err)=>{
-                    return new Error(err);
-                })
-    
-            } else{
-                let data = userDetail.filter((elem)=>{
-                    return elem.name === selectUserState
-                })
-
-                axios.get(`${baseUrl}api/v1/readmocktradecompanyemail/${data[0].email}`)
-                .then((res) => {
-                    let filteredData = (res.data).filter((elem)=>{
-                        let timeStamp = elem.order_timestamp;
-                        let oneDateSplit = (timeStamp).split(" ");
-                        let twoDateSplit = oneDateSplit[0].split("-");
-                        timeStamp = `${twoDateSplit[2]}-${twoDateSplit[1]}-${twoDateSplit[0]}`
-
-                        return timeStamp >= firstDate && timeStamp <= secondDate;
-                    })
-                    console.log(filteredData);
-                    if(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
-                        while(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
-                            // let firstDateDigit = Number(firstDateSplit[2]);
-                            // let secondDateDigit = Number(secondDateSplit[2]);
-                            let singleDateData = filteredData.filter((elem)=>{
-                                let splitting = (elem.order_timestamp).split(" ");
-                                return splitting[0] === (`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`)
-                            })
-                            
-                            console.log(singleDateData, `${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`);
-                            let newObj = pnlCalculation(singleDateData);
-                            newObj.date = `${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`;
-        
-                            console.log(newObj);
-                            if(newObj.numberOfTrade){
-                                detailPnl.push(JSON.parse(JSON.stringify(newObj)));
-                            }
-                            
-                            transactionCost = 0;
-                            totalPnl = 0;
-                            numberOfTrade = 0;
-                            lotUsed = 0;
-                        
-                            console.log(detailPnl);
-                            setDetailPnl(detailPnl)
-                            
-                            if((firstDateSplit[2]) < 9){
-                                (firstDateSplit[2]) = `0${Number(firstDateSplit[2]) + 1}`
-                            }
-                            else if((firstDateSplit[2]) === 31){
-                                (firstDateSplit[2]) = `01`;
-                                
-                                console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}`)
-                                if((firstDateSplit[1]) < 9){
-                                    (firstDateSplit[1]) = `0${Number(firstDateSplit[1]) + 1}`;
-                                }
-                                else if((firstDateSplit[1]) === 13){
-                                    (firstDateSplit[1]) = `01`;
-                                    (firstDateSplit[0]) = Number(firstDateSplit[0])+ 1;
-                                }else{
-                                    (firstDateSplit[1]) = Number(firstDateSplit[1]) + 1;
-                                }
-                            }else{
-                                (firstDateSplit[2]) = Number(firstDateSplit[2]) + 1;
-                            }
-                        }
-                    } 
-                    
-                }).catch((err)=>{
-                    return new Error(err);
-                })
+                    else if((firstDateSplit[1]) === 13){
+                        (firstDateSplit[1]) = `01`;
+                        (firstDateSplit[0]) = Number(firstDateSplit[0])+ 1;
+                    }else{
+                        (firstDateSplit[1]) = Number(firstDateSplit[1]) + 1;
+                    }
+                }else{
+                    (firstDateSplit[2]) = Number(firstDateSplit[2]) + 1;
+                }
                 
             }
-        }
-
-
-
+        } 
 
     }
     
@@ -341,35 +263,33 @@ export default function DailyPNLReport() {
         console.log(firstDate ,secondDate);
         console.log(firstDate < secondDate);
 
-        if(getDetails.userDetails.role === "user"){
-            axios.get(`${baseUrl}api/v1/readmocktradecompanyemail/${userId}`)
-            .then((res) => {
-                let filteredData = (res.data).filter((elem)=>{
-                    let timeStamp = elem.order_timestamp;
-                    let oneDateSplit = (timeStamp).split(" ");
-                    let twoDateSplit = oneDateSplit[0].split("-");
-                    timeStamp = `${twoDateSplit[2]}-${twoDateSplit[1]}-${twoDateSplit[0]}`
+        // axios.get(`${baseUrl}api/v1/readmocktradecompany`)
+        // .then((res) => {
+        //     let filteredData = (res.data).filter((elem)=>{
+        //         let timeStamp = elem.order_timestamp;
+        //         let oneDateSplit = (timeStamp).split(" ");
+        //         let twoDateSplit = oneDateSplit[0].split("-");
+        //         timeStamp = `${twoDateSplit[2]}-${twoDateSplit[1]}-${twoDateSplit[0]}`
 
-                    return timeStamp >= firstDate && timeStamp <= secondDate;
-                })
-                console.log(filteredData);
-                if(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
-                    while(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
+        //         return timeStamp >= firstDate && timeStamp <= secondDate;
+        //     })
+        //     console.log(filteredData);
+            if(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
+                while(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
+                    console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` , secondDate)
                     // let firstDateDigit = Number(firstDateSplit[2]);
-                        // let secondDateDigit = Number(secondDateSplit[2]);
-                        let singleDateData = filteredData.filter((elem)=>{
-                            let splitting = (elem.order_timestamp).split(" ");
-                            return splitting[0] === (`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`)
-                        })
-                        
-                        console.log(singleDateData, `${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`);
-                        let newObj = pnlCalculation(singleDateData);
-                        newObj.date = `${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`;
-    
+                    // let secondDateDigit = Number(secondDateSplit[2]);
+
+
+                    axios.get(`${baseUrl}api/v1/readmocktradecompanypariculardate/${`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`}`)
+                    .then((res)=>{
+                        let newObj = pnlCalculation(res.data);
+
                         console.log(newObj);
-                        if(newObj.numberOfTrade){
-                            detailPnl.push(JSON.parse(JSON.stringify(newObj)));
-                        }
+                        detailPnl.push(JSON.parse(JSON.stringify(newObj)));
+                        // if(newObj.numberOfTrade){
+                            
+                        // }
                         
                         transactionCost = 0;
                         totalPnl = 0;
@@ -378,172 +298,43 @@ export default function DailyPNLReport() {
                     
                         console.log(detailPnl);
                         setDetailPnl(detailPnl)
-                        
-                        if((firstDateSplit[2]) < 9){
-                            (firstDateSplit[2]) = `0${Number(firstDateSplit[2]) + 1}`
-                        }
-                        else if((firstDateSplit[2]) === 31){
-                            (firstDateSplit[2]) = `01`;
-                            
-                            console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}`)
-                            if((firstDateSplit[1]) < 9){
-                                (firstDateSplit[1]) = `0${Number(firstDateSplit[1]) + 1}`;
-                            }
-                            else if((firstDateSplit[1]) === 13){
-                                (firstDateSplit[1]) = `01`;
-                                (firstDateSplit[0]) = Number(firstDateSplit[0])+ 1;
-                            }else{
-                                (firstDateSplit[1]) = Number(firstDateSplit[1]) + 1;
-                            }
-                        }else{
-                            (firstDateSplit[2]) = Number(firstDateSplit[2]) + 1;
-                        }
-                    }
-                } 
-              
-            }).catch((err)=>{
-                return new Error(err);
-            })
-        } else if(getDetails.userDetails.role === "admin"){
-            console.log(selectUserState);
-            if(selectUserState === "All User"){
-
-                axios.get(`${baseUrl}api/v1/readmocktradecompany`)
-                .then((res) => {
-                    let filteredData = (res.data).filter((elem)=>{
-                        let timeStamp = elem.order_timestamp;
-                        let oneDateSplit = (timeStamp).split(" ");
-                        let twoDateSplit = oneDateSplit[0].split("-");
-                        timeStamp = `${twoDateSplit[2]}-${twoDateSplit[1]}-${twoDateSplit[0]}`
-
-                        return timeStamp >= firstDate && timeStamp <= secondDate;
+                    }).catch((err)=>{
+                        return new Error(err);
                     })
-                    console.log(filteredData);
-                    if(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
-                        while(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
-                            console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` , secondDate)
-                            // let firstDateDigit = Number(firstDateSplit[2]);
-                            // let secondDateDigit = Number(secondDateSplit[2]);
-                            let singleDateData = filteredData.filter((elem)=>{
-                                let splitting = (elem.order_timestamp).split(" ");
-                                return splitting[0] === (`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`)
-                            })
-                            
-                            console.log(singleDateData, `${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`);
-                            let newObj = pnlCalculationUser(singleDateData);
-                            // newObj.date = `${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`;
-        
-                            console.log(newObj);
-                            detailPnl.push(JSON.parse(JSON.stringify(newObj)));
-                            // if(newObj.numberOfTrade){
-                                
-                            // }
-                            
-                            transactionCost = 0;
-                            totalPnl = 0;
-                            numberOfTrade = 0;
-                            lotUsed = 0;
-                        
-                            console.log(detailPnl);
-                            setDetailPnl(detailPnl)
-                            if((firstDateSplit[2]) < 9){
-                                (firstDateSplit[2]) = `0${Number(firstDateSplit[2]) + 1}`
-                            }
-                            else if((firstDateSplit[2]) === 31){
-                                (firstDateSplit[2]) = `01`;
-                                
-                                console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}`)
-                                if((firstDateSplit[1]) < 9){
-                                    (firstDateSplit[1]) = `0${Number(firstDateSplit[1]) + 1}`;
-                                }
-                                else if((firstDateSplit[1]) === 13){
-                                    (firstDateSplit[1]) = `01`;
-                                    (firstDateSplit[0]) = Number(firstDateSplit[0])+ 1;
-                                }else{
-                                    (firstDateSplit[1]) = Number(firstDateSplit[1]) + 1;
-                                }
-                            }else{
-                                (firstDateSplit[2]) = Number(firstDateSplit[2]) + 1;
-                            }
-                            
-                        }
-                    } 
-            
-                }).catch((err)=>{
-                    return new Error(err);
-                })
-    
-            } else{
-                let data = userDetail.filter((elem)=>{
-                    return elem.name === selectUserState
-                })
 
-                axios.get(`${baseUrl}api/v1/readmocktradecompanyemail/${data[0].email}`)
-                .then((res) => {
-                    let filteredData = (res.data).filter((elem)=>{
-                        let timeStamp = elem.order_timestamp;
-                        let oneDateSplit = (timeStamp).split(" ");
-                        let twoDateSplit = oneDateSplit[0].split("-");
-                        timeStamp = `${twoDateSplit[2]}-${twoDateSplit[1]}-${twoDateSplit[0]}`
 
-                        return timeStamp >= firstDate && timeStamp <= secondDate;
-                    })
-                    console.log(filteredData);
-                    if(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
-                        while(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
-                            // let firstDateDigit = Number(firstDateSplit[2]);
-                            // let secondDateDigit = Number(secondDateSplit[2]);
-                            let singleDateData = filteredData.filter((elem)=>{
-                                let splitting = (elem.order_timestamp).split(" ");
-                                return splitting[0] === (`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`)
-                            })
-                            
-                            console.log(singleDateData, `${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`);
-                            let newObj = pnlCalculation(singleDateData);
-                            newObj.date = `${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`;
-        
-                            console.log(newObj);
-                            if(newObj.numberOfTrade){
-                                detailPnl.push(JSON.parse(JSON.stringify(newObj)));
-                            }
-                            
-                            transactionCost = 0;
-                            totalPnl = 0;
-                            numberOfTrade = 0;
-                            lotUsed = 0;
-                        
-                            console.log(detailPnl);
-                            setDetailPnl(detailPnl)
-                            
-                            if((firstDateSplit[2]) < 9){
-                                (firstDateSplit[2]) = `0${Number(firstDateSplit[2]) + 1}`
-                            }
-                            else if((firstDateSplit[2]) === 31){
-                                (firstDateSplit[2]) = `01`;
-                                
-                                console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}`)
-                                if((firstDateSplit[1]) < 9){
-                                    (firstDateSplit[1]) = `0${Number(firstDateSplit[1]) + 1}`;
-                                }
-                                else if((firstDateSplit[1]) === 13){
-                                    (firstDateSplit[1]) = `01`;
-                                    (firstDateSplit[0]) = Number(firstDateSplit[0])+ 1;
-                                }else{
-                                    (firstDateSplit[1]) = Number(firstDateSplit[1]) + 1;
-                                }
-                            }else{
-                                (firstDateSplit[2]) = Number(firstDateSplit[2]) + 1;
-                            }
-                        }
-                    } 
+                    // let singleDateData = filteredData.filter((elem)=>{
+                    //     let splitting = (elem.order_timestamp).split(" ");
+                    //     return splitting[0] === (`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`)
+                    // })
                     
-                }).catch((err)=>{
-                    return new Error(err);
-                })
-                
-            }
-        }
+                    // console.log(singleDateData, `${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`);
+                    
+                    // newObj.date = `${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`;
 
+ 
+                    if((firstDateSplit[2]) < 9){
+                        (firstDateSplit[2]) = `0${Number(firstDateSplit[2]) + 1}`
+                    }
+                    else if((firstDateSplit[2]) === 31){
+                        (firstDateSplit[2]) = `01`;
+                        
+                        console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}`)
+                        if((firstDateSplit[1]) < 9){
+                            (firstDateSplit[1]) = `0${Number(firstDateSplit[1]) + 1}`;
+                        }
+                        else if((firstDateSplit[1]) === 13){
+                            (firstDateSplit[1]) = `01`;
+                            (firstDateSplit[0]) = Number(firstDateSplit[0])+ 1;
+                        }else{
+                            (firstDateSplit[1]) = Number(firstDateSplit[1]) + 1;
+                        }
+                    }else{
+                        (firstDateSplit[2]) = Number(firstDateSplit[2]) + 1;
+                    }
+                    
+                }
+            } 
         console.log(detailPnl);
     }
 
@@ -586,7 +377,8 @@ export default function DailyPNLReport() {
                         totalSellLot: 0,
                         symbol: data[i].symbol,
                         Product: data[i].Product,
-                        name: data[0].createdBy
+                        name: data[0].createdBy,
+                        date: ((data[0].order_timestamp).split(" "))[0]
                     })
                 }if(data[i].buyOrSell === "SELL"){
                     hash.set(data[i].symbol, {
@@ -596,7 +388,8 @@ export default function DailyPNLReport() {
                         totalBuyLot: 0,
                         symbol: data[i].symbol,
                         Product: data[i].Product,
-                        name: data[0].createdBy
+                        name: data[0].createdBy,
+                        date: ((data[0].order_timestamp).split(" "))[0]
                     })
                 }
             }
@@ -643,7 +436,8 @@ export default function DailyPNLReport() {
             pnl: totalPnl,
             name: name,
             numberOfTrade: numberOfTrade,
-            lotUsed: lotUsed
+            lotUsed: lotUsed,
+            date: overallPnl[0].date
         }
 
         return newObj;
@@ -727,74 +521,6 @@ export default function DailyPNLReport() {
                 return new Error(err);
             })
 
-        } else{
-            let data = userDetail.filter((elem)=>{
-                return elem.name === e.target.value
-            })
-
-            axios.get(`${baseUrl}api/v1/readmocktradecompanyemail/${data[0].email}`)
-            .then((res) => {
-                let filteredData = (res.data).filter((elem)=>{
-                    let timeStamp = elem.order_timestamp;
-                    let oneDateSplit = (timeStamp).split(" ");
-                    let twoDateSplit = oneDateSplit[0].split("-");
-                    timeStamp = `${twoDateSplit[2]}-${twoDateSplit[1]}-${twoDateSplit[0]}`
-
-                    return timeStamp >= firstDate && timeStamp <= secondDate;
-                })
-                console.log(filteredData);
-                if(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
-                    while(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
-                        // let firstDateDigit = Number(firstDateSplit[2]);
-                        // let secondDateDigit = Number(secondDateSplit[2]);
-                        let singleDateData = filteredData.filter((elem)=>{
-                            let splitting = (elem.order_timestamp).split(" ");
-                            return splitting[0] === (`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`)
-                        })
-                        
-                        console.log(singleDateData, `${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`);
-                        let newObj = pnlCalculation(singleDateData);
-                        newObj.date = `${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`;
-    
-                        console.log(newObj);
-                        if(newObj.numberOfTrade){
-                            detailPnl.push(JSON.parse(JSON.stringify(newObj)));
-                        }
-                        
-                        transactionCost = 0;
-                        totalPnl = 0;
-                        numberOfTrade = 0;
-                        lotUsed = 0;
-                    
-                        console.log(detailPnl);
-                        setDetailPnl(detailPnl)
-                        
-                        if((firstDateSplit[2]) < 9){
-                            (firstDateSplit[2]) = `0${Number(firstDateSplit[2]) + 1}`
-                        }
-                        else if((firstDateSplit[2]) === 31){
-                            (firstDateSplit[2]) = `01`;
-                            
-                            console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}`)
-                            if((firstDateSplit[1]) < 9){
-                                (firstDateSplit[1]) = `0${Number(firstDateSplit[1]) + 1}`;
-                            }
-                            else if((firstDateSplit[1]) === 13){
-                                (firstDateSplit[1]) = `01`;
-                                (firstDateSplit[0]) = Number(firstDateSplit[0])+ 1;
-                            }else{
-                                (firstDateSplit[1]) = Number(firstDateSplit[1]) + 1;
-                            }
-                        }else{
-                            (firstDateSplit[2]) = Number(firstDateSplit[2]) + 1;
-                        }
-                    }
-                } 
-                
-            }).catch((err)=>{
-                return new Error(err);
-            })
-            
         }
     }
 
@@ -947,32 +673,32 @@ export default function DailyPNLReport() {
         totalArr.push(obj);
     })
 
-    if(selectUserState === "All User"){
-        detailPnlArr.map((element)=>{
-            if(element){
-                element.map((elem)=>{
-                    if(elem.brokerage){
-                        allBrokerage = allBrokerage + Number(elem.brokerage);
-                    }
+    // if(selectUserState === "All User"){
+    //     detailPnlArr.map((element)=>{
+    //         if(element){
+    //             element.map((elem)=>{
+    //                 if(elem.brokerage){
+    //                     allBrokerage = allBrokerage + Number(elem.brokerage);
+    //                 }
             
-                    if(elem.pnl){
-                        allGross = allGross + Number(elem.pnl);
-                    }
+    //                 if(elem.pnl){
+    //                     allGross = allGross + Number(elem.pnl);
+    //                 }
             
-                    allNet =  (allGross - allBrokerage);
-                    console.log(allBrokerage, allGross, allNet)
+    //                 allNet =  (allGross - allBrokerage);
+    //                 console.log(allBrokerage, allGross, allNet)
             
-                    // let obj = {
-                    //     allBrokerage: allBrokerage,
-                    //     allGross: allGross,
-                    //     allNet: allNet
-                    // }
-                    // console.log(obj)
-                    // totalArr.push(obj);
-                })
-            }
-        })
-    }
+    //                 // let obj = {
+    //                 //     allBrokerage: allBrokerage,
+    //                 //     allGross: allGross,
+    //                 //     allNet: allNet
+    //                 // }
+    //                 // console.log(obj)
+    //                 // totalArr.push(obj);
+    //             })
+    //         }
+    //     })
+    // }
 
 
     console.log(detailPnlArr, totalArr)
@@ -1027,41 +753,8 @@ export default function DailyPNLReport() {
                                     <th className="grid2_th"># of Lots Used</th>
                                     {/* <th className="grid2_th">{detailPnl[0].name}</th> */}
                                 </tr>
-                                {selectUserState === "All User" && getDetails.userDetails.role === "admin" ? 
-                                
-                                detailPnlArr.map((element)=>{
-                                    allBrokerage = allBrokerage + Number(element.brokerage);
-                                    allGross = allGross + element.pnl;
-                                    allNet = allNet + (allGross - allBrokerage);
-                                    console.log(element, selectUserState)
-                                    
-                                    return(
-                                        element.map((elem)=>{
-                                            console.log(elem)
-                                            return(
-                                                <>
-                                                {elem.name &&
-                                                <tr>
-                                                    <td className="grid2_td">{elem.date}</td>
-                                                    {!elem.pnl ?
-                                                    <td className="grid2_td" style={elem.pnl>=0.00 ? { color: "green"}:  { color: "red"}}>{elem.pnl >0.00 ? "+₹" + (elem.pnl): "-₹" + (-(elem.pnl)) }</td>
-                                                    :
-                                                    <td className="grid2_td" style={elem.pnl>=0.00 ? { color: "green"}:  { color: "red"}}>{elem.pnl >0.00 ? "+₹" + (elem.pnl.toFixed(2)): "-₹" + ((-(elem.pnl)).toFixed(2)) }</td>}
-                                                    {!elem.brokerage ?
-                                                    <td className="grid2_td" >{elem.brokerage >0.00 ? "₹" + (elem.brokerage) : "₹" + 0.00}</td>
-                                                    :
-                                                    <td className="grid2_td" >{elem.brokerage >0.00 ? "₹" + (elem.brokerage).toFixed(2) : "₹" + 0.00}</td>}
-                                                    {(elem.pnl - elem.brokerage) !== undefined &&
-                                                    <td className="grid2_td" style={(elem.pnl - elem.brokerage)>=0.00 ? { color: "green"}:  { color: "red"}}> {elem.pnl - elem.brokerage > 0.00 ? "+₹" + (elem.pnl - elem.brokerage).toFixed(2): "-₹" + ((-(elem.pnl - elem.brokerage)).toFixed(2))}</td>}
-                                                    <td className="grid2_td">{elem.numberOfTrade}</td>
-                                                    <td className="grid2_td">{elem.lotUsed}</td>
-                                                </tr>}
-                                                </>
-                                            )
-                                        })
-                                    )
-                                })
-                                :
+                                {
+
                                 detailPnlArr.map((elem)=>{
                                     allBrokerage = allBrokerage + Number(elem.brokerage);
                                     allGross = allGross + elem.pnl;
@@ -1087,7 +780,8 @@ export default function DailyPNLReport() {
                                         </tr>}
                                         </>
                                     )
-                                })}
+                                })
+                            }
                             </table>
                         </div>
                     </div>

@@ -199,7 +199,7 @@ const Account = require("../models/Trading Account/accountSchema");
   let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
   let date = new Date();
   let today = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`
-
+  let ticker;
   console.log("inside function");
 
   async function accessToken(){
@@ -244,7 +244,7 @@ const Account = require("../models/Trading Account/accountSchema");
      console.log(getAccessToken, getApiKey);
  
  
-    var ticker = new KiteTicker({
+     ticker = new KiteTicker({
             // api_key: 'nq0gipdzk0yexyko',
             // access_token: 'SRsDbH6dcBo7kce85M3tagzOj5s4aGX5',
             api_key: getApiKey,
@@ -272,9 +272,7 @@ const Account = require("../models/Trading Account/accountSchema");
         parameters(io, socket, ticker);
       });
     
-    });
-
-    
+    });    
   },4000)
 
 
@@ -284,7 +282,7 @@ const Account = require("../models/Trading Account/accountSchema");
 // let ticker = kiteTickerFunc();
 // console.log("ticker", ticker);
 
-console.log("ticker", ticker)
+// console.log("ticker", ticker)
 async function tikerFunc(){
   let token = await fetchData(getApiKey, getAccessToken);
 
