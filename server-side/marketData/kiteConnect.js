@@ -199,7 +199,7 @@ const Account = require("../models/Trading Account/accountSchema");
   let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
   let date = new Date();
   let today = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`
-
+  let ticker;
   console.log("inside function");
 
   async function accessToken(){
@@ -244,11 +244,11 @@ const Account = require("../models/Trading Account/accountSchema");
      console.log(getAccessToken, getApiKey);
  
  
-    let ticker = new KiteTicker({
-            api_key: '4o77ska70avpfx5e',
-            access_token: 'DVd0vsRFJL2A3htBStIdCe6gt9kFEI76',
-            // api_key: getApiKey,
-            // access_token: getAccessToken,
+     ticker = new KiteTicker({
+            // api_key: 'nq0gipdzk0yexyko',
+            // access_token: 'SRsDbH6dcBo7kce85M3tagzOj5s4aGX5',
+            api_key: getApiKey,
+            access_token: getAccessToken,
           });
     
     
@@ -257,7 +257,7 @@ const Account = require("../models/Trading Account/accountSchema");
       cors: {
     
         origin: newCors,
-        //origin: "http://3.110.187.5/",
+        //  origin: "http://3.110.187.5/",
     
         methods: ['GET', 'POST', 'PATCH'],
       },
@@ -272,14 +272,32 @@ const Account = require("../models/Trading Account/accountSchema");
         parameters(io, socket, ticker);
       });
     
-    });
-
-    // return ticker;
+    });    
   },4000)
+
+
+//   return ticker;
 // }
 
 // let ticker = kiteTickerFunc();
-console.log("ticker", ticker);
+// console.log("ticker", ticker);
+
+// console.log("ticker", ticker)
+// let token;
+async function tikerFunc(){
+  // token = await fetchData(getApiKey, getAccessToken);
+
+  //   var items = token;
+  //   console.log("check tiker")
+  //   console.log('subscribe', ticker.subscribe(items));
+  //   ticker.setMode(ticker.modeFull, items);
+  console.log(ticker)
+  ticker.disconnect();
+  ticker.connect();
+  // ticker.reconnect();
+  
+}
+
 
 async function parameters(io, socket, ticker) {
 
@@ -291,7 +309,7 @@ async function parameters(io, socket, ticker) {
       // let token = await fetchData(getApiKey, getAccessToken);
       let token = await fetchData(getApiKey, getAccessToken);
       // let token = await fetchData('nq0gipdzk0yexyko', 'SRsDbH6dcBo7kce85M3tagzOj5s4aGX5');
-      console.log("token", token);
+      // console.log("token", token);
       // var KiteTicker = require('kiteconnect').KiteTicker;
       // var ticker = new KiteTicker({
       //   api_key: getApiKey,
@@ -333,7 +351,7 @@ async function parameters(io, socket, ticker) {
         // console.log('subscribe', ticker.subscribe(items));
         // ticker.setMode(ticker.modeFull, items);
 
-          console.log(token)
+          console.log("token", token)
         if(token.length === ticks.length){
           console.log('Ticks', ticks);
           socket.emit('tick', ticks);
@@ -349,6 +367,8 @@ async function parameters(io, socket, ticker) {
       }
     
       function subscribe() {
+
+        // tikerFunc();
         var items = token;
         console.log('subscribe', ticker.subscribe(items));
         ticker.setMode(ticker.modeFull, items);
@@ -407,7 +427,7 @@ async function parameters(io, socket, ticker) {
   }
 
 }
-module.exports = {parameters, kiteTickerFunc};
+module.exports = {parameters, tikerFunc};
 
 
 

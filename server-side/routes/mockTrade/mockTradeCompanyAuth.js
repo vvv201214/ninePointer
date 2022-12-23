@@ -203,7 +203,7 @@ router.get("/readmocktradecompanyemail/:email", (req, res)=>{
 
 router.get("/readmocktradecompanyDate", (req, res)=>{
     let date = new Date();
-    let todayDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
+    let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
     const {email} = req.params
     MockTradeDetails.find({order_timestamp: {$regex: todayDate}})
     .then((data)=>{
@@ -225,7 +225,39 @@ router.get("/readmocktradecompanyDate", (req, res)=>{
     })
 })
 
+
+router.get("/readmocktradecompanypariculardate/:date", (req, res)=>{
+    // let date = new Date();
+    // let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
+    const {date} = req.params
+    MockTradeDetails.find({order_timestamp: {$regex: date}})
+    .then((data)=>{
+        // (data).sort((a, b)=> {
+
+        //     if (a.order_timestamp < b.order_timestamp) {
+        //       return 1;
+        //     }
+        //     if (a.order_timestamp > b.order_timestamp) {
+        //       return -1;
+        //     }
+        //     return 0;
+        //   });
+        // data.reverse();
+        return res.status(200).send(data);
+    })
+    .catch((err)=>{
+        return res.status(422).json({error : "date not found"})
+    })
+})
+
+
+
+
+
 module.exports = router;
+
+
+
 
 
 
