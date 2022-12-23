@@ -116,87 +116,17 @@ export default function DailyPNLReport() {
         console.log(firstDate < secondDate);
 
 
-        // axios.get(`${baseUrl}api/v1/readmocktradecompany`)
-        // .then((res) => {
-        //     let filteredData = (res.data).filter((elem)=>{
-        //         let timeStamp = elem.order_timestamp;
-        //         let oneDateSplit = (timeStamp).split(" ");
-        //         let twoDateSplit = oneDateSplit[0].split("-");
-        //         timeStamp = `${twoDateSplit[2]}-${twoDateSplit[1]}-${twoDateSplit[0]}`
-
-        //         return timeStamp >= firstDate && timeStamp <= secondDate;
-        //     })
-        //     console.log(filteredData);
-        //     if(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
-        //         while(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
-        //             console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` , secondDate)
-        //             // let firstDateDigit = Number(firstDateSplit[2]);
-        //             // let secondDateDigit = Number(secondDateSplit[2]);
-        //             let singleDateData = filteredData.filter((elem)=>{
-        //                 let splitting = (elem.order_timestamp).split(" ");
-        //                 return splitting[0] === (`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`)
-        //             })
-                    
-        //             console.log(singleDateData, `${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`);
-        //             let newObj = pnlCalculation(singleDateData);
-        //             // newObj.date = `${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`;
-
-        //             console.log(newObj);
-        //             detailPnl.push(JSON.parse(JSON.stringify(newObj)));
-        //             // if(newObj.numberOfTrade){
-                        
-        //             // }
-                    
-        //             transactionCost = 0;
-        //             totalPnl = 0;
-        //             numberOfTrade = 0;
-        //             lotUsed = 0;
-                
-        //             console.log(detailPnl);
-        //             setDetailPnl(detailPnl)
-        //             if((firstDateSplit[2]) < 9){
-        //                 (firstDateSplit[2]) = `0${Number(firstDateSplit[2]) + 1}`
-        //             }
-        //             else if((firstDateSplit[2]) === 31){
-        //                 (firstDateSplit[2]) = `01`;
-                        
-        //                 console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}`)
-        //                 if((firstDateSplit[1]) < 9){
-        //                     (firstDateSplit[1]) = `0${Number(firstDateSplit[1]) + 1}`;
-        //                 }
-        //                 else if((firstDateSplit[1]) === 13){
-        //                     (firstDateSplit[1]) = `01`;
-        //                     (firstDateSplit[0]) = Number(firstDateSplit[0])+ 1;
-        //                 }else{
-        //                     (firstDateSplit[1]) = Number(firstDateSplit[1]) + 1;
-        //                 }
-        //             }else{
-        //                 (firstDateSplit[2]) = Number(firstDateSplit[2]) + 1;
-        //             }
-                    
-        //         }
-        //     } 
-    
-        // }).catch((err)=>{
-        //     return new Error(err);
-        // })
         if(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
             while(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
                 console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` , secondDate)
-                // let firstDateDigit = Number(firstDateSplit[2]);
-                // let secondDateDigit = Number(secondDateSplit[2]);
-
-
+                let newObj = {};
                 axios.get(`${baseUrl}api/v1/readmocktradecompanypariculardate/${`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`}`)
                 .then((res)=>{
-                    let newObj = pnlCalculation(res.data);
+                    newObj = pnlCalculation(res.data);
 
                     console.log(newObj);
 
                     detailPnl.push(JSON.parse(JSON.stringify(newObj)));
-                    // if(newObj.numberOfTrade){
-                        
-                    // }
                     
                     transactionCost = 0;
                     totalPnl = 0;
@@ -204,20 +134,12 @@ export default function DailyPNLReport() {
                     lotUsed = 0;
                 
                     console.log(detailPnl);
-                    setDetailPnl(detailPnl)
+
+                    // setDetailPnl(detailPnl)
                 }).catch((err)=>{
                     return new Error(err);
                 })
 
-
-                // let singleDateData = filteredData.filter((elem)=>{
-                //     let splitting = (elem.order_timestamp).split(" ");
-                //     return splitting[0] === (`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`)
-                // })
-                
-                // console.log(singleDateData, `${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`);
-                
-                // newObj.date = `${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`;
 
 
                 if((firstDateSplit[2]) < 9){
@@ -242,6 +164,30 @@ export default function DailyPNLReport() {
                 
             }
         } 
+
+        setDetailPnl(detailPnl)
+
+        // (detailPnlArr).sort((a, b)=> {
+
+            // let firstDateSplit = (((a.date).split(" "))[0]).split("-");
+            // let secondDateSplit = firstDateSplit[0].split("-");
+            // a.date = `${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`
+    
+            // let secondDateSplit = (((b.date).split(" "))[0]).split("-");
+            // let secondDateSplit = firstDateSplit[0].split("-");
+            // b.date = `${secondDateSplit[2]}-${secondDateSplit[1]}-${secondDateSplit[0]}`
+    
+            // return b.date - a.date
+
+        // if (`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}` < `${secondDateSplit[2]}-${secondDateSplit[1]}-${secondDateSplit[0]}`) {
+        //   return 1;
+        // }
+        // if (`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}` > `${secondDateSplit[2]}-${secondDateSplit[1]}-${secondDateSplit[0]}`) {
+        //   return -1;
+        // }
+        // return 0;
+    //   });
+      console.log("after sorting", detailPnlArr);
 
     }
     
@@ -336,6 +282,26 @@ export default function DailyPNLReport() {
                 }
             } 
         console.log(detailPnl);
+
+        (detailPnlArr).sort((a, b)=> {
+
+            let firstDateSplit = (((a.date).split(" "))[0]).split("-");
+            // let secondDateSplit = firstDateSplit[0].split("-");
+            a.date = `${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`
+    
+            let secondDateSplit = (((b.date).split(" "))[0]).split("-");
+            // let secondDateSplit = firstDateSplit[0].split("-");
+            b.date = `${secondDateSplit[2]}-${secondDateSplit[1]}-${secondDateSplit[0]}`
+    
+    
+        if (a.date < b.date) {
+          return 1;
+        }
+        if (a.date > b.date) {
+          return -1;
+        }
+        return 0;
+      });
     }
 
 
@@ -652,6 +618,9 @@ export default function DailyPNLReport() {
         return detailPnl;
     }
 
+
+    console.log(detailPnlArr, totalArr)
+
     detailPnlArr.map((elem)=>{
         if(elem.brokerage){
             allBrokerage = allBrokerage + Number(elem.brokerage);
@@ -673,32 +642,10 @@ export default function DailyPNLReport() {
         totalArr.push(obj);
     })
 
-    // if(selectUserState === "All User"){
-    //     detailPnlArr.map((element)=>{
-    //         if(element){
-    //             element.map((elem)=>{
-    //                 if(elem.brokerage){
-    //                     allBrokerage = allBrokerage + Number(elem.brokerage);
-    //                 }
-            
-    //                 if(elem.pnl){
-    //                     allGross = allGross + Number(elem.pnl);
-    //                 }
-            
-    //                 allNet =  (allGross - allBrokerage);
-    //                 console.log(allBrokerage, allGross, allNet)
-            
-    //                 // let obj = {
-    //                 //     allBrokerage: allBrokerage,
-    //                 //     allGross: allGross,
-    //                 //     allNet: allNet
-    //                 // }
-    //                 // console.log(obj)
-    //                 // totalArr.push(obj);
-    //             })
-    //         }
-    //     })
-    // }
+    // (detailPnlArr).sort((a, b)=> {
+    //     console.log(a.date, b.date)
+    //     return b.date-a.date;
+    // })
 
 
     console.log(detailPnlArr, totalArr)
@@ -791,3 +738,5 @@ export default function DailyPNLReport() {
         </div>
     )
 }
+
+

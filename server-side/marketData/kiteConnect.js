@@ -283,13 +283,16 @@ const Account = require("../models/Trading Account/accountSchema");
 // console.log("ticker", ticker);
 
 // console.log("ticker", ticker)
+// let token;
 async function tikerFunc(){
-  let token = await fetchData(getApiKey, getAccessToken);
+  // token = await fetchData(getApiKey, getAccessToken);
 
-    var items = token;
-    console.log("check tiker")
-    console.log('subscribe', ticker.subscribe(items));
-    ticker.setMode(ticker.modeFull, items);
+  //   var items = token;
+  //   console.log("check tiker")
+  //   console.log('subscribe', ticker.subscribe(items));
+  //   ticker.setMode(ticker.modeFull, items);
+  ticker.disconnect();
+  ticker.connect();
   
 }
 
@@ -304,7 +307,7 @@ async function parameters(io, socket, ticker) {
       // let token = await fetchData(getApiKey, getAccessToken);
       let token = await fetchData(getApiKey, getAccessToken);
       // let token = await fetchData('nq0gipdzk0yexyko', 'SRsDbH6dcBo7kce85M3tagzOj5s4aGX5');
-      console.log("token", token);
+      // console.log("token", token);
       // var KiteTicker = require('kiteconnect').KiteTicker;
       // var ticker = new KiteTicker({
       //   api_key: getApiKey,
@@ -346,7 +349,7 @@ async function parameters(io, socket, ticker) {
         // console.log('subscribe', ticker.subscribe(items));
         // ticker.setMode(ticker.modeFull, items);
 
-          console.log(token)
+          console.log("token", token)
         if(token.length === ticks.length){
           console.log('Ticks', ticks);
           socket.emit('tick', ticks);
@@ -362,6 +365,8 @@ async function parameters(io, socket, ticker) {
       }
     
       function subscribe() {
+
+        // tikerFunc();
         var items = token;
         console.log('subscribe', ticker.subscribe(items));
         ticker.setMode(ticker.modeFull, items);
