@@ -8,7 +8,7 @@ export default function UserFundsHeader({role}) {
         <div>
             <ul className='navbar'>
                 <li>
-                    <NavLink to={"/main/userfunds"}>Funds Details</NavLink>
+                    <NavLink to={"/main/userfunds/"}>Funds Details</NavLink>
                 </li>
             </ul>
            

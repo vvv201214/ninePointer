@@ -6,7 +6,7 @@ export default function InstrumentHeader() {
     <>
         <ul className='navbar'>
             <li>
-                <NavLink to={"/main/instrument"}>Instruments</NavLink>
+                <NavLink to={"/main/instrument/"} style={({isActive}) => isActive?{backgroundColor: "white", borderRadius: "3px"} :{colbackgroundColor:'black'} }>Instruments</NavLink>
             </li>
         </ul>
         <Outlet/>
