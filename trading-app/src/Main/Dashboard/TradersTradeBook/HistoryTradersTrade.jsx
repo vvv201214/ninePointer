@@ -22,7 +22,8 @@ const HistoryTradersTrade = ({setOrderCountHistoryCompany}) => {
             const res = await axios.get(`${baseUrl}api/v1/readmocktradeuser`);
             console.log(res.data);
             setData(res.data);
-            setOrderCountHistoryCompany((res.data).length)
+            setOrderCountHistoryCompany((res.data).length);
+            console.log(setOrderCountHistoryCompany);
         }
         getData();
     }, [])
