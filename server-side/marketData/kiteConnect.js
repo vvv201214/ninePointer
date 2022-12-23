@@ -245,10 +245,10 @@ const Account = require("../models/Trading Account/accountSchema");
  
  
     let ticker = new KiteTicker({
-            // api_key: 'nq0gipdzk0yexyko',
-            // access_token: 'SRsDbH6dcBo7kce85M3tagzOj5s4aGX5',
-            api_key: getApiKey,
-            access_token: getAccessToken,
+            api_key: '4o77ska70avpfx5e',
+            access_token: 'DVd0vsRFJL2A3htBStIdCe6gt9kFEI76',
+            // api_key: getApiKey,
+            // access_token: getAccessToken,
           });
     
     
