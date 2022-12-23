@@ -256,8 +256,8 @@ const Account = require("../models/Trading Account/accountSchema");
     const io = new Server(9000, {
       cors: {
     
-        // origin: newCors,
-         origin: "http://3.110.187.5/",
+        origin: newCors,
+        //origin: "http://3.110.187.5/",
     
         methods: ['GET', 'POST', 'PATCH'],
       },
