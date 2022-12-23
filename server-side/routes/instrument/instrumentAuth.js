@@ -4,6 +4,10 @@ require("../../db/conn");
 const Instrument = require("../../models/Instruments/instrumentSchema");
 const axios = require('axios');
 const fetchToken = require("../../marketData/generateSingleToken");
+const RequestToken = require("../../models/Trading Account/requestTokenSchema");
+const Account = require("../../models/Trading Account/accountSchema");
+var ticker = require('../../marketData/kiteConnect')
+
 
 router.post("/instrument", async (req, res)=>{
 

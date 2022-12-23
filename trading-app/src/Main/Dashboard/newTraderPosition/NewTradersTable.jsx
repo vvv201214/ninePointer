@@ -29,12 +29,12 @@ export default function NewTradersTable({socket}) {
         return new Error(err);
     })
 
-  axios.get(`${baseUrl}api/v1/readmocktradeuser`)
+  axios.get(`${baseUrl}api/v1/readmocktradeuserDate`)
       .then((res) => {
-          let data = (res.data).filter((elem) => {
-              return elem.order_timestamp.includes(todayDate) && elem.status === "COMPLETE";
-          })
-          setData(data);
+        //   let data = (res.data).filter((elem) => {
+        //       return elem.order_timestamp.includes(todayDate) && elem.status === "COMPLETE";
+        //   })
+          setData(res.data);
       }).catch((err) => {
           return new Error(err);
       })

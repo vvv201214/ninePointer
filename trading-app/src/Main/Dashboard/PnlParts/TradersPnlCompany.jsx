@@ -37,12 +37,12 @@ export default function TradersPnlCompany({marketData, tradeData}) {
             return new Error(err);
         })
 
-        axios.get(`${baseUrl}api/v1/readmocktradecompany`)
+        axios.get(`${baseUrl}api/v1/readmocktradecompanyDate`)
         .then((res) => {
-            let data = (res.data).filter((elem) => {
-                return elem.order_timestamp.includes(todayDate) && elem.status === "COMPLETE";
-            })
-            setAllTrade(data);
+            // let data = (res.data).filter((elem) => {
+            //     return elem.order_timestamp.includes(todayDate) && elem.status === "COMPLETE";
+            // })
+            setAllTrade(res.data);
         }).catch((err)=>{
             return new Error(err);
         })

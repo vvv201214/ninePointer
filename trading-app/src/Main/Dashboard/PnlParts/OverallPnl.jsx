@@ -6,7 +6,6 @@ import { faContactCard, faIndianRupeeSign } from '@fortawesome/free-solid-svg-ic
 
 export default function OverallPnl({marketData, tradeData, data}) {
 
-    
     let date = new Date();
     let todayDate = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}` ;
     let fake_date = "1-12-2022"
@@ -16,9 +15,11 @@ export default function OverallPnl({marketData, tradeData, data}) {
     const [liveDetail, setLiveDetail] = useState([]);
     const [avgPrice, setAvgPrice] = useState([]);
 
-
     var Total = 0;
     let avgPriceArr = [];
+    let liveDetailsArr = [];
+    let overallPnl = [];
+    
     useEffect(()=>{
 
         console.log(data);
@@ -37,8 +38,6 @@ export default function OverallPnl({marketData, tradeData, data}) {
         let hash = new Map();
 
         for(let i = data.length-1; i >= 0 ; i--){
-            
-            
             if(hash.has(data[i].symbol)){
                 let obj = hash.get(data[i].symbol);
                 if(data[i].buyOrSell === "BUY"){
@@ -89,12 +88,12 @@ export default function OverallPnl({marketData, tradeData, data}) {
         }
         console.log(hash);
     
-        let overallPnl = [];
+        
         for (let value of hash.values()){
             overallPnl.push(value);
         }
 
-        let liveDetailsArr = [];
+        
         overallPnl.map((elem)=>{
             console.log("52");
             tradeData.map((element)=>{
@@ -111,6 +110,7 @@ export default function OverallPnl({marketData, tradeData, data}) {
             })
         })
 
+
         setOverallPnlArr(overallPnl);
         console.log("details array", overallPnl);
 
@@ -118,7 +118,9 @@ export default function OverallPnl({marketData, tradeData, data}) {
 
         console.log(liveDetailsArr);
 
-    }, [marketData])
+        // reRender ? setReRender(false) : setReRender(true)
+
+    }, [marketData, data])
 
     data.map((elem)=>{
         totalTransactionCost += Number(elem.brokerage);
