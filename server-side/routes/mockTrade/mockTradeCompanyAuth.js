@@ -206,7 +206,7 @@ router.get("/readmocktradecompanyDate", (req, res)=>{
     let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
     const {email} = req.params
     console.log(todayDate)
-    MockTradeDetails.find({order_timestamp: {$regex: "23-12-2022"}})
+    MockTradeDetails.find({order_timestamp: {$regex: todayDate}})
     .then((data)=>{
         (data).sort((a, b)=> {
 
@@ -267,7 +267,7 @@ router.get("/readmocktradecompanytodaydatapagination/:skip/:limit", (req, res)=>
     let date = new Date();
     let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
     const {limit, skip} = req.params
-    MockTradeDetails.find({order_timestamp: {$regex: "23-12-2022"}}).sort({order_timestamp:-1}).skip(skip).limit(limit)
+    MockTradeDetails.find({order_timestamp: {$regex: todayDate}}).sort({order_timestamp:-1}).skip(skip).limit(limit)
     .then((data)=>{
         return res.status(200).send(data);
     })

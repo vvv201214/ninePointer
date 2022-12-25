@@ -140,7 +140,7 @@ router.get("/readmocktradeuserDate/:email", (req, res)=>{
     let date = new Date();
     let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
     console.log(todayDate);
-    MockTradeDetails.find({order_timestamp: {$regex: "23-12-2022"}, userId: {$regex: email}})
+    MockTradeDetails.find({order_timestamp: {$regex: todayDate}, userId: {$regex: email}})
     .then((data)=>{
         (data).sort((a, b)=> {
 
@@ -165,7 +165,7 @@ router.get("/readmocktradeusertodaydatapagination/:email/:skip/:limit", (req, re
     let date = new Date();
     let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
     console.log(todayDate);
-    MockTradeDetails.find({order_timestamp: {$regex: "23-12-2022"}, userId: {$regex: email}}).sort({order_timestamp:-1}).skip(skip).limit(limit)
+    MockTradeDetails.find({order_timestamp: {$regex: todayDate}, userId: {$regex: email}}).sort({order_timestamp:-1}).skip(skip).limit(limit)
     .then((data)=>{
         // (data).sort((a, b)=> {
 
@@ -189,7 +189,7 @@ router.get("/readmocktradeuserDate", (req, res)=>{
     let date = new Date();
     let todayDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
     const {email} = req.params
-    MockTradeDetails.find({order_timestamp: {$regex: "23-12-2022"}})
+    MockTradeDetails.find({order_timestamp: {$regex: todayDate}})
     .then((data)=>{
         (data).sort((a, b)=> {
 
@@ -213,7 +213,7 @@ router.get("/readmocktradeusertodaydatapagination/:skip/:limit", (req, res)=>{
     let date = new Date();
     let todayDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
     const {skip, limit} = req.params
-    MockTradeDetails.find({order_timestamp: {$regex: "23-12-2022"}}).sort({order_timestamp:-1}).skip(skip).limit(limit)
+    MockTradeDetails.find({order_timestamp: {$regex: todayDate}}).sort({order_timestamp:-1}).skip(skip).limit(limit)
     .then((data)=>{
         // (data).sort((a, b)=> {
 

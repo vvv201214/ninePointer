@@ -8,7 +8,7 @@ export default function ReportsHeader({role}) {
         <div>
             <ul className='navbar'>
                 <li>
-                    <NavLink to={"/main/report/"} style={({isActive}) => isActive?{backgroundColor: "white", borderRadius: "3px"} :{colbackgroundColor:'black'} }>Daily P&L Report</NavLink>
+                    <NavLink className='headers_li_links' to={"/main/report/"} style={({isActive}) => isActive?{color: "#5479FC"} :{color:'black'} }>Daily P&L Report</NavLink>
                 </li>
             </ul>
            

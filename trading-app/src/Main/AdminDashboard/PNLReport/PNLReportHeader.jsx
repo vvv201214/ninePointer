@@ -8,7 +8,7 @@ export default function PNLReportHeader({role}) {
         <div>
             <ul className='navbar'>
                 <li>
-                    <NavLink to={"/main/admindashboard/pnlreport"}>Daily P&L Report</NavLink>
+                    <NavLink className='headers_li_links' style={({isActive}) => isActive?{color: "#5479FC"} :{color:'black'} } to={"/main/admindashboard/pnlreport"}>Daily P&L Report</NavLink>
                 </li>
             </ul>
            
