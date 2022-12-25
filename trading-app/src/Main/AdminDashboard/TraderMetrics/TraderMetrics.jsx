@@ -1,12 +1,12 @@
 import React, { useContext, useRef, useState } from "react";
 import { useEffect } from "react";
-import Styles from "./DailyPNLReport.module.css";
+import Styles from "./TraderMetrics.module.css";
 import axios from "axios";
 import { userContext } from "../../AuthContext";
 import { io } from "socket.io-client";
 
 
-export default function DailyPNLReport() {
+export default function TraderMetrics() {
     let baseUrl1 = process.env.NODE_ENV === "production" ? "/" : "http://localhost:9000/"
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 

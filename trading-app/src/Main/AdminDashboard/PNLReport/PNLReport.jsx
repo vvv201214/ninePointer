@@ -1021,13 +1021,7 @@ export default function PNLReport() {
 
                                 <div className={`${Styles.formInput1}`} style={allNet > 0.00 ? { color: "green" } : allBrokerage === 0.00 ? { color: "grey" } : { color: "red" }} >{allNet > 0.00 ? "+₹" + (allNet.toFixed(2)) : allNet === 0 ? " " : "-₹" + ((-(allNet)).toFixed(2))}</div>
                             </div>
-                        </div>
-
-                               
-                                
-
-                               
-                                
+                        </div>       
                                
                         <div className={Styles.btn_div_twohead}>
                             <div className={Styles.btn_div_two}>
@@ -1037,16 +1031,16 @@ export default function PNLReport() {
                                 <div className={Styles.formLable}>Net(T-P&L)</div>
                                 </div>
                                 <div className={Styles.btn_div_two}>
-                                <div style={allGross > 0.00 ? { color: "green" } : allGross === 0.00 ? { color: "grey" } : { color: "red" }} className={`${Styles.formInput1}`}>{allGross > 0.00 ? "+₹" + (allGross.toFixed(2)) : allGross === 0 ? "" : "-₹" + ((-(allGross)).toFixed(2))}</div>
+                                <div style={allGross > 0.00 ? { color: "green" } : allGross === 0.00 ? { color: "grey" } : { color: "red" }} className={`${Styles.formInput1}`}>NA</div>
                                
-                                <div className={`${Styles.formInput1}`}>{allBrokerage === 0 ? " " : "₹" + (allBrokerage.toFixed(2))}</div>
+                                <div className={`${Styles.formInput1}`}>NA</div>
                                
-                                <div className={`${Styles.formInput1}`} style={allNet > 0.00 ? { color: "green" } : allBrokerage === 0.00 ? { color: "grey" } : { color: "red" }} >{allNet > 0.00 ? "+₹" + (allNet.toFixed(2)) : allNet === 0 ? " " : "-₹" + ((-(allNet)).toFixed(2))}</div>
+                                <div className={`${Styles.formInput1}`} style={allNet > 0.00 ? { color: "green" } : allBrokerage === 0.00 ? { color: "grey" } : { color: "red" }} >NA</div>
                                 </div>
                             </div>
                             </div>
 
-                            <button className={Styles.formButton}> Download Report</button>
+                            {/* <button className={Styles.formButton}>Download Report</button> */}
                         </div>
                         <div className={Styles.grid_1}>
                             <table className="grid1_table">
@@ -1090,9 +1084,9 @@ export default function PNLReport() {
                                                     <td className="grid2_td" >{elem.brokerage >0.00 ? "₹" + (elem.brokerage).toFixed(2) : "₹" + 0.00}</td>}
                                                     {(elem.pnl - elem.brokerage) !== undefined &&
                                                     <td className="grid2_td" style={(elem.pnl - elem.brokerage)>=0.00 ? { color: "green"}:  { color: "red"}}> {elem.pnl - elem.brokerage > 0.00 ? "+₹" + (elem.pnl - elem.brokerage).toFixed(2): "-₹" + ((-(elem.pnl - elem.brokerage)).toFixed(2))}</td>}
-                                                    <td className="grid2_td">{elem.numberOfTrade}</td>
-                                                    <td className="grid2_td">{elem.numberOfTrade}</td>
-                                                    <td className="grid2_td">{elem.numberOfTrade}</td>
+                                                    <td className="grid2_td">-</td>
+                                                    <td className="grid2_td">-</td>
+                                                    <td className="grid2_td">-</td>
                                                     <td className="grid2_td">{elem.numberOfTrade}</td>
                                                     <td className="grid2_td">{elem.lotUsed}</td>
                                                 </tr>}
