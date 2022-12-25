@@ -8,7 +8,7 @@ export default function DailyPNLReportHeader({role}) {
         <div>
             <ul className='navbar'>
                 <li>
-                    <NavLink to={"/main/admindashboard/pnlreport"}>Daily P&L Report</NavLink>
+                    <NavLink className='headers_li_links' to={"/main/admindashboard/pnlreport"}>Daily P&L Report</NavLink>
                 </li>
             </ul>
            

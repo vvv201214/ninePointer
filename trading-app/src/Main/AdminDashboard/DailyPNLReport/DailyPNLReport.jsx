@@ -498,15 +498,15 @@ export default function DailyPNLReport() {
                                 </form>
                             </div>
                             <div className={Styles.btn_div}>
-                                <span className={`${Styles.formLable}`}>Gross P&L</span>
-                                <input style={allGross> 0.00 ? { color: "green"}:  allGross === 0.00 ? { color: "grey"} : { color: "red"}   } type="text" value={allGross >0.00 ? "+₹" + (allGross.toFixed(2)): allGross=== 0? "" :"-₹" + ((-(allGross)).toFixed(2))} className={`${Styles.formInput} ${Styles.formInput1}`}/>
-                                <span className={Styles.formLable}>Transaction Cost </span>
-                                <input type="text" value={ allBrokerage ===0? " " : "₹" + (allBrokerage.toFixed(2))} className={`${Styles.formInput} ${Styles.formInput1}`} />
-                                <span className={Styles.formLable}>Net P&L</span>
-                                <input style={allNet>0.00 ? { color: "green"}: allBrokerage===0.00 ? { color: "grey"}: { color: "red"}} type="text" value={allNet >0.00 ? "+₹" + (allNet.toFixed(2)): allNet===0? " " : "-₹" + ((-(allNet)).toFixed(2))} className={`${Styles.formInput} ${Styles.formInput1}`} />
-                                
+                                <div className={`${Styles.formLable}`}>Gross P&L</div>
+                                <div style={allGross > 0.00 ? { color: "green" } : allGross === 0.00 ? { color: "grey" } : { color: "red" }} className={`${Styles.formInput1}`}>{allGross > 0.00 ? "+₹" + (allGross.toFixed(2)) : allGross === 0 ? "" : "-₹" + ((-(allGross)).toFixed(2))}</div>
+                                <div className={Styles.formLable}>Transaction Cost </div>
+                                <div className={`${Styles.formInput1}`}>{allBrokerage === 0 ? " " : "₹" + (allBrokerage.toFixed(2))}</div>
+                                <div className={Styles.formLable}>Net P&L</div>
+                                <div className={`${Styles.formInput1}`} style={allNet > 0.00 ? { color: "green" } : allBrokerage === 0.00 ? { color: "grey" } : { color: "red" }} >{allNet > 0.00 ? "+₹" + (allNet.toFixed(2)) : allNet === 0 ? " " : "-₹" + ((-(allNet)).toFixed(2))}</div>
+
                                 <button className={Styles.formButton}> Download Report</button>
-                            </div> 
+                            </div>
                         </div>
                         <div className={Styles.grid_1}>
                             <table className="grid1_table">
