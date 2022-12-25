@@ -1,33 +1,70 @@
 import React,{useState, useEffect} from 'react'
-import CompanyOrderPegination from '../CompanyOrderTabs/CompanyOrderPegination/CompanyOrderPegination';
+import Styles from "./TradersTradeBook.module.css"
 import axios from 'axios';
 
 const TodaysTradersTrade = ({setOrderCountTodayCompany}) => {
 
-    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/";
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
-  const [data, setData] = useState([]);
-  const[showPerPage, setShowPerPage] = useState(50)
-    const[pegination, setPegination] = useState({
-        start:0,
-        end:showPerPage,
-    })
+    const [data, setData] = useState([]);
+    const [clickToRemove, setclickToRemove] = useState(1);
+    const [skip, setSkip] = useState(0);
+    const [length, setLength] = useState(0);
 
-    const onPeginationOnChange= (start, end) => {
-        setPegination({start : start, end: end,})
-
-    }
-
+    let numberOfClickForRemoveNext = 0
 
     useEffect(()=>{
-        async function getData(){
-            const res = await axios.get(`${baseUrl}api/v1/readmocktradeuserDate`);
-            console.log(res.data);
-            setData(res.data);
+
+        axios.get(`${baseUrl}api/v1/readmocktradeuserDate`)
+        .then((res)=>{
+
+            setLength((res.data).length);
             setOrderCountTodayCompany((res.data).length);
-        }
-        getData();
+        }).catch((err)=>{
+            window.alert("Server Down");
+            return new Error(err);
+        })
+
+        axios.get(`${baseUrl}api/v1/readmocktradeusertodaydatapagination/${skip}/${30}`)
+        .then((res)=>{
+
+            setData(res.data);
+        }).catch((err)=>{
+            window.alert("Server Down");
+            return new Error(err);
+        })
     },[])
+
+    function nextData(){
+        setSkip((prev)=> prev+30)
+        console.log(skip)
+        axios.get(`${baseUrl}api/v1/readmocktradeusertodaydatapagination/${skip+30}/${30}`)
+        .then((res)=>{
+
+            setData(res.data);
+        }).catch((err)=>{
+            window.alert("Server Down");
+            return new Error(err);
+        })
+        setclickToRemove((prev)=>prev+1)
+    }
+
+    function prevData(){
+        setSkip((prev)=> prev-30)
+        console.log(skip)
+        axios.get(`${baseUrl}api/v1/readmocktradeusertodaydatapagination/${skip-30}/${30}`)
+        .then((res)=>{
+
+            setData(res.data);
+        }).catch((err)=>{
+            window.alert("Server Down");
+            return new Error(err);
+        })
+        setclickToRemove((prev)=>prev-1)
+    }
+    numberOfClickForRemoveNext = Math.ceil(((length))/30);
+    console.log(numberOfClickForRemoveNext, clickToRemove, length)
+
 
   return (
     <div>
@@ -50,7 +87,7 @@ const TodaysTradersTrade = ({setOrderCountTodayCompany}) => {
                                     <th className="grid2_th">Account</th>
                                     
                                 </tr> 
-                                {data.slice(pegination.start,  pegination.end).map((elem)=>{
+                                {data.map((elem)=>{
                                     return(
                                         <tr className="grid2_tr" key={elem.guid}>
                                             <td className="grid2_td">{elem.order_timestamp}</td>
@@ -68,9 +105,10 @@ const TodaysTradersTrade = ({setOrderCountTodayCompany}) => {
                                     )
                                 })}       
                             </table>  
-                            <CompanyOrderPegination showPerPage={showPerPage} 
-                            onPeginationOnChange={onPeginationOnChange}
-                            total={data.length}/>
+                            <div className={Styles.pegination_div}>
+                                <button className={Styles.PrevButtons} disabled={!(skip !== 0)} onClick={prevData}>Prev</button>
+                                <button className={Styles.nextButtons} disabled={!(numberOfClickForRemoveNext !== clickToRemove)} onClick={nextData}>Next</button>
+                            </div>
                         </div>
                     </div>
                 </div>

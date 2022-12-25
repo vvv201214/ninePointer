@@ -5,17 +5,17 @@ export default function TradingHeader() {
   return (
     <>
         <ul className='navbar'>
-            <li>
-                <NavLink to={"/main/tradingAccount/"} style={({isActive}) => isActive?{backgroundColor: "white", borderRadius: "3px"} :{colbackgroundColor:'black'} }>Accounts</NavLink>
+            <li >
+                <NavLink className='headers_li_links' to={"/main/tradingAccount/"} style={({isActive}) => isActive?{color: "#5479FC"} :{color:'black'} }>Accounts</NavLink>
             </li>
             {/* <li>
                 <NavLink to={"/main/tradingAccount/Tradingparameters"}>Trading Parameters</NavLink>
             </li> */}
-            <li>
-                <NavLink to={"/main/tradingAccount/brokerage/"}style={({isActive}) => isActive?{backgroundColor: "white", borderRadius: "3px"} :{colbackgroundColor:'black'} }>Brokerage</NavLink>
+            <li >
+                <NavLink className='headers_li_links' to={"/main/tradingAccount/brokerage/"}style={({isActive}) => isActive?{color: "#5479FC"} :{color:'black'} }>Brokerage</NavLink>
             </li>
-            <li>
-                <NavLink to={"/main/tradingAccount/accessrequesttoken/"}style={({isActive}) => isActive?{backgroundColor: "white", borderRadius: "3px"} :{colbackgroundColor:'black'} }>Trading access request token</NavLink>
+            <li >
+                <NavLink className='headers_li_links' to={"/main/tradingAccount/accessrequesttoken/"}style={({isActive}) => isActive?{color: "#5479FC"} :{color:'black'} }>Trading access request token</NavLink>
             </li>
         </ul>
         <Outlet/>

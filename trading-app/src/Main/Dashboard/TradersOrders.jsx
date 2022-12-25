@@ -7,10 +7,10 @@ export default function TradersOrders({orderCountTodayUser, orderCountHistoryUse
         <div className={style.Companyorder_div}>        
             <ul className={style.Companyorder_ul}>
                 <li className={style.Companyorder_li}>
-                    <NavLink to={"/main/dashboard/TradersOrders/"} style={({isActive}) => isActive?{backgroundColor: "white", borderRadius: "3px"} :{colbackgroundColor:'black'} }>Today's Trades-({orderCountTodayUser})</NavLink>
+                    <NavLink className='headers_li_links' to={"/main/dashboard/TradersOrders/"} style={({isActive}) => isActive?{color: "#5479FC"} :{color:'black'} }>Today's Trades-({orderCountTodayUser})</NavLink>
                 </li>
                 <li className={style.Companyorder_li}>
-                    <NavLink to={"/main/dashboard/TradersOrders/HistoryTrades/"} style={({isActive}) => isActive?{backgroundColor: "white", borderRadius: "3px"} :{colbackgroundColor:'black'} }>History Trades-({orderCountHistoryUser})</NavLink>
+                    <NavLink className='headers_li_links' to={"/main/dashboard/TradersOrders/HistoryTrades/"} style={({isActive}) => isActive?{color: "#5479FC"} :{color:'black'} }>History Trades-({orderCountHistoryUser})</NavLink>
                 </li>
             </ul>
         <Outlet/>

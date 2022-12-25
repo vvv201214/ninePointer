@@ -103,7 +103,7 @@ export default function SellModel({marketData, uIdProps, Render, isCompany, symb
                 })
                 setUserPermission(perticularUser);
             }).catch((err) => {
-                window.alert("Server Down");
+                // window.alert("Server Down");
                 return new Error(err);
             })
 
@@ -162,7 +162,7 @@ export default function SellModel({marketData, uIdProps, Render, isCompany, symb
                 })
                 setInstrumentAlgoData(activeInstrumentAlgo)
             }).catch((err) => {
-                window.alert("Server Down");
+                // window.alert("Server Down");
                 return new Error(err);
             })
         console.log("hii");
