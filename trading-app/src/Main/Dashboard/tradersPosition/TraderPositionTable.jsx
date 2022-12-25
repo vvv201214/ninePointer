@@ -8,8 +8,6 @@ import RunningPnl from "../PnlParts/RunningPnl";
 import ClosedPnl from "../PnlParts/ClosedPnl";
 import OverallPnl from "../PnlParts/OverallPnl";
 import { userContext } from "../../AuthContext";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons';
 
 function TraderPositionTable({ socket }) {
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
@@ -21,19 +19,17 @@ function TraderPositionTable({ socket }) {
     const [marketData, setMarketData] = useState([]);
 
     let date = new Date();
-    let todayDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
+    let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
     // let fake_date = "2022-12-16"
     let fake_date = "16-12-2022";
 
     useEffect(() => {
-
-        
-        axios.get(`${baseUrl}api/v1/readmocktradeuseremail/${getDetails.userDetails.email}`)
+        axios.get(`${baseUrl}api/v1/readmocktradeuserDate/${getDetails.userDetails.email}`)
         .then((res) => {
-            let data = (res.data).filter((elem)=>{
-                return elem.order_timestamp.includes(todayDate) && elem.status === "COMPLETE";
-            })
-            setData(data);
+            // let data = (res.data).filter((elem)=>{
+            //     return elem.order_timestamp.includes(todayDate) && elem.status === "COMPLETE";
+            // })
+            setData(res.data);
         }).catch((err)=>{
             return new Error(err);
         })
@@ -151,3 +147,4 @@ function TraderPositionTable({ socket }) {
     )
 }
 export default TraderPositionTable;
+

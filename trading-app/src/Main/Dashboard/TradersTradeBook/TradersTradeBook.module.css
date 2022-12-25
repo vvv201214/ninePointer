@@ -21,13 +21,3 @@
 /* .Companyorder_div{
    
 } */
-.pegination_div{
-    display: flex;
-    justify-content: space-between;
-}
-.pegination_btn{
-    background-color: rgb(189, 189, 189);
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-}

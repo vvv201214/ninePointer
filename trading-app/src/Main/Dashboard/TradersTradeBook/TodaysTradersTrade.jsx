@@ -1,31 +1,31 @@
-import React from "react";
-import axios from "axios";
-import { useEffect, useState } from "react";
-import CompanyOrderPegination from "./CompanyOrderPegination/CompanyOrderPegination";
-import "./CompanyOrder.module.css"
+import React,{useState, useEffect} from 'react'
+import CompanyOrderPegination from '../CompanyOrderTabs/CompanyOrderPegination/CompanyOrderPegination';
+import axios from 'axios';
 
-export default function HistoryTradesMock({setOrderCountHistoryCompany, orderCountHistoryCompany}){
+const TodaysTradersTrade = ({setOrderCountTodayCompany}) => {
 
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
     const [data, setData] = useState([]);
     const [clickToRemove, setclickToRemove] = useState(1);
     const [skip, setSkip] = useState(0);
+    const [length, setLength] = useState(0);
+
     let numberOfClickForRemoveNext = 0
 
     useEffect(()=>{
 
-        axios.get(`${baseUrl}api/v1/readmocktradecompany`)
+        axios.get(`${baseUrl}api/v1/readmocktradeuserDate`)
         .then((res)=>{
 
-            
-            setOrderCountHistoryCompany((res.data).length);
+            setLength((res.data).length);
+            setOrderCountTodayCompany((res.data).length);
         }).catch((err)=>{
             window.alert("Server Down");
             return new Error(err);
         })
 
-        axios.get(`${baseUrl}api/v1/readmocktradecompanypagination/${skip}/${50}`)
+        axios.get(`${baseUrl}api/v1/readmocktradeusertodaydatapagination/${skip}/${50}`)
         .then((res)=>{
 
             setData(res.data);
@@ -38,7 +38,7 @@ export default function HistoryTradesMock({setOrderCountHistoryCompany, orderCou
     function nextData(){
         setSkip((prev)=> prev+50)
         console.log(skip)
-        axios.get(`${baseUrl}api/v1/readmocktradecompanypagination/${skip+50}/${50}`)
+        axios.get(`${baseUrl}api/v1/readmocktradeusertodaydatapagination/${skip+50}/${50}`)
         .then((res)=>{
 
             setData(res.data);
@@ -52,7 +52,7 @@ export default function HistoryTradesMock({setOrderCountHistoryCompany, orderCou
     function prevData(){
         setSkip((prev)=> prev-50)
         console.log(skip)
-        axios.get(`${baseUrl}api/v1/readmocktradecompanypagination/${skip-50}/${50}`)
+        axios.get(`${baseUrl}api/v1/readmocktradeusertodaydatapagination/${skip-50}/${50}`)
         .then((res)=>{
 
             setData(res.data);
@@ -62,12 +62,12 @@ export default function HistoryTradesMock({setOrderCountHistoryCompany, orderCou
         })
         setclickToRemove((prev)=>prev-1)
     }
-    numberOfClickForRemoveNext = Math.ceil(((orderCountHistoryCompany))/50);
-    console.log(numberOfClickForRemoveNext, clickToRemove, orderCountHistoryCompany)
+    numberOfClickForRemoveNext = Math.ceil(((length))/50);
+    console.log(numberOfClickForRemoveNext, clickToRemove, length)
 
 
-    return(
-        <div>
+  return (
+    <div>
             <div className="main_Container">
                 <div className="right_side">
                     <div className="rightside_maindiv">
@@ -84,7 +84,6 @@ export default function HistoryTradesMock({setOrderCountHistoryCompany, orderCou
                                     <th className="grid2_th">Quantity</th>
                                     <th className="grid2_th">Avg. Price</th>
                                     <th className="grid2_th">Status</th>
-                                    <th className="grid2_th">AlgoName</th>
                                     <th className="grid2_th">Account</th>
                                     
                                 </tr> 
@@ -100,13 +99,12 @@ export default function HistoryTradesMock({setOrderCountHistoryCompany, orderCou
                                             <td className="grid2_td" style={elem.Quantity > 0 ? {color : "#428BCA",backgroundColor : "#b3ccff",fontWeight : 700}:{color : "red", backgroundColor : "#ffb3b3",fontWeight : 700}}>{elem.Quantity}</td>
                                             <td className="grid2_td">₹{elem.average_price.toFixed(2)}</td>
                                             <td className="grid2_td" style={{color : "#008000",backgroundColor : "#99ff99" , fontWeight : 700}}>{elem.status}</td>
-                                            <td className="grid2_td">{elem.algoBox.algoName}</td>
                                             <td className="grid2_td">{elem.placed_by}</td>
                                             
                                         </tr> 
                                     )
-                                })}        
-                            </table> 
+                                })}       
+                            </table>  
                             <div className="pegination_div">
                                 <button className="pegination_btn" disabled={!(skip !== 0)} onClick={prevData}>Prev</button>
                                 <button className="pegination_btn" disabled={!(numberOfClickForRemoveNext !== clickToRemove)} onClick={nextData}>Next</button>
@@ -116,5 +114,7 @@ export default function HistoryTradesMock({setOrderCountHistoryCompany, orderCou
                 </div>
             </div>
         </div>
-    )
+  )
 }
+
+export default TodaysTradersTrade;

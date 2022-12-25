@@ -13,8 +13,8 @@ let newCors = process.env.NODE_ENV === "production" ? "http://3.110.187.5/" : "h
 const io = new Server(9000, {
   cors: {
 
-    // origin: newCors,
-    origin: "http://3.110.187.5/",
+    origin: newCors,
+    // origin: "http://3.110.187.5/",
 
     methods: ['GET', 'POST', 'PATCH'],
   },
@@ -145,13 +145,6 @@ async function parameters(io, socket) {
           throw new Error(err)
         }
         console.log('Closed connection on error', error);
-        // console.log(eventEmitOnError);
-        // if(eventEmitOnError){
-        //   eventEmitOnError = false;
-        //   const data = "Incorrect access token or api key";
-        //   socket.emit('wrongToken', data);
-        // }
-
       }
     
       function onClose(reason) {
@@ -180,6 +173,3 @@ async function parameters(io, socket) {
 
 }
 module.exports = parameters;
-
-
-

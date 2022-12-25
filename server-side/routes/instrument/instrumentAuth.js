@@ -4,6 +4,13 @@ require("../../db/conn");
 const Instrument = require("../../models/Instruments/instrumentSchema");
 const axios = require('axios');
 const fetchToken = require("../../marketData/generateSingleToken");
+const RequestToken = require("../../models/Trading Account/requestTokenSchema");
+const Account = require("../../models/Trading Account/accountSchema");
+var tickerObj = require('../../marketData/kiteConnect')
+
+const {tikerFunc} = tickerObj
+
+
 
 router.post("/instrument", async (req, res)=>{
 
@@ -33,6 +40,8 @@ router.post("/instrument", async (req, res)=>{
             const instruments = new Instrument({instrument, exchange, symbol, status, uId, createdOn, lastModified, createdBy, lotSize, instrumentToken, contractDate, maxLot});
             console.log("instruments", instruments)
             instruments.save().then(()=>{
+                // tikerFunc();
+                // console.log("tikerFunc");
                 res.status(201).json({massage : "data enter succesfully"});
             }).catch((err)=> res.status(500).json({error:"Failed to enter data"}));
         }).catch(err => {console.log(err, "fail")});
@@ -96,6 +105,11 @@ router.put("/readInstrumentDetails/:id", async (req, res)=>{
             }
         })
         console.log("this is role", instrument);
+        // if(instrument[0].status === "Active"){
+            // tikerFunc(token);
+            // console.log("tikerFunc");
+        // }
+
         res.send(instrument)
     } catch (e){
         res.status(500).json({error:"Failed to edit data Check access token"});
