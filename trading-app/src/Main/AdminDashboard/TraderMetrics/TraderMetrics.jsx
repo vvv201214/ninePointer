@@ -113,7 +113,7 @@ export default function TraderMetrics() {
                     lotUsed = 0;
                 
                     console.log(detailPnl);
-    
+                    
                     setDetailPnl(detailPnl)
                 }).catch((err)=>{
                     return new Error(err);
@@ -505,16 +505,21 @@ export default function TraderMetrics() {
                         <div className={Styles.grid_11}>
                             <table className="grid1_table">
                                 <tr className="tableheader">
-                                    <th className="grid2_th">Date</th>
-                                    <th className="grid2_th">Gross(C-P&L)</th>
-                                    <th className="grid2_th">Tran. Cost(C)</th>
-                                    <th className="grid2_th">Net(C-P&L)</th>
-                                    <th className="grid2_th">Gross(T-P&L)</th>
-                                    <th className="grid2_th">Tran. Cost(T)</th>
-                                    <th className="grid2_th">Net(T-P&L)</th>
-                                    <th className="grid2_th"># of Traders</th>
-                                    <th className="grid2_th"># of Trades</th>
-                                    <th className="grid2_th">Details</th>
+                                    <th className="grid2_th" style={{background : "#11c6c4",color:"black"}}>Trader</th>
+                                    <th className="grid2_th" style={{background : "#11c6c4",color:"black"}}>Gross P&L</th>
+                                    <th className="grid2_th" style={{background : "#11c6c4",color:"black"}}>Tran. Cost</th>
+                                    <th className="grid2_th" style={{background : "#11c6c4",color:"black"}}>Net P&L</th>
+                                    <th className="grid2_th" style={{background : "#11c6c4",color:"black"}}>Trading Days</th>
+                                    <th className="grid2_th" style={{background : "#11c6c4",color:"black"}}>(Avg) Probable P&L</th>
+                                    <th className="grid2_th" style={{background : "#11c6c4",color:"black"}}>Trader Score</th>
+                                    <th className="grid2_th" style={{background : "green",color:"white"}}>(+) Days</th>
+                                    <th className="grid2_th" style={{background : "green",color:"white"}}>(+) Days P&L</th>
+                                    <th className="grid2_th" style={{background : "green",color:"white"}}>(Avg) Positive P&L</th>
+                                    <th className="grid2_th" style={{background : "red",color:"white"}}>(-) Days</th>
+                                    <th className="grid2_th" style={{background : "red",color:"white"}}>(-) Days P&L</th>
+                                    <th className="grid2_th" style={{background : "red",color:"white"}}>(Avg) Negative P&L</th>
+                                    <th className="grid2_th" style={{background : "red",color:"white"}}>% Loss Days</th>
+                                    
                                     {/* <th className="grid2_th">{detailPnl[0].name}</th> */}
                                 </tr>
                                 {
@@ -539,7 +544,11 @@ export default function TraderMetrics() {
                                             <td className="grid2_td">-</td>
                                             <td className="grid2_td">-</td>
                                             <td className="grid2_td">-</td>
+                                            <td className="grid2_td">-</td>
+                                            <td className="grid2_td">-</td>
                                             <td className="grid2_td">{elem.numberOfTrader}</td>
+                                            <td className="grid2_td">{elem.numberOfTrade}</td>
+                                            <td className="grid2_td">{elem.numberOfTrade}</td>
                                             <td className="grid2_td">{elem.numberOfTrade}</td>
                                             <td className="grid2_td"><button>Details</button></td>
 
