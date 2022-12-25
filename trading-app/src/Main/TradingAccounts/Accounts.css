@@ -163,6 +163,10 @@
     white-space: nowrap;
 }
 
+.grid2_tr:hover{
+    background-color: #d7d7d7;
+}
+
 .grid1_table{
     width: 100%;
     border: none;

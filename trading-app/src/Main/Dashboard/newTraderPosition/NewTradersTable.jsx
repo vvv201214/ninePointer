@@ -86,7 +86,7 @@ export default function NewTradersTable({socket}) {
             <div className="main_Container">
                 <div className="right_side">
                     <div className="rightside_maindiv">
-                        <span className="grid2_span">Overall PNL-Traders</span>
+                        <span className="grid2_span">Overall P&L(Traders)-Mock</span>
                         <div className="grid_2">
                             <OverallPnl marketData={marketData} tradeData={tradeData} data={data} />
                         </div>
@@ -98,7 +98,7 @@ export default function NewTradersTable({socket}) {
                         <div className="grid_2">
                             <ClosedPnl marketData={marketData} tradeData={tradeData} data={data} />
                         </div> */}
-                        <span className="grid2_span">Traders PNL</span>
+                        <span className="grid2_span">Traders Wise P&L(Traders)-Mock</span>
                         <div className="grid_2">
                             <TradersPNLTrader marketData={marketData} tradeData={tradeData} />
                         </div>

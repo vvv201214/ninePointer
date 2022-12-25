@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons';  
 
 
-function TradersDashboard(){
+function Dashboard(){
     return(
         <div>
             <div className="main_Container">
@@ -61,4 +61,4 @@ function TradersDashboard(){
         </div>
     )
 }
-export default TradersDashboard;
+export default Dashboard;

@@ -138,7 +138,9 @@ export default function OverallPnl({marketData, tradeData, data}) {
                 <th className="grid2_th">Gross P&L</th>
                 <th className="grid2_th">Change(%)</th>
             </tr> 
-            {
+            {overallPnlArr.length == 0 ? 
+            <tr className='no-data'>No Data Available</tr> :
+            
             overallPnlArr.map((elem, index)=>{
 
 
