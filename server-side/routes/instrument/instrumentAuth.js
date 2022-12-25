@@ -106,7 +106,7 @@ router.put("/readInstrumentDetails/:id", async (req, res)=>{
         })
         console.log("this is role", instrument);
         // if(instrument[0].status === "Active"){
-            tikerFunc();
+            tikerFunc(token);
             console.log("tikerFunc");
         // }
 

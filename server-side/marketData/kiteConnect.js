@@ -284,17 +284,17 @@ const Account = require("../models/Trading Account/accountSchema");
 
 // console.log("ticker", ticker)
 // let token;
-async function tikerFunc(){
-  // token = await fetchData(getApiKey, getAccessToken);
-
-  //   var items = token;
-  //   console.log("check tiker")
-  //   console.log('subscribe', ticker.subscribe(items));
-  //   ticker.setMode(ticker.modeFull, items);
-  console.log(ticker)
-  ticker.disconnect();
-  ticker.connect();
-  // ticker.reconnect();
+async function tikerFunc(token){
+//   // token = await fetchData(getApiKey, getAccessToken);
+//     var items = [];
+//     items.push(token);
+//     console.log("check tiker")
+//     console.log('subscribe', ticker.subscribe(items));
+//     ticker.setMode(ticker.modeFull, items);
+//   console.log(ticker)
+//   // ticker.disconnect();
+//   // ticker.connect();
+//   // ticker.reconnect();
   
 }
 
@@ -428,6 +428,7 @@ async function parameters(io, socket, ticker) {
 
 }
 module.exports = {parameters, tikerFunc};
+// module.exports = {parameters};
 
 
 

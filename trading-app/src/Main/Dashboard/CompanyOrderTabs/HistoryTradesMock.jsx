@@ -4,44 +4,67 @@ import { useEffect, useState } from "react";
 import CompanyOrderPegination from "./CompanyOrderPegination/CompanyOrderPegination";
 
 
-export default function HistoryTradesMock({setOrderCountHistoryCompany}){
+export default function HistoryTradesMock({setOrderCountHistoryCompany, orderCountHistoryCompany}){
 
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
     const [data, setData] = useState([]);
-    const[showPerPage, setShowPerPage] = useState(50)
-    const[pegination, setPegination] = useState({
-        start:0,
-        end:showPerPage,
-    })
-
-    const onPeginationOnChange= (start, end) => {
-        setPegination({start : start, end: end,})
-
-    }
+    const [clickToRemove, setclickToRemove] = useState(1);
+    const [skip, setSkip] = useState(0);
+    let numberOfClickForRemoveNext = 0
 
     useEffect(()=>{
+
         axios.get(`${baseUrl}api/v1/readmocktradecompany`)
         .then((res)=>{
 
-            // (res.data).sort((a, b)=> {
-
-            //     if (a.order_timestamp < b.order_timestamp) {
-            //       return 1;
-            //     }
-            //     if (a.order_timestamp > b.order_timestamp) {
-            //       return -1;
-            //     }
-            //     return 0;
-            //   });
-
-            setData(res.data);
+            
             setOrderCountHistoryCompany((res.data).length);
         }).catch((err)=>{
             window.alert("Server Down");
             return new Error(err);
         })
+
+        axios.get(`${baseUrl}api/v1/readmocktradecompanypagination/${skip}/${50}`)
+        .then((res)=>{
+
+            setData(res.data);
+        }).catch((err)=>{
+            window.alert("Server Down");
+            return new Error(err);
+        })
     },[])
+
+    function nextData(){
+        setSkip((prev)=> prev+50)
+        console.log(skip)
+        axios.get(`${baseUrl}api/v1/readmocktradecompanypagination/${skip+50}/${50}`)
+        .then((res)=>{
+
+            setData(res.data);
+        }).catch((err)=>{
+            window.alert("Server Down");
+            return new Error(err);
+        })
+        setclickToRemove((prev)=>prev+1)
+    }
+
+    function prevData(){
+        setSkip((prev)=> prev-50)
+        console.log(skip)
+        axios.get(`${baseUrl}api/v1/readmocktradecompanypagination/${skip-50}/${50}`)
+        .then((res)=>{
+
+            setData(res.data);
+        }).catch((err)=>{
+            window.alert("Server Down");
+            return new Error(err);
+        })
+        setclickToRemove((prev)=>prev-1)
+    }
+    numberOfClickForRemoveNext = Math.ceil(((orderCountHistoryCompany))/50);
+    console.log(numberOfClickForRemoveNext, clickToRemove, orderCountHistoryCompany)
+
 
     return(
         <div>
@@ -65,7 +88,7 @@ export default function HistoryTradesMock({setOrderCountHistoryCompany}){
                                     <th className="grid2_th">Account</th>
                                     
                                 </tr> 
-                                {data.slice(pegination.start,  pegination.end).map((elem)=>{
+                                {data.map((elem)=>{
                                     return(
                                         <tr className="grid2_tr" key={elem.guid}>
                                             <td className="grid2_td">{elem.order_timestamp}</td>
@@ -84,9 +107,10 @@ export default function HistoryTradesMock({setOrderCountHistoryCompany}){
                                     )
                                 })}        
                             </table> 
-                            <CompanyOrderPegination showPerPage={showPerPage} 
-                            onPeginationOnChange={onPeginationOnChange}
-                            total={data.length}/>
+                            <div className="pegination_div">
+                                <button className="pegination_prev_btn" disabled={!(skip !== 0)} onClick={prevData}>Prev</button>
+                                <button className="pegination_next_btn" disabled={!(numberOfClickForRemoveNext !== clickToRemove)} onClick={nextData}>Next</button>
+                            </div>
                         </div>
                     </div>
                 </div>

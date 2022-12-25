@@ -250,7 +250,30 @@ router.get("/readmocktradecompanypariculardate/:date", (req, res)=>{
     })
 })
 
+router.get("/readmocktradecompanypagination/:skip/:limit", (req, res)=>{
+    console.log(req.params)
+    const {limit, skip} = req.params
+    MockTradeDetails.find().sort({order_timestamp:-1}).skip(skip).limit(limit)
+    .then((data)=>{
+        return res.status(200).send(data);
+    })
+    .catch((err)=>{
+        return res.status(422).json({error : "date not found"})
+    })
+})
 
+router.get("/readmocktradecompanytodaydatapagination/:skip/:limit", (req, res)=>{
+    let date = new Date();
+    let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
+    const {limit, skip} = req.params
+    MockTradeDetails.find({order_timestamp: {$regex: todayDate}}).sort({order_timestamp:-1}).skip(skip).limit(limit)
+    .then((data)=>{
+        return res.status(200).send(data);
+    })
+    .catch((err)=>{
+        return res.status(422).json({error : "date not found"})
+    })
+})
 
 
 

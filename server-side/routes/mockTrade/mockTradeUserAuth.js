@@ -160,6 +160,31 @@ router.get("/readmocktradeuserDate/:email", (req, res)=>{
     })
 })
 
+router.get("/readmocktradeusertodaydatapagination/:email/:skip/:limit", (req, res)=>{
+    const {email, skip, limit} = req.params
+    let date = new Date();
+    let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
+    console.log(todayDate);
+    MockTradeDetails.find({order_timestamp: {$regex: todayDate}, userId: {$regex: email}}).sort({order_timestamp:-1}).skip(skip).limit(limit)
+    .then((data)=>{
+        // (data).sort((a, b)=> {
+
+        //     if (a.order_timestamp < b.order_timestamp) {
+        //       return 1;
+        //     }
+        //     if (a.order_timestamp > b.order_timestamp) {
+        //       return -1;
+        //     }
+        //     return 0;
+        //   });
+        // data.reverse();
+        return res.status(200).send(data);
+    })
+    .catch((err)=>{
+        return res.status(422).json({error : "date not found"})
+    })
+})
+
 router.get("/readmocktradeuserDate", (req, res)=>{
     let date = new Date();
     let todayDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
@@ -183,10 +208,44 @@ router.get("/readmocktradeuserDate", (req, res)=>{
     })
 })
 
-// /:email/:firstDate/:secondDate
-router.get("/readmocktradeuserbetweenrange", (req, res)=>{
-    const {email, firstDate, secondDate} = req.params
-    MockTradeDetails.find({ order_timestamp: { $gt: "05-12-2022 12:15:54", $lt: "05-12-2022 12:11:01" } })
+
+router.get("/readmocktradeusertodaydatapagination/:skip/:limit", (req, res)=>{
+    let date = new Date();
+    let todayDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
+    const {skip, limit} = req.params
+    MockTradeDetails.find({order_timestamp: {$regex: todayDate}}).sort({order_timestamp:-1}).skip(skip).limit(limit)
+    .then((data)=>{
+        // (data).sort((a, b)=> {
+
+        //     if (a.order_timestamp < b.order_timestamp) {
+        //       return 1;
+        //     }
+        //     if (a.order_timestamp > b.order_timestamp) {
+        //       return -1;
+        //     }
+        //     return 0;
+        //   });
+        return res.status(200).send(data);
+    })
+    .catch((err)=>{
+        return res.status(422).json({error : "date not found"})
+    })
+})
+
+router.get("/readmocktradeuserpagination/:email/:skip/:limit", (req, res)=>{
+    const {email, skip, limit} = req.params
+    MockTradeDetails.find({userId: email}).sort({order_timestamp:-1}).skip(skip).limit(limit)
+    .then((data)=>{
+        return res.status(200).send(data);
+    })
+    .catch((err)=>{
+        return res.status(422).json({error : "date not found"})
+    })
+})
+
+router.get("/readmocktradeuserpagination/:skip/:limit", (req, res)=>{
+    const {skip, limit} = req.params
+    MockTradeDetails.find().sort({order_timestamp:-1}).skip(skip).limit(limit)
     .then((data)=>{
         return res.status(200).send(data);
     })

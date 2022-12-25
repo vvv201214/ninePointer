@@ -89,7 +89,7 @@ export default function Routing() {
                             <Route path='/main/dashboard/TraderPosition' element={<TraderPosition/>}></Route>
                             <Route path='/main/dashboard' element={<TradersPosition/>}></Route>
                             <Route path='/main/dashboard/CompanyOrders' element={<CompanyOrders orderCountHistoryCompany={orderCountHistoryCompany} orderCountTodayCompany={orderCountTodayCompany}/>}> 
-                                <Route path='/main/dashboard/CompanyOrders' element={<TodaysTradesMock setOrderCountTodayCompany={setOrderCountTodayCompany}/>} ></Route>
+                                <Route path='/main/dashboard/CompanyOrders' element={<TodaysTradesMock setOrderCountTodayCompany={setOrderCountTodayCompany} orderCountTodayCompany={orderCountTodayCompany}/>} ></Route>
                                 <Route path='/main/dashboard/CompanyOrders/HistoryTradesMock' element={<HistoryTradesMock setOrderCountHistoryCompany={setOrderCountHistoryCompany}/>} ></Route>
                             </Route>
                             <Route path='/main/dashboard/TradersOrders' element={<TradersOrders orderCountHistoryUser={orderCountHistoryUser} orderCountTodayUser={orderCountTodayUser}/>}>
