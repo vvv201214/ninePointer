@@ -10,7 +10,7 @@ app.use(require("cookie-parser")());
 dotenv.config({ path: './config.env' });
 
 console.log(kiteConnect);
-app.get('/api/v1/ws', kiteConnect);
+app.get('/api/v1/ws', kiteConnect.parameters);
 app.get('/api/v1/data', fetch);
 
 // app.get('/ws', kiteConnect);
