@@ -294,10 +294,19 @@ export default function DailyPNLReport() {
 
     function pnlCalculation(data){
         let hash = new Map();
+        let hashForTraderCount = new Map();
+        let numberOfTrader = 0;
 
         for(let i = data.length-1; i >= 0 ; i--){
+
             numberOfTrade += 1;
             transactionCost += Number(data[i].brokerage);
+
+            if(!hashForTraderCount.has(data[i].userId)){
+                numberOfTrader += 1;
+                hashForTraderCount.set(data[i].userId, 1);
+            }
+
             if(hash.has(data[i].symbol)){
                 let obj = hash.get(data[i].symbol);
                 if(data[i].buyOrSell === "BUY"){
@@ -365,7 +374,7 @@ export default function DailyPNLReport() {
             })
         })
 
-        console.log(liveDetailsArr)
+        console.log(hashForTraderCount)
         overallPnl.map((elem, index)=>{
             if(selectUserState === "All user"){
                 name = "All User"
@@ -390,7 +399,8 @@ export default function DailyPNLReport() {
             name: name,
             numberOfTrade: numberOfTrade,
             lotUsed: lotUsed,
-            date: `${date[2]}-${date[1]}-${date[0]}`
+            date: `${date[2]}-${date[1]}-${date[0]}`,
+            numberOfTrader: numberOfTrader
         }
 
         return newObj;
@@ -495,10 +505,10 @@ export default function DailyPNLReport() {
                                             {(elem.pnl - elem.brokerage) !== undefined &&
                                             <td className="grid2_td" style={(elem.pnl - elem.brokerage)>=0.00 ? { color: "green"}:  { color: "red"}}> {elem.pnl - elem.brokerage > 0.00 ? "+₹" + (elem.pnl - elem.brokerage).toFixed(2): "-₹" + ((-(elem.pnl - elem.brokerage)).toFixed(2))}</td>}
                                             <td className="grid2_td">{elem.numberOfTrade}</td>
-                                            <td className="grid2_td">{elem.lotUsed}</td>
-                                            <td className="grid2_td">{elem.lotUsed}</td>
-                                            <td className="grid2_td">{elem.lotUsed}</td>
-                                            <td className="grid2_td">{elem.lotUsed}</td>
+                                            <td className="grid2_td"></td>
+                                            <td className="grid2_td"></td>
+                                            <td className="grid2_td">{elem.numberOfTrader}</td>
+                                            <td className="grid2_td">{elem.numberOfTrade}</td>
                                             <td className="grid2_td"><button>Details</button></td>
 
                                         </tr>}
