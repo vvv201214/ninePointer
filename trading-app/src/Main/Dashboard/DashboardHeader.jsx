@@ -29,6 +29,9 @@ export default function DashboardHeader({role}) {
                 <li>
                     <NavLink to={"/main/dashboard/CompanyOrders"}>Company(Orders)</NavLink>
                 </li>
+                <li>
+                    <NavLink to={"/main/dashboard/TradersTradeBook"}>Traders(Orders)</NavLink>
+                </li>
                
             </ul>
             </div>

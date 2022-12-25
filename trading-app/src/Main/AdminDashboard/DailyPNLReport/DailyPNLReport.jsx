@@ -144,7 +144,7 @@ export default function DailyPNLReport() {
             }
         }
 
-    }, [getDetails, render])
+    }, [getDetails, detailPnlArr])
 
 
     useEffect(() => {
@@ -224,9 +224,6 @@ export default function DailyPNLReport() {
         } 
       console.log("after sorting", detailPnlArr);
 
-      setTimeout(()=>{
-        render ? setRender(false) : setRender(true)
-      },3000)
     }
     
     function secondDateChange(e){
@@ -247,24 +244,9 @@ export default function DailyPNLReport() {
 
         console.log(firstDate ,secondDate);
         console.log(firstDate < secondDate);
-
-        // axios.get(`${baseUrl}api/v1/readmocktradecompany`)
-        // .then((res) => {
-        //     let filteredData = (res.data).filter((elem)=>{
-        //         let timeStamp = elem.order_timestamp;
-        //         let oneDateSplit = (timeStamp).split(" ");
-        //         let twoDateSplit = oneDateSplit[0].split("-");
-        //         timeStamp = `${twoDateSplit[2]}-${twoDateSplit[1]}-${twoDateSplit[0]}`
-
-        //         return timeStamp >= firstDate && timeStamp <= secondDate;
-        //     })
-        //     console.log(filteredData);
             if(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
                 while(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
                     console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` , secondDate)
-                    // let firstDateDigit = Number(firstDateSplit[2]);
-                    // let secondDateDigit = Number(secondDateSplit[2]);
-
 
                     axios.get(`${baseUrl}api/v1/readmocktradecompanypariculardate/${`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`}`)
                     .then((res)=>{
@@ -272,9 +254,6 @@ export default function DailyPNLReport() {
 
                         console.log(newObj);
                         detailPnl.push(JSON.parse(JSON.stringify(newObj)));
-                        // if(newObj.numberOfTrade){
-                            
-                        // }
                         
                         transactionCost = 0;
                         totalPnl = 0;
@@ -286,16 +265,6 @@ export default function DailyPNLReport() {
                     }).catch((err)=>{
                         return new Error(err);
                     })
-
-
-                    // let singleDateData = filteredData.filter((elem)=>{
-                    //     let splitting = (elem.order_timestamp).split(" ");
-                    //     return splitting[0] === (`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`)
-                    // })
-                    
-                    // console.log(singleDateData, `${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`);
-                    
-                    // newObj.date = `${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`;
 
  
                     if((firstDateSplit[2]) < 9){
@@ -317,13 +286,9 @@ export default function DailyPNLReport() {
                     }else{
                         (firstDateSplit[2]) = Number(firstDateSplit[2]) + 1;
                     }
-                    
                 }
             } 
         console.log(detailPnl);
-        setTimeout(()=>{
-            render ? setRender(false) : setRender(true)
-          },3000)
     }
 
 
@@ -481,20 +446,7 @@ export default function DailyPNLReport() {
                                     <input type="date" value={firstDate} className={Styles.formInput} onChange={(e)=>{firstDateChange(e)}}/>
                                     <label htmlFor=""  className={Styles.formLable}>End Date</label>
                                     <input type="date" value={secondDate} className={Styles.formInput} onChange={(e)=>{secondDateChange(e)}}/>
-                                    {/* {getDetails.userDetails.role === "admin" &&
-                                    <>
-                                     <label htmlFor="" className={Styles.formLable}>Trader</label>
-                                    <select name="" id="" className={Styles.formSelect} onChange={(e)=>{selectUser(e)}} >
-                                        <option value="Select User">Select User</option>
-                                        {userDetail.map((elem)=>{
-                                            return(
-                                                <option value={elem.name}>{elem.name}</option>
-                                            )
-                                        })}
-                                        <option value="All User">All User</option>
-                                    </select> 
-                                    </>
-                                     } */}
+
                                 </form>
                             </div>
                             <div className={Styles.btn_div}>
@@ -526,7 +478,6 @@ export default function DailyPNLReport() {
                                 {
 
                                 detailPnlArr.map((elem)=>{
-
                                     let data = (elem.date).split("-");
                                     return(
                                         <>
