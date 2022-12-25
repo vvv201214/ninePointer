@@ -6,7 +6,7 @@ import UserList from "./UserList";
 
 export default function AddUser({algoName}) {
     
-    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:8000/"
     
     let date = new Date();
     const getDetails = useContext(userContext);

@@ -6,7 +6,7 @@ import axios from "axios"
 import uniqid from "uniqid";
 
 export default function UserList({addUser, setAddUser, setPermissionData, algoName, reRender}) {
-    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:8000/"
     const [data, setData] = useState([]);
     const [permissionArr, setPermission] = useState([]);
     // const {setReRender, reRender} = Render;

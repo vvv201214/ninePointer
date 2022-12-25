@@ -8,7 +8,7 @@ import Styles from "./TradingAccountsCSSFiles/TradingAccounts.module.css";
 import TradingAccountsEditModel from "./TradingEditIcon/TradingAccountsEditModel";
 
 function TradingAccounts() {
-    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:8000/"
 
     let uId = uniqid();
     let date = new Date();

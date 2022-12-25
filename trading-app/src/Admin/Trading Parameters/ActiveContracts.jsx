@@ -5,7 +5,7 @@ export default function ActiveContracts() {
     const [data, setData] = useState([]);
 
     useEffect(()=>{
-        axios.get("http://localhost:5000/readAdminDetails")
+        axios.get("http://localhost:8000/readAdminDetails")
         .then((res)=>{
             console.log("main data", res.data);
             let arr = res.data;

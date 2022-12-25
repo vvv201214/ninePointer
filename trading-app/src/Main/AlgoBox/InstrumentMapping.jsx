@@ -7,7 +7,7 @@ import Styles from "./AlgoModuleCSSFiles/InstrumentMapping.module.css";
 import InstrumentMappingEditModel from "./AlgoEditIcon/InstrumentMappingEditModel";
 
 function InstrumentMapping() {
-    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:8000/"
 
     let uId = uniqid();
     let date = new Date();

@@ -15,7 +15,7 @@ export default function ClosedPnl({marketData, tradeData, data}) {
     let showTotal = true;
     useEffect(()=>{
 
-        // axios.get("http://localhost:5000/usertradedata")
+        // axios.get("http://localhost:8000/usertradedata")
         // .then((res) => {
         //     let data = (res.data).filter((elem)=>{
         //         return elem.createdOn.includes(todayDate) && elem.status === "COMPLETE";

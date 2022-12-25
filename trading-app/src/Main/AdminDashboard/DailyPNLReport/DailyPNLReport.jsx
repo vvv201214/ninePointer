@@ -8,7 +8,7 @@ import { io } from "socket.io-client";
 
 export default function DailyPNLReport() {
     let baseUrl1 = process.env.NODE_ENV === "production" ? "/" : "http://localhost:9000/"
-    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:8000/"
 
     let socket;
     try{

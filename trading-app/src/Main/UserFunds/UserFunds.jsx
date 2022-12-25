@@ -8,7 +8,7 @@ export default function Funds() {
     const getDetails = useContext(userContext);
     const [userDetail, setUserDetail] = useState([]);
     const [userTradeDetails, setUserTradeDetails] = useState([]);
-    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:8000/"
     let [firstDate, setFirstDate] = useState("");
     const [selectUserState, setSelectUserState] = useState("All User");
     let secondDate = "";

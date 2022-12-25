@@ -23,7 +23,7 @@ export default function DetailForm(props) {
         setDetails(details);
         const {date, pe, ce, contractDate, ceTicker, peTicker, enableTrade, quantity, index, allowedLot, amount} = details
 
-        const res = await fetch("http://localhost:5000/admin", {
+        const res = await fetch("http://localhost:8000/admin", {
             method: "POST",
             headers: {
                 "content-type" : "application/json"

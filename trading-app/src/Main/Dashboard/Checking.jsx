@@ -4,7 +4,7 @@ import axios from "axios";
 
 function Checking(data){
     useEffect(()=>{
-        // axios.get("http://localhost:5000/readBrokerage")
+        // axios.get("http://localhost:8000/readBrokerage")
         // .then((res) => {
         //     console.log(res.data)
         // }).catch((err)=>{

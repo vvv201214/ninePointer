@@ -20,7 +20,7 @@ function VarietyForm() {
 
         const {name, active, modifiedOn, createdOn} = list[list.length-1];
 
-        const res = await fetch("http://localhost:5000/apiVeriety", {
+        const res = await fetch("http://localhost:8000/apiVeriety", {
             method: "POST",
             headers: {
                 "content-type" : "application/json"

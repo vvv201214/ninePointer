@@ -6,7 +6,7 @@ export default function TotalDataAdmin() {
     const [letestData, setLetestData] = useState([]);
 
     useEffect(()=>{
-        axios.get("http://localhost:5000/readAdminDetails")
+        axios.get("http://localhost:8000/readAdminDetails")
         .then((res)=>{
             console.log("main data", res.data);
             setData(res.data);

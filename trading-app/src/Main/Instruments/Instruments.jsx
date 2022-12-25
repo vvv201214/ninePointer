@@ -8,7 +8,7 @@ import InstrumentsEditModel from "./InstrumentEditModel/InstrumentsEditModel";
 
 
 function Instruments() {
-    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:8000/"
 
     let uId = uniqid();
     let date = new Date();

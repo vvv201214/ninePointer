@@ -32,7 +32,7 @@
 // });
 
 // async function parameters(io, socket) {
-//   let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+//   let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:8000/"
 //   let date = new Date();
 //   let today = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`
 
@@ -135,7 +135,7 @@
  
 //       async function onError(error) {
 //         try{
-//           let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+//           let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:8000/"
 //             let liveData = await axios.get(`${baseUrl}api/v1/getliveprice`)
 //               let ticks = liveData.data
 //               console.log(ticks);
@@ -196,7 +196,7 @@ const Account = require("../models/Trading Account/accountSchema");
 
 // function kiteTickerFunc(){
 
-  let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+  let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:8000/"
   let date = new Date();
   let today = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`
   let ticker;
@@ -382,7 +382,7 @@ async function parameters(io, socket, ticker) {
         if(getApiKey !== undefined && getAccessToken !== undefined){
           try{
             console.log(error);
-            let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+            let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:8000/"
               let liveData = await axios.get(`${baseUrl}api/v1/getliveprice`)
                 let ticks = liveData.data
                 console.log('tick', ticks);

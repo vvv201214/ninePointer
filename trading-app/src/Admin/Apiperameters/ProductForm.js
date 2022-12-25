@@ -19,7 +19,7 @@ function ProductForm() {
     
             const {name, active, modifiedOn, createdOn} = list[list.length-1];
     
-            const res = await fetch("http://localhost:5000/apiProduct", {
+            const res = await fetch("http://localhost:8000/apiProduct", {
                 method: "POST",
                 headers: {
                     "content-type" : "application/json"

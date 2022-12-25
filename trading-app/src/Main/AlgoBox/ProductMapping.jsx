@@ -7,7 +7,7 @@ import Styles from "./AlgoModuleCSSFiles/ProductMapping.module.css";
 import ProductMappingEditModel from "./AlgoEditIcon/ProductMappingEditModel";
 
 function ProductMapping(){
-    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:8000/"
     let uId = uniqid();
     let date = new Date();
     let createdOn = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`

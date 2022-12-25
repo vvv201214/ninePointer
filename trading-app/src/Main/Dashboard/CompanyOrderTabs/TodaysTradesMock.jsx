@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import CompanyOrderPegination from "./CompanyOrderPegination/CompanyOrderPegination";
 
 function TodaysTradesMock({setOrderCountTodayCompany}){
-    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:8000/"
 
     const [data, setData] = useState([]);
     const[showPerPage, setShowPerPage] = useState(50)

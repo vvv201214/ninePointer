@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import CompanyOrderPegination from "../CompanyOrderTabs/CompanyOrderPegination/CompanyOrderPegination";
 
 function TodaysTrades({info, setOrderCountTodayUser}){
-    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:8000/"
 
     let date = new Date();
     let todayDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`

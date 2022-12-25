@@ -10,7 +10,7 @@ import OverallPnl from "../PnlParts/OverallPnl";
 import { userContext } from "../../AuthContext";
 
 function TraderPositionTable({ socket }) {
-    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:8000/"
     const setDetails = useContext(userContext);
     const getDetails = useContext(userContext);
     const [reRender, setReRender] = useState(true);

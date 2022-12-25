@@ -17,7 +17,7 @@ export default function ApiPeramsForm(props) {
         setDetails(details);
         const {name, active, lastUpdateOn, createdOn} = details
 
-        const res = await fetch("http://localhost:5000/admin", {
+        const res = await fetch("http://localhost:8000/admin", {
             method: "POST",
             headers: {
                 "content-type" : "application/json"

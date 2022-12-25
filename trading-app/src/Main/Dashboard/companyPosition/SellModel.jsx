@@ -7,7 +7,7 @@ import { userContext } from "../../AuthContext";
 import Styles from "./SellModel.module.css";
 
 export default function SellModel({marketData, uIdProps, Render, isCompany, symbol, ltp, maxlot, lotsize }) {
-    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:8000/"
 
     const { reRender, setReRender } = Render;
     const getDetails = useContext(userContext);

@@ -15,7 +15,7 @@ export default function RunningPnl({marketData, tradeData, data, Render}) {
     console.log("tradedata", tradeData);
     console.log("market data", marketData);
     useEffect(()=>{
-        // axios.get("http://localhost:5000/usertradedata")
+        // axios.get("http://localhost:8000/usertradedata")
         // .then((res) => {
         //     let data = (res.data).filter((elem)=>{
         //         return elem.createdOn.includes(todayDate) && elem.status === "COMPLETE";

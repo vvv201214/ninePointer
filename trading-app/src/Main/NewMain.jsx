@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 
 export default function NewMain({setter}) {
-    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:8000/"
 
     console.log("rendering")
     const setDetails = useContext(userContext);

@@ -4,7 +4,7 @@ const router = express.Router();
 const getOrderData = require("./retrieveOrder");
 
 router.post("/placeorder", (async (req, res)=>{
-    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:8000/"
     const CompanyTradeData = require("../models/TradeDetails/companyTradeSchema");
     const TradeData = require("../models/TradeDetails/allTradeSchema");
     const UserTradeData = require("../models/User/userTradeSchema");

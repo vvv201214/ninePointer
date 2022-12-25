@@ -3,14 +3,41 @@ const router = express.Router();
 const cors = require('cors');
 const app = express();
 const dotenv = require('dotenv');
-const kiteConnect = require('./marketData/kiteConnect');
+// const kiteConnect = require('./marketData/kiteConnect');
 const fetch = require('./marketData/placeOrder');
 app.use(require("cookie-parser")());
 
+const fetchData = require('./marketData/fetchToken');
+const io = require('./marketData/socketio');
+const {createNewTicker, disconnectTicker} = require('./marketData/kiteTicker');
+
+const ticker = createNewTicker('4o77ska70avpfx5e','PJOgvK42aFe0tnEVeSLGDyhaXewQuz3s');
+io.on("connection", (socket) => {
+  console.log('client socket is' + socket.id);
+  // socket1 = socket;
+  socket.on('hi', async (data) => {
+    // eventEmitOnError = data;
+    let tokens = await fetchData('4o77ska70avpfx5e', 'PJOgvK42aFe0tnEVeSLGDyhaXewQuz3s');
+    console.log('tokens', tokens);
+    ticker.subscribe(tokens);
+    ticker.setMode(ticker.modeFull, tokens);
+    ticker.on('ticks', (ticks)=>{
+      console.log('tick', ticks);
+      if(ticks.length == tokens.length){
+        console.log('sending ticks', ticks);
+        socket.emit(ticks); 
+      }
+    });
+    // console.log(data);
+  });
+});
+
+io.on('disconnection', () => {disconnectTicker(ticker)});
+
 dotenv.config({ path: './config.env' });
 
-console.log(kiteConnect);
-app.get('/api/v1/ws', kiteConnect.parameters);
+// console.log(kiteConnect);
+// app.get('/api/v1/ws', kiteConnect.parameters);
 app.get('/api/v1/data', fetch);
 
 // app.get('/ws', kiteConnect);
@@ -56,6 +83,6 @@ process.on('unhandledRejection', (err) => {
   });
 });
 
-const PORT = 5000;
+const PORT = 8000;
 
 app.listen(PORT);

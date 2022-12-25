@@ -4,7 +4,7 @@ import "./LoginStyle.css";
 import { useNavigate } from "react-router-dom";
 
 export default function LogInForm() {
-    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:8000/"
 
     const navigate = useNavigate();
     const [userInfo, setUserInfo] = useState({

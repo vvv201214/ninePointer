@@ -33,7 +33,7 @@ router.post("/mocktradecompany", async (req, res)=>{
         realQuantity = "-"+realQuantity;
     }
 
-    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:8000/"
     let originalLastPrice;
     let newTimeStamp = "";
     try{

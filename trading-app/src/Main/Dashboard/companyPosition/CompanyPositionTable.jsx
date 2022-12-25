@@ -16,7 +16,7 @@ import TradersPnlCompany from "../PnlParts/TradersPnlCompany";
 function CompanyPositionTable({ socket }) {
     const getDetails = useContext(userContext);
     const setDetails = useContext(userContext);
-    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:8000/"
     
     const [tradeData, setTradeData] = useState([]);
     const [reRender, setReRender] = useState(true);

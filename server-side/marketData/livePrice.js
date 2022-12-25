@@ -5,7 +5,7 @@ require("../db/conn");
 
 
 router.get("/getliveprice", async (req, res)=>{
-  let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+  let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:8000/"
 
   let getAccessToken;
   let getApiKey;

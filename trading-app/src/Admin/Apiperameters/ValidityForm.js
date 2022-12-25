@@ -20,7 +20,7 @@ function ValidityForm() {
     
             const {name, active, modifiedOn, createdOn} = list[list.length-1];
     
-            const res = await fetch("http://localhost:5000/apiValidity", {
+            const res = await fetch("http://localhost:8000/apiValidity", {
                 method: "POST",
                 headers: {
                     "content-type" : "application/json"

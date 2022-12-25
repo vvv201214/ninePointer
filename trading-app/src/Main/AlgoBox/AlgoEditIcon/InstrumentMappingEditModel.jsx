@@ -5,7 +5,7 @@ import Styles from "./InstrumentMappingEditModel.module.css";
 
 
 export default function InstrumentMappingEditModel ({ data, id, Render }) {
-    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:8000/"
 
     let date = new Date();
     let lastModified = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`

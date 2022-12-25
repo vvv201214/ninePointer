@@ -28,7 +28,7 @@
 //         console.log(list);
 //         const {name, active, modifiedOn, createdOn} = list[list.length-1];
 
-//         const res = await fetch("http://localhost:5000/apiExchange", {
+//         const res = await fetch("http://localhost:8000/apiExchange", {
 //             method: "POST",
 //             headers: {
 //                 "content-type" : "application/json"

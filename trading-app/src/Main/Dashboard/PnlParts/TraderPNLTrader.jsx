@@ -6,7 +6,7 @@ import axios from "axios";
 
 
 export default function TradersPNLTrader({marketData, tradeData}) {
-    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:8000/"
     
     const [userDetail, setUserDetail] = useState([]);
     const [allTrade, setAllTrade] = useState([]);

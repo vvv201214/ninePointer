@@ -6,7 +6,7 @@ import { userContext } from '../../AuthContext';
 import uniqid from "uniqid";
 
 export default function RealTrade({Render, id, buttonTextBool, tradingAlgo}) {
-    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+    let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:8000/"
     const getDetails = useContext(userContext);
     const { reRender, setReRender } = Render;
     let realTrade = useRef(buttonTextBool);
