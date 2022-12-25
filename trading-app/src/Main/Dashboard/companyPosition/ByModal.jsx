@@ -104,7 +104,7 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany, symbo
                 })
                 setUserPermission(perticularUser);
             }).catch((err) => {
-                window.alert("Server Down");
+                // window.alert("Server Down");
                 return new Error(err);
             })
 
@@ -159,7 +159,7 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany, symbo
                 })
                 setInstrumentAlgoData(activeInstrumentAlgo)
             }).catch((err) => {
-                window.alert("Server Down");
+                // window.alert("Server Down");
                 return new Error(err);
             })
 
