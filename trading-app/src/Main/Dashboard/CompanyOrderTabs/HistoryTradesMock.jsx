@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import CompanyOrderPegination from "./CompanyOrderPegination/CompanyOrderPegination";
-
+import "./CompanyOrder.module.css"
 
 export default function HistoryTradesMock({setOrderCountHistoryCompany, orderCountHistoryCompany}){
 
@@ -108,8 +108,8 @@ export default function HistoryTradesMock({setOrderCountHistoryCompany, orderCou
                                 })}        
                             </table> 
                             <div className="pegination_div">
-                                <button className="pegination_prev_btn" disabled={!(skip !== 0)} onClick={prevData}>Prev</button>
-                                <button className="pegination_next_btn" disabled={!(numberOfClickForRemoveNext !== clickToRemove)} onClick={nextData}>Next</button>
+                                <button className="pegination_btn" disabled={!(skip !== 0)} onClick={prevData}>Prev</button>
+                                <button className="pegination_btn" disabled={!(numberOfClickForRemoveNext !== clickToRemove)} onClick={nextData}>Next</button>
                             </div>
                         </div>
                     </div>

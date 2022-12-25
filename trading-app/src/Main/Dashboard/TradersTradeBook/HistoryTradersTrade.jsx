@@ -21,7 +21,7 @@ const HistoryTradersTrade = ({setOrderCountHistoryCompany}) => {
             setLength((res.data).length);
             setOrderCountHistoryCompany((res.data).length);
         }).catch((err)=>{
-            window.alert("Server Down");
+            window.alert("Server Down l");
             return new Error(err);
         })
 
@@ -106,8 +106,8 @@ const HistoryTradersTrade = ({setOrderCountHistoryCompany}) => {
                                 })}    
                             </table>
                             <div className="pegination_div">
-                                <button className="pegination_prev_btn" disabled={!(skip !== 0)} onClick={prevData}>Prev</button>
-                                <button className="pegination_next_btn" disabled={!(numberOfClickForRemoveNext !== clickToRemove)} onClick={nextData}>Next</button>
+                                <button className="pegination_btn" disabled={!(skip !== 0)} onClick={prevData}>Prev</button>
+                                <button className="pegination_btn" disabled={!(numberOfClickForRemoveNext !== clickToRemove)} onClick={nextData}>Next</button>
                             </div>
                         </div>
                     </div>

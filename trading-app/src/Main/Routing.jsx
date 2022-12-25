@@ -103,15 +103,17 @@ export default function Routing() {
                             </Route>
                                 <Route path='/main/dashboard/TradersTradeBook' element={<TradersTradeBook orderCountHistoryCompany={orderCountHistoryCompany} orderCountTodayCompany={orderCountTodayCompany} />}>
                                     <Route path='/main/dashboard/TradersTradeBook/' element={<TodaysTradersTrade setOrderCountTodayCompany={setOrderCountTodayCompany}/>} ></Route>
-                                    <Route path='/main/dashboard/TradersTradeBook/HistoryTradersTrade/' element={<HistoryTradersTrade info={details} setOrderCountHistoryUser={setOrderCountHistoryUser}/>} ></Route>
+                                    <Route path='/main/dashboard/TradersTradeBook/HistoryTradersTrade/' element={<HistoryTradersTrade setOrderCountHistoryCompany={setOrderCountHistoryCompany}/>} ></Route>
                                 </Route>
 
                             </Route>
                             <Route path='/main/report' element={<ReportsMain />}>
                                 <Route path='/main/report/' element={<Reports />}></Route>
                             </Route>
-                            <Route path='/main/admindashboard/summary' element={<SummaryMain />}>
-                                <Route path='/main/admindashboard/summary/' element={<Summary />}></Route>
+                            <Route path='/main/admindashboard/summary' element={<SummaryMain/>}>
+                                <Route path='/main/admindashboard/summary' element={<Summary/>}></Route>
+                                <Route path='/main/admindashboard/summary/pnlreport' element={<PNLReport/>}></Route>
+                                <Route path='/main/admindashboard/summary/dailypnlreport' element={<DailyPNLReport/>}></Route>
                             </Route>
                             <Route path='/main/userfunds' element={<UserFundsMain />}>
                                 <Route path='/main/userfunds/' element={<UserFunds />}></Route>
