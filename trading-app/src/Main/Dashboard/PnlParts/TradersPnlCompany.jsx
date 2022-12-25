@@ -177,9 +177,9 @@ export default function TradersPnlCompany({marketData, tradeData}) {
                 <th className="grid2_th">Tran. Cost</th>
                 <th className="grid2_th"> Net P&L</th>
             </tr>
+            {detailPnl.length ? 
+            <tr className='no-data'>No Data Available</tr> :
             
-            {
-
                 detailPnl.map((elem, index)=>{
                     totalOverAllPnl += elem.pnl && elem.pnl;
                     totalNumberTrade += elem.numberOfTrade;
@@ -236,7 +236,7 @@ export default function TradersPnlCompany({marketData, tradeData}) {
                 </tr> 
             
         </table>
-    <button className="DetailsBtn">Details</button>
+    {/* <button className="DetailsBtn">Details</button> */}
     </div>
   )
 }

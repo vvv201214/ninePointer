@@ -512,11 +512,15 @@ export default function DailyPNLReport() {
                             <table className="grid1_table">
                                 <tr className="grid2_tr">
                                     <th className="grid2_th">Date</th>
-                                    <th className="grid2_th">Gross P&L</th>
-                                    <th className="grid2_th">Transaction Cost</th>
-                                    <th className="grid2_th">Net P&L</th>
+                                    <th className="grid2_th">Gross(C-P&L)</th>
+                                    <th className="grid2_th">Tran. Cost(C)</th>
+                                    <th className="grid2_th">Net(C-P&L)</th>
+                                    <th className="grid2_th">Gross(T-P&L)</th>
+                                    <th className="grid2_th">Tran. Cost(T)</th>
+                                    <th className="grid2_th">Net(T-P&L)</th>
+                                    <th className="grid2_th"># of Traders</th>
                                     <th className="grid2_th"># of Trades</th>
-                                    <th className="grid2_th"># of Lots Used</th>
+                                    <th className="grid2_th">Details</th>
                                     {/* <th className="grid2_th">{detailPnl[0].name}</th> */}
                                 </tr>
                                 {
@@ -541,6 +545,11 @@ export default function DailyPNLReport() {
                                             <td className="grid2_td" style={(elem.pnl - elem.brokerage)>=0.00 ? { color: "green"}:  { color: "red"}}> {elem.pnl - elem.brokerage > 0.00 ? "+₹" + (elem.pnl - elem.brokerage).toFixed(2): "-₹" + ((-(elem.pnl - elem.brokerage)).toFixed(2))}</td>}
                                             <td className="grid2_td">{elem.numberOfTrade}</td>
                                             <td className="grid2_td">{elem.lotUsed}</td>
+                                            <td className="grid2_td">{elem.lotUsed}</td>
+                                            <td className="grid2_td">{elem.lotUsed}</td>
+                                            <td className="grid2_td">{elem.lotUsed}</td>
+                                            <td className="grid2_td"><button>Details</button></td>
+
                                         </tr>}
                                         </>
                                     )

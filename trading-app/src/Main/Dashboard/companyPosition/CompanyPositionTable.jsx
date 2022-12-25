@@ -91,8 +91,8 @@ function CompanyPositionTable({ socket }) {
                                 <tr className="grid2_tr">
                                     <th className="grid2_th">Trading Date</th>
                                     <th className="grid2_th">Contract Date</th>
-                                    <th className="grid2_th"> Symbol</th>
-                                    <th className="grid2_th"> Instrument</th>
+                                    <th className="grid2_th">Symbol</th>
+                                    <th className="grid2_th">Instrument</th>
                                     <th className="grid2_th">LTP</th>
                                     <th className="grid2_th">Change(%)</th>
                                     <th className="grid2_th">Action</th>
@@ -128,7 +128,7 @@ function CompanyPositionTable({ socket }) {
                                 })}
                             </table>
                         </div>
-                        <span className="grid2_span">Overall P&L-Company(Mock)</span>
+                        <span className="grid2_span">Overall P&L(Company) - Mock</span>
                         <div className="grid_2">
                             <OverallPnl marketData={marketData} tradeData={tradeData} data={data} />
                         </div>
@@ -141,7 +141,7 @@ function CompanyPositionTable({ socket }) {
                         <div className="grid_2">
                             <ClosedPnl marketData={marketData} tradeData={tradeData} data={data} />
                         </div> */}
-                        <span className="grid2_span">Traders PNL-Company(Mock)</span>
+                        <span className="grid2_span">Trader Wise P&L(Company) - Mock</span>
                             <TradersPnlCompany marketData={marketData} tradeData={tradeData}/>          
                     </div>
                 </div>
