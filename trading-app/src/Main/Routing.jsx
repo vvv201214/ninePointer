@@ -110,8 +110,10 @@ export default function Routing() {
                             <Route path='/main/report' element={<ReportsMain />}>
                                 <Route path='/main/report/' element={<Reports />}></Route>
                             </Route>
-                            <Route path='/main/admindashboard/summary' element={<SummaryMain />}>
-                                <Route path='/main/admindashboard/summary/' element={<Summary />}></Route>
+                            <Route path='/main/admindashboard/summary' element={<SummaryMain/>}>
+                                <Route path='/main/admindashboard/summary' element={<Summary/>}></Route>
+                                <Route path='/main/admindashboard/summary/pnlreport' element={<PNLReport/>}></Route>
+                                <Route path='/main/admindashboard/summary/dailypnlreport' element={<DailyPNLReport/>}></Route>
                             </Route>
                             <Route path='/main/userfunds' element={<UserFundsMain />}>
                                 <Route path='/main/userfunds/' element={<UserFunds />}></Route>
