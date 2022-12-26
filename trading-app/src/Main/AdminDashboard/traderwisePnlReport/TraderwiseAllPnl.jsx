@@ -1,6 +1,6 @@
 import React, { useContext, useRef, useState } from "react";
 import { useEffect } from "react";
-import Styles from "./DailyPNLReport.module.css";
+import Styles from "../DailyPNLReport/DailyPNLReport.module.css";
 import axios from "axios";
 import { userContext } from "../../AuthContext";
 import { io } from "socket.io-client";
@@ -43,7 +43,7 @@ export default function DailyPNLReport() {
     let userGross = 0;
     let userNet = 0;
     // let secondDate = "";
-    let userId = (getDetails.userDetails.role === "user") && getDetails.userDetails.email;
+    // let userId = (getDetails.userDetails.role === "user") && getDetails.userDetails.email;
 
     let noRender = useRef(true);
     let detailPnl = [];
@@ -90,7 +90,7 @@ export default function DailyPNLReport() {
             return new Error(err);
         })
 
-
+        console.log(userDetail)
         userDetail.map((elem)=>{
             let mainObj = {};
             firstDateSplit = (firstDate).split("-");
@@ -187,18 +187,17 @@ export default function DailyPNLReport() {
                     }
                     
                 }
-                detailPnl.push(JSON.parse(JSON.stringify(newObjCompany)));
+                detailPnl.push(JSON.parse(JSON.stringify(mainObj)));
                             
                 // transactionCost = 0;
                 // totalPnl = 0;
                 // numberOfTrade = 0;
                 // lotUsed = 0;
-                mainObj = {};
+                // mainObj = {};
             
                 console.log(detailPnl);
                 setDetailPnl(detailPnl)
             }
-    
 
         })
 
