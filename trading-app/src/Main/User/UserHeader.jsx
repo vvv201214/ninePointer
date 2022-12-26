@@ -6,10 +6,10 @@ export default function UserHeader(){
     <>
         <ul className='navbar'>
             <li>
-                <NavLink to={"/main/user"}>Users</NavLink>
+                <NavLink className='headers_li_links' to={"/main/user/"} style={({isActive}) => isActive?{color: "#5479FC"} :{color:'black'} }>Users</NavLink>
             </li>
             <li>
-                <NavLink to={"/main/user/roles"}>Roles</NavLink>
+                <NavLink className='headers_li_links' to={"/main/user/roles/"} style={({isActive}) => isActive?{color: "#5479FC"} :{color:'black'} }>Roles</NavLink>
             </li>
             {/* <li>
                 <NavLink to={"/main/user/UserSelect"}>UserSelect</NavLink>

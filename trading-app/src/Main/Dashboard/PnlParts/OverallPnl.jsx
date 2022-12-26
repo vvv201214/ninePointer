@@ -15,9 +15,11 @@ export default function OverallPnl({marketData, tradeData, data}) {
     const [liveDetail, setLiveDetail] = useState([]);
     const [avgPrice, setAvgPrice] = useState([]);
 
-
     var Total = 0;
     let avgPriceArr = [];
+    let liveDetailsArr = [];
+    let overallPnl = [];
+    
     useEffect(()=>{
 
         console.log(data);
@@ -36,8 +38,6 @@ export default function OverallPnl({marketData, tradeData, data}) {
         let hash = new Map();
 
         for(let i = data.length-1; i >= 0 ; i--){
-            
-            
             if(hash.has(data[i].symbol)){
                 let obj = hash.get(data[i].symbol);
                 if(data[i].buyOrSell === "BUY"){
@@ -88,12 +88,12 @@ export default function OverallPnl({marketData, tradeData, data}) {
         }
         console.log(hash);
     
-        let overallPnl = [];
+        
         for (let value of hash.values()){
             overallPnl.push(value);
         }
 
-        let liveDetailsArr = [];
+        
         overallPnl.map((elem)=>{
             console.log("52");
             tradeData.map((element)=>{
@@ -110,6 +110,7 @@ export default function OverallPnl({marketData, tradeData, data}) {
             })
         })
 
+
         setOverallPnlArr(overallPnl);
         console.log("details array", overallPnl);
 
@@ -117,7 +118,9 @@ export default function OverallPnl({marketData, tradeData, data}) {
 
         console.log(liveDetailsArr);
 
-    }, [marketData])
+        // reRender ? setReRender(false) : setReRender(true)
+
+    }, [marketData, data])
 
     data.map((elem)=>{
         totalTransactionCost += Number(elem.brokerage);
@@ -132,10 +135,21 @@ export default function OverallPnl({marketData, tradeData, data}) {
                 <th className="grid2_th">Quantity</th>
                 <th className="grid2_th">Avg. Price</th>
                 <th className="grid2_th">LTP</th>
-                <th className="grid2_th">P&L</th>
+                <th className="grid2_th">Gross P&L</th>
                 <th className="grid2_th">Change(%)</th>
             </tr> 
-            {
+            {overallPnlArr.length == 0 ? 
+            // <tr className='no-data'>No Data Available</tr>
+            <tr className="grid2_tr">
+            <td className="grid2_td"></td>
+            <td className="grid2_td"></td>
+            <td className="grid2_td"></td>
+            <td className="grid2_td">No Data Available</td>
+            <td className="grid2_td"></td>
+            <td className="grid2_td"></td>
+            <td className="grid2_td"></td>
+            </tr>  :
+            
             overallPnlArr.map((elem, index)=>{
 
 
@@ -182,10 +196,10 @@ export default function OverallPnl({marketData, tradeData, data}) {
                 {overallPnlArr.length ?
                 <>
                 <th className='pnl_Total'>Transaction Cost</th>
-                <th className='pnl_Total'>{totalTransactionCost.toFixed(2)}</th>
-                <th className='pnl_Total'>Total</th>
+                <th className='pnl_Total'>₹{totalTransactionCost.toFixed(2)}</th>
+                <th className='pnl_Total'>Gross P&L</th>
                 <th className='pnl_Total' style={Total>=0 ? {color: "green"} : {color: "red"} }>{Total>=0 ? "+₹" + (Total.toFixed(2)) : "-₹" + ((-Total).toFixed(2))}</th>
-                <th className='pnl_Total' style={(Total-totalTransactionCost)>=0 ? {color: "green"} : {color: "red"} }>{(Total-totalTransactionCost)>=0 ? "+₹" + ((Total-totalTransactionCost).toFixed(2)) : "-₹" + ((-(Total-totalTransactionCost)).toFixed(2))}</th>
+                <th className='pnl_Total' style={(Total-totalTransactionCost)>=0 ? {color: "green"} : {color: "red"} }>Net P&L : {(Total-totalTransactionCost)>=0 ? "+₹" + ((Total-totalTransactionCost).toFixed(2)) : "-₹" + ((-(Total-totalTransactionCost)).toFixed(2))}</th>
                 </>
                 : // {(Total-totalTransactionCost).toFixed(2)}
                 <th></th>

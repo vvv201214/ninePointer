@@ -92,14 +92,14 @@ async function formbtn(e) {
             <input type="text" className={Styles.Ac_forminput} onChange={(e) => { { formstate.Name = e.target.value } }}/>
             <label className={Styles.Ac_form} htmlFor="">Designation</label>
             <input type="text" className={Styles.Ac_forminput} onChange={(e) => { { formstate.Designation = (e.target.value)} }}/>
-            <label className={Styles.Ac_form} htmlFor="">EmailID</label>
-            <input type="text" className={Styles.Ac_forminput} onChange={(e) => { { formstate.EmailID = e.target.value} }}/>
+            <label className={Styles.Ac_form} htmlFor="email">EmailID</label>
+            <input type="email" className={Styles.Ac_forminput} onChange={(e) => { { formstate.EmailID = e.target.value} }} />
             <label htmlFor="" className={Styles.Ac_form}>MobileNo</label>
-            <input type="text" className={Styles.Ac_forminput} onChange={(e) => { { formstate.MobileNo = e.target.value } }} />
+            <input type="number" className={Styles.Ac_forminput} onChange={(e) => { { formstate.MobileNo = e.target.value } }} />
             <label htmlFor="" className={Styles.Ac_form}>Degree</label>
             <input type="text" className={Styles.Ac_forminput} onChange={(e) => { { formstate.Degree = e.target.value } }} />
             <label htmlFor="" className={Styles.Ac_form}>DOB</label>
-            <input type="text" className={Styles.Ac_forminput} onChange={(e) => { { formstate.DOB = e.target.value } }} />
+            <input type="date" className={Styles.Ac_forminput} onChange={(e) => { { formstate.DOB = e.target.value } }} />
             <label htmlFor="" className={Styles.Ac_form}>Gender</label>
             <select name="" id="" className={Styles.Ac_forminput} onChange={(e) => { { formstate.Gender = e.target.value } }}>
                 <option value=""></option>
@@ -113,7 +113,7 @@ async function formbtn(e) {
             <label htmlFor="" className={Styles.Ac_form}>Last Occupation</label>
             <input type="text" className={Styles.Ac_forminput} onChange={(e) => { { formstate.LastOccupation = e.target.value } }} />
             <label htmlFor="" className={Styles.Ac_form}>Date of Joining</label>
-            <input type="text" className={Styles.Ac_forminput} onChange={(e) => { { formstate.DateofJoining = e.target.value } }} />
+            <input type="date" className={Styles.Ac_forminput} onChange={(e) => { { formstate.DateofJoining = e.target.value } }} />
             <label htmlFor="" className={Styles.Ac_form}>Role</label>
             <input type="text" className={Styles.Ac_forminput} onChange={(e) => { { formstate.Role = e.target.value } }} />
             <label htmlFor="" className={Styles.Ac_form}>Status</label>

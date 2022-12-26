@@ -27,13 +27,13 @@ function CompanyPositionTable({ socket }) {
     let fake_date = "16-12-2022"
     useEffect(() => {
 
-        axios.get(`${baseUrl}api/v1/readmocktradecompany`)
+        axios.get(`${baseUrl}api/v1/readmocktradecompanyDate`)
             .then((res) => {
-                let data = (res.data).filter((elem) => {
-                    return elem.order_timestamp.includes(todayDate) && elem.status === "COMPLETE";
-                })
-                console.log("data", data)
-                setData(data);
+                // let data = (res.data).filter((elem) => {
+                //     return elem.order_timestamp.includes(todayDate) && elem.status === "COMPLETE";
+                // })
+                console.log("data", res.data)
+                setData(res.data);
             }).catch((err) => {
                 return new Error(err);
             })
@@ -42,7 +42,7 @@ function CompanyPositionTable({ socket }) {
             .then((res) => {
                 console.log("live price data", res)
                 setMarketData(res.data);
-                setDetails.setMarketData(data);
+                // setDetails.setMarketData(data);
             }).catch((err) => {
                 return new Error(err);
             })
@@ -62,14 +62,15 @@ function CompanyPositionTable({ socket }) {
         socket.on("tick", (data) => {
             console.log("this is live market data", data);
             setMarketData(data);
-            setDetails.setMarketData(data);
+            // setDetails.setMarketData(data);
         })
+
 
         console.log(marketData);
         console.log(tradeData);
         // reRender ? setReRender(false) : setReRender(true)
         // setReRender(true);
-    }, [getDetails, reRender])
+    }, [getDetails])
     console.log(marketData);
     useEffect(() => {
         return () => {
@@ -90,8 +91,8 @@ function CompanyPositionTable({ socket }) {
                                 <tr className="grid2_tr">
                                     <th className="grid2_th">Trading Date</th>
                                     <th className="grid2_th">Contract Date</th>
-                                    <th className="grid2_th"> Symbol</th>
-                                    <th className="grid2_th"> Instrument</th>
+                                    <th className="grid2_th">Symbol</th>
+                                    <th className="grid2_th">Instrument</th>
                                     <th className="grid2_th">LTP</th>
                                     <th className="grid2_th">Change(%)</th>
                                     <th className="grid2_th">Action</th>
@@ -127,7 +128,7 @@ function CompanyPositionTable({ socket }) {
                                 })}
                             </table>
                         </div>
-                        <span className="grid2_span">Overall P&L-Company(Mock)</span>
+                        <span className="grid2_span">Overall P&L(Company) - Mock</span>
                         <div className="grid_2">
                             <OverallPnl marketData={marketData} tradeData={tradeData} data={data} />
                         </div>
@@ -140,7 +141,7 @@ function CompanyPositionTable({ socket }) {
                         <div className="grid_2">
                             <ClosedPnl marketData={marketData} tradeData={tradeData} data={data} />
                         </div> */}
-                        <span className="grid2_span">Traders PNL-Company(Mock)</span>
+                        <span className="grid2_span">Trader Wise P&L(Company) - Mock</span>
                             <TradersPnlCompany marketData={marketData} tradeData={tradeData}/>          
                     </div>
                 </div>

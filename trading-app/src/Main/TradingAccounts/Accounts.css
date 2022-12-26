@@ -5,6 +5,7 @@
 .rightside_maindiv{
    display: flex;
    flex-direction: column;
+   margin-top:20px;
 }
 
 .ul_class{
@@ -17,7 +18,7 @@
     padding: 2px;
     padding-left: 6px;
     padding-right: 6px;
-    font-size: 18px;
+    font-size: 0.75rem;
     font-weight: bold;
     color: red;
 }
@@ -29,7 +30,7 @@
     font-weight: bold;
     min-height: 30px;
     margin: 4px;
-    font-size: 16px;
+    font-size: 0.75rem;
 
 }
 .grid_1{
@@ -38,22 +39,27 @@
     background: rgb(255, 255, 255);
     margin-left: 5px;
     margin-right: 5px;
-    border-radius: 0 15px 15px 15px;
+    /* border-radius: 0 15px 15px 15px; */
     margin-bottom: 7px;
     padding: 3px;
+    box-shadow: inset 2px 0px 0px 0px #eee;
+    box-shadow: inset 0px 2px 0px 0px #eee;
+    box-shadow: inset 0px 0px 2px 0px #eee;
+    box-shadow: inset 0px 0px 0px 2px #eee;
     
 }
 .grid1_span{
     padding: 0 10px;
-    font-size: 16px;
+    font-size: 0.75rem;
     font-weight: bold;
     color: #187498;
     padding-left: 6px;
-    background-color: white;
+    /* background-color: white; */
     width: max-content;
     margin-top: 7px;
     margin-left: 5px;
-    border-radius: 10px 10px 0px 0px;
+    margin-bottom: 7px;
+    /* border-radius: 10px 10px 0px 0px; */
 }
 .grid1_table{
     width: 100%;
@@ -85,24 +91,29 @@
    
     max-height: max-content;
     background: rgb(255, 255, 255);
-    border-radius: 15px;
+    /* border-radius: 15px; */
     margin-left: 5px;
     margin-right: 5px;
-    border-radius: 0 15px 15px 15px;
+    /* border-radius: 0 15px 15px 15px; */
     margin-bottom: 7px;
     padding: 3px;
+    box-shadow: inset 2px 0px 0px 0px #eee;
+    box-shadow: inset 0px 2px 0px 0px #eee;
+    box-shadow: inset 0px 0px 2px 0px #eee;
+    box-shadow: inset 0px 0px 0px 2px #eee;
 }
 .grid2_span{
     padding: 0 10px;
-    font-size: 16px;
+    font-size: 0.75rem;
     font-weight: bold;
     color: #187498;
     padding-left: 6px;
-    background-color: white;
+    /* background-color: white; */
     width: max-content;
     margin-top: 7px;
     margin-left: 5px;
-    border-radius: 10px 10px 0px 0px;
+    margin-bottom: 7px;
+    /* border-radius: 10px 10px 0px 0px; */
 }
 /* .grid2_ul{
     display: flex;
@@ -123,6 +134,7 @@
 } */
 .grid2_tr{
     white-space: nowrap;
+    /* background-color: #aba8a8; */
 }
 .grid2_th {
     width: 9vw;
@@ -130,9 +142,8 @@
     text-align: center;
     border-bottom: 1px solid #aba8a8;
     width: fit-content;
-   font-size: 15px;
-  
-   
+    font-size: 0.75rem;
+    padding: 2px;
 }
 
 .grid2_td{
@@ -149,6 +160,10 @@
     white-space: nowrap;
 }
 
+.grid2_tr:hover{
+    background-color: #d7d7d7;
+}
+
 .grid1_table{
     width: 100%;
     border: none;
@@ -162,7 +177,7 @@
     margin-left: 10px;
     margin-right: 10px;
     padding: 5px;
-    font-size: 16px;
+    font-size: 0.75rem;
     font-weight: bold;
 
 }
@@ -207,10 +222,15 @@
     text-align: center;
 }
 .pnl_Total{
-    font-size: 12px;
+    font-size: 13px;
     font-weight: bold;
-    background-color: #e1e0e0;
-    border-radius: 5px;
+    background-color: #f1f1f1;
+    /* border-radius: 5px; */
     
 
 }
+
+/* .navbarlinks{
+    float:right;
+
+} */

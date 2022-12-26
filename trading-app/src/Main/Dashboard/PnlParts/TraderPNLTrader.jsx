@@ -34,12 +34,12 @@ export default function TradersPNLTrader({marketData, tradeData}) {
             return new Error(err);
         })
 
-        axios.get(`${baseUrl}api/v1/readmocktradeuser`)
+        axios.get(`${baseUrl}api/v1/readmocktradeuserDate`)
         .then((res) => {
-            let data = (res.data).filter((elem) => {
-                return elem.order_timestamp.includes(todayDate) && elem.status === "COMPLETE";
-            })
-            setAllTrade(data);
+            // let data = (res.data).filter((elem) => {
+            //     return elem.order_timestamp.includes(todayDate) && elem.status === "COMPLETE";
+            // })
+            setAllTrade(res.data);
         }).catch((err)=>{
             return new Error(err);
         })
@@ -50,7 +50,6 @@ export default function TradersPNLTrader({marketData, tradeData}) {
         let data = allTrade.filter((element)=>{
             return elem.email === element.userId;
         })
-
 
         let hash = new Map();
 
@@ -135,7 +134,7 @@ export default function TradersPNLTrader({marketData, tradeData}) {
             pnl: totalPnl,
             name: name,
             numberOfTrade: numberOfTrade,
-            lotUsed: lotUsed
+            lotUsed: lotUsed,
         }
         console.log(transactionCost, totalPnl, name);
         detailPnl.push(JSON.parse(JSON.stringify(newObj)));
@@ -145,15 +144,12 @@ export default function TradersPNLTrader({marketData, tradeData}) {
         lotUsed = 0;
     })
 
-    detailPnl.sort((a, b)=> {
-        // if ((a.pnl) < (b.pnl)) {
-        //   return 1;
-        // }
-        // if ((a.pnl) < (b.pnl)) {
-        //   return -1;
-        // }
-        // return 0;
-        return b.pnl-a.pnl
+    // detailPnl.sort((a, b)=> {
+    //     return b.pnl-a.pnl
+    //   });
+
+      detailPnl.sort((a, b)=> {
+        return (b.pnl-b.brokerage)-(a.pnl-a.brokerage)
       });
 
     console.log(detailPnl);
@@ -163,17 +159,25 @@ export default function TradersPNLTrader({marketData, tradeData}) {
         <table className="grid1_table">
             <tr className="grid2_tr">
                 <th className="grid2_th">Trader Name</th>
-                <th className="grid2_th">Overall PNL</th>
+                <th className="grid2_th">Gorss P&L</th>
                 {/* <th className="grid2_th">Running PNL (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
                 <th className="grid2_th">Closed PNL(<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th> */}
                 <th className="grid2_th"># of Trades</th>
                 <th className="grid2_th"> Lots Used</th>
-                <th className="grid2_th">Tran. Cost(<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
-                <th className="grid2_th"> Net PNL (<FontAwesomeIcon className='fa-xs' icon={faIndianRupeeSign} />)</th>
+                <th className="grid2_th">Tran. Cost</th>
+                <th className="grid2_th">Net P&L</th>
             </tr>
+            {detailPnl.length ? 
+                <tr className="grid2_tr">
+                <td className="grid2_td"></td>
+                <td className="grid2_td"></td>
+                <td className="grid2_td"></td>
+                <td className="grid2_td">No Data Available</td>
+                <td className="grid2_td"></td>
+                <td className="grid2_td"></td>
+                <td className="grid2_td"></td>
+                </tr> :
             
-            {
-
                 detailPnl.map((elem, index)=>{
                     totalOverAllPnl += elem.pnl && elem.pnl;
                     totalNumberTrade += elem.numberOfTrade;
@@ -227,7 +231,7 @@ export default function TradersPNLTrader({marketData, tradeData}) {
                 </tr> 
             
         </table>
-    <button className="DetailsBtn">Details</button>
+    {/* <button className="DetailsBtn">Details</button> */}
     </div>
   )
 }

@@ -4,11 +4,15 @@
 
 }
 .Companyorder_li{
+    min-width: 10%;
+    max-width: max-content;
     list-style: none;
-    margin: 10px 2px 2px 5px;
-    background-color: rgb(255, 255, 255);
+    margin: 10px 2px -7px -12px;
+    /* background-color: rgb(255, 255, 255); */
     font-size: 14px;
     border-radius: 5px;
+    text-align: center;
+    padding-left: 1%;
     
 }
 .Companyorder_li :hover{
@@ -17,3 +21,31 @@
 /* .Companyorder_div{
    
 } */
+.pegination_div{
+    display: flex;
+    justify-content: space-between;
+}
+.PrevButtons{
+    margin: 1%;
+    width: 3rem;
+    height: 3.5vh;
+    background-color: #c4c4c4;
+    border: none;
+    color: rgb(0, 0, 0);
+    font-weight: 700;
+    border-radius: 5px;
+    margin-left: 3%;
+    cursor: pointer;
+}
+.nextButtons{
+    margin: 1%;
+    margin-right: 3%;
+    width: 3rem;
+    height: 3.5vh;
+    background-color: #c4c4c4;
+    border: none;
+    color: rgb(0, 0, 0);
+    font-weight: 700;
+    border-radius: 5px;
+    cursor: pointer;
+}

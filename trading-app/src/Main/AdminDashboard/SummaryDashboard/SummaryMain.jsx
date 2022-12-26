@@ -12,7 +12,11 @@ function SummaryMain(){
     return(
         < >
             <div className="User_header">
-            <h1 className="header_para">{`Hello ${getDetails.userDetails.name}! Welcome Back`}</h1>
+            <h1>{`Hello ${getDetails.userDetails.name}! Welcome Back`}</h1>
+            <div className="indexheader">
+                <div className="indexes"><span>Nifty 50</span><span> : </span><span>&nbsp;NA&nbsp;  </span><span> </span><span> NA </span></div>
+                <div className="indexes"><span>Nifty Bank</span><span> : </span><span>&nbsp; NA &nbsp; </span><span> </span><span> NA </span></div>
+                </div>
                 <button className="logo_btn" >ninepointer</button>
             </div>
             <ReportsHeader role = {getDetails.userDetails.role}/>
