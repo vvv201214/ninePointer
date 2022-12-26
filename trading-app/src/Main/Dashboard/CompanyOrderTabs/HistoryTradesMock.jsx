@@ -108,7 +108,7 @@ export default function HistoryTradesMock({setOrderCountHistoryCompany, orderCou
                             </table> 
                             <div className={Styles.pegination_div}>
                                 <button className={Styles.PrevButtons} disabled={!(skip !== 0)} onClick={prevData}>Prev</button>
-                                <div>{clickToRemove}</div>
+                                <div className={Styles.pageCounting}>{(clickToRemove-1)*30}-{(clickToRemove)*30}</div>
                                 <button className={Styles.nextButtons} disabled={!(numberOfClickForRemoveNext !== clickToRemove)} onClick={nextData}>Next</button>
                             </div>
                         </div>
