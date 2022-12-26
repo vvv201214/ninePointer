@@ -1,5 +1,5 @@
 import React,{useState, useEffect} from 'react'
-import CompanyOrderPegination from '../CompanyOrderTabs/CompanyOrderPegination/CompanyOrderPegination';
+import Styles from "./TradersTradeBook.module.css"
 import axios from 'axios';
 
 const TodaysTradersTrade = ({setOrderCountTodayCompany}) => {
@@ -25,7 +25,7 @@ const TodaysTradersTrade = ({setOrderCountTodayCompany}) => {
             return new Error(err);
         })
 
-        axios.get(`${baseUrl}api/v1/readmocktradeusertodaydatapagination/${skip}/${50}`)
+        axios.get(`${baseUrl}api/v1/readmocktradeusertodaydatapagination/${skip}/${30}`)
         .then((res)=>{
 
             setData(res.data);
@@ -36,9 +36,9 @@ const TodaysTradersTrade = ({setOrderCountTodayCompany}) => {
     },[])
 
     function nextData(){
-        setSkip((prev)=> prev+50)
+        setSkip((prev)=> prev+30)
         console.log(skip)
-        axios.get(`${baseUrl}api/v1/readmocktradeusertodaydatapagination/${skip+50}/${50}`)
+        axios.get(`${baseUrl}api/v1/readmocktradeusertodaydatapagination/${skip+30}/${30}`)
         .then((res)=>{
 
             setData(res.data);
@@ -50,9 +50,9 @@ const TodaysTradersTrade = ({setOrderCountTodayCompany}) => {
     }
 
     function prevData(){
-        setSkip((prev)=> prev-50)
+        setSkip((prev)=> prev-30)
         console.log(skip)
-        axios.get(`${baseUrl}api/v1/readmocktradeusertodaydatapagination/${skip-50}/${50}`)
+        axios.get(`${baseUrl}api/v1/readmocktradeusertodaydatapagination/${skip-30}/${30}`)
         .then((res)=>{
 
             setData(res.data);
@@ -62,7 +62,7 @@ const TodaysTradersTrade = ({setOrderCountTodayCompany}) => {
         })
         setclickToRemove((prev)=>prev-1)
     }
-    numberOfClickForRemoveNext = Math.ceil(((length))/50);
+    numberOfClickForRemoveNext = Math.ceil(((length))/30);
     console.log(numberOfClickForRemoveNext, clickToRemove, length)
 
 
@@ -105,9 +105,9 @@ const TodaysTradersTrade = ({setOrderCountTodayCompany}) => {
                                     )
                                 })}       
                             </table>  
-                            <div className="pegination_div">
-                                <button className="pegination_btn" disabled={!(skip !== 0)} onClick={prevData}>Prev</button>
-                                <button className="pegination_btn" disabled={!(numberOfClickForRemoveNext !== clickToRemove)} onClick={nextData}>Next</button>
+                            <div className={Styles.pegination_div}>
+                                <button className={Styles.PrevButtons} disabled={!(skip !== 0)} onClick={prevData}>Prev</button>
+                                <button className={Styles.nextButtons} disabled={!(numberOfClickForRemoveNext !== clickToRemove)} onClick={nextData}>Next</button>
                             </div>
                         </div>
                     </div>

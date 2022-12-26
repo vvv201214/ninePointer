@@ -167,8 +167,16 @@ export default function TradersPNLTrader({marketData, tradeData}) {
                 <th className="grid2_th">Tran. Cost</th>
                 <th className="grid2_th">Net P&L</th>
             </tr>
-            {detailPnl.length ? 
-            <tr className='no-data'>No Data Available</tr> :
+            {!detailPnl.length ? 
+                <tr className="grid2_tr">
+                <td className="grid2_td"></td>
+                <td className="grid2_td"></td>
+                <td className="grid2_td"></td>
+                <td className="grid2_td">No Data Available</td>
+                <td className="grid2_td"></td>
+                <td className="grid2_td"></td>
+                <td className="grid2_td"></td>
+                </tr> :
             
                 detailPnl.map((elem, index)=>{
                     totalOverAllPnl += elem.pnl && elem.pnl;

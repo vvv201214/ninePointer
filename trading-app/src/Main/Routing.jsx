@@ -88,10 +88,10 @@ export default function Routing() {
                             {/* {console.log("this is details...",details)}
                         {details.role === "admin" ? */}
                             <Route path='/main/dashboard' element={<DashboardMain />}>
-                                <Route path='/main/dashboard/' element={<Dashboard />}></Route>
+                                {/* <Route path='/main/dashboard/' element={<Dashboard />}></Route> */}
                                 <Route path='/main/dashboard/CompanyPosition/' element={<CompanyPosition />}></Route>
                                 <Route path='/main/dashboard/TraderPosition/' element={<TraderPosition />}></Route>
-                                <Route path='/main/dashboard/positions/' element={<TradersPosition />}></Route>
+                                <Route path='/main/dashboard/' element={<TradersPosition />}></Route>
 
                                 <Route path='/main/dashboard/CompanyOrders' element={<CompanyOrders orderCountHistoryCompany={orderCountHistoryCompany} orderCountTodayCompany={orderCountTodayCompany}/>}> 
                                 <Route path='/main/dashboard/CompanyOrders' element={<TodaysTradesMock setOrderCountTodayCompany={setOrderCountTodayCompany}/>} ></Route>
@@ -111,9 +111,9 @@ export default function Routing() {
                                 <Route path='/main/report/' element={<Reports />}></Route>
                             </Route>
                             <Route path='/main/admindashboard/summary' element={<SummaryMain/>}>
-                                <Route path='/main/admindashboard/summary' element={<Summary/>}></Route>
-                                <Route path='/main/admindashboard/summary/pnlreport' element={<PNLReport/>}></Route>
-                                <Route path='/main/admindashboard/summary/dailypnlreport' element={<DailyPNLReport/>}></Route>
+                                <Route path='/main/admindashboard/summary/' element={<Summary/>}></Route>
+                                <Route path='/main/admindashboard/summary/pnlreport/' element={<PNLReport/>}></Route>
+                                <Route path='/main/admindashboard/summary/dailypnlreport/' element={<DailyPNLReport/>}></Route>
                             </Route>
                             <Route path='/main/userfunds' element={<UserFundsMain />}>
                                 <Route path='/main/userfunds/' element={<UserFunds />}></Route>

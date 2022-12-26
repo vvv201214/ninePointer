@@ -8,10 +8,10 @@ export default function CompanyOrders({orderCountTodayCompany, orderCountHistory
         <div className={style.Companyorder_div}>        
             <ul className={style.Companyorder_ul}>
                 <li className={style.Companyorder_li}>
-                    <NavLink to={"/main/dashboard/CompanyOrders/"}style={({isActive}) => isActive?{backgroundColor: "white", borderRadius: "3px"} :{Color:'black'} }>Today's Trades(Mock-{orderCountTodayCompany})</NavLink>
+                    <NavLink className='headers_li_links' to={"/main/dashboard/CompanyOrders/"} style={({isActive}) => isActive?{color: "#5479FC"} :{color:'black'} }>Today's Trades(Mock-{orderCountTodayCompany})</NavLink>
                 </li>
                 <li className={style.Companyorder_li}>
-                    <NavLink to={"/main/dashboard/CompanyOrders/HistoryTradesMock/"}style={({isActive}) => isActive?{backgroundColor: "white", borderRadius: "3px"} :{Color:'black'} }>History Trades(Mock-{orderCountHistoryCompany})</NavLink>
+                    <NavLink className='headers_li_links' to={"/main/dashboard/CompanyOrders/HistoryTradesMock/"} style={({isActive}) => isActive?{color: "#5479FC"} :{color:'black'} }>History Trades(Mock-{orderCountHistoryCompany})</NavLink>
                 </li>
             </ul>
         <Outlet/>

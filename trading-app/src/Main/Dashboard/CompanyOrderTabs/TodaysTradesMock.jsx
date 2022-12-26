@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import CompanyOrderPegination from "./CompanyOrderPegination/CompanyOrderPegination";
+import Styles from "./CompanyOrder.module.css"
 
 function TodaysTradesMock({setOrderCountTodayCompany, orderCountTodayCompany}){
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
@@ -23,7 +23,7 @@ function TodaysTradesMock({setOrderCountTodayCompany, orderCountTodayCompany}){
             return new Error(err);
         })
 
-        axios.get(`${baseUrl}api/v1/readmocktradecompanytodaydatapagination/${skip}/${50}`)
+        axios.get(`${baseUrl}api/v1/readmocktradecompanytodaydatapagination/${skip}/${30}`)
         .then((res)=>{
 
             setData(res.data);
@@ -34,9 +34,9 @@ function TodaysTradesMock({setOrderCountTodayCompany, orderCountTodayCompany}){
     },[])
 
     function nextData(){
-        setSkip((prev)=> prev+50)
+        setSkip((prev)=> prev+30)
         console.log(skip)
-        axios.get(`${baseUrl}api/v1/readmocktradecompanytodaydatapagination/${skip+50}/${50}`)
+        axios.get(`${baseUrl}api/v1/readmocktradecompanytodaydatapagination/${skip+30}/${30}`)
         .then((res)=>{
 
             setData(res.data);
@@ -48,9 +48,9 @@ function TodaysTradesMock({setOrderCountTodayCompany, orderCountTodayCompany}){
     }
 
     function prevData(){
-        setSkip((prev)=> prev-50)
+        setSkip((prev)=> prev-30)
         console.log(skip)
-        axios.get(`${baseUrl}api/v1/readmocktradecompanytodaydatapagination/${skip-50}/${50}`)
+        axios.get(`${baseUrl}api/v1/readmocktradecompanytodaydatapagination/${skip-30}/${30}`)
         .then((res)=>{
 
             setData(res.data);
@@ -60,7 +60,7 @@ function TodaysTradesMock({setOrderCountTodayCompany, orderCountTodayCompany}){
         })
         setclickToRemove((prev)=>prev-1)
     }
-    numberOfClickForRemoveNext = Math.ceil(((length))/50);
+    numberOfClickForRemoveNext = Math.ceil(((length))/30);
     console.log(numberOfClickForRemoveNext, clickToRemove, length)
 
     return(
@@ -102,9 +102,9 @@ function TodaysTradesMock({setOrderCountTodayCompany, orderCountTodayCompany}){
                                     )
                                 })}        
                             </table> 
-                            <div className="pegination_div">
-                                <button className="pegination_btn" disabled={!(skip !== 0)} onClick={prevData}>Prev</button>
-                                <button className="pegination_btn" disabled={!(numberOfClickForRemoveNext !== clickToRemove)} onClick={nextData}>Next</button>
+                            <div className={Styles.pegination_div}>
+                                <button className={Styles.PrevButtons} disabled={!(skip !== 0)} onClick={prevData}>Prev</button>
+                                <button className={Styles.nextButtons} disabled={!(numberOfClickForRemoveNext !== clickToRemove)} onClick={nextData}>Next</button>
                             </div>
                         </div>
                     </div>

@@ -20,7 +20,7 @@ export default function MainSideBar({name}) {
                 <NavLink to="/main/user" style={({isActive}) => isActive?{color:'#5479FC'} :{color:'black'} }><div className="sidebar_items"><img className="linkicons" src={require("../media/statistics.png")}></img><div className="menuitembar">Users</div></div></NavLink>
                 <NavLink to="/main/funds" style={({isActive}) => isActive?{color:'#5479FC'} :{color:'black'} }><div className="sidebar_items"><img className="linkicons" src={require("../media/statistics.png")}></img><div className="menuitembar">Funds</div></div></NavLink>
                 <div className="menuheader">Reports</div>
-                <NavLink to="/main/report" style={({isActive}) => isActive?{color:'wh#5479FCite'} :{color:'black'} }><div className="sidebar_items"><img className="linkicons" src={require("../media/statistics.png")}></img><div className="menuitembar">Reports</div></div></NavLink>
+                <NavLink to="/main/report" style={({isActive}) => isActive?{color:'#5479FC'} :{color:'black'} }><div className="sidebar_items"><img className="linkicons" src={require("../media/statistics.png")}></img><div className="menuitembar">Reports</div></div></NavLink>
                 
                 
             </div>

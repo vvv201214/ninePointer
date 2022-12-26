@@ -6,16 +6,16 @@ export default function AlgoHeader() {
     <>
         <ul className='navbar'>
             <li>
-                <NavLink to={"/main/algobox/"} style={({isActive}) => isActive?{backgroundColor: "white", borderRadius: "3px"} :{colbackgroundColor:'black'} }>Trading Algos</NavLink>
+                <NavLink className='headers_li_links' to={"/main/algobox/"} style={({isActive}) => isActive?{color: "#5479FC"} :{color:'black'} }>Trading Algos</NavLink>
             </li>
             <li>
-                <NavLink to={"/main/algobox/InstrumentMapping/"} style={({isActive}) => isActive?{backgroundColor: "white", borderRadius: "3px"} :{colbackgroundColor:'black'} }>Instrument Mapping</NavLink>
+                <NavLink className='headers_li_links' to={"/main/algobox/InstrumentMapping/"} style={({isActive}) => isActive?{color: "#5479FC"} :{color:'black'} }>Instrument Mapping</NavLink>
             </li>
             <li>
-                <NavLink to={"/main/algobox/ExchangeMapping/"} style={({isActive}) => isActive?{backgroundColor: "white", borderRadius: "3px"} :{colbackgroundColor:'black'} }>Exchange Mapping</NavLink>
+                <NavLink className='headers_li_links' to={"/main/algobox/ExchangeMapping/"} style={({isActive}) => isActive?{color: "#5479FC"} :{color:'black'} }>Exchange Mapping</NavLink>
             </li>
             <li>
-                <NavLink to={"/main/algobox/ProductMapping/"} style={({isActive}) => isActive?{backgroundColor: "white", borderRadius: "3px"} :{colbackgroundColor:'black'} }>Product Mapping</NavLink>
+                <NavLink className='headers_li_links' to={"/main/algobox/ProductMapping/"} style={({isActive}) => isActive?{color: "#5479FC"} :{color:'black'} }>Product Mapping</NavLink>
             </li>
         </ul>
         <Outlet/>
