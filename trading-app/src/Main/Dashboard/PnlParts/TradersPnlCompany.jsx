@@ -177,7 +177,7 @@ export default function TradersPnlCompany({marketData, tradeData}) {
                 <th className="grid2_th">Tran. Cost</th>
                 <th className="grid2_th"> Net P&L</th>
             </tr>
-            {detailPnl.length ? 
+            {!detailPnl.length ? 
                 <tr className="grid2_tr">
                 <td className="grid2_td"></td>
                 <td className="grid2_td"></td>
@@ -221,7 +221,6 @@ export default function TradersPnlCompany({marketData, tradeData}) {
                         </tr>
                         }
                        </>
-                        
                     )
                 })
             }
