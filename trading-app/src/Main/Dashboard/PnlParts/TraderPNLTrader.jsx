@@ -21,9 +21,11 @@ export default function TradersPNLTrader({marketData, tradeData}) {
     let transactionCost = 0;
     let numberOfTrade = 0;
     let lotUsed = 0;
+    let runninglots = 0;
     let totalOverAllPnl = 0;
     let totalNumberTrade = 0;
     let totalLotsUsed = 0;
+    let totalrunninglots = 0;
     let totalTransCost = 0;
     let totalNetPnl = 0;
     useEffect(()=>{
@@ -127,6 +129,7 @@ export default function TradersPNLTrader({marketData, tradeData}) {
             console.log(elem.totalBuy,elem.totalSell,elem.totalBuyLot,elem.totalSellLot, liveDetailsArr[index]?.last_price)
             totalPnl += (-(elem.totalBuy+elem.totalSell-(elem.totalBuyLot+elem.totalSellLot)*liveDetailsArr[index]?.last_price))
             lotUsed += Math.abs(elem.totalBuyLot) + Math.abs(elem.totalSellLot);
+            runninglots += elem.totalBuyLot + elem.totalSellLot;
         })
 
         let newObj = {
@@ -135,6 +138,7 @@ export default function TradersPNLTrader({marketData, tradeData}) {
             name: name,
             numberOfTrade: numberOfTrade,
             lotUsed: lotUsed,
+            runninglots: runninglots,
         }
         console.log(transactionCost, totalPnl, name);
         detailPnl.push(JSON.parse(JSON.stringify(newObj)));
@@ -142,6 +146,7 @@ export default function TradersPNLTrader({marketData, tradeData}) {
         totalPnl = 0;
         numberOfTrade = 0;
         lotUsed = 0;
+        runninglots = 0;
     })
 
     // detailPnl.sort((a, b)=> {
@@ -192,7 +197,7 @@ export default function TradersPNLTrader({marketData, tradeData}) {
                         <tr style={netpnl>=0.00 ? { color: "green"}:  { color: "red"}} key={elem._id}>
                             
                             <>
-                            <td className="grid2_td">{(elem.name)}</td>
+                            <td className="grid2_td" style={elem.runninglots === 0.00 ? {fontWeight:700, background : "#efebeb", borderRadius:5}:{fontWeight:700,background : "white"}}>{(elem.name)}</td>
                             {!elem.pnl ?
                             <td className="grid2_td">{elem.pnl > 0 ? "+₹" + (Number(elem.pnl)) : "-₹" + ((-elem.pnl))} </td>
                             :
