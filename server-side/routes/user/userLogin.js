@@ -38,7 +38,7 @@ router.post("/login", async (req, res)=>{
 })
 
 router.get("/dashboard", authentication, (req, res)=>{
-    console.log("hello my about");
+    // console.log("hello my about");
     res.send(req.user);
 })
 

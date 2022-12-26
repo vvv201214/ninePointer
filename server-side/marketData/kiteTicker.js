@@ -13,7 +13,7 @@ const createNewTicker = (api_key, access_token) => {
 
     ticker.connect();
     ticker.autoReconnect(true, 10000000000, 5);
-    // console.log(ticker);
+    console.log('ticker is', ticker);
     return ticker;    
 }
 
@@ -23,7 +23,7 @@ const disconnectTicker = (ticker) => {
 
 const subscribeTokens = async() => {
     console.log(ticker);
-    const tokens = await fetchData();
+    const tokens = await fetchData('nq0gipdzk0yexyko','DKW7CYJN50QSnjgzahQ9UjJqPFrChzOh');
     ticker.subscribe(tokens);
 }
 module.exports = {createNewTicker, disconnectTicker, subscribeTokens};

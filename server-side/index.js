@@ -11,22 +11,26 @@ const fetchData = require('./marketData/fetchToken');
 const io = require('./marketData/socketio');
 const {createNewTicker, disconnectTicker} = require('./marketData/kiteTicker');
 
-const ticker = createNewTicker('4o77ska70avpfx5e','PJOgvK42aFe0tnEVeSLGDyhaXewQuz3s');
+const ticker = createNewTicker('nq0gipdzk0yexyko','DKW7CYJN50QSnjgzahQ9UjJqPFrChzOh');
 io.on("connection", (socket) => {
   console.log('client socket is' + socket.id);
   // socket1 = socket;
   socket.on('hi', async (data) => {
     // eventEmitOnError = data;
-    let tokens = await fetchData('4o77ska70avpfx5e', 'PJOgvK42aFe0tnEVeSLGDyhaXewQuz3s');
-    console.log('tokens', tokens);
+    let tokens = await fetchData('nq0gipdzk0yexyko', 'DKW7CYJN50QSnjgzahQ9UjJqPFrChzOh');
+    console.log('tokens index', tokens);
     ticker.subscribe(tokens);
     ticker.setMode(ticker.modeFull, tokens);
-    ticker.on('ticks', (ticks)=>{
+    ticker.on('ticks', (ticks) => {
+      console.log('ticking');
       console.log('tick', ticks);
       if(ticks.length == tokens.length){
         console.log('sending ticks', ticks);
-        socket.emit(ticks); 
+        socket.emit('tick', ticks); 
       }
+    });
+    ticker.on('error', (error)=>{
+      console.log(error);
     });
     // console.log(data);
   });
@@ -53,7 +57,7 @@ app.use(cors({
 
 app.use(express.json());
 
-app.use('/api/v1', require("./marketData/livePrice"));
+// app.use('/api/v1', require("./marketData/livePrice"));
 app.use('/api/v1', require("./routes/user/userLogin"));
 app.use('/api/v1', require('./routes/TradeData/getUserTrade'));
 app.use('/api/v1', require('./routes/TradeData/getCompanyTrade'));
