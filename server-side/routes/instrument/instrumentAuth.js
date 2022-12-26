@@ -40,8 +40,8 @@ router.post("/instrument", async (req, res)=>{
             const instruments = new Instrument({instrument, exchange, symbol, status, uId, createdOn, lastModified, createdBy, lotSize, instrumentToken, contractDate, maxLot});
             console.log("instruments", instruments)
             instruments.save().then(()=>{
-                kiteTickerFunc();
-                console.log("kiteTickerFunc");
+                // kiteTickerFunc();
+                // console.log("kiteTickerFunc");
                 res.status(201).json({massage : "data enter succesfully"});
             }).catch((err)=> res.status(500).json({error:"Failed to enter data"}));
         }).catch(err => {console.log(err, "fail")});
@@ -106,8 +106,8 @@ router.put("/readInstrumentDetails/:id", async (req, res)=>{
         })
         console.log("this is role", instrument);
         // if(instrument[0].status === "Active"){
-            kiteTickerFunc(token);
-            console.log("kiteTickerFunc");
+            // kiteTickerFunc(token);
+            // console.log("kiteTickerFunc");
         // }
 
         res.send(instrument)
