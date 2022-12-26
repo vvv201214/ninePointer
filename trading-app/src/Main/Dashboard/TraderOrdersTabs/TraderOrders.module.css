@@ -44,3 +44,17 @@
     border-radius: 5px;
     cursor: pointer;
 }
+
+.pageCounting{
+    margin: 1%;
+    /* margin-right: 3%; */
+    width: 6rem;
+    height: 3.5vh;
+    background-color: #c4c4c4;
+    border: none;
+    color: rgb(0, 0, 0);
+    font-weight: 700;
+    border-radius: 5px;
+    text-align: center;
+    padding-top: 3px;
+}

@@ -1,23 +1,29 @@
 .grid_1{
    
     max-height: max-content;
-    background: rgb(255, 255, 255);
+    background: white;
+    color: black;
     margin-left: 5px;
     margin-right: 5px;
-    border-radius: 15px 15px 15px 15px;
+    /* border-radius: 15px 15px 15px 15px; */
     margin-bottom: 7px;
 }
 .main_dateSelData{
     min-width: 50%;
     max-width: 100%;
     margin: 1% 0% 0% 0%;
+    padding-bottom: 5px;
 }
 .form_div{
     margin: 0% 0% 1% 0%;
+    box-shadow: inset 2px 0px 0px 0px #eee;
+    box-shadow: inset 0px 2px 0px 0px #eee;
+    box-shadow: inset 0px 0px 2px 0px #eee;
+    box-shadow: inset 0px 0px 0px 2px #eee;
    
 }
 .formLable{
-    font-size: 15px;
+    font-size: 0.75rem;
     font-weight: bold;
     padding-left:1%;
     margin-right: 1%;
@@ -33,6 +39,7 @@
     border: none;
     text-align: center;
     background-color: #f1f1f1;
+    margin: 10px;
 }
 .formInput1{
     min-width: 20%;
@@ -43,13 +50,17 @@
     border-radius: 5px;
     margin-left: -2px;
     font-size: 14px;
-    padding-top: 2px;
+    padding-top: 1px;
     margin-left: 15px;
 }
 .formSelect{
     width: 7rem;
     height: 1.5rem;
     border: none;
+    box-shadow: inset 2px 0px 0px 0px #eee;
+    box-shadow: inset 0px 2px 0px 0px #eee;
+    box-shadow: inset 0px 0px 2px 0px #eee;
+    box-shadow: inset 0px 0px 0px 2px #eee;
 }
 .btn_div_head{
     display: flex;
@@ -57,12 +68,20 @@
 }
 .btn_div_onehead{
     width: 50%;
-    border: 1px solid black;
+    /* border: 1px solid black; */
     margin-right: 5px;
+    box-shadow: inset 2px 0px 0px 0px #eee;
+    box-shadow: inset 0px 2px 0px 0px #eee;
+    box-shadow: inset 0px 0px 2px 0px #eee;
+    box-shadow: inset 0px 0px 0px 2px #eee;
 }
 .btn_div_twohead{
     width: 50%;
-    border: 1px solid black;
+    /* border: 1px solid black; */
+    box-shadow: inset 2px 0px 0px 0px #eee;
+    box-shadow: inset 0px 2px 0px 0px #eee;
+    box-shadow: inset 0px 0px 2px 0px #eee;
+    box-shadow: inset 0px 0px 0px 2px #eee;
 }
 .btn_div_one{
     margin: 1.7%;
