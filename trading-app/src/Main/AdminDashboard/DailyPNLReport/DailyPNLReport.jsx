@@ -156,7 +156,6 @@ export default function DailyPNLReport() {
                 });
     
     
-    
                 if((firstDateSplit[2]) < 9){
                     (firstDateSplit[2]) = `0${Number(firstDateSplit[2]) + 1}`
                 }
@@ -244,7 +243,7 @@ export default function DailyPNLReport() {
                     lotUsed = 0;
                 
                     console.log(detailPnl);
-                    setDetailPnl(detailPnl)
+                    setDetailPnl(JSON.parse(JSON.stringify(detailPnl)))
                     // do something with the users and posts data
                 })
                 .catch(error => {
@@ -273,9 +272,9 @@ export default function DailyPNLReport() {
                 
             }
         } 
-        setTimeout(()=>{
-            render ? setRender(false) : setRender(true)
-        }, 4000)
+        // setTimeout(()=>{
+        //     render ? setRender(false) : setRender(true)
+        // }, 4000)
       console.log("after sorting", detailPnlArr);
 
     }
@@ -328,7 +327,7 @@ export default function DailyPNLReport() {
                         lotUsed = 0;
                     
                         console.log(detailPnl);
-                        setDetailPnl(detailPnl)
+                        setDetailPnl(JSON.parse(JSON.stringify(detailPnl)))
                         // do something with the users and posts data
                     })
                     .catch(error => {
@@ -356,9 +355,9 @@ export default function DailyPNLReport() {
                     }
                 }
             } 
-            setTimeout(()=>{
-                render ? setRender(false) : setRender(true)
-            }, 4000)
+            // setTimeout(()=>{
+            //     render ? setRender(false) : setRender(true)
+            // }, 4000)
         console.log(detailPnl);
     }
 
@@ -399,7 +398,6 @@ export default function DailyPNLReport() {
                         obj.totalSell = obj.totalSell + Number(data[i].average_price) * (Number(data[i].Quantity))
                         obj.totalSellLot = obj.totalSellLot + (Number(data[i].Quantity)) 
                     }
-
                 }
             }  else{
                 if(data[i].buyOrSell === "BUY"){
@@ -480,8 +478,6 @@ export default function DailyPNLReport() {
         return newObj;
     }
 
-
-
     (detailPnlArr).sort((a, b)=> {
         // console.log(a, b)
         if (a.date < b.date) {
@@ -495,22 +491,24 @@ export default function DailyPNLReport() {
 
 
     detailPnlArr.map((elem)=>{
-        let object = {};
-
-        if(elem.brokerage){
-            allBrokerage = allBrokerage + Number(elem.brokerage);
-            userBrokerage = userBrokerage + Number(elem.traderbrokerage);
+        if(elem.runningLots === 0){
+            if(elem.brokerage){
+                allBrokerage = allBrokerage + Number(elem.brokerage);
+                userBrokerage = userBrokerage + Number(elem.traderbrokerage);
+            }
+    
+            if(elem.pnl){
+                allGross = allGross + Number(elem.pnl);
+                userGross = userGross + Number(elem.traderpnl);
+            }
+    
+            allNet =  (allGross - allBrokerage);
+            userNet = (userGross - userBrokerage)
+    
         }
-
-        if(elem.pnl){
-            allGross = allGross + Number(elem.pnl);
-            userGross = userGross + Number(elem.traderpnl);
-        }
-
-        allNet =  (allGross - allBrokerage);
-        userNet = (userGross - userBrokerage)
         // console.log(detailPnlArr, allBrokerage, allGross, allNet)
-
+        let object = {};
+        
         let obj = {
             allBrokerage: allBrokerage,
             allGross: allGross,
@@ -633,7 +631,7 @@ export default function DailyPNLReport() {
                                     let data = (elem.date).split("-");
                                     return(
                                         <>
-                                        {(elem.name && !elem.runninglots) &&
+                                        {(elem.name && elem.runningLots === 0) &&
                                         <tr>
                                             <td className="grid2_td">{`${data[2]}-${data[1]}-${data[0]}`}</td>
                                             {!elem.pnl ?

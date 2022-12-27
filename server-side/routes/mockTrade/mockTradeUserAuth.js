@@ -4,6 +4,123 @@ require("../../db/conn");
 const MockTradeDetails = require("../../models/mock-trade/mockTradeUserSchema");
 const axios = require('axios');
 
+// function pnlCalculation(data){
+//     let hash = new Map();
+//     let hashForTraderCount = new Map();
+//     let numberOfTrader = 0;
+//     //console.log(data)
+//     for(let i = data.length-1; i >= 0 ; i--){
+
+//         numberOfTrade += 1;
+//         transactionCost += Number(data[i].brokerage);
+
+//         if(!hashForTraderCount.has(data[i].userId)){
+//             numberOfTrader += 1;
+//             hashForTraderCount.set(data[i].userId, 1);
+//         }
+
+//         if(hash.has(data[i].symbol)){
+//             let obj = hash.get(data[i].symbol);
+//             if(data[i].buyOrSell === "BUY"){
+//                 if(obj.totalBuy === undefined || obj.totalBuyLot === undefined){
+//                     obj.totalBuy = Number(data[i].average_price) * (Number(data[i].Quantity))
+//                     obj.totalBuyLot = (Number(data[i].Quantity))
+//                 } else{
+//                     obj.totalBuy = obj.totalBuy + Number(data[i].average_price) * (Number(data[i].Quantity))
+//                     obj.totalBuyLot = obj.totalBuyLot + (Number(data[i].Quantity)) 
+//                 }
+
+//             } if(data[i].buyOrSell === "SELL"){
+//                 if( obj.totalSell === undefined || obj.totalSellLot === undefined){
+
+//                     obj.totalSell = Number(data[i].average_price) * (Number(data[i].Quantity))
+//                     obj.totalSellLot = (Number(data[i].Quantity)) 
+//                 } else{
+
+//                     obj.totalSell = obj.totalSell + Number(data[i].average_price) * (Number(data[i].Quantity))
+//                     obj.totalSellLot = obj.totalSellLot + (Number(data[i].Quantity)) 
+//                 }
+
+//             }
+//         }  else{
+//             if(data[i].buyOrSell === "BUY"){
+//                 hash.set(data[i].symbol, {
+//                     totalBuy : Number(data[i].average_price) * (Number(data[i].Quantity)),
+//                     totalBuyLot : (Number(data[i].Quantity)) ,
+//                     totalSell: 0,
+//                     totalSellLot: 0,
+//                     symbol: data[i].symbol,
+//                     Product: data[i].Product,
+//                     name: data[0].createdBy,
+//                     date: ((data[0].order_timestamp).split(" "))[0]
+//                 })
+//             }if(data[i].buyOrSell === "SELL"){
+//                 hash.set(data[i].symbol, {
+//                     totalSell : Number(data[i].average_price) * (Number(data[i].Quantity)),
+//                     totalSellLot : (Number(data[i].Quantity)) ,
+//                     totalBuy : 0,
+//                     totalBuyLot: 0,
+//                     symbol: data[i].symbol,
+//                     Product: data[i].Product,
+//                     name: data[0].createdBy,
+//                     date: ((data[0].order_timestamp).split(" "))[0]
+//                 })
+//             }
+//         }
+//     }
+
+//     let overallPnl = [];
+//     for (let value of hash.values()){
+//         overallPnl.push(value);
+//     }
+//     let liveDetailsArr = [];
+//     overallPnl.map((elem)=>{
+//         tradeData.map((element)=>{
+//             if(element.symbol === elem.symbol){
+//                 marketData.map((subElem)=>{
+//                     if(subElem !== undefined && subElem.instrument_token === element.instrumentToken){
+//                         liveDetailsArr.push(subElem)
+//                     }
+//                 })
+//             }
+//         })
+//     })
+
+//     //console.log(hashForTraderCount)
+//     let runningLots;
+//     overallPnl.map((elem, index)=>{
+//         if(selectUserState === "All user"){
+//             name = "All User"
+//         }else{
+//             name = elem.name;
+//         }
+//         if(elem.totalBuyLot+elem.totalSellLot === 0){
+//             totalPnl += -(elem.totalBuy+elem.totalSell)
+//         }else{
+//             totalPnl += (-(elem.totalBuy+elem.totalSell-(elem.totalBuyLot+elem.totalSellLot)*liveDetailsArr[index]?.last_price))
+
+//         }
+        
+//         //console.log( liveDetailsArr[index]?.last_price)
+//         //console.log(elem.totalBuy,elem.totalSell,elem.totalBuyLot,elem.totalSellLot, liveDetailsArr[index]?.last_price)
+//         lotUsed += Math.abs(elem.totalBuyLot) + Math.abs(elem.totalSellLot);
+//         runningLots = elem.totalBuyLot + elem.totalSellLot
+//     })
+//     let date = (overallPnl[0].date).split("-");
+//     let newObj = {
+//         brokerage: transactionCost,
+//         pnl: totalPnl,
+//         name: name,
+//         numberOfTrade: numberOfTrade,
+//         lotUsed: lotUsed,
+//         date: `${date[2]}-${date[1]}-${date[0]}`,
+//         numberOfTrader: numberOfTrader,
+//         runningLots: runningLots
+//     }
+
+//     return newObj;
+// }
+
 router.post("/mocktradeuser", async (req, res)=>{
 
     let {exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType,
@@ -247,6 +364,30 @@ router.get("/readmocktradeuserpagination/:skip/:limit", (req, res)=>{
     const {skip, limit} = req.params
     MockTradeDetails.find().sort({order_timestamp:-1}).skip(skip).limit(limit)
     .then((data)=>{
+        return res.status(200).send(data);
+    })
+    .catch((err)=>{
+        return res.status(422).json({error : "date not found"})
+    })
+})
+
+router.get("/readmocktradeuserpariculardatewithemail/:date/:email", (req, res)=>{
+    // let date = new Date();
+    // let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
+    const {date, email} = req.params
+    MockTradeDetails.find({order_timestamp: {$regex: date}, userId: email})
+    .then((data)=>{
+        // (data).sort((a, b)=> {
+
+        //     if (a.order_timestamp < b.order_timestamp) {
+        //       return 1;
+        //     }
+        //     if (a.order_timestamp > b.order_timestamp) {
+        //       return -1;
+        //     }
+        //     return 0;
+        //   });
+        // data.reverse();
         return res.status(200).send(data);
     })
     .catch((err)=>{

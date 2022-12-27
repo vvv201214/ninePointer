@@ -1,6 +1,6 @@
 import React, { useContext, useRef, useState } from "react";
 import { useEffect } from "react";
-import Styles from "./TraderMetrics.module.css";
+import Styles from "../DailyPNLReport/DailyPNLReport.module.css";
 import axios from "axios";
 import { userContext } from "../../AuthContext";
 import { io } from "socket.io-client";
@@ -660,15 +660,6 @@ export default function DailyPNLReport() {
             obj.lotUsed = obj.lotUsed + detailPnlArr[i].lotUsed ;
             obj.runninglots = obj.runninglots + detailPnlArr[i].runningLots;
             obj.tradingdays = obj.tradingdays+1;
-            if(detailPnlArr[i].traderpnl-detailPnlArr[i].traderbrokerage >= 0)
-            {
-                obj.positivedays = obj.positivedays+1;
-                obj.positivepnl = obj.positivepnl + (detailPnlArr[i].traderpnl-detailPnlArr[i].traderbrokerage);
-            }
-            else{
-                obj.negativedays = obj.negativedays+1;
-                obj.negativepnl = obj.negativepnl + (detailPnlArr[i].traderpnl-detailPnlArr[i].traderbrokerage);
-            }
 
         } else{
             hashmap.set(detailPnlArr[i].name, {
@@ -680,11 +671,7 @@ export default function DailyPNLReport() {
                 lotUsed: detailPnlArr[i].lotUsed,
                 runninglots: detailPnlArr[i].runningLots,
                 name: detailPnlArr[i].name,
-                tradingdays: 1,
-                positivedays: detailPnlArr[i].traderpnl-detailPnlArr[i].traderbrokerage >= 0 ? 1 : 0,
-                positivepnl: detailPnlArr[i].traderpnl-detailPnlArr[i].traderbrokerage >= 0 ? detailPnlArr[i].traderpnl-detailPnlArr[i].traderbrokerage : 0,
-                negativedays: detailPnlArr[i].traderpnl-detailPnlArr[i].traderbrokerage< 0 ? 1 : 0,
-                negativepnl: detailPnlArr[i].traderpnl-detailPnlArr[i].traderbrokerage < 0 ? detailPnlArr[i].traderpnl-detailPnlArr[i].traderbrokerage : 0
+                tradingdays: 1
             })
         }
     }
@@ -726,15 +713,14 @@ export default function DailyPNLReport() {
     // console.log(totalDateWisePnl);
     (totalDateWisePnl).sort((a, b)=> {
         // console.log(a, b)
-        if ((a.traderpnl-a.traderbrokerage) < (b.traderpnl-b.traderbrokerage)) {
-          return -1;
-        }
-        if ((a.traderpnl-a.traderbrokerage) > (b.traderpnl-b.traderbrokerage)) {
+        if ((a.pnl-a.brokerage) < (b.pnl-b.brokerage)) {
           return 1;
+        }
+        if ((a.pnl-a.brokerage) > (b.pnl-b.brokerage)) {
+          return -1;
         }
         return 0;
     })
-
     return (
         <div>
             <div className="main_Container">
@@ -750,12 +736,9 @@ export default function DailyPNLReport() {
 
                                 </form>
                             </div>
-
-                            {/* Info Box Start */}
-                            <div className={Styles.infobox}>
-                            <div className={Styles.box1}>
+                            <div className={Styles.btn_div_head1}>
+                            <div className={Styles.btn_div_onehead1}>
                             <div className={Styles.btn_div_one1}>
-                                    
                                 <div className={`${Styles.formLable1}`}>Gross(C-P&L)</div>
                                 <div className={Styles.formLable1}>Tran. Cost(C)</div>
                                 <div className={Styles.formLable1}>Net(C-P&L)</div>
@@ -767,81 +750,82 @@ export default function DailyPNLReport() {
                     
                                 <div className={`${Styles.formInput11}`} style={allNet > 0.00 ? { color: "green" } : allBrokerage === 0.00 ? { color: "grey" } : { color: "red" }} >{allNet > 0.00 ? "+₹" + (allNet.toFixed(2)) : allNet === 0 ? " " : "-₹" + ((-(allNet)).toFixed(2))}</div>
                             </div>
-                            </div>
-                            <div className={Styles.box1}>
+                        </div>
+                        
+                        
+                        <div className={Styles.btn_div_twohead1}>
                             <div className={Styles.btn_div_two1}>
                                     
-                                <div className={`${Styles.formLable1}`}>Gross(C-P&L)</div>
-                                <div className={Styles.formLable1}>Tran. Cost(C)</div>
-                                <div className={Styles.formLable1}>Net(C-P&L)</div>
-                            </div>
-                            <div className={Styles.btn_div_two1}>
+                                <div className={`${Styles.formLable1}`}>Gross(T-P&L)</div>
+                                <div className={Styles.formLable1}>Tran. Cost(T)</div>
+                                <div className={Styles.formLable1}>Net(T-P&L)</div>
+                                </div>
+                                <div className={Styles.btn_div_two1}>
                                 <div style={userGross > 0.00 ? { color: "green" } : userGross === 0.00 ? { color: "grey" } : { color: "red" }} className={`${Styles.formInput11}`}>{userGross > 0.00 ? "+₹" + (userGross.toFixed(2)) : userGross === 0 ? "" : "-₹" + ((-(userGross)).toFixed(2))}</div>
                                
                                 <div className={`${Styles.formInput11}`}>{userBrokerage === 0 ? " " : "₹" + (userBrokerage.toFixed(2))}</div>
                                
                                 <div className={`${Styles.formInput11}`} style={userNet > 0.00 ? { color: "green" } : userBrokerage === 0.00 ? { color: "grey" } : { color: "red" }} >{userNet > 0.00 ? "+₹" + (userNet.toFixed(2)) : userNet === 0 ? " " : "-₹" + ((-(userNet)).toFixed(2))}</div>
 
+                                </div>
                             </div>
                             </div>
-                        </div>
-                            {/* Info Box End */}
-
-                            
                             </div>
                            
 
                             {/* <button className={Styles.formButton}>Download Report</button> */}
                      
-                        <div className={Styles.grid_11}>
+                        <div className={Styles.grid_1}>
                             <table className="grid1_table">
-                                <tr className="tableheader">
-                                    <th className="grid2_th" style={{background : "#11c6c4",color:"black"}}>Trader</th>
-                                    <th className="grid2_th" style={{background : "#11c6c4",color:"black"}}>Gross P&L</th>
-                                    <th className="grid2_th" style={{background : "#11c6c4",color:"black"}}>Tran. Cost</th>
-                                    <th className="grid2_th" style={{background : "#11c6c4",color:"black"}}>Net P&L</th>
-                                    <th className="grid2_th" style={{background : "#11c6c4",color:"black"}}>Trading Days</th>
-                                    <th className="grid2_th" style={{background : "#11c6c4",color:"black"}}>(Avg) Probable P&L</th>
-                                    {/* <th className="grid2_th" style={{background : "#11c6c4",color:"black"}}>Trader Score</th> */}
-                                    <th className="grid2_th" style={{background : "green",color:"white"}}>(+) Days</th>
-                                    <th className="grid2_th" style={{background : "green",color:"white"}}>(+) Days P&L</th>
-                                    <th className="grid2_th" style={{background : "green",color:"white"}}>(Avg) Positive P&L</th>
-                                    <th className="grid2_th" style={{background : "red",color:"white"}}>(-) Days</th>
-                                    <th className="grid2_th" style={{background : "red",color:"white"}}>(-) Days P&L</th>
-                                    <th className="grid2_th" style={{background : "red",color:"white"}}>(Avg) Negative P&L</th>
-                                    <th className="grid2_th" style={{background : "red",color:"white"}}>% Loss Days</th>
-                                    
+                                <tr className="grid2_tr">
+                                    <th className="grid2_th">Trader Name</th>
+                                    <th className="grid2_th">Gross(C-P&L)</th>
+                                    <th className="grid2_th">Tran. Cost(C)</th>
+                                    <th className="grid2_th">Net(C-P&L)</th>
+                                    <th className="grid2_th">Gross(T-P&L)</th>
+                                    <th className="grid2_th">Tran. Cost(T)</th>
+                                    <th className="grid2_th">Net(T-P&L)</th>
+                                    {/* <th className="grid2_th"># of Traders</th> */}
+                                    <th className="grid2_th"># of Trades</th>
+                                    <th className="grid2_th">Trading Days</th>
+                                    <th className="grid2_th">Details</th>
                                     {/* <th className="grid2_th">{detailPnl[0].name}</th> */}
                                 </tr>
                                 {
 
-                                totalDateWisePnl.map((elem)=>{
+                                totalDateWisePnl.map((elem, index)=>{
                                     // let data = (elem.date).split("-");
                                     return(
                                         <>
-                                        {elem.name &&
+                                        {(elem.name ) &&
                                         <tr>
                                             <td className="grid2_td">{elem.name}</td>
                                             {!elem.pnl ?
+                                            <td className="grid2_td" style={elem.pnl>=0.00 ? { color: "green"}:  { color: "red"}}>{elem.pnl >0.00 ? "+₹" + (elem.pnl): "-₹" + (-(elem.pnl)) }</td>
+                                            :
+                                            <td className="grid2_td" style={elem.pnl>=0.00 ? { color: "green"}:  { color: "red"}}>{elem.pnl >0.00 ? "+₹" + (elem.pnl.toFixed(2)): "-₹" + ((-(elem.pnl)).toFixed(2)) }</td>}
+                                            {!elem.brokerage ?
+                                            <td className="grid2_td" >{elem.brokerage >0.00 ? "₹" + (elem.brokerage) : "₹" + 0.00}</td>
+                                            :
+                                            <td className="grid2_td" >{elem.brokerage >0.00 ? "₹" + (elem.brokerage.toFixed(2)): "₹" + (-(elem.brokerage).toFixed(2)) }</td>}
+                                            {(elem.pnl - elem.brokerage) !== undefined &&
+                                            <td className="grid2_td" style={(elem.pnl - elem.brokerage)>=0.00 ? { color: "green"}:  { color: "red"}}> {elem.pnl - elem.brokerage > 0.00 ? "+₹" + (elem.pnl - elem.brokerage).toFixed(2): "-₹" + ((-(elem.pnl - elem.brokerage)).toFixed(2))}</td>}
+
+                                            {!elem.traderpnl ?
                                             <td className="grid2_td" style={elem.traderpnl>=0.00 ? { color: "green"}:  { color: "red"}}>{elem.traderpnl >0.00 ? "+₹" + (elem.traderpnl): "-₹" + (-(elem.traderpnl)) }</td>
                                             :
-                                            <td className="grid2_td" style={elem.traderpnl>=0.00 ? { color: "green"}:  { color: "red"}}>{elem.traderpnl >0.00 ? "+₹" + (elem.traderpnl.toFixed(2)): "-₹" + ((-(elem.traderpnl)).toFixed(0)) }</td>}
+                                            <td className="grid2_td" style={elem.traderpnl>=0.00 ? { color: "green"}:  { color: "red"}}>{elem.traderpnl >0.00 ? "+₹" + (elem.traderpnl.toFixed(2)): "-₹" + ((-(elem.traderpnl)).toFixed(2)) }</td>}
                                             {!elem.traderbrokerage ?
                                             <td className="grid2_td" >{elem.traderbrokerage >0.00 ? "₹" + (elem.traderbrokerage) : "₹" + 0.00}</td>
                                             :
                                             <td className="grid2_td" >{elem.traderbrokerage >0.00 ? "₹" + (elem.traderbrokerage.toFixed(2)): "₹" + (-(elem.traderbrokerage).toFixed(2)) }</td>}
                                             {(elem.traderpnl - elem.traderbrokerage) !== undefined &&
-                                            <td className="grid2_td" style={(elem.traderpnl - elem.traderbrokerage)>=0.00 ? { color: "green"}:  { color: "red"}}> {elem.traderpnl - elem.traderbrokerage > 0.00 ? "+₹" + (elem.traderpnl - elem.traderbrokerage).toFixed(0): "-₹" + ((-(elem.traderpnl - elem.traderbrokerage)).toFixed(0))}</td>}
+                                            <td className="grid2_td" style={(elem.traderpnl - elem.traderbrokerage)>=0.00 ? { color: "green"}:  { color: "red"}}> {elem.traderpnl - elem.traderbrokerage > 0.00 ? "+₹" + (elem.traderpnl - elem.traderbrokerage).toFixed(2): "-₹" + ((-(elem.traderpnl - elem.traderbrokerage)).toFixed(2))}</td>}
+
+                                            {/* <td className="grid2_td">{elem.numberOfTrader}</td> */}
+                                            <td className="grid2_td">{elem.numberOfTrade}</td>
                                             <td className="grid2_td">{elem.tradingdays}</td>
-                                            <td className="grid2_td">{((((elem.negativedays/elem.tradingdays))*elem.negativepnl)+(((elem.positivedays/elem.tradingdays))*elem.positivepnl)).toFixed(0)}</td>
-                                            {/* <td className="grid2_td">-</td> */}
-                                            <td className="grid2_td">{elem.positivedays}</td>
-                                            <td className="grid2_td">{elem.positivepnl.toFixed(0)}</td>
-                                            <td className="grid2_td">{elem.positivedays == 0 ? 0.00 : (elem.positivepnl/elem.positivedays).toFixed(0)}</td>
-                                            <td className="grid2_td">{elem.negativedays}</td>
-                                            <td className="grid2_td">{elem.negativepnl.toFixed(0)}</td>
-                                            <td className="grid2_td">{elem.negativedays == 0 ? 0.00 : (elem.negativepnl/elem.negativedays).toFixed(0)}</td>
-                                            <td className="grid2_td">{((elem.negativedays/elem.tradingdays)*100).toFixed(0)}%</td>
+                                            <td className="grid2_td"><button>Details</button></td>
 
                                         </tr>}
                                         </>
@@ -852,11 +836,8 @@ export default function DailyPNLReport() {
                         </div>
                     </div>
                 </div>
-             </div>
+            </div>
 
         </div>
-        
     )
 }
-
-

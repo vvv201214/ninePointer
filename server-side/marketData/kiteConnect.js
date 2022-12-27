@@ -144,11 +144,11 @@ async function parameters(io, socket) {
         } catch(err){
           throw new Error(err)
         }
-        console.log('Closed connection on error', error);
+        // console.log('Closed connection on error', error);
       }
     
       function onClose(reason) {
-        console.log('Closed connection on close', reason);
+        // console.log('Closed connection on close', reason);
       }
     
       let orderUpdate3 = {};

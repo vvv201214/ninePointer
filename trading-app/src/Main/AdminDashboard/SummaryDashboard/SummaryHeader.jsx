@@ -17,6 +17,9 @@ export default function SummaryHeader({role}) {
                     <NavLink className='headers_li_links' style={({isActive}) => isActive?{color: "#5479FC"} :{color:'black'} } to={"/main/admindashboard/summary/dailypnlreport/"}>Company Daily P&L</NavLink>
                 </li>
                 <li>
+                    <NavLink className='headers_li_links' style={({isActive}) => isActive?{color: "#5479FC"} :{color:'black'} } to={"/main/admindashboard/summary/traderpnlreport/"}>Trader P&L</NavLink>
+                </li>
+                <li>
                     <NavLink className='headers_li_links' style={({isActive}) => isActive?{color: "#5479FC"} :{color:'black'} } to={"/main/admindashboard/summary/tradermetrics/"}>Trader Metrics</NavLink>
                 </li>
             </ul>
