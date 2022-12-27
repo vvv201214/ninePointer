@@ -88,13 +88,13 @@ img{
 .menuitembar{
     font-size: 0.75rem;
     /* color: red; */
-    padding-top:2px;
+    padding-top:3px;
     padding-left: 10px;
 }
 
 .linkicons{
-    height: 15px;
-    width: 15px;
+    height: 20px;
+    width: 20px;
     margin-right: 0px;
     margin-left: 0px;
     /* padding-right: 10px; */
