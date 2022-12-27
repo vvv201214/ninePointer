@@ -9,8 +9,6 @@ import { userContext } from "../../AuthContext";
 import RunningPnl from "../PnlParts/RunningPnl";
 import ClosedPnl from "../PnlParts/ClosedPnl";
 import OverallPnl from "../PnlParts/OverallPnl";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons';
 import TradersPnlCompany from "../PnlParts/TradersPnlCompany";
 
 function CompanyPositionTable({ socket }) {

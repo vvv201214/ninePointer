@@ -39,6 +39,9 @@ export default function DailyPNLReport() {
     let [allBrokerage, setAllBrokerage] = useState(0);
     let [allNet, setAllNet] = useState(0);
     let [allGross, setAllGross] = useState(0);
+    let userBrokerage = 0;
+    let userGross = 0;
+    let userNet = 0;
     // let secondDate = "";
     let userId = (getDetails.userDetails.role === "user") && getDetails.userDetails.email;
 
@@ -98,26 +101,39 @@ export default function DailyPNLReport() {
         if(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate && noRender.current){
             while(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
                 console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` , secondDate)
-                let newObj = {};
-                axios.get(`${baseUrl}api/v1/readmocktradecompanypariculardate/${`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`}`)
-                .then((res)=>{
-                    newObj = pnlCalculation(res.data);
-    
-                    console.log(newObj);
-    
-                    detailPnl.push(JSON.parse(JSON.stringify(newObj)));
-                    
+                // let newObj = {};
+                const request1 = axios.get(`${baseUrl}api/v1/readmocktradecompanypariculardate/${`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`}`)
+                const request2 = axios.get(`${baseUrl}api/v1/readmocktradeuserpariculardate/${`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`}`)
+
+                Promise.all([request1, request2])
+                .then(([response1, response2]) => {
+                    const company = response1.data;
+                    const user = response2.data;
+
+                    let newObjCompany = pnlCalculation(company);
+                    transactionCost = 0;
+                    totalPnl = 0;
+                    numberOfTrade = 0;
+                    lotUsed = 0;
+                    let newObjUser = pnlCalculation(user);
+                    console.log(newObjCompany, newObjUser)
+                    newObjCompany.traderpnl = newObjUser.pnl;
+                    newObjCompany.traderbrokerage = newObjUser.brokerage;
+
+                    detailPnl.push(JSON.parse(JSON.stringify(newObjCompany)));
+                        
                     transactionCost = 0;
                     totalPnl = 0;
                     numberOfTrade = 0;
                     lotUsed = 0;
                 
                     console.log(detailPnl);
-    
                     setDetailPnl(detailPnl)
-                }).catch((err)=>{
-                    return new Error(err);
+                    // do something with the users and posts data
                 })
+                .catch(error => {
+                    throw new Error(error);
+                });
     
     
     
@@ -143,6 +159,10 @@ export default function DailyPNLReport() {
                 
             }
         }
+
+        // setInterval(()=>{
+        //     render ? setRender(false) : setRender(true)
+        // }, 5000)
 
     }, [getDetails,render, detailPnlArr])
 
@@ -177,27 +197,39 @@ export default function DailyPNLReport() {
         if(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
             while(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
                 console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` , secondDate)
-                let newObj = {};
-                axios.get(`${baseUrl}api/v1/readmocktradecompanypariculardate/${`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`}`)
-                .then((res)=>{
-                    newObj = pnlCalculation(res.data);
+                // let newObj = {};
+                const request1 = axios.get(`${baseUrl}api/v1/readmocktradecompanypariculardate/${`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`}`)
+                const request2 = axios.get(`${baseUrl}api/v1/readmocktradeuserpariculardate/${`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`}`)
 
-                    console.log(newObj);
+                Promise.all([request1, request2])
+                .then(([response1, response2]) => {
+                    const company = response1.data;
+                    const user = response2.data;
 
-                    detailPnl.push(JSON.parse(JSON.stringify(newObj)));
-                    
+                    let newObjCompany = pnlCalculation(company);
+                    transactionCost = 0;
+                    totalPnl = 0;
+                    numberOfTrade = 0;
+                    lotUsed = 0;
+                    let newObjUser = pnlCalculation(user);
+                    console.log(newObjCompany, newObjUser)
+                    newObjCompany.traderpnl = newObjUser.pnl;
+                    newObjCompany.traderbrokerage = newObjUser.brokerage;
+
+                    detailPnl.push(JSON.parse(JSON.stringify(newObjCompany)));
+                        
                     transactionCost = 0;
                     totalPnl = 0;
                     numberOfTrade = 0;
                     lotUsed = 0;
                 
                     console.log(detailPnl);
-
                     setDetailPnl(detailPnl)
-                }).catch((err)=>{
-                    return new Error(err);
+                    // do something with the users and posts data
                 })
-
+                .catch(error => {
+                    throw new Error(error);
+                });
 
 
                 if((firstDateSplit[2]) < 9){
@@ -223,7 +255,7 @@ export default function DailyPNLReport() {
         } 
         setTimeout(()=>{
             render ? setRender(false) : setRender(true)
-        }, 3000)
+        }, 4000)
       console.log("after sorting", detailPnlArr);
 
     }
@@ -250,13 +282,26 @@ export default function DailyPNLReport() {
                 while(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
                     console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` , secondDate)
 
-                    axios.get(`${baseUrl}api/v1/readmocktradecompanypariculardate/${`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`}`)
-                    .then((res)=>{
-                        let newObj = pnlCalculation(res.data);
-
-                        console.log(newObj);
-                        detailPnl.push(JSON.parse(JSON.stringify(newObj)));
-                        
+                    const request1 = axios.get(`${baseUrl}api/v1/readmocktradecompanypariculardate/${`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`}`)
+                    const request2 = axios.get(`${baseUrl}api/v1/readmocktradeuserpariculardate/${`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`}`)
+    
+                    Promise.all([request1, request2])
+                    .then(([response1, response2]) => {
+                        const company = response1.data;
+                        const user = response2.data;
+    
+                        let newObjCompany = pnlCalculation(company);
+                        transactionCost = 0;
+                        totalPnl = 0;
+                        numberOfTrade = 0;
+                        lotUsed = 0;
+                        let newObjUser = pnlCalculation(user);
+                        console.log(newObjCompany, newObjUser)
+                        newObjCompany.traderpnl = newObjUser.pnl;
+                        newObjCompany.traderbrokerage = newObjUser.brokerage;
+    
+                        detailPnl.push(JSON.parse(JSON.stringify(newObjCompany)));
+                            
                         transactionCost = 0;
                         totalPnl = 0;
                         numberOfTrade = 0;
@@ -264,10 +309,11 @@ export default function DailyPNLReport() {
                     
                         console.log(detailPnl);
                         setDetailPnl(detailPnl)
-                    }).catch((err)=>{
-                        return new Error(err);
+                        // do something with the users and posts data
                     })
-
+                    .catch(error => {
+                        throw new Error(error);
+                    });
  
                     if((firstDateSplit[2]) < 9){
                         (firstDateSplit[2]) = `0${Number(firstDateSplit[2]) + 1}`
@@ -292,7 +338,7 @@ export default function DailyPNLReport() {
             } 
             setTimeout(()=>{
                 render ? setRender(false) : setRender(true)
-            }, 3000)
+            }, 4000)
         console.log(detailPnl);
     }
 
@@ -301,7 +347,7 @@ export default function DailyPNLReport() {
         let hash = new Map();
         let hashForTraderCount = new Map();
         let numberOfTrader = 0;
-
+        console.log(data)
         for(let i = data.length-1; i >= 0 ; i--){
 
             numberOfTrade += 1;
@@ -380,22 +426,24 @@ export default function DailyPNLReport() {
         })
 
         console.log(hashForTraderCount)
+        let runningLots;
         overallPnl.map((elem, index)=>{
             if(selectUserState === "All user"){
                 name = "All User"
             }else{
                 name = elem.name;
             }
-                if(elem.totalBuyLot+elem.totalSellLot === 0){
-                    totalPnl += -(elem.totalBuy+elem.totalSell)
-                }else{
-                    totalPnl += (-(elem.totalBuy+elem.totalSell-(elem.totalBuyLot+elem.totalSellLot)*liveDetailsArr[index]?.last_price))
+            if(elem.totalBuyLot+elem.totalSellLot === 0){
+                totalPnl += -(elem.totalBuy+elem.totalSell)
+            }else{
+                totalPnl += (-(elem.totalBuy+elem.totalSell-(elem.totalBuyLot+elem.totalSellLot)*liveDetailsArr[index]?.last_price))
 
-                }
+            }
             
             console.log( liveDetailsArr[index]?.last_price)
             console.log(elem.totalBuy,elem.totalSell,elem.totalBuyLot,elem.totalSellLot, liveDetailsArr[index]?.last_price)
             lotUsed += Math.abs(elem.totalBuyLot) + Math.abs(elem.totalSellLot);
+            runningLots = elem.totalBuyLot + elem.totalSellLot
         })
         let date = (overallPnl[0].date).split("-");
         let newObj = {
@@ -405,17 +453,17 @@ export default function DailyPNLReport() {
             numberOfTrade: numberOfTrade,
             lotUsed: lotUsed,
             date: `${date[2]}-${date[1]}-${date[0]}`,
-            numberOfTrader: numberOfTrader
+            numberOfTrader: numberOfTrader,
+            runningLots: runningLots
         }
 
         return newObj;
     }
- 
 
 
 
     (detailPnlArr).sort((a, b)=> {
-        console.log(a, b)
+        // console.log(a, b)
         if (a.date < b.date) {
           return -1;
         }
@@ -425,16 +473,20 @@ export default function DailyPNLReport() {
         return 0;
     })
 
+
     detailPnlArr.map((elem)=>{
         if(elem.brokerage){
             allBrokerage = allBrokerage + Number(elem.brokerage);
+            userBrokerage = userBrokerage + Number(elem.traderbrokerage);
         }
 
         if(elem.pnl){
             allGross = allGross + Number(elem.pnl);
+            userGross = userGross + Number(elem.traderpnl);
         }
 
         allNet =  (allGross - allBrokerage);
+        userNet = (userGross - userBrokerage)
         // console.log(detailPnlArr, allBrokerage, allGross, allNet)
 
         let obj = {
@@ -446,8 +498,7 @@ export default function DailyPNLReport() {
         totalArr.push(obj);
     })
 
-
-    console.log(detailPnlArr, totalArr)
+    console.log(detailPnlArr)
 
     return (
         <div>
@@ -489,11 +540,12 @@ export default function DailyPNLReport() {
                                 <div className={Styles.formLable1}>Net(T-P&L)</div>
                                 </div>
                                 <div className={Styles.btn_div_two1}>
-                                <div style={allGross > 0.00 ? { color: "green" } : allGross === 0.00 ? { color: "grey" } : { color: "red" }} className={`${Styles.formInput11}`}>NA</div>
+                                <div style={userGross > 0.00 ? { color: "green" } : userGross === 0.00 ? { color: "grey" } : { color: "red" }} className={`${Styles.formInput11}`}>{userGross > 0.00 ? "+₹" + (userGross.toFixed(2)) : userGross === 0 ? "" : "-₹" + ((-(userGross)).toFixed(2))}</div>
                                
-                                <div className={`${Styles.formInput11}`}>NA</div>
+                                <div className={`${Styles.formInput11}`}>{userBrokerage === 0 ? " " : "₹" + (userBrokerage.toFixed(2))}</div>
                                
-                                <div className={`${Styles.formInput11}`} style={allNet > 0.00 ? { color: "green" } : allBrokerage === 0.00 ? { color: "grey" } : { color: "red" }} >NA</div>
+                                <div className={`${Styles.formInput11}`} style={userNet > 0.00 ? { color: "green" } : userBrokerage === 0.00 ? { color: "grey" } : { color: "red" }} >{userNet > 0.00 ? "+₹" + (userNet.toFixed(2)) : userNet === 0 ? " " : "-₹" + ((-(userNet)).toFixed(2))}</div>
+
                                 </div>
                             </div>
                             </div>
@@ -519,11 +571,11 @@ export default function DailyPNLReport() {
                                 </tr>
                                 {
 
-                                detailPnlArr.map((elem)=>{
+                                detailPnlArr.map((elem, index)=>{
                                     let data = (elem.date).split("-");
                                     return(
                                         <>
-                                        {elem.name &&
+                                        {(elem.name && !elem.runninglots) &&
                                         <tr>
                                             <td className="grid2_td">{`${data[2]}-${data[1]}-${data[0]}`}</td>
                                             {!elem.pnl ?
@@ -536,9 +588,18 @@ export default function DailyPNLReport() {
                                             <td className="grid2_td" >{elem.brokerage >0.00 ? "₹" + (elem.brokerage.toFixed(2)): "₹" + (-(elem.brokerage).toFixed(2)) }</td>}
                                             {(elem.pnl - elem.brokerage) !== undefined &&
                                             <td className="grid2_td" style={(elem.pnl - elem.brokerage)>=0.00 ? { color: "green"}:  { color: "red"}}> {elem.pnl - elem.brokerage > 0.00 ? "+₹" + (elem.pnl - elem.brokerage).toFixed(2): "-₹" + ((-(elem.pnl - elem.brokerage)).toFixed(2))}</td>}
-                                            <td className="grid2_td">-</td>
-                                            <td className="grid2_td">-</td>
-                                            <td className="grid2_td">-</td>
+
+                                            {!elem.traderpnl ?
+                                            <td className="grid2_td" style={elem.traderpnl>=0.00 ? { color: "green"}:  { color: "red"}}>{elem.traderpnl >0.00 ? "+₹" + (elem.traderpnl): "-₹" + (-(elem.traderpnl)) }</td>
+                                            :
+                                            <td className="grid2_td" style={elem.traderpnl>=0.00 ? { color: "green"}:  { color: "red"}}>{elem.traderpnl >0.00 ? "+₹" + (elem.traderpnl.toFixed(2)): "-₹" + ((-(elem.traderpnl)).toFixed(2)) }</td>}
+                                            {!elem.traderbrokerage ?
+                                            <td className="grid2_td" >{elem.traderbrokerage >0.00 ? "₹" + (elem.traderbrokerage) : "₹" + 0.00}</td>
+                                            :
+                                            <td className="grid2_td" >{elem.traderbrokerage >0.00 ? "₹" + (elem.traderbrokerage.toFixed(2)): "₹" + (-(elem.traderbrokerage).toFixed(2)) }</td>}
+                                            {(elem.traderpnl - elem.traderbrokerage) !== undefined &&
+                                            <td className="grid2_td" style={(elem.traderpnl - elem.traderbrokerage)>=0.00 ? { color: "green"}:  { color: "red"}}> {elem.traderpnl - elem.traderbrokerage > 0.00 ? "+₹" + (elem.traderpnl - elem.traderbrokerage).toFixed(2): "-₹" + ((-(elem.traderpnl - elem.traderbrokerage)).toFixed(2))}</td>}
+
                                             <td className="grid2_td">{elem.numberOfTrader}</td>
                                             <td className="grid2_td">{elem.numberOfTrade}</td>
                                             <td className="grid2_td"><button>Details</button></td>

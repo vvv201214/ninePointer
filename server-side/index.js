@@ -20,7 +20,7 @@ app.use(cors({
   credentials:true,
 
   //origin: "http://3.110.187.5/"
-  origin: newCors
+   origin: newCors
 
 }));
 

@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Popup from "reactjs-popup";
-import 'reactjs-popup/dist/index.css';
 import Styles from './InstrumentModel.module.css';
 import uniqid from "uniqid";
 import axios from "axios";

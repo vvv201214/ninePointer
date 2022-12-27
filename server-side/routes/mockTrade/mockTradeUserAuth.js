@@ -254,11 +254,11 @@ router.get("/readmocktradeuserpagination/:skip/:limit", (req, res)=>{
     })
 })
 
-router.get("/readmocktradeuserpariculardate/:date/:email", (req, res)=>{
+router.get("/readmocktradeuserpariculardate/:date", (req, res)=>{
     // let date = new Date();
     // let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
-    const {date,email} = req.params
-    MockTradeDetails.find({order_timestamp: {$regex: date}, userId: email})
+    const {date} = req.params
+    MockTradeDetails.find({order_timestamp: {$regex: date}})
     .then((data)=>{
         // (data).sort((a, b)=> {
 

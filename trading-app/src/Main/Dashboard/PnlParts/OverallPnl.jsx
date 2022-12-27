@@ -1,8 +1,6 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
 import axios from "axios";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faContactCard, faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons';  
 
 export default function OverallPnl({marketData, tradeData, data}) {
 

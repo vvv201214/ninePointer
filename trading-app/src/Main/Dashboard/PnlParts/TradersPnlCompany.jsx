@@ -1,7 +1,5 @@
 
 import React, { useContext, useState } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons';
 import { useEffect } from 'react';
 import axios from "axios";
 
@@ -221,7 +219,6 @@ export default function TradersPnlCompany({marketData, tradeData}) {
                         </tr>
                         }
                        </>
-                        
                     )
                 })
             }
