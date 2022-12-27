@@ -34,11 +34,13 @@ export default function TraderMetrics() {
     let [secondDate, setSecondDate] = useState(valueInSecondDate);
     const [selectUserState, setSelectUserState] = useState("All User");
     const [marketData, setMarketData] = useState([]);
+    const [userdetailpnlArr, setuserdetailpnlarr] = useState([]);
 
     let totalArr = [];
     let [allBrokerage, setAllBrokerage] = useState(0);
     let [allNet, setAllNet] = useState(0);
     let [allGross, setAllGross] = useState(0);
+    let userpnlArr = [];
     // let secondDate = "";
     let userId = (getDetails.userDetails.role === "user") && getDetails.userDetails.email;
 
@@ -94,207 +96,218 @@ export default function TraderMetrics() {
         // secondDate = `${secondDateSplit[0]}-${secondDateSplit[1]}-${secondDateSplit[2]}`
         // console.log(firstDate ,secondDate);
         // console.log(firstDate < secondDate);
+        userDetail.map((elem)=> {
+           
+            axios.get(`${baseUrl}api/v1/readmocktradeuseremail/${elem.email}`)
+            .then((resp)=> {
+                let arr = resp.data;
+                let newObj = pnlCalculation(arr);
+                userpnlArr.push(newObj);
+                setuserdetailpnlarr(userpnlArr);
+            })
+        })
+    },[])
     
-        if(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate && noRender.current){
-            while(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
-                console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` , secondDate)
-                let newObj = {};
-                axios.get(`${baseUrl}api/v1/readmocktradecompanypariculardate/${`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`}`)
-                .then((res)=>{
-                    newObj = pnlCalculation(res.data);
+        // if(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate && noRender.current){
+    //         while(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
+    //             console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` , secondDate)
+    //             let newObj = {};
+    //             axios.get(`${baseUrl}api/v1/readmocktradeuserpariculardate/${`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`}/${ema}`)
+    //             .then((res)=>{
+    //                 newObj = pnlCalculation(res.data);
     
-                    console.log(newObj);
+    //                 console.log(newObj);
     
-                    detailPnl.push(JSON.parse(JSON.stringify(newObj)));
+    //                 detailPnl.push(JSON.parse(JSON.stringify(newObj)));
                     
-                    transactionCost = 0;
-                    totalPnl = 0;
-                    numberOfTrade = 0;
-                    lotUsed = 0;
+    //                 transactionCost = 0;
+    //                 totalPnl = 0;
+    //                 numberOfTrade = 0;
+    //                 lotUsed = 0;
                 
-                    console.log(detailPnl);
+    //                 console.log(detailPnl);
                     
-                    setDetailPnl(detailPnl)
-                }).catch((err)=>{
-                    return new Error(err);
-                })
+    //                 setDetailPnl(detailPnl)
+    //             }).catch((err)=>{
+    //                 return new Error(err);
+    //             })
     
     
     
-                if((firstDateSplit[2]) < 9){
-                    (firstDateSplit[2]) = `0${Number(firstDateSplit[2]) + 1}`
-                }
-                else if((firstDateSplit[2]) === 31){
-                    (firstDateSplit[2]) = `01`;
+    //             if((firstDateSplit[2]) < 9){
+    //                 (firstDateSplit[2]) = `0${Number(firstDateSplit[2]) + 1}`
+    //             }
+    //             else if((firstDateSplit[2]) === 31){
+    //                 (firstDateSplit[2]) = `01`;
                     
-                    console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}`)
-                    if((firstDateSplit[1]) < 9){
-                        (firstDateSplit[1]) = `0${Number(firstDateSplit[1]) + 1}`;
-                    }
-                    else if((firstDateSplit[1]) === 13){
-                        (firstDateSplit[1]) = `01`;
-                        (firstDateSplit[0]) = Number(firstDateSplit[0])+ 1;
-                    }else{
-                        (firstDateSplit[1]) = Number(firstDateSplit[1]) + 1;
-                    }
-                }else{
-                    (firstDateSplit[2]) = Number(firstDateSplit[2]) + 1;
-                }
+    //                 console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}`)
+    //                 if((firstDateSplit[1]) < 9){
+    //                     (firstDateSplit[1]) = `0${Number(firstDateSplit[1]) + 1}`;
+    //                 }
+    //                 else if((firstDateSplit[1]) === 13){
+    //                     (firstDateSplit[1]) = `01`;
+    //                     (firstDateSplit[0]) = Number(firstDateSplit[0])+ 1;
+    //                 }else{
+    //                     (firstDateSplit[1]) = Number(firstDateSplit[1]) + 1;
+    //                 }
+    //             }else{
+    //                 (firstDateSplit[2]) = Number(firstDateSplit[2]) + 1;
+    //             }
                 
-            }
-        }
+    //         }
+    //     }
 
-    }, [getDetails,render, detailPnlArr])
-
-
-    useEffect(() => {
-        return () => {
-            console.log('closing');
-            socket.close();
-        }
-    }, [])
+    // }, [getDetails,render, detailPnlArr])
 
 
-    function firstDateChange(e){
-        e.preventDefault();
-        if((((e.target.value) > secondDate) && secondDate)){
-            window.alert("Date range is not valid")
-            return;
-        }
-        noRender.current = false;
-        console.log(userDetail)
-        firstDateSplit = (e.target.value).split("-");
-        firstDate = `${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}`
-        setFirstDate(firstDate);
-        console.log(firstDate);
-        let secondDateSplit = (secondDate).split("-");
-        secondDate = `${secondDateSplit[0]}-${secondDateSplit[1]}-${secondDateSplit[2]}`
-        setSecondDate(secondDate);
-        console.log(firstDate ,secondDate);
-        console.log(firstDate < secondDate);
+    // useEffect(() => {
+    //     return () => {
+    //         console.log('closing');
+    //         socket.close();
+    //     }
+    // }, [])
 
 
-        if(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
-            while(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
-                console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` , secondDate)
-                let newObj = {};
-                axios.get(`${baseUrl}api/v1/readmocktradecompanypariculardate/${`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`}`)
-                .then((res)=>{
-                    newObj = pnlCalculation(res.data);
+    // function firstDateChange(e){
+    //     e.preventDefault();
+    //     if((((e.target.value) > secondDate) && secondDate)){
+    //         window.alert("Date range is not valid")
+    //         return;
+    //     }
+    //     noRender.current = false;
+    //     console.log(userDetail)
+    //     firstDateSplit = (e.target.value).split("-");
+    //     firstDate = `${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}`
+    //     setFirstDate(firstDate);
+    //     console.log(firstDate);
+    //     let secondDateSplit = (secondDate).split("-");
+    //     secondDate = `${secondDateSplit[0]}-${secondDateSplit[1]}-${secondDateSplit[2]}`
+    //     setSecondDate(secondDate);
+    //     console.log(firstDate ,secondDate);
+    //     console.log(firstDate < secondDate);
 
-                    console.log(newObj);
 
-                    detailPnl.push(JSON.parse(JSON.stringify(newObj)));
+    //     if(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
+    //         while(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
+    //             console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` , secondDate)
+    //             let newObj = {};
+    //             axios.get(`${baseUrl}api/v1/readmocktradecompanypariculardate/${`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`}`)
+    //             .then((res)=>{
+    //                 newObj = pnlCalculation(res.data);
+
+    //                 console.log(newObj);
+
+    //                 detailPnl.push(JSON.parse(JSON.stringify(newObj)));
                     
-                    transactionCost = 0;
-                    totalPnl = 0;
-                    numberOfTrade = 0;
-                    lotUsed = 0;
+    //                 transactionCost = 0;
+    //                 totalPnl = 0;
+    //                 numberOfTrade = 0;
+    //                 lotUsed = 0;
                 
-                    console.log(detailPnl);
+    //                 console.log(detailPnl);
 
-                    setDetailPnl(detailPnl)
-                }).catch((err)=>{
-                    return new Error(err);
-                })
+    //                 setDetailPnl(detailPnl)
+    //             }).catch((err)=>{
+    //                 return new Error(err);
+    //             })
 
 
 
-                if((firstDateSplit[2]) < 9){
-                    (firstDateSplit[2]) = `0${Number(firstDateSplit[2]) + 1}`
-                }else if((firstDateSplit[2]) === 31){
-                    (firstDateSplit[2]) = `01`;
+    //             if((firstDateSplit[2]) < 9){
+    //                 (firstDateSplit[2]) = `0${Number(firstDateSplit[2]) + 1}`
+    //             }else if((firstDateSplit[2]) === 31){
+    //                 (firstDateSplit[2]) = `01`;
                     
-                    console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}`)
-                    if((firstDateSplit[1]) < 9){
-                        (firstDateSplit[1]) = `0${Number(firstDateSplit[1]) + 1}`;
-                    }
-                    else if((firstDateSplit[1]) === 13){
-                        (firstDateSplit[1]) = `01`;
-                        (firstDateSplit[0]) = Number(firstDateSplit[0])+ 1;
-                    }else{
-                        (firstDateSplit[1]) = Number(firstDateSplit[1]) + 1;
-                    }
-                }else{
-                    (firstDateSplit[2]) = Number(firstDateSplit[2]) + 1;
-                }
+    //                 console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}`)
+    //                 if((firstDateSplit[1]) < 9){
+    //                     (firstDateSplit[1]) = `0${Number(firstDateSplit[1]) + 1}`;
+    //                 }
+    //                 else if((firstDateSplit[1]) === 13){
+    //                     (firstDateSplit[1]) = `01`;
+    //                     (firstDateSplit[0]) = Number(firstDateSplit[0])+ 1;
+    //                 }else{
+    //                     (firstDateSplit[1]) = Number(firstDateSplit[1]) + 1;
+    //                 }
+    //             }else{
+    //                 (firstDateSplit[2]) = Number(firstDateSplit[2]) + 1;
+    //             }
                 
-            }
-        } 
-        setTimeout(()=>{
-            render ? setRender(false) : setRender(true)
-        }, 3000)
-      console.log("after sorting", detailPnlArr);
+    //         }
+    //     } 
+    //     setTimeout(()=>{
+    //         render ? setRender(false) : setRender(true)
+    //     }, 3000)
+    //   console.log("after sorting", detailPnlArr);
 
-    }
+    // }
     
-    function secondDateChange(e){
-        e.preventDefault();
-        if(((firstDate > e.target.value) && firstDate)){
-            window.alert("Date range is not valid")
-            return;
-        }
-        noRender.current = false;
-        console.log(userDetail)
-        firstDateSplit = (firstDate).split("-");
-        firstDate = `${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}`
-        setFirstDate(firstDate);
-        console.log(firstDate);
-        let secondDateSplit = (e.target.value).split("-");
-        secondDate = `${secondDateSplit[0]}-${secondDateSplit[1]}-${secondDateSplit[2]}`
-        setSecondDate(secondDate);
+    // function secondDateChange(e){
+    //     e.preventDefault();
+    //     if(((firstDate > e.target.value) && firstDate)){
+    //         window.alert("Date range is not valid")
+    //         return;
+    //     }
+    //     noRender.current = false;
+    //     console.log(userDetail)
+    //     firstDateSplit = (firstDate).split("-");
+    //     firstDate = `${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}`
+    //     setFirstDate(firstDate);
+    //     console.log(firstDate);
+    //     let secondDateSplit = (e.target.value).split("-");
+    //     secondDate = `${secondDateSplit[0]}-${secondDateSplit[1]}-${secondDateSplit[2]}`
+    //     setSecondDate(secondDate);
 
-        console.log(firstDate ,secondDate);
-        console.log(firstDate < secondDate);
-            if(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
-                while(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
-                    console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` , secondDate)
+    //     console.log(firstDate ,secondDate);
+    //     console.log(firstDate < secondDate);
+    //         if(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
+    //             while(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
+    //                 console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` , secondDate)
 
-                    axios.get(`${baseUrl}api/v1/readmocktradecompanypariculardate/${`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`}`)
-                    .then((res)=>{
-                        let newObj = pnlCalculation(res.data);
+    //                 axios.get(`${baseUrl}api/v1/readmocktradecompanypariculardate/${`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`}`)
+    //                 .then((res)=>{
+    //                     let newObj = pnlCalculation(res.data);
 
-                        console.log(newObj);
-                        detailPnl.push(JSON.parse(JSON.stringify(newObj)));
+    //                     console.log(newObj);
+    //                     detailPnl.push(JSON.parse(JSON.stringify(newObj)));
                         
-                        transactionCost = 0;
-                        totalPnl = 0;
-                        numberOfTrade = 0;
-                        lotUsed = 0;
+    //                     transactionCost = 0;
+    //                     totalPnl = 0;
+    //                     numberOfTrade = 0;
+    //                     lotUsed = 0;
                     
-                        console.log(detailPnl);
-                        setDetailPnl(detailPnl)
-                    }).catch((err)=>{
-                        return new Error(err);
-                    })
+    //                     console.log(detailPnl);
+    //                     setDetailPnl(detailPnl)
+    //                 }).catch((err)=>{
+    //                     return new Error(err);
+    //                 })
 
  
-                    if((firstDateSplit[2]) < 9){
-                        (firstDateSplit[2]) = `0${Number(firstDateSplit[2]) + 1}`
-                    }
-                    else if((firstDateSplit[2]) === 31){
-                        (firstDateSplit[2]) = `01`;
+    //                 if((firstDateSplit[2]) < 9){
+    //                     (firstDateSplit[2]) = `0${Number(firstDateSplit[2]) + 1}`
+    //                 }
+    //                 else if((firstDateSplit[2]) === 31){
+    //                     (firstDateSplit[2]) = `01`;
                         
-                        console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}`)
-                        if((firstDateSplit[1]) < 9){
-                            (firstDateSplit[1]) = `0${Number(firstDateSplit[1]) + 1}`;
-                        }
-                        else if((firstDateSplit[1]) === 13){
-                            (firstDateSplit[1]) = `01`;
-                            (firstDateSplit[0]) = Number(firstDateSplit[0])+ 1;
-                        }else{
-                            (firstDateSplit[1]) = Number(firstDateSplit[1]) + 1;
-                        }
-                    }else{
-                        (firstDateSplit[2]) = Number(firstDateSplit[2]) + 1;
-                    }
-                }
-            } 
-            setTimeout(()=>{
-                render ? setRender(false) : setRender(true)
-            }, 3000)
-        console.log(detailPnl);
-    }
+    //                     console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}`)
+    //                     if((firstDateSplit[1]) < 9){
+    //                         (firstDateSplit[1]) = `0${Number(firstDateSplit[1]) + 1}`;
+    //                     }
+    //                     else if((firstDateSplit[1]) === 13){
+    //                         (firstDateSplit[1]) = `01`;
+    //                         (firstDateSplit[0]) = Number(firstDateSplit[0])+ 1;
+    //                     }else{
+    //                         (firstDateSplit[1]) = Number(firstDateSplit[1]) + 1;
+    //                     }
+    //                 }else{
+    //                     (firstDateSplit[2]) = Number(firstDateSplit[2]) + 1;
+    //                 }
+    //             }
+    //         } 
+    //         setTimeout(()=>{
+    //             render ? setRender(false) : setRender(true)
+    //         }, 3000)
+    //     console.log(detailPnl);
+    //}
 
 
     function pnlCalculation(data){
@@ -455,7 +468,7 @@ export default function TraderMetrics() {
                 <div className="right_side">
                     <div className="rightside_maindiv">
                         <div className={Styles.main_dateSelData1}>
-                            <div className={Styles.form_div1}>
+                            {/* <div className={Styles.form_div1}>
                                 <form action="">
                                     <label htmlFor="" className={Styles.formLable1}>Start Date</label>
                                     <input type="date" value={firstDate} className={Styles.formInput1} onChange={(e)=>{firstDateChange(e)}}/>
@@ -463,7 +476,7 @@ export default function TraderMetrics() {
                                     <input type="date" value={secondDate} className={Styles.formInput1} onChange={(e)=>{secondDateChange(e)}}/>
 
                                 </form>
-                            </div>
+                            </div> */}
                             <div className={Styles.btn_div_head1}>
                             <div className={Styles.btn_div_onehead1}>
                             <div className={Styles.btn_div_one1}>
@@ -524,13 +537,13 @@ export default function TraderMetrics() {
                                 </tr>
                                 {
 
-                                detailPnlArr.map((elem)=>{
+                                userdetailpnlArr.map((elem)=>{
                                     let data = (elem.date).split("-");
                                     return(
                                         <>
                                         {elem.name &&
                                         <tr>
-                                            <td className="grid2_td">{`${data[2]}-${data[1]}-${data[0]}`}</td>
+                                            <td className="grid2_td">{elem.name}</td>
                                             {!elem.pnl ?
                                             <td className="grid2_td" style={elem.pnl>=0.00 ? { color: "green"}:  { color: "red"}}>{elem.pnl >0.00 ? "+₹" + (elem.pnl): "-₹" + (-(elem.pnl)) }</td>
                                             :
