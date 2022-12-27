@@ -224,7 +224,7 @@ export default function DailyPNLReport() {
                     lotUsed = 0;
                 
                     console.log(detailPnl);
-                    setDetailPnl(detailPnl)
+                    setDetailPnl(JSON.parse(JSON.stringify(detailPnl)))
                     // do something with the users and posts data
                 })
                 .catch(error => {
@@ -253,9 +253,9 @@ export default function DailyPNLReport() {
                 
             }
         } 
-        setTimeout(()=>{
-            render ? setRender(false) : setRender(true)
-        }, 4000)
+        // setTimeout(()=>{
+        //     render ? setRender(false) : setRender(true)
+        // }, 4000)
       console.log("after sorting", detailPnlArr);
 
     }
@@ -308,7 +308,7 @@ export default function DailyPNLReport() {
                         lotUsed = 0;
                     
                         console.log(detailPnl);
-                        setDetailPnl(detailPnl)
+                        setDetailPnl(JSON.parse(JSON.stringify(detailPnl)))
                         // do something with the users and posts data
                     })
                     .catch(error => {
@@ -336,9 +336,9 @@ export default function DailyPNLReport() {
                     }
                 }
             } 
-            setTimeout(()=>{
-                render ? setRender(false) : setRender(true)
-            }, 4000)
+            // setTimeout(()=>{
+            //     render ? setRender(false) : setRender(true)
+            // }, 4000)
         console.log(detailPnl);
     }
 

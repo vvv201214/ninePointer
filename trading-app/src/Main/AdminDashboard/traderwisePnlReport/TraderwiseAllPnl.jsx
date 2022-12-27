@@ -34,6 +34,7 @@ export default function DailyPNLReport() {
     let [secondDate, setSecondDate] = useState(valueInSecondDate);
     const [selectUserState, setSelectUserState] = useState("All User");
     const [marketData, setMarketData] = useState([]);
+    const [allDate, setAllDate] = useState([]);
 
     let totalArr = [];
     let [allBrokerage, setAllBrokerage] = useState(0);
@@ -58,15 +59,15 @@ export default function DailyPNLReport() {
     let detailArr = [];
 
     useEffect(()=>{
-        console.log("rendering")
-        console.log(socket);
+        //console.log("rendering")
+        //console.log(socket);
         socket.on("connect", ()=>{
-            console.log(socket.id);
+            //console.log(socket.id);
             socket.emit("hi",true)
         })
 
         socket.on("tick", (data) => {
-            console.log("this is live market data", data);
+            //console.log("this is live market data", data);
             setMarketData(data);
         })
     },[])
@@ -90,116 +91,8 @@ export default function DailyPNLReport() {
             return new Error(err);
         })
 
-        console.log(userDetail)
-        userDetail.map((elem)=>{
-            let mainObj = {};
-            firstDateSplit = (firstDate).split("-");
-    
-            if(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate && noRender.current){
-                while(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
-                    console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` , secondDate)
-                    // let newObj = {};
-                    const request1 = axios.get(`${baseUrl}api/v1/readmocktradecompanypariculardatewithemail/${`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`}/${elem.userId}`)
-                    const request2 = axios.get(`${baseUrl}api/v1/readmocktradeuserpariculardatewithemail/${`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`}/${elem.userId}`)
-    
-                    Promise.all([request1, request2])
-                    .then(([response1, response2]) => {
-                        const company = response1.data;
-                        const user = response2.data;
-    
-                        let newObjCompany = pnlCalculation(company);
-                        transactionCost = 0;
-                        totalPnl = 0;
-                        numberOfTrade = 0;
-                        lotUsed = 0;
 
-                        let newObjUser = pnlCalculation(user);
-                        console.log(newObjCompany, newObjUser)
-
-                        newObjCompany.traderpnl = newObjUser.pnl;
-                        newObjCompany.traderbrokerage = newObjUser.brokerage;
-
-                        if(!mainObj.pnl){
-                            mainObj.pnl = newObjCompany.pnl;
-                        } else{
-                            mainObj.pnl = mainObj.pnl + newObjCompany.pnl;
-                        }
-
-                        if(!mainObj.brokerage){
-                            mainObj.brokerage = newObjCompany.brokerage;
-                        } else{
-                            mainObj.brokerage = mainObj.brokerage + newObjCompany.brokerage;
-                        }
-
-                        if(!mainObj.traderpnl){
-                            mainObj.traderpnl = newObjCompany.traderpnl;
-                        } else{
-                            mainObj.traderpnl = mainObj.traderpnl + newObjCompany.traderpnl;
-                        }
-
-                        if(!mainObj.traderbrokerage){
-                            mainObj.traderbrokerage = newObjCompany.traderbrokerage;
-                        } else{
-                            mainObj.traderbrokerage = mainObj.traderbrokerage + newObjCompany.traderbrokerage;
-                        }
-
-                        if(!mainObj.numberOfTrade){
-                            mainObj.numberOfTrade = newObjCompany.numberOfTrade;
-                        } else{
-                            mainObj.numberOfTrade = mainObj.numberOfTrade + newObjCompany.numberOfTrade;
-                        }
-    
-                        // detailPnl.push(JSON.parse(JSON.stringify(newObjCompany)));
-                            
-                        transactionCost = 0;
-                        totalPnl = 0;
-                        numberOfTrade = 0;
-                        lotUsed = 0;
-                    
-                        // console.log(detailPnl);
-                        // setDetailPnl(detailPnl)
-                        // do something with the users and posts data
-                    })
-                    .catch(error => {
-                        throw new Error(error);
-                    });
-        
-        
-        
-                    if((firstDateSplit[2]) < 9){
-                        (firstDateSplit[2]) = `0${Number(firstDateSplit[2]) + 1}`
-                    }
-                    else if((firstDateSplit[2]) === 31){
-                        (firstDateSplit[2]) = `01`;
-                        
-                        console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}`)
-                        if((firstDateSplit[1]) < 9){
-                            (firstDateSplit[1]) = `0${Number(firstDateSplit[1]) + 1}`;
-                        }
-                        else if((firstDateSplit[1]) === 13){
-                            (firstDateSplit[1]) = `01`;
-                            (firstDateSplit[0]) = Number(firstDateSplit[0])+ 1;
-                        }else{
-                            (firstDateSplit[1]) = Number(firstDateSplit[1]) + 1;
-                        }
-                    }else{
-                        (firstDateSplit[2]) = Number(firstDateSplit[2]) + 1;
-                    }
-                    
-                }
-                detailPnl.push(JSON.parse(JSON.stringify(mainObj)));
-                            
-                // transactionCost = 0;
-                // totalPnl = 0;
-                // numberOfTrade = 0;
-                // lotUsed = 0;
-                // mainObj = {};
-            
-                console.log(detailPnl);
-                setDetailPnl(detailPnl)
-            }
-
-        })
+        //console.log(userDetail)
 
         // setInterval(()=>{
         //     render ? setRender(false) : setRender(true)
@@ -210,7 +103,7 @@ export default function DailyPNLReport() {
 
     useEffect(() => {
         return () => {
-            console.log('closing');
+            //console.log('closing');
             socket.close();
         }
     }, [])
@@ -227,104 +120,132 @@ export default function DailyPNLReport() {
         firstDateSplit = (e.target.value).split("-");
         firstDate = `${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}`
         setFirstDate(firstDate);
-        console.log(firstDate);
+        //console.log(firstDate);
         let secondDateSplit = (secondDate).split("-");
         secondDate = `${secondDateSplit[0]}-${secondDateSplit[1]}-${secondDateSplit[2]}`
         setSecondDate(secondDate);
-        console.log(firstDate ,secondDate);
-        console.log(firstDate < secondDate);
+        //console.log(firstDate ,secondDate);
+        //console.log(firstDate < secondDate);
 
-
-        if(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
-            while(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
-                console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` , secondDate)
-                // let newObj = {};
-                const request1 = axios.get(`${baseUrl}api/v1/readmocktradecompanypariculardate/${`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`}`)
-                const request2 = axios.get(`${baseUrl}api/v1/readmocktradeuserpariculardate/${`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`}`)
-
-                Promise.all([request1, request2])
-                .then(([response1, response2]) => {
-                    const company = response1.data;
-                    const user = response2.data;
-
-                    let newObjCompany = pnlCalculation(company);
-                    transactionCost = 0;
-                    totalPnl = 0;
-                    numberOfTrade = 0;
-                    lotUsed = 0;
-                    let newObjUser = pnlCalculation(user);
-                    console.log(newObjCompany, newObjUser)
-                    newObjCompany.traderpnl = newObjUser.pnl;
-                    newObjCompany.traderbrokerage = newObjUser.brokerage;
-
-                    detailPnl.push(JSON.parse(JSON.stringify(newObjCompany)));
-                        
-                    transactionCost = 0;
-                    totalPnl = 0;
-                    numberOfTrade = 0;
-                    lotUsed = 0;
-                
-                    console.log(detailPnl);
-                    setDetailPnl(detailPnl)
-                    // do something with the users and posts data
-                })
-                .catch(error => {
-                    throw new Error(error);
-                });
-
-
-                if((firstDateSplit[2]) < 9){
-                    (firstDateSplit[2]) = `0${Number(firstDateSplit[2]) + 1}`
-                }else if((firstDateSplit[2]) === 31){
-                    (firstDateSplit[2]) = `01`;
-                    
-                    console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}`)
-                    if((firstDateSplit[1]) < 9){
-                        (firstDateSplit[1]) = `0${Number(firstDateSplit[1]) + 1}`;
-                    }
-                    else if((firstDateSplit[1]) === 13){
-                        (firstDateSplit[1]) = `01`;
-                        (firstDateSplit[0]) = Number(firstDateSplit[0])+ 1;
-                    }else{
-                        (firstDateSplit[1]) = Number(firstDateSplit[1]) + 1;
-                    }
-                }else{
-                    (firstDateSplit[2]) = Number(firstDateSplit[2]) + 1;
-                }
-                
-            }
-        } 
-        setTimeout(()=>{
-            render ? setRender(false) : setRender(true)
-        }, 4000)
-      console.log("after sorting", detailPnlArr);
-
-    }
+            //<= secondDate && noRender.current
+            // if(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}`){
+            //     while(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
+            //         //console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` , secondDate)
+            //         // let newObj = {};
+            //         const request1 = axios.get(`${baseUrl}api/v1/readmocktradecompanypariculardatewithemail/${`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`}/${elem.email}`)
+            //         const request2 = axios.get(`${baseUrl}api/v1/readmocktradeuserpariculardatewithemail/${`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`}/${elem.email}`)
     
-    function secondDateChange(e){
-        e.preventDefault();
-        if(((firstDate > e.target.value) && firstDate)){
-            window.alert("Date range is not valid")
-            return;
-        }
-        noRender.current = false;
-        console.log(userDetail)
-        firstDateSplit = (firstDate).split("-");
-        firstDate = `${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}`
-        setFirstDate(firstDate);
-        console.log(firstDate);
-        let secondDateSplit = (e.target.value).split("-");
-        secondDate = `${secondDateSplit[0]}-${secondDateSplit[1]}-${secondDateSplit[2]}`
-        setSecondDate(secondDate);
+            //         Promise.all([request1, request2])
+            //         .then(([response1, response2]) => {
+            //             const company = response1.data;
+            //             const user = response2.data;
+            //             //console.log(company, user)
+            //             let newObjCompany = pnlCalculation(company);
+            //             transactionCost = 0;
+            //             totalPnl = 0;
+            //             numberOfTrade = 0;
+            //             lotUsed = 0;
 
-        console.log(firstDate ,secondDate);
-        console.log(firstDate < secondDate);
+            //             let newObjUser = pnlCalculation(user);
+            //             //console.log(newObjCompany, newObjUser)
+
+            //             newObjCompany.traderpnl = newObjUser.pnl;
+            //             newObjCompany.traderbrokerage = newObjUser.brokerage;
+
+            //             if(!mainObj.pnl){
+            //                 mainObj.pnl = newObjCompany.pnl;
+            //             } else{
+            //                 mainObj.pnl = mainObj.pnl + newObjCompany.pnl;
+            //             }
+
+            //             if(!mainObj.brokerage){
+            //                 mainObj.brokerage = newObjCompany.brokerage;
+            //             } else{
+            //                 mainObj.brokerage = mainObj.brokerage + newObjCompany.brokerage;
+            //             }
+
+            //             if(!mainObj.traderpnl){
+            //                 mainObj.traderpnl = newObjCompany.traderpnl;
+            //             } else{
+            //                 mainObj.traderpnl = mainObj.traderpnl + newObjCompany.traderpnl;
+            //             }
+
+            //             if(!mainObj.traderbrokerage){
+            //                 mainObj.traderbrokerage = newObjCompany.traderbrokerage;
+            //             } else{
+            //                 mainObj.traderbrokerage = mainObj.traderbrokerage + newObjCompany.traderbrokerage;
+            //             }
+
+            //             if(!mainObj.numberOfTrade){
+            //                 mainObj.numberOfTrade = newObjCompany.numberOfTrade;
+            //             } else{
+            //                 mainObj.numberOfTrade = mainObj.numberOfTrade + newObjCompany.numberOfTrade;
+            //             }
+    
+            //             // detailPnl.push(JSON.parse(JSON.stringify(newObjCompany)));
+                            
+            //             transactionCost = 0;
+            //             totalPnl = 0;
+            //             numberOfTrade = 0;
+            //             lotUsed = 0;
+                    
+            //             // //console.log(detailPnl);
+            //             // setDetailPnl(detailPnl)
+            //             // do something with the users and posts data
+            //         })
+            //         .catch(error => {
+            //             throw new Error(error);
+            //         });
+        
+        
+        
+            //         if((firstDateSplit[2]) < 9){
+            //             (firstDateSplit[2]) = `0${Number(firstDateSplit[2]) + 1}`
+            //         }
+            //         else if((firstDateSplit[2]) === 31){
+            //             (firstDateSplit[2]) = `01`;
+                        
+            //             //console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}`)
+            //             if((firstDateSplit[1]) < 9){
+            //                 (firstDateSplit[1]) = `0${Number(firstDateSplit[1]) + 1}`;
+            //             }
+            //             else if((firstDateSplit[1]) === 13){
+            //                 (firstDateSplit[1]) = `01`;
+            //                 (firstDateSplit[0]) = Number(firstDateSplit[0])+ 1;
+            //             }else{
+            //                 (firstDateSplit[1]) = Number(firstDateSplit[1]) + 1;
+            //             }
+            //         }else{
+            //             (firstDateSplit[2]) = Number(firstDateSplit[2]) + 1;
+            //         }
+                    
+            //     }
+                
+            //     //console.log(mainObj); 
+            //     detailPnl.push(JSON.parse(JSON.stringify(mainObj)));
+                            
+            //     // transactionCost = 0;
+            //     // totalPnl = 0;
+            //     // numberOfTrade = 0;
+            //     // lotUsed = 0;
+            //     // mainObj = {};
+            
+            //     //console.log(detailPnl); 
+            //     setDetailPnl((JSON.parse(JSON.stringify(detailPnl))))
+            // }
+        userDetail.map((elem)=>{
+            //console.log(elem);
+            let mainObj = {};
+            firstDateSplit = (firstDate).split("-");
+    
+
+
             if(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
                 while(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
-                    console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` , secondDate)
+                    //console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` , secondDate)
 
-                    const request1 = axios.get(`${baseUrl}api/v1/readmocktradecompanypariculardate/${`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`}`)
-                    const request2 = axios.get(`${baseUrl}api/v1/readmocktradeuserpariculardate/${`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`}`)
+                    const request1 = axios.get(`${baseUrl}api/v1/readmocktradecompanypariculardatewithemail/${`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`}/${elem.email}`)
+                    const request2 = axios.get(`${baseUrl}api/v1/readmocktradeuserpariculardatewithemail/${`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`}/${elem.email}`)
     
                     Promise.all([request1, request2])
                     .then(([response1, response2]) => {
@@ -337,7 +258,7 @@ export default function DailyPNLReport() {
                         numberOfTrade = 0;
                         lotUsed = 0;
                         let newObjUser = pnlCalculation(user);
-                        console.log(newObjCompany, newObjUser)
+                        //console.log(newObjCompany, newObjUser)
                         newObjCompany.traderpnl = newObjUser.pnl;
                         newObjCompany.traderbrokerage = newObjUser.brokerage;
     
@@ -348,8 +269,8 @@ export default function DailyPNLReport() {
                         numberOfTrade = 0;
                         lotUsed = 0;
                     
-                        console.log(detailPnl);
-                        setDetailPnl(detailPnl)
+                        // console.log(detailPnl);
+                        setDetailPnl(JSON.parse(JSON.stringify(detailPnl)))
                         // do something with the users and posts data
                     })
                     .catch(error => {
@@ -362,7 +283,7 @@ export default function DailyPNLReport() {
                     else if((firstDateSplit[2]) === 31){
                         (firstDateSplit[2]) = `01`;
                         
-                        console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}`)
+                        //console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}`)
                         if((firstDateSplit[1]) < 9){
                             (firstDateSplit[1]) = `0${Number(firstDateSplit[1]) + 1}`;
                         }
@@ -377,10 +298,112 @@ export default function DailyPNLReport() {
                     }
                 }
             } 
-            setTimeout(()=>{
-                render ? setRender(false) : setRender(true)
-            }, 4000)
-        console.log(detailPnl);
+
+            // arr.push(detailPnlArr);
+            // setAllDate(arr)
+            console.log(detailPnlArr);
+
+        })
+        // setTimeout(()=>{
+        //     render ? setRender(false) : setRender(true)
+        // }, 4000)
+      //console.log("after sorting", detailPnlArr);
+
+    }
+    
+    function secondDateChange(e){
+        e.preventDefault();
+        if(((firstDate > e.target.value) && firstDate)){
+            window.alert("Date range is not valid")
+            return;
+        }
+        noRender.current = false;
+        //console.log(userDetail)
+        firstDateSplit = (firstDate).split("-");
+        firstDate = `${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}`
+        setFirstDate(firstDate);
+        //console.log(firstDate);
+        let secondDateSplit = (e.target.value).split("-");
+        secondDate = `${secondDateSplit[0]}-${secondDateSplit[1]}-${secondDateSplit[2]}`
+        setSecondDate(secondDate);
+
+        //console.log(firstDate ,secondDate);
+        //console.log(firstDate < secondDate);
+        userDetail.map((elem)=>{
+            //console.log(elem);
+            let mainObj = {};
+            firstDateSplit = (firstDate).split("-");
+    
+
+
+            if(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
+                while(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
+                    //console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` , secondDate)
+
+                    const request1 = axios.get(`${baseUrl}api/v1/readmocktradecompanypariculardatewithemail/${`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`}/${elem.email}`)
+                    const request2 = axios.get(`${baseUrl}api/v1/readmocktradeuserpariculardatewithemail/${`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`}/${elem.email}`)
+    
+                    Promise.all([request1, request2])
+                    .then(([response1, response2]) => {
+                        const company = response1.data;
+                        const user = response2.data;
+    
+                        let newObjCompany = pnlCalculation(company);
+                        transactionCost = 0;
+                        totalPnl = 0;
+                        numberOfTrade = 0;
+                        lotUsed = 0;
+                        let newObjUser = pnlCalculation(user);
+                        //console.log(newObjCompany, newObjUser)
+                        newObjCompany.traderpnl = newObjUser.pnl;
+                        newObjCompany.traderbrokerage = newObjUser.brokerage;
+    
+                        detailPnl.push(JSON.parse(JSON.stringify(newObjCompany)));
+                            
+                        transactionCost = 0;
+                        totalPnl = 0;
+                        numberOfTrade = 0;
+                        lotUsed = 0;
+                    
+                        // console.log(detailPnl);
+                        setDetailPnl(JSON.parse(JSON.stringify(detailPnl)))
+                        // do something with the users and posts data
+                    })
+                    .catch(error => {
+                        throw new Error(error);
+                    });
+ 
+                    if((firstDateSplit[2]) < 9){
+                        (firstDateSplit[2]) = `0${Number(firstDateSplit[2]) + 1}`
+                    }
+                    else if((firstDateSplit[2]) === 31){
+                        (firstDateSplit[2]) = `01`;
+                        
+                        //console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}`)
+                        if((firstDateSplit[1]) < 9){
+                            (firstDateSplit[1]) = `0${Number(firstDateSplit[1]) + 1}`;
+                        }
+                        else if((firstDateSplit[1]) === 13){
+                            (firstDateSplit[1]) = `01`;
+                            (firstDateSplit[0]) = Number(firstDateSplit[0])+ 1;
+                        }else{
+                            (firstDateSplit[1]) = Number(firstDateSplit[1]) + 1;
+                        }
+                    }else{
+                        (firstDateSplit[2]) = Number(firstDateSplit[2]) + 1;
+                    }
+                }
+            } 
+
+            // arr.push(detailPnlArr);
+            // setAllDate(arr)
+            console.log(detailPnlArr);
+
+        })
+            // setTimeout(()=>{
+            //     render ? setRender(false) : setRender(true)
+            // }, 4000)
+        //console.log(detailPnl);
     }
 
 
@@ -388,7 +411,7 @@ export default function DailyPNLReport() {
         let hash = new Map();
         let hashForTraderCount = new Map();
         let numberOfTrader = 0;
-        console.log(data)
+        //console.log(data)
         for(let i = data.length-1; i >= 0 ; i--){
 
             numberOfTrade += 1;
@@ -466,7 +489,7 @@ export default function DailyPNLReport() {
             })
         })
 
-        console.log(hashForTraderCount)
+        //console.log(hashForTraderCount)
         let runningLots;
         overallPnl.map((elem, index)=>{
             if(selectUserState === "All user"){
@@ -481,8 +504,8 @@ export default function DailyPNLReport() {
 
             }
             
-            console.log( liveDetailsArr[index]?.last_price)
-            console.log(elem.totalBuy,elem.totalSell,elem.totalBuyLot,elem.totalSellLot, liveDetailsArr[index]?.last_price)
+            //console.log( liveDetailsArr[index]?.last_price)
+            //console.log(elem.totalBuy,elem.totalSell,elem.totalBuyLot,elem.totalSellLot, liveDetailsArr[index]?.last_price)
             lotUsed += Math.abs(elem.totalBuyLot) + Math.abs(elem.totalSellLot);
             runningLots = elem.totalBuyLot + elem.totalSellLot
         })
@@ -504,7 +527,7 @@ export default function DailyPNLReport() {
 
 
     (detailPnlArr).sort((a, b)=> {
-        // console.log(a, b)
+        // //console.log(a, b)
         if (a.date < b.date) {
           return -1;
         }
@@ -528,19 +551,53 @@ export default function DailyPNLReport() {
 
         allNet =  (allGross - allBrokerage);
         userNet = (userGross - userBrokerage)
-        // console.log(detailPnlArr, allBrokerage, allGross, allNet)
+        // //console.log(detailPnlArr, allBrokerage, allGross, allNet)
 
         let obj = {
             allBrokerage: allBrokerage,
             allGross: allGross,
             allNet: allNet
         }
-        // console.log(obj)
+        // //console.log(obj)
         totalArr.push(obj);
     })
 
     console.log(detailPnlArr)
+    let hashmap = new Map();
+    for(let i = 0; i < detailPnlArr.length; i++){
+        if(hashmap.has(detailPnlArr[i].name)){
+            let obj = hashmap.get(detailPnlArr[i].name);
 
+            obj.pnl = obj.pnl + detailPnlArr[i].pnl ;
+            obj.brokerage = obj.brokerage + detailPnlArr[i].brokerage ;
+            obj.traderpnl = obj.traderpnl + detailPnlArr[i].traderpnl ;
+            obj.traderbrokerage = obj.traderbrokerage + detailPnlArr[i].traderbrokerage ;
+            obj.numberOfTrade = obj.numberOfTrade + detailPnlArr[i].numberOfTrade ;
+            obj.lotUsed = obj.lotUsed + detailPnlArr[i].lotUsed ;
+            obj.runninglots = obj.runninglots + detailPnlArr[i].runningLots
+
+        } else{
+            hashmap.set(detailPnlArr[i].name, {
+                pnl: detailPnlArr[i].pnl,
+                brokerage: detailPnlArr[i].brokerage,
+                traderpnl: detailPnlArr[i].traderpnl,
+                traderbrokerage: detailPnlArr[i].traderbrokerage,
+                numberOfTrade: detailPnlArr[i].numberOfTrade,
+                lotUsed: detailPnlArr[i].lotUsed,
+                runninglots: detailPnlArr[i].runningLots,
+                name: detailPnlArr[i].name
+            })
+        }
+    }
+
+    console.log(hashmap);
+
+    let totalDateWisePnl = [];
+    for (let value of hashmap.values()){
+        totalDateWisePnl.push(value);
+    }
+
+    console.log(totalDateWisePnl);
     return (
         <div>
             <div className="main_Container">
@@ -584,13 +641,13 @@ export default function DailyPNLReport() {
                                 </tr>
                                 {
 
-                                detailPnlArr.map((elem, index)=>{
-                                    let data = (elem.date).split("-");
+                                totalDateWisePnl.map((elem, index)=>{
+                                    // let data = (elem.date).split("-");
                                     return(
                                         <>
-                                        {(elem.name && !elem.runninglots) &&
+                                        {(elem.name ) &&
                                         <tr>
-                                            <td className="grid2_td">{`${data[2]}-${data[1]}-${data[0]}`}</td>
+                                            <td className="grid2_td">{elem.name}</td>
                                             {!elem.pnl ?
                                             <td className="grid2_td" style={elem.pnl>=0.00 ? { color: "green"}:  { color: "red"}}>{elem.pnl >0.00 ? "+₹" + (elem.pnl): "-₹" + (-(elem.pnl)) }</td>
                                             :
@@ -631,5 +688,3 @@ export default function DailyPNLReport() {
         </div>
     )
 }
-
-
