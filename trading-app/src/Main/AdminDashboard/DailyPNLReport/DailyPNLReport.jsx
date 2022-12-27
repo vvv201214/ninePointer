@@ -4,9 +4,29 @@ import Styles from "./DailyPNLReport.module.css";
 import axios from "axios";
 import { userContext } from "../../AuthContext";
 import { io } from "socket.io-client";
+import { LineChart, Line, XAxis, YAxis,CartesianGrid, BarChart, Bar, Tooltip, Legend,Label, ReferenceLine} from 'recharts';
+
+
+
 
 
 export default function DailyPNLReport() {
+
+    let graphdataarr = [];
+
+    const graphdata = graphdataarr;
+
+    
+
+    // const renderLineChart = (
+    //   <LineChart width={200} height={300} data={graphdata} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+    //     <Line type="monotone" dataKey="pv" stroke="#8884d8" />
+    //     <CartesianGrid stroke="#ccc" strokeDasharray="2 5" />
+    //     <XAxis dataKey="name" />
+    //     <YAxis />
+    //     {/* <Tooltip /> */}
+    //   </LineChart>
+    // );
     let baseUrl1 = process.env.NODE_ENV === "production" ? "/" : "http://localhost:9000/"
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
@@ -475,6 +495,8 @@ export default function DailyPNLReport() {
 
 
     detailPnlArr.map((elem)=>{
+        let object = {};
+
         if(elem.brokerage){
             allBrokerage = allBrokerage + Number(elem.brokerage);
             userBrokerage = userBrokerage + Number(elem.traderbrokerage);
@@ -494,9 +516,21 @@ export default function DailyPNLReport() {
             allGross: allGross,
             allNet: allNet
         }
+
+        object.date = elem.date;
+        object.netpnl = elem.pnl;
+        object.traderpnl = elem.traderpnl;
+        graphdataarr.push(object);
+        console.log(graphdataarr);
         // console.log(obj)
         totalArr.push(obj);
+
+        
     })
+
+    const renderLabel = ({ payload, x, y, width, height, netpnl }) => {
+        return <text x={x + width / 2} y={y} fill="#666" textAnchor="middle" dy={-6}>{`${netpnl}`}</text>;
+      };
 
     console.log(detailPnlArr)
 
@@ -515,9 +549,19 @@ export default function DailyPNLReport() {
 
                                 </form>
                             </div>
-                            <div className={Styles.btn_div_head1}>
-                            <div className={Styles.btn_div_onehead1}>
+                            
+                            </div>
+
+                           
+
+                            {/* <button className={Styles.formButton}>Download Report</button> */}
+
+                        {/* Adding Charts */}
+
+                        <div className={Styles.infobox}>
+                            <div className={Styles.box1}>
                             <div className={Styles.btn_div_one1}>
+                                    
                                 <div className={`${Styles.formLable1}`}>Gross(C-P&L)</div>
                                 <div className={Styles.formLable1}>Tran. Cost(C)</div>
                                 <div className={Styles.formLable1}>Net(C-P&L)</div>
@@ -529,30 +573,44 @@ export default function DailyPNLReport() {
                     
                                 <div className={`${Styles.formInput11}`} style={allNet > 0.00 ? { color: "green" } : allBrokerage === 0.00 ? { color: "grey" } : { color: "red" }} >{allNet > 0.00 ? "+₹" + (allNet.toFixed(2)) : allNet === 0 ? " " : "-₹" + ((-(allNet)).toFixed(2))}</div>
                             </div>
-                        </div>
-                        
-                        
-                        <div className={Styles.btn_div_twohead1}>
+                            </div>
+                            <div className={Styles.box1}>
                             <div className={Styles.btn_div_two1}>
                                     
-                                <div className={`${Styles.formLable1}`}>Gross(T-P&L)</div>
-                                <div className={Styles.formLable1}>Tran. Cost(T)</div>
-                                <div className={Styles.formLable1}>Net(T-P&L)</div>
-                                </div>
-                                <div className={Styles.btn_div_two1}>
+                                <div className={`${Styles.formLable1}`}>Gross(C-P&L)</div>
+                                <div className={Styles.formLable1}>Tran. Cost(C)</div>
+                                <div className={Styles.formLable1}>Net(C-P&L)</div>
+                            </div>
+                            <div className={Styles.btn_div_two1}>
                                 <div style={userGross > 0.00 ? { color: "green" } : userGross === 0.00 ? { color: "grey" } : { color: "red" }} className={`${Styles.formInput11}`}>{userGross > 0.00 ? "+₹" + (userGross.toFixed(2)) : userGross === 0 ? "" : "-₹" + ((-(userGross)).toFixed(2))}</div>
                                
                                 <div className={`${Styles.formInput11}`}>{userBrokerage === 0 ? " " : "₹" + (userBrokerage.toFixed(2))}</div>
                                
                                 <div className={`${Styles.formInput11}`} style={userNet > 0.00 ? { color: "green" } : userBrokerage === 0.00 ? { color: "grey" } : { color: "red" }} >{userNet > 0.00 ? "+₹" + (userNet.toFixed(2)) : userNet === 0 ? " " : "-₹" + ((-(userNet)).toFixed(2))}</div>
 
-                                </div>
                             </div>
                             </div>
-                            </div>
-                           
+                        </div>
 
-                            {/* <button className={Styles.formButton}>Download Report</button> */}
+                        <div className={Styles.graphbox}>
+                            <div className={Styles.box}>
+                                
+                                <LineChart width={1200} height={300} data={graphdata} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+                                <XAxis dataKey="date" fontSize="0.5rem" angle={25} color="#000" stroke="#000" strokeDasharray="false"/>
+                                <YAxis fontSize="0.5rem" type="number" domain={['auto','auto']}/>
+                                <Tooltip />
+                                <Legend/>
+                                <Label content={renderLabel}/>
+                                <CartesianGrid stroke="white" strokeDasharray="1"/>
+                                <ReferenceLine y={0} stroke="black" />
+                                <Line type="monotone" dataKey="netpnl" stroke="#8884d8" fill="#5479FC" dot={true}/>
+                                {/* <Bar type="monotone" dataKey="traderpnl" stroke="#82ca9d" /> */}
+                                {/* <Line type="monotone" dataKey="amt" stroke="#82ca9d" /> */}
+                            </LineChart>
+                             
+                            </div>
+                            {/* <div className={Styles.box}></div> */}
+                        </div>
                      
                         <div className={Styles.grid_11}>
                             <table className="grid1_table">
@@ -614,10 +672,8 @@ export default function DailyPNLReport() {
                     </div>
                 </div>
              </div>
-
+             
         </div>
         
     )
 }
-
-
