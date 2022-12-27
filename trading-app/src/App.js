@@ -5,8 +5,8 @@ import TraderwiseAllPnl from "./Main/AdminDashboard/traderwisePnlReport/Traderwi
 function App() {
   return (
     <>
-      {/* <Routing/> */}
-      <TraderwiseAllPnl />
+      <Routing/>
+      {/* <TraderwiseAllPnl /> */}
     </>
   );
 }
