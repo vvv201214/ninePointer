@@ -4,6 +4,7 @@ import Styles from "./DailyPNLReport.module.css";
 import axios from "axios";
 import { userContext } from "../../AuthContext";
 import { io } from "socket.io-client";
+import DetailsButtonPopup from "./DetailsButton/DetailsButtonPopup";
 
 
 export default function DailyPNLReport() {
@@ -602,7 +603,7 @@ export default function DailyPNLReport() {
 
                                             <td className="grid2_td">{elem.numberOfTrader}</td>
                                             <td className="grid2_td">{elem.numberOfTrade}</td>
-                                            <td className="grid2_td"><button>Details</button></td>
+                                            <td className="grid2_td"><DetailsButtonPopup/></td>
 
                                         </tr>}
                                         </>

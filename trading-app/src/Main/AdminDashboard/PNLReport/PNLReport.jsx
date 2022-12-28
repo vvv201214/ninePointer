@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import Styles from "./PNLReport.module.css";
 import axios from "axios";
 import { userContext } from "../../AuthContext";
-import { io } from "socket.io-client";
+import { io } from "socket.io-client"
 
 
 export default function PNLReport() {
