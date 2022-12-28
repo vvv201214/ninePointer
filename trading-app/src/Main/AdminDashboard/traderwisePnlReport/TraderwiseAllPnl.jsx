@@ -610,13 +610,14 @@ export default function DailyPNLReport() {
     (detailPnlArr).sort((a, b)=> {
         // //console.log(a, b)
         if (a.date < b.date) {
-          return -1;
+          return 1;
         }
         if (a.date > b.date) {
-          return 1;
+          return -1;
         }
         return 0;
     })
+    //console.log(detailPnlArr[0]);
 
     detailPnlArr.map((elem)=>{
         if(elem.brokerage){
@@ -675,35 +676,25 @@ export default function DailyPNLReport() {
             })
         }
     }
+            let lastdatepnl = [];
+            
+            console.log(detailPnlArr); 
+            userDetail.map((elem)=>{
+              for(let i = 0; i < detailPnlArr.length; i++)  
+              {
+                if(elem.name == detailPnlArr[i].name)
+                {
+                    
+                    lastdatepnl.push(detailPnlArr[i]);
+                    break;
+                }
+                
 
-    // let hashmap = new Map();
-    // for(let i = 0; i < detailPnl.length; i++){
-    //     if(hashmap.has(detailPnl[i].name)){
-    //         let obj = hashmap.get(detailPnl[i].name);
-
-    //         obj.pnl = obj.pnl + detailPnl[i].pnl ;
-    //         obj.brokerage = obj.brokerage + detailPnl[i].brokerage ;
-    //         obj.traderpnl = obj.traderpnl + detailPnl[i].traderpnl ;
-    //         obj.traderbrokerage = obj.traderbrokerage + detailPnl[i].traderbrokerage ;
-    //         obj.numberOfTrade = obj.numberOfTrade + detailPnl[i].numberOfTrade ;
-    //         obj.lotUsed = obj.lotUsed + detailPnl[i].lotUsed ;
-    //         obj.runninglots = obj.runninglots + detailPnl[i].runningLots
-
-    //     } else{
-    //         hashmap.set(detailPnl[i].name, {
-    //             pnl: detailPnl[i].pnl,
-    //             brokerage: detailPnl[i].brokerage,
-    //             traderpnl: detailPnl[i].traderpnl,
-    //             traderbrokerage: detailPnl[i].traderbrokerage,
-    //             numberOfTrade: detailPnl[i].numberOfTrade,
-    //             lotUsed: detailPnl[i].lotUsed,
-    //             runninglots: detailPnl[i].runningLots,
-    //             name: detailPnl[i].name
-    //         })
-    //     }
-    // }
-
-    // console.log(hashmap);
+                }
+                
+              }
+            )
+            console.log(lastdatepnl);
 
     let totalDateWisePnl = [];
     for (let value of hashmap.values()){
@@ -721,6 +712,18 @@ export default function DailyPNLReport() {
         }
         return 0;
     })
+
+    function getMonthName(monthNumber) {
+        const date = new Date();
+        date.setMonth(monthNumber - 1);
+      
+        return date.toLocaleString('en-US', { month: 'long' });
+      }
+
+    let lastdate = (secondDate.split("-"))[2];
+    let lastmonth = getMonthName((secondDate.split("-"))[1]).slice(0,3);
+    let last_date = lastdate + "-" + lastmonth;
+
     return (
         <div>
             <div className="main_Container">
@@ -785,6 +788,7 @@ export default function DailyPNLReport() {
                                     <th className="grid2_th">Gross(T-P&L)</th>
                                     <th className="grid2_th">Tran. Cost(T)</th>
                                     <th className="grid2_th">Net(T-P&L)</th>
+                                    <th className="grid2_th">Net(T-P&L)({last_date})</th>
                                     {/* <th className="grid2_th"># of Traders</th> */}
                                     <th className="grid2_th"># of Trades</th>
                                     <th className="grid2_th">Trading Days</th>
@@ -795,11 +799,20 @@ export default function DailyPNLReport() {
 
                                 totalDateWisePnl.map((elem, index)=>{
                                     // let data = (elem.date).split("-");
+                                    let uniqueuser = lastdatepnl.filter((element)=>{
+
+                                        return elem.name === element.name;
+                                    })
+
+                                    
+
                                     return(
                                         <>
                                         {(elem.name ) &&
                                         <tr>
                                             <td className="grid2_td">{elem.name}</td>
+                                            {/* <td className="grid2_td">{(uniqueuser[0].traderpnl-uniqueuser[0].traderbrokerage).toFixed(2)}</td> */}
+                                            
                                             {!elem.pnl ?
                                             <td className="grid2_td" style={elem.pnl>=0.00 ? { color: "green"}:  { color: "red"}}>{elem.pnl >0.00 ? "+₹" + (elem.pnl): "-₹" + (-(elem.pnl)) }</td>
                                             :
@@ -821,7 +834,8 @@ export default function DailyPNLReport() {
                                             <td className="grid2_td" >{elem.traderbrokerage >0.00 ? "₹" + (elem.traderbrokerage.toFixed(2)): "₹" + (-(elem.traderbrokerage).toFixed(2)) }</td>}
                                             {(elem.traderpnl - elem.traderbrokerage) !== undefined &&
                                             <td className="grid2_td" style={(elem.traderpnl - elem.traderbrokerage)>=0.00 ? { color: "green"}:  { color: "red"}}> {elem.traderpnl - elem.traderbrokerage > 0.00 ? "+₹" + (elem.traderpnl - elem.traderbrokerage).toFixed(2): "-₹" + ((-(elem.traderpnl - elem.traderbrokerage)).toFixed(2))}</td>}
-
+                                            {(uniqueuser[0].traderpnl - uniqueuser[0].traderbrokerage) !== undefined &&
+                                            <td className="grid2_td" style={(uniqueuser[0].traderpnl - uniqueuser[0].traderbrokerage)>=0.00 ? { color: "green",backgroundColor:"#dedede"}:  { color: "red",backgroundColor:"#dedede"}}> {uniqueuser[0].traderpnl - uniqueuser[0].traderbrokerage > 0.00 ? "+₹" + (uniqueuser[0].traderpnl - uniqueuser[0].traderbrokerage).toFixed(2): "-₹" + ((-(uniqueuser[0].traderpnl - uniqueuser[0].traderbrokerage)).toFixed(2))}</td>}
                                             {/* <td className="grid2_td">{elem.numberOfTrader}</td> */}
                                             <td className="grid2_td">{elem.numberOfTrade}</td>
                                             <td className="grid2_td">{elem.tradingdays}</td>

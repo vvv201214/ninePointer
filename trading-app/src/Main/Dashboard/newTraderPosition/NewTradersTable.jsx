@@ -106,9 +106,9 @@ export default function NewTradersTable({socket}) {
                         <div className={Styles.gridheader}>
                         <div className={Styles.box}>
                         <span className={Styles.header}>Traders Wise P&L(Traders)-Mock</span>
-                        <div className="grid_2">
+                        
                             <TradersPNLTrader marketData={marketData} tradeData={tradeData} />
-                        </div>
+                        
                         </div></div>
                     </div>
                 </div>
