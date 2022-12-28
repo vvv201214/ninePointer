@@ -554,7 +554,7 @@ export default function DailyPNLReport() {
 
                             {/* <button className={Styles.formButton}>Download Report</button> */}
 
-                        {/* Adding Charts */}
+                        {/* Adding InfoBox */}
 
                         <div className={Styles.infobox}>
                             <div className={Styles.box1}>
@@ -575,9 +575,9 @@ export default function DailyPNLReport() {
                             <div className={Styles.box1}>
                             <div className={Styles.btn_div_two1}>
                                     
-                                <div className={`${Styles.formLable1}`}>Gross(C-P&L)</div>
-                                <div className={Styles.formLable1}>Tran. Cost(C)</div>
-                                <div className={Styles.formLable1}>Net(C-P&L)</div>
+                                <div className={`${Styles.formLable1}`}>Gross(T-P&L)</div>
+                                <div className={Styles.formLable1}>Tran. Cost(T)</div>
+                                <div className={Styles.formLable1}>Net(T-P&L)</div>
                             </div>
                             <div className={Styles.btn_div_two1}>
                                 <div style={userGross > 0.00 ? { color: "green" } : userGross === 0.00 ? { color: "grey" } : { color: "red" }} className={`${Styles.formInput11}`}>{userGross > 0.00 ? "+₹" + (userGross.toFixed(2)) : userGross === 0 ? "" : "-₹" + ((-(userGross)).toFixed(2))}</div>

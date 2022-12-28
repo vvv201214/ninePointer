@@ -817,7 +817,9 @@ export default function DailyPNLReport() {
 
                                 totalDateWisePnl.map((elem)=>{
                                     // let data = (elem.date).split("-");
+                                    let probablepnl = ((((elem.negativedays/elem.tradingdays))*elem.negativepnl)+(((elem.positivedays/elem.tradingdays))*elem.positivepnl));
                                     return(
+                                        
                                         <>
                                         {elem.name &&
                                         <tr>
@@ -833,15 +835,15 @@ export default function DailyPNLReport() {
                                             {(elem.traderpnl - elem.traderbrokerage) !== undefined &&
                                             <td className="grid2_td" style={(elem.traderpnl - elem.traderbrokerage)>=0.00 ? { color: "green"}:  { color: "red"}}> {elem.traderpnl - elem.traderbrokerage > 0.00 ? "+₹" + (elem.traderpnl - elem.traderbrokerage).toFixed(0): "-₹" + ((-(elem.traderpnl - elem.traderbrokerage)).toFixed(0))}</td>}
                                             <td className="grid2_td">{elem.tradingdays}</td>
-                                            <td className="grid2_td">{((((elem.negativedays/elem.tradingdays))*elem.negativepnl)+(((elem.positivedays/elem.tradingdays))*elem.positivepnl)).toFixed(0)}</td>
+                                            <td className="grid2_td" style={probablepnl>=0.00 ? { color: "green"}:  { color: "red"}}>{probablepnl >0.00 ? "+₹" + (probablepnl.toFixed(0)): "-₹" + (-(probablepnl).toFixed(0)) }</td>
                                             {/* <td className="grid2_td">-</td> */}
-                                            <td className="grid2_td">{elem.positivedays}</td>
-                                            <td className="grid2_td">{elem.positivepnl.toFixed(0)}</td>
-                                            <td className="grid2_td">{elem.positivedays == 0 ? 0.00 : (elem.positivepnl/elem.positivedays).toFixed(0)}</td>
-                                            <td className="grid2_td">{elem.negativedays}</td>
-                                            <td className="grid2_td">{elem.negativepnl.toFixed(0)}</td>
-                                            <td className="grid2_td">{elem.negativedays == 0 ? 0.00 : (elem.negativepnl/elem.negativedays).toFixed(0)}</td>
-                                            <td className="grid2_td">{((elem.negativedays/elem.tradingdays)*100).toFixed(0)}%</td>
+                                            <td className="grid2_td" style={{color:"green"}}>{elem.positivedays}</td>
+                                            <td className="grid2_td" style={{color:"green"}}>+₹{elem.positivepnl.toFixed(0)}</td>
+                                            <td className="grid2_td" style={{color:"green"}}>{elem.positivedays == 0 ? 0.00 : "-₹" + (elem.positivepnl/elem.positivedays).toFixed(0)}</td>
+                                            <td className="grid2_td" style={{color:"red"}}>{elem.negativedays}</td>
+                                            <td className="grid2_td" style={{color:"red"}}>-₹{-(elem.negativepnl.toFixed(0))}</td>
+                                            <td className="grid2_td" style={{color:"red"}}>{elem.negativedays == 0 ? 0.00 : "-₹" + (-(elem.negativepnl/elem.negativedays)).toFixed(0)}</td>
+                                            <td className="grid2_td" style={{color:"red"}}>{((elem.negativedays/elem.tradingdays)*100).toFixed(0)}%</td>
 
                                         </tr>}
                                         </>
