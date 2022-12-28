@@ -670,7 +670,7 @@ export default function DailyPNLReport() {
                     </div>
                 </div>
              </div>
-             
+           
         </div>
         
     )

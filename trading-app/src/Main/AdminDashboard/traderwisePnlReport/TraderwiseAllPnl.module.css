@@ -116,3 +116,41 @@
     font-weight: bold;
     float: right;
 }
+
+.infobox{
+    position: relative;
+    width: 100%;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
+    min-height: 50px;
+}
+
+.infobox .box1{
+    position: relative;
+    background: #fff;
+    padding: 20px;
+    width: 100%;
+    box-shadow: 0 7px 25px rgb(0,0,0,0.08);
+    border-radius: 20px;
+}
+
+.graphbox{
+    position: relative;
+    width: 100%;
+    padding: 10px;
+    display: grid;
+    /* grid-template-columns: 1fr 1fr; */
+    grid-gap: 20px;
+    min-height: 200px;
+}
+
+.graphbox .box{
+    position: relative;
+    background: #fff;
+    padding: 20px;
+    width: 100%;
+    box-shadow: 0 7px 25px rgb(0,0,0,0.08);
+    border-radius: 20px;
+}

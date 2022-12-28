@@ -736,16 +736,16 @@ export default function DailyPNLReport() {
         return newObj;
     }
 
-    (detailPnlArr).sort((a, b)=> {
-        // //console.log(a, b)
-        if (a.date < b.date) {
-          return -1;
-        }
-        if (a.date > b.date) {
-          return 1;
-        }
-        return 0;
-    })
+    // (detailPnlArr).sort((a, b)=> {
+    //     // //console.log(a, b)
+    //     if (a.date < b.date) {
+    //       return -1;
+    //     }
+    //     if (a.date > b.date) {
+    //       return 1;
+    //     }
+    //     return 0;
+    // })
 
     detailPnlArr.map((elem)=>{
         if(elem.brokerage){
@@ -787,7 +787,8 @@ export default function DailyPNLReport() {
             obj.traderbrokerage = obj.traderbrokerage + detailPnlArr[i].traderbrokerage ;
             obj.numberOfTrade = obj.numberOfTrade + detailPnlArr[i].numberOfTrade ;
             obj.lotUsed = obj.lotUsed + detailPnlArr[i].lotUsed ;
-            obj.runninglots = obj.runninglots + detailPnlArr[i].runningLots
+            obj.runninglots = obj.runninglots + detailPnlArr[i].runningLots;
+            obj.tradingdays = obj.tradingdays+1;
 
         } else{
             hashmap.set(detailPnlArr[i].name, {
@@ -798,7 +799,8 @@ export default function DailyPNLReport() {
                 numberOfTrade: detailPnlArr[i].numberOfTrade,
                 lotUsed: detailPnlArr[i].lotUsed,
                 runninglots: detailPnlArr[i].runningLots,
-                name: detailPnlArr[i].name
+                name: detailPnlArr[i].name,
+                tradingdays: 1
             })
         }
     }
@@ -914,6 +916,7 @@ export default function DailyPNLReport() {
                                     <th className="grid2_th">Net(T-P&L)</th>
                                     {/* <th className="grid2_th"># of Traders</th> */}
                                     <th className="grid2_th"># of Trades</th>
+                                    <th className="grid2_th">Trading Days</th>
                                     <th className="grid2_th">Details</th>
                                     {/* <th className="grid2_th">{detailPnl[0].name}</th> */}
                                 </tr>
@@ -950,6 +953,7 @@ export default function DailyPNLReport() {
 
                                             {/* <td className="grid2_td">{elem.numberOfTrader}</td> */}
                                             <td className="grid2_td">{elem.numberOfTrade}</td>
+                                            <td className="grid2_td">{elem.tradingdays}</td>
                                             <td className="grid2_td"><button>Details</button></td>
 
                                         </tr>}

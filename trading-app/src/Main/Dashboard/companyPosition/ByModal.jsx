@@ -557,6 +557,7 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany, symbo
                                     <span className="lable1_radiobtn"><input type="radio" value="IMMEDIATE" checked={validitySelected === 'IMMEDIATE'} name="validity" className="btnRadio2" onChange={radioHandlerthree} /> Immediate  </span>
                                     <span className="lable1_radiobtn"><input type="radio" value="MINUTES" checked={validitySelected === 'MINUTES'} name="validity" className="btnRadio2" onChange={radioHandlerthree} /> Minutes </span>
                                 </div>
+                                {/* <div className="marginrequired">2,0000</div> */}
 
                                 <div className="form_button">
                                     <button className="bsButton bsButton1 By_btn" onClick={(e) => { Buy(e, uId) }} >BUY</button> 
