@@ -1,7 +1,5 @@
 import React from "react";
 import Styles from "./Dashboard.module.css";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faIndianRupeeSign } from '@fortawesome/free-solid-svg-icons';  
 
 
 function Dashboard(){

@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./TradingAccounts.css";
 import "./Accounts.css";
-import Popup from "reactjs-popup";
-import 'reactjs-popup/dist/index.css';
 import { NavLink } from "react-router-dom";
 import uniqid from "uniqid"
 import axios from "axios"
