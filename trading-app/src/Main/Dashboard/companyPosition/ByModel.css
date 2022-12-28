@@ -219,6 +219,10 @@ body.active-modal {
     text-align: center;
 }
 
+.btn-modal:hover {
+   cursor: pointer;
+}
+
 .form_btnRagAMO {
 
     display: flex;

@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React, { useState } from 'react'
 import Styles from "./DetailsButtonPopup.module.css";
 
 const DetailsButtonPopup = () => {
@@ -14,37 +14,66 @@ const DetailsButtonPopup = () => {
         document.body.classList.remove('active-modal')
     }
 
-  return (
-    <div>
-        <button onClick={toggleModal}>Details</button>
+    function closeHandler(){
+        setModal(!modal);
+    }
+    return (
+        <div>
+            <button onClick={toggleModal}>Details</button>
 
-    {modal && (
-        <div className="modal">
-            <div onClick={toggleModal} className="overlay"></div>
-            <div className={Styles.modalContent}>
-                <form className={Styles.main_instrument_form}>
-                    {/* <label className={Styles.Ac_form} htmlFor="">Exchange Name (Incoming)</label>
-                    <input type="text" value={exNameIncoming} className={Styles.Ac_form} onChange={(e)=>{{setExNameIncoming(e.target.value)}}} />
-                    <label htmlFor="" className={Styles.Ac_form}>Incoming Exchange Code</label>
-                    <input type="text" value={inExchangeCode} className={Styles.Ac_form} onChange={(e)=>{{setInExchangeCode(e.target.value)}}} />
-                    <label htmlFor="" className={Styles.Ac_form}>Exchange Name (Outgoing)</label>
-                    <input type="text" value={exNameOutgoing} className={Styles.Ac_form} onChange={(e)=>{{setExNameOutgoing(e.target.value)}}} />
-                    <label htmlFor="" className={Styles.Ac_form}>Outgoing Instrument Code</label>
-                    <input type="text" value={outInstrumentCode} className={Styles.Ac_form} onChange={(e)=>{{setoutInstrumentCode(e.target.value)}}} />
-                    <label htmlFor="" className={Styles.Ac_form}>Status</label>
-                    <select name="" id="" value={status} className={Styles.Ac_form} onChange={(e)=>{{setStatus(e.target.value)}}}>
-                        <option value=""></option>
-                        <option value="Active">Active</option>
-                        <option value="Inactive">Inactive</option>
-                    </select> */}
-                </form>
-                <button className={Styles.ACform_tbn} >OK</button> <button className={Styles.ACform_tbn}>Delete</button>
+            {modal && (
+                <div className="modal">
+                    <div onClick={toggleModal} className="overlay"></div>
 
-            </div>
+                    <div className={Styles.modalContent}>
+                        <div className={Styles.headingDiv}>
+                            <div className={Styles.dateDiv}>
+                                <span className={Styles.date}>Date-</span>&nbsp;&nbsp; <span className={Styles.dateData}>12-12-2022</span>
+                            </div>
+                            <div className={Styles.TradersNumberDiv}>
+                                <span className={Styles.date}>Number Of Traders -</span>&nbsp;&nbsp;<span className={Styles.dateData}>10</span>
+                            </div>
+                        </div>
+                        <div className={Styles.grid_11}>
+                            <table className="grid1_table">
+                                <tr className="tableheader">
+                                    <th className="grid2_th">Trader Name</th>
+                                    <th className="grid2_th">Gross(C-P&L)</th>
+                                    <th className="grid2_th">Tran. Cost(C)</th>
+                                    <th className="grid2_th">Net(C-P&L)</th>
+                                    <th className="grid2_th">Gross(T-P&L)</th>
+                                    <th className="grid2_th">Tran. Cost(T)</th>
+                                    <th className="grid2_th">Net(T-P&L)</th>
+                                    <th className="grid2_th"># of Trades</th>
+                                </tr>
+                                <tr className="tableheader">
+                                    <td className="grid2_td">1</td>
+                                    <td className="grid2_td">2</td>
+                                    <td className="grid2_td">3</td>
+                                    <td className="grid2_td">4</td>
+                                    <td className="grid2_td">5</td>
+                                    <td className="grid2_td">5</td>
+                                    <td className="grid2_td">5</td>
+                                    <td className="grid2_td">5</td>
+                                </tr>
+                                <tr className="tableheader">
+                                    <td className="grid2_td">TOTAL</td>
+                                    <td className="grid2_td"></td>
+                                    <td className="grid2_td"></td>
+                                    <td className="grid2_td"></td>
+                                    <td className="grid2_td"></td>
+                                    <td className="grid2_td"></td>
+                                    <td className="grid2_td"></td>
+                                    <td className="grid2_td"></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <button className={Styles.ACform_tbn} onClick={closeHandler}>Close</button>
+                    </div>
+                </div>
+            )}
         </div>
-    )}
-    </div>
-  )
+    )
 }
 
 export default DetailsButtonPopup
