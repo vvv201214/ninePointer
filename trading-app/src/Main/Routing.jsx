@@ -45,6 +45,8 @@ import Dashboard from './Dashboard/Dashboard';
 import TradersTradeBook from './Dashboard/TradersTradeBook';
 import TodaysTradersTrade from './Dashboard/TradersTradeBook/TodaysTradersTrade';
 import HistoryTradersTrade from './Dashboard/TradersTradeBook/HistoryTradersTrade';
+import TraderwiseAllPnl from './AdminDashboard/traderwisePnlReport/TraderwiseAllPnl';
+import TraderView from './AdminDashboard/TraderView/TraderView';
 
 
 
@@ -117,11 +119,15 @@ export default function Routing() {
                                 <Route path='/main/admindashboard/summary/' element={<Summary/>}></Route>
                                 <Route path='/main/admindashboard/summary/pnlreport/' element={<PNLReport/>}></Route>
                                 <Route path='/main/admindashboard/summary/dailypnlreport/' element={<DailyPNLReport/>}></Route>
+                                <Route path='/main/admindashboard/summary/traderpnlreport/' element={<TraderwiseAllPnl/>}></Route>
                                 <Route path='/main/admindashboard/summary/tradermetrics/' element={<TraderMetrics/>}></Route>
+                                <Route path='/main/admindashboard/summary/traderview/' element={<TraderView/>}></Route>
                             </Route>
                             <Route path='/main/userfunds' element={<UserFundsMain />}>
                                 <Route path='/main/userfunds/' element={<UserFunds />}></Route>
                             </Route>
+                            
+                            
                             {/* // :
                         // <Route path='/main/dashboard' element={<DashboardMain/>}>
                         //     <Route path='/main/dashboard' element={<TradersPosition/>}></Route>

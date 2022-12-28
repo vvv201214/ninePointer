@@ -10,6 +10,7 @@ import RunningPnl from "../PnlParts/RunningPnl";
 import ClosedPnl from "../PnlParts/ClosedPnl";
 import OverallPnl from "../PnlParts/OverallPnl";
 import TradersPnlCompany from "../PnlParts/TradersPnlCompany";
+import Styles from "../Dashboard.module.css";
 
 function CompanyPositionTable({ socket }) {
     const getDetails = useContext(userContext);
@@ -83,8 +84,9 @@ function CompanyPositionTable({ socket }) {
             <div className="main_Container">
                 <div className="right_side">
                     <div className="rightside_maindiv">
-                        <span className="grid1_span">Instruments Details</span>
-                        <div className="grid_1">
+                    <div className={Styles.gridheader}>
+                    <div className={Styles.box}>
+                    <span className={Styles.header}>Instruments Details</span>
                             <table className="grid1_table">
                                 <tr className="grid2_tr">
                                     <th className="grid2_th">Trading Date</th>
@@ -126,10 +128,12 @@ function CompanyPositionTable({ socket }) {
                                 })}
                             </table>
                         </div>
-                        <span className="grid2_span">Overall P&L(Company) - Mock</span>
-                        <div className="grid_2">
-                            <OverallPnl marketData={marketData} tradeData={tradeData} data={data} />
                         </div>
+                        <span className={Styles.gridheader}>
+                            <div className={Styles.box}>
+                                <div class={Styles.header}>Overall P&L(Company) - Mock</div>
+                            <OverallPnl marketData={marketData} tradeData={tradeData} data={data} />
+                        </div></span>
                         
                         {/* <span className="grid2_span">Running PNL-Company</span>
                         <div className="grid_2">
@@ -139,10 +143,13 @@ function CompanyPositionTable({ socket }) {
                         <div className="grid_2">
                             <ClosedPnl marketData={marketData} tradeData={tradeData} data={data} />
                         </div> */}
-                        <span className="grid2_span">Trader Wise P&L(Company) - Mock</span>
+                        <span className={Styles.gridheader}>
+                        <div className={Styles.box}>
+                        <div className={Styles.header}>Trader Wise P&L(Company) - Mock</div>
                             <TradersPnlCompany marketData={marketData} tradeData={tradeData}/>          
-                    </div>
+                    </div></span>
                 </div>
+            </div>
             </div>
         </div>
     )
