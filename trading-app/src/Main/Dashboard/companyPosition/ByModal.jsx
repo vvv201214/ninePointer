@@ -456,15 +456,17 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany, symbo
     return (
         <>
             {userPermission[0] === undefined ?
-                <button disabled={!userPermission.isTradeEnable} onClick={toggleModal} className="btn-modal By_btn">
-                    BUY
-                </button>
-                :
-                <button disabled={!userPermission[0].isTradeEnable} onClick={toggleModal} className="btn-modal By_btn">
-                    BUY
-                </button>}
+            <button disabled={!userPermission.isTradeEnable} onClick={toggleModal} className="btn-modal By_btn">
+                BUY
+            </button>
+            : 
+            <button disabled={!userPermission[0].isTradeEnable} onClick={toggleModal} className="btn-modal By_btn">
+                BUY
+            </button>}
 
-                
+                {/* <button  onClick={toggleModal} className="btn-modal By_btn">
+                    BUY
+                </button> */}
 
             {modal && (
                 <div className="modal">
