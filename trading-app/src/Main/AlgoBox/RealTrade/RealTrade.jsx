@@ -315,7 +315,7 @@ export default function RealTrade({Render, id, buttonTextBool, tradingAlgo}) {
     }
 
     async function sendOrderReq(name, userId, algoBox, realTrade) {
-        const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, instrumentToken } = Details;
+        // const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, instrumentToken } = Details;
         const { algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount } = algoBox;
         const { realBuyOrSell, realSymbol, realQuantity, realInstrument, realBrokerage, realAmount, real_last_price } = companyTrade;
         
@@ -329,11 +329,11 @@ export default function RealTrade({Render, id, buttonTextBool, tradingAlgo}) {
             },
             body: JSON.stringify({
 
-                apiKey, accessToken, userId,
-                exchange, symbol: realSymbol, buyOrSell, realBuyOrSell, Quantity, realQuantity, Price, Product, OrderType, TriggerPrice, 
-                stopLoss, validity, variety, last_price: real_last_price, createdBy, userId, createdOn, uId, 
-                algoBox: {algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, 
-                productChange, tradingAccount}, instrumentToken, realTrade
+                // apiKey, accessToken, userId,
+                // exchange, symbol: realSymbol, buyOrSell, realBuyOrSell, Quantity, realQuantity, Price, Product, OrderType, TriggerPrice, 
+                // stopLoss, validity, variety, last_price: real_last_price, createdBy, userId, createdOn, uId, 
+                // algoBox: {algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, 
+                // productChange, tradingAccount}, instrumentToken, realTrade
                 
             })
         });
@@ -347,40 +347,40 @@ export default function RealTrade({Render, id, buttonTextBool, tradingAlgo}) {
             console.log("entry succesfull");
         }
     }
-    async function sendOrderReq(algoBox, realTrade) {
-        const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, instrumentToken } = Details;
-        const { algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount } = algoBox;
-        const { realBuyOrSell, realSymbol, realQuantity, realInstrument, realBrokerage, realAmount, real_last_price } = companyTrade;
+    // async function sendOrderReq(algoBox, realTrade) {
+    //     const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, instrumentToken } = Details;
+    //     const { algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount } = algoBox;
+    //     const { realBuyOrSell, realSymbol, realQuantity, realInstrument, realBrokerage, realAmount, real_last_price } = companyTrade;
 
-        const { instrument } = tradeData;
-        const { apiKey } = apiKeyDetails[0];
-        const { accessToken } = accessTokenDetails[0];
+    //     const { instrument } = tradeData;
+    //     const { apiKey } = apiKeyDetails[0];
+    //     const { accessToken } = accessTokenDetails[0];
 
-        const res = await fetch(`${baseUrl}api/v1/placeorder`, {
-            method: "POST",
-            headers: {
-                "content-type": "application/json"
-            },
-            body: JSON.stringify({
+    //     const res = await fetch(`${baseUrl}api/v1/placeorder`, {
+    //         method: "POST",
+    //         headers: {
+    //             "content-type": "application/json"
+    //         },
+    //         body: JSON.stringify({
                 
-                // apiKey, accessToken, userId,
-                // exchange, symbol: realSymbol, buyOrSell, realBuyOrSell, Quantity, realQuantity, Price, Product, OrderType, TriggerPrice, 
-                // stopLoss, validity, variety, last_price: real_last_price, createdBy, userId, createdOn, uId, 
-                // algoBox: {algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, 
-                // productChange, tradingAccount}, order_id:dummyOrderId, instrumentToken, realTrade
+    //             // apiKey, accessToken, userId,
+    //             // exchange, symbol: realSymbol, buyOrSell, realBuyOrSell, Quantity, realQuantity, Price, Product, OrderType, TriggerPrice, 
+    //             // stopLoss, validity, variety, last_price: real_last_price, createdBy, userId, createdOn, uId, 
+    //             // algoBox: {algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, 
+    //             // productChange, tradingAccount}, order_id:dummyOrderId, instrumentToken, realTrade
 
-            })
-        });
-        const dataResp = await res.json();
-        if (dataResp.status === 422 || dataResp.error || !dataResp) {
-            window.alert(dataResp.error);
-            console.log("Failed to Trade");
-        } else {
-            console.log(dataResp);
-            // window.alert("Trade succesfull");
-            console.log("entry succesfull");
-        }
-    }
+    //         })
+    //     });
+    //     const dataResp = await res.json();
+    //     if (dataResp.status === 422 || dataResp.error || !dataResp) {
+    //         window.alert(dataResp.error);
+    //         console.log("Failed to Trade");
+    //     } else {
+    //         console.log(dataResp);
+    //         // window.alert("Trade succesfull");
+    //         console.log("entry succesfull");
+    //     }
+    // }
   return (
     <>
         <button onClick={()=>{functionality()}} >{buttonText}</button>
