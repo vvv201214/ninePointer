@@ -8,6 +8,7 @@ import RunningPnl from "../PnlParts/RunningPnl";
 import ClosedPnl from "../PnlParts/ClosedPnl";
 import OverallPnl from "../PnlParts/OverallPnl";
 import { userContext } from "../../AuthContext";
+import Styles from "../Dashboard.module.css";
 
 function TraderPositionTable({ socket }) {
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
@@ -86,8 +87,10 @@ function TraderPositionTable({ socket }) {
             <div className="main_Container">
                 <div className="right_side">
                     <div className="rightside_maindiv">
-                    <span className="grid1_span">Instruments Details</span>
-                        <div className="grid_1">
+                    
+                    <div className={Styles.gridheader}>
+                    <div className={Styles.box}>
+                    <span className={Styles.header}>Instruments Details</span>
                             <table className="grid1_table">
                                 <tr className="grid2_tr">
                                     <th className="grid2_th">Trading Date</th>
@@ -124,14 +127,60 @@ function TraderPositionTable({ socket }) {
                                             <ByModal symbol={elem.instrument} ltp={(updatedMarketData[0]?.last_price)} maxlot={(elem.maxLot)} lotsize={(elem.lotSize)} Render={{setReRender, reRender}} marketData={marketData} uIdProps={elem.uId} />
                                             <SellModel symbol={elem.instrument} ltp={(updatedMarketData[0]?.last_price)} maxlot={(elem.maxLot)} lotsize={(elem.lotSize)} Render={{setReRender, reRender}} marketData={marketData} uIdProps={elem.uId}  /></div></td>
                                         </tr>
+                                    
                                     )
                                 })} 
                             </table>
+                            </div>
                         </div>
-                        <span className="grid2_span">Overall PNL-Trader</span>
-                        <div className="grid_2">
-                                <OverallPnl marketData={marketData} tradeData={tradeData} data={data}/>
+
+                        <div className={Styles.gridheader}>
+                    <div className={Styles.box}>
+                    <span className={Styles.header}>Margin Details</span>
+                            <table className="grid1_table">
+                                <tr className="grid2_tr">
+                                <th className="grid2_th">Opening Balance</th>
+                                    <th className="grid2_th">Available Margin</th>
+                                    <th className="grid2_th">Used Margin</th>
+                                    <th className="grid2_th">Available Cash</th>
+                                    <th className="grid2_th">Total Credits</th>
+                                    
+                                </tr>
+                                <tr className="grid2_td">
+                                    <td>Coming Soon</td>
+                                    <td>Coming Soon</td>
+                                    <td>Coming Soon</td>
+                                    <td>Coming Soon</td>
+                                    <td>Coming Soon</td>
+                                 </tr>
+                                
+
+                                {/* {tradeData.map((elem, index)=>{
+                                let updatedMarketData = marketData.filter((subElem)=>{
+                                    return elem.instrumentToken === subElem.instrument_token;
+                                })
+                                // setMarketData(updatedMarketData)
+                                return(
+                                        <tr className="grid2_tr">
+                                            <td className="grid2_td">NA</td>
+                                            <td className="grid2_td">NA</td>
+                                            <td className="grid2_td">NA</td>
+                                            <td className="grid2_td">NA</td>
+                                        </tr>
+                                    
+                                    )
+                                })}  */}
+                            </table>
+                            </div>
                         </div>
+
+                        
+
+                        <span className={Styles.gridheader}>
+                            <div className={Styles.box}>
+                                <div class={Styles.header}>Overall P&L</div>
+                            <OverallPnl marketData={marketData} tradeData={tradeData} data={data}/>
+                                </div></span>
                         {/* <span className="grid2_span">Running PNL-Trader</span>
                         <div className="grid_2">
                             <RunningPnl marketData={marketData} tradeData={tradeData} data={data}/>

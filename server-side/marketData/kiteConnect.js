@@ -13,8 +13,8 @@ let newCors = process.env.NODE_ENV === "production" ? "http://3.110.187.5/" : "h
 const io = new Server(9000, {
   cors: {
 
-    // origin: newCors,
-    origin: "http://3.110.187.5/",
+    origin: newCors,
+    //origin: "http://3.110.187.5/",
 
     methods: ['GET', 'POST', 'PATCH'],
   },
@@ -134,21 +134,21 @@ async function parameters(io, socket) {
       }
  
       async function onError(error) {
-        try{
-          let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
-            let liveData = await axios.get(`${baseUrl}api/v1/getliveprice`)
-              let ticks = liveData.data
-              console.log(ticks);
-              socket.emit('tick', ticks);
+        // try{
+        //   let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+        //     let liveData = await axios.get(`${baseUrl}api/v1/getliveprice`)
+        //       let ticks = liveData.data
+        //       console.log(ticks);
+        //       socket.emit('tick', ticks);
               
-        } catch(err){
-          throw new Error(err)
-        }
-        console.log('Closed connection on error', error);
+        // } catch(err){
+        //   throw new Error(err)
+        // }
+        // console.log('Closed connection on error', error);
       }
     
       function onClose(reason) {
-        console.log('Closed connection on close', reason);
+        // console.log('Closed connection on close', reason);
       }
     
       let orderUpdate3 = {};

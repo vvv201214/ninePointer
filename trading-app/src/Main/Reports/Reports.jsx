@@ -38,6 +38,7 @@ export default function Reports() {
     let [allBrokerage, setAllBrokerage] = useState(0);
     let [allNet, setAllNet] = useState(0);
     let [allGross, setAllGross] = useState(0);
+    let [totaltrades, setTotalTrades] = useState(0);
     // let secondDate = "";
     let userId = (getDetails.userDetails.role === "user") && getDetails.userDetails.email;
 
@@ -930,7 +931,9 @@ export default function Reports() {
 
         if (elem.pnl) {
             allGross = allGross + Number(elem.pnl);
+            
         }
+        totaltrades += elem.numberOfTrade;
 
         allNet = (allGross - allBrokerage);
         // console.log(detailPnlArr, allBrokerage, allGross, allNet)
@@ -938,7 +941,8 @@ export default function Reports() {
         let obj = {
             allBrokerage: allBrokerage,
             allGross: allGross,
-            allNet: allNet
+            allNet: allNet,
+            totaltrades: totaltrades
         }
         // console.log(obj)
         totalArr.push(obj);
@@ -955,9 +959,10 @@ export default function Reports() {
                     if (elem.pnl) {
                         allGross = allGross + Number(elem.pnl);
                     }
+                    totaltrades += elem.numberOfTrade;
 
                     allNet = (allGross - allBrokerage);
-                    console.log(allBrokerage, allGross, allNet)
+                    console.log(allBrokerage, allGross, allNet, totaltrades)
 
                     // let obj = {
                     //     allBrokerage: allBrokerage,
@@ -979,16 +984,18 @@ export default function Reports() {
             <div className="main_Container">
                 <div className="right_side">
                     <div className="rightside_maindiv">
-                        <div className={Styles.main_dateSelData}>
-                            <div className={Styles.form_div}>
+                    <div className={Styles.selectboxmain}>
+                        <div className={Styles.selectbox}>
+                        <div className={Styles.main_dateSelData1}>
+                            <div className={Styles.form_div1}>
                                 <form action="">
-                                    <label htmlFor="" className={Styles.formLable}>Start Date</label>
-                                    <input type="date" value={firstDate} className={Styles.formInput} onChange={(e) => { firstDateChange(e) }} />
-                                    <label htmlFor="" className={Styles.formLable}>End Date</label>
-                                    <input type="date" value={secondDate} className={Styles.formInput} onChange={(e) => { secondDateChange(e) }} />
+                                    <label htmlFor="" className={Styles.formLable1}>Start Date</label>
+                                    <input type="date" value={firstDate} className={Styles.formInput1} onChange={(e) => { firstDateChange(e) }} />
+                                    <label htmlFor="" className={Styles.formLable1}>End Date</label>
+                                    <input type="date" value={secondDate} className={Styles.formInput1} onChange={(e) => { secondDateChange(e) }} />
                                     {getDetails.userDetails.role === "admin" &&
                                         <>
-                                            <label htmlFor="" className={Styles.formLable}>Trader</label>
+                                            <label htmlFor="" className={Styles.formLable1}>Trader</label>
                                             <select name="" id="" className={Styles.formSelect} onChange={(e) => { selectUser(e) }} >
                                                 <option value="Select User">Select User</option>
                                                 {userDetail.map((elem) => {
@@ -1002,17 +1009,40 @@ export default function Reports() {
                                     }
                                 </form>
                             </div>
-                            <div className={Styles.btn_div}>
-                                <div className={`${Styles.formLable}`}>Gross P&L</div>
-                                <div style={allGross > 0.00 ? { color: "green" } : allGross === 0.00 ? { color: "grey" } : { color: "red" }} className={`${Styles.formInput1}`}>{allGross > 0.00 ? "+₹" + (allGross.toFixed(2)) : allGross === 0 ? "" : "-₹" + ((-(allGross)).toFixed(2))}</div>
-                                <div className={Styles.formLable}>Transaction Cost </div>
-                                <div className={`${Styles.formInput1}`}>{allBrokerage === 0 ? " " : "₹" + (allBrokerage.toFixed(2))}</div>
-                                <div className={Styles.formLable}>Net P&L</div>
-                                <div className={`${Styles.formInput1}`} style={allNet > 0.00 ? { color: "green" } : allBrokerage === 0.00 ? { color: "grey" } : { color: "red" }} >{allNet > 0.00 ? "+₹" + (allNet.toFixed(2)) : allNet === 0 ? " " : "-₹" + ((-(allNet)).toFixed(2))}</div>
+                            </div>
+                            </div>
+                            
+                            {/* Adding info box section */}
 
-                                <button className={Styles.formButton}> Download Report</button>
+                            <div className={Styles.infobox}>
+                            <div className={Styles.box1}>
+                            <div className={Styles.btn_div_one1}>
+                                    
+                                <div className={`${Styles.header}`}>Gross P&L</div>
+                                <div className={Styles.header}>Transaction Cost</div>
+                                <div className={Styles.header}>Net P&L</div>
+                                <div className={Styles.header}>Total Trades</div>
+                                <div className={Styles.header}>Trading Days</div>
+                            </div>
+                            <div className={Styles.btn_div_one1}>
+                                <div style={allGross > 0.00 ? { color: "green" } : allGross === 0.00 ? { color: "grey" } : { color: "red" }} className={`${Styles.headervalues}`}>{allGross > 0.00 ? "+₹" + (allGross.toFixed(2)) : allGross === 0 ? "" : "-₹" + ((-(allGross)).toFixed(2))}</div>
+                                
+                                <div className={`${Styles.headervalues}`}>{allBrokerage === 0 ? " " : "₹" + (allBrokerage.toFixed(2))}</div>
+                    
+                                <div className={`${Styles.headervalues}`} style={allNet > 0.00 ? { color: "green" } : allBrokerage === 0.00 ? { color: "grey" } : { color: "red" }} >{allNet > 0.00 ? "+₹" + (allNet.toFixed(2)) : allNet === 0 ? " " : "-₹" + ((-(allNet)).toFixed(2))}</div>
+
+                                <div className={`${Styles.headervalues}`}>{totaltrades}</div>
+
+                                <div className={`${Styles.headervalues}`}>{totaltrades}</div>
+                            </div>
                             </div>
                         </div>
+
+                            {/* End of Info box section */}
+
+                        </div>
+                        <div className={Styles.infobox}>
+                        <div className={Styles.box1}>
                         <div className={Styles.grid_1}>
                             <table className="grid1_table">
                                 <tr className="grid2_tr">
@@ -1031,6 +1061,7 @@ export default function Reports() {
                                         allBrokerage = allBrokerage + Number(element.brokerage);
                                         allGross = allGross + element.pnl;
                                         allNet = allNet + (allGross - allBrokerage);
+                                        totaltrades += numberOfTrade;
                                         console.log(element, selectUserState)
 
                                         return (
@@ -1065,10 +1096,12 @@ export default function Reports() {
                                         allBrokerage = allBrokerage + Number(elem.brokerage);
                                         allGross = allGross + elem.pnl;
                                         allNet = allNet + (allGross - allBrokerage);
+                                        totaltrades = totaltrades + elem.numberOfTrade;
                                         // setTotalBrokerage(allBrokerage); setTotalGross(allGross); setTotalNetPnl(allNet);
                                         return (
                                             <>
                                             {elem.name &&
+                                            
                                             <tr>
                                                 <td className="grid2_td">{elem.name}</td>
                                                 <td className="grid2_td">{elem.date}</td>
@@ -1076,19 +1109,21 @@ export default function Reports() {
                                                 <td className="grid2_td" style={elem.pnl>=0.00 ? { color: "green"}:  { color: "red"}}>{elem.pnl >0.00 ? "+₹" + (elem.pnl): "-₹" + (-(elem.pnl)) }</td>
                                                 :
                                                 <td className="grid2_td" style={elem.pnl>=0.00 ? { color: "green"}:  { color: "red"}}>{elem.pnl >0.00 ? "+₹" + (elem.pnl.toFixed(2)): "-₹" + ((-(elem.pnl)).toFixed(2)) }</td>}
-                                                {!elem.brokerage ?
-                                                <td className="grid2_td" >{elem.brokerage >0.00 ? "₹" + (elem.brokerage) : "₹" + 0.00}</td>
-                                                :
-                                                <td className="grid2_td" >{elem.brokerage >0.00 ? "+₹" + (elem.brokerage.toFixed(2)): "-₹" + (-(elem.brokerage).toFixed(2)) }</td>}
+                
+                                                <td className="grid2_td" >₹{(elem.brokerage).toFixed(2)}</td>
+                                            
                                                 {(elem.pnl - elem.brokerage) !== undefined &&
                                                 <td className="grid2_td" style={(elem.pnl - elem.brokerage)>=0.00 ? { color: "green"}:  { color: "red"}}> {elem.pnl - elem.brokerage > 0.00 ? "+₹" + (elem.pnl - elem.brokerage).toFixed(2): "-₹" + ((-(elem.pnl - elem.brokerage)).toFixed(2))}</td>}
                                                 <td className="grid2_td">{elem.numberOfTrade}</td>
                                                 <td className="grid2_td">{elem.lotUsed}</td>
                                             </tr>}
+                                            
                                             </>
                                         )
                                     })}
                             </table>
+                            </div>
+                            </div>
                         </div>
                     </div>
                 </div>

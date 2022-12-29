@@ -37,6 +37,8 @@ import TraderMetrics from './AdminDashboard/TraderMetrics/TraderMetrics';
 import TraderPosition from './Dashboard/newTraderPosition/NewTraderPosition';
 import UserFundsMain from './UserFunds/UserFundsMain';
 import UserFunds from './UserFunds/UserFunds';
+import TodaysSummaryMain from './TodaysSummary/TodaysSummaryMain';
+import TodaysSummary from './TodaysSummary/TodaysSummary';
 import TodaysTradesMock from './Dashboard/CompanyOrderTabs/TodaysTradesMock';
 import HistoryTradesMock from './Dashboard/CompanyOrderTabs/HistoryTradesMock';
 import TodaysTrades from './Dashboard/TraderOrdersTabs/TodaysTrades';
@@ -45,6 +47,8 @@ import Dashboard from './Dashboard/Dashboard';
 import TradersTradeBook from './Dashboard/TradersTradeBook';
 import TodaysTradersTrade from './Dashboard/TradersTradeBook/TodaysTradersTrade';
 import HistoryTradersTrade from './Dashboard/TradersTradeBook/HistoryTradersTrade';
+import TraderwiseAllPnl from './AdminDashboard/traderwisePnlReport/TraderwiseAllPnl';
+import TraderView from './AdminDashboard/TraderView/TraderView';
 
 
 
@@ -117,11 +121,18 @@ export default function Routing() {
                                 <Route path='/main/admindashboard/summary/' element={<Summary/>}></Route>
                                 <Route path='/main/admindashboard/summary/pnlreport/' element={<PNLReport/>}></Route>
                                 <Route path='/main/admindashboard/summary/dailypnlreport/' element={<DailyPNLReport/>}></Route>
+                                <Route path='/main/admindashboard/summary/traderpnlreport/' element={<TraderwiseAllPnl/>}></Route>
                                 <Route path='/main/admindashboard/summary/tradermetrics/' element={<TraderMetrics/>}></Route>
+                                <Route path='/main/admindashboard/summary/traderview/' element={<TraderView/>}></Route>
                             </Route>
                             <Route path='/main/userfunds' element={<UserFundsMain />}>
                                 <Route path='/main/userfunds/' element={<UserFunds />}></Route>
                             </Route>
+                            <Route path='/main/todayssummary' element={<TodaysSummaryMain />}>
+                                <Route path='/main/todayssummary/' element={<TodaysSummary />}></Route>
+                            </Route>
+                            
+                            
                             {/* // :
                         // <Route path='/main/dashboard' element={<DashboardMain/>}>
                         //     <Route path='/main/dashboard' element={<TradersPosition/>}></Route>

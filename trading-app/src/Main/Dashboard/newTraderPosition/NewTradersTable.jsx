@@ -7,6 +7,7 @@ import RunningPnl from "../PnlParts/RunningPnl";
 import ClosedPnl from "../PnlParts/ClosedPnl";
 import OverallPnl from "../PnlParts/OverallPnl";
 import TradersPNLTrader from '../PnlParts/TraderPNLTrader';
+import Styles from "../Dashboard.module.css";
 
 export default function NewTradersTable({socket}) {
 
@@ -86,10 +87,14 @@ export default function NewTradersTable({socket}) {
             <div className="main_Container">
                 <div className="right_side">
                     <div className="rightside_maindiv">
-                        <span className="grid2_span">Overall P&L(Traders)-Mock</span>
+                    <div className={Styles.gridheader}>
+                    <div className={Styles.box}>
+                        <span className={Styles.header}>Overall P&L(Traders)-Mock</span>
                         <div className="grid_2">
                             <OverallPnl marketData={marketData} tradeData={tradeData} data={data} />
                         </div>
+                    </div>
+                    </div>
                         {/* <span className="grid2_span">Running PNL-Traders</span>
                         <div className="grid_2">
                             <RunningPnl marketData={marketData} tradeData={tradeData} data={data} />
@@ -98,10 +103,13 @@ export default function NewTradersTable({socket}) {
                         <div className="grid_2">
                             <ClosedPnl marketData={marketData} tradeData={tradeData} data={data} />
                         </div> */}
-                        <span className="grid2_span">Traders Wise P&L(Traders)-Mock</span>
-                        <div className="grid_2">
+                        <div className={Styles.gridheader}>
+                        <div className={Styles.box}>
+                        <span className={Styles.header}>Traders Wise P&L(Traders)-Mock</span>
+                        
                             <TradersPNLTrader marketData={marketData} tradeData={tradeData} />
-                        </div>
+                        
+                        </div></div>
                     </div>
                 </div>
             </div>
