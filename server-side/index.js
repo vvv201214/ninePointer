@@ -10,8 +10,18 @@ app.use(require("cookie-parser")());
 const fetchData = require('./marketData/fetchToken');
 const io = require('./marketData/socketio');
 const {createNewTicker, disconnectTicker} = require('./marketData/kiteTicker');
+const getKiteCred = require('./marketData/getKiteCred'); 
 
-const ticker = createNewTicker('nq0gipdzk0yexyko','DKW7CYJN50QSnjgzahQ9UjJqPFrChzOh');
+// app.use(()=>{
+//   console.log('fetching');
+//   fetch('https://randomuser.me/api/').then((data)=>console.log(data.results[0].gender));
+// });
+let ticker;
+getKiteCred.getAccess().then((data)=>{
+  ticker = createNewTicker(data.getApiKey, data.getAccessToken);
+});
+
+// const ticker = createNewTicker('nq0gipdzk0yexyko','DKW7CYJN50QSnjgzahQ9UjJqPFrChzOh');
 io.on("connection", (socket) => {
   console.log('client socket is' + socket.id);
   // socket1 = socket;
