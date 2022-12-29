@@ -251,7 +251,7 @@ export default function SellModel({marketData, uIdProps, Render, isCompany, symb
             userPermission.map((subElem)=>{
                 if(subElem.algoName === elem.algoName){
                     if(subElem.isRealTradeEnable || elem.isRealTrade){
-                        sendOrderReq();
+                        sendOrderReq(elem, "yes");
                         // mockTradeUser("yes");
                         mockTradeCompany(elem, "yes");
                     } else{
@@ -335,9 +335,11 @@ export default function SellModel({marketData, uIdProps, Render, isCompany, symb
         }, 1000);
     }
     console.log(Details)
-    async function sendOrderReq() {
-        const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, brokerageCharge } = Details;
+    async function sendOrderReq(algoBox, realTrade) {
+        const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, instrumentToken } = Details;
+        const { algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount } = algoBox;
         const { realBuyOrSell, realSymbol, realQuantity, realInstrument, realBrokerage, realAmount, real_last_price } = companyTrade;
+
         const { instrument } = tradeData;
         const { apiKey } = apiKeyDetails[0];
         const { accessToken } = accessTokenDetails[0];
@@ -348,20 +350,21 @@ export default function SellModel({marketData, uIdProps, Render, isCompany, symb
                 "content-type": "application/json"
             },
             body: JSON.stringify({
-                exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType,
-                TriggerPrice, stopLoss, variety, validity, uId, createdBy, createdOn,
-                last_price, realBuyOrSell, realSymbol, realQuantity, instrument,
-                realInstrument, apiKey, accessToken, userId, realBrokerage, realAmount,
-                brokerageCharge, real_last_price, tradeBy
+                
+                apiKey, accessToken, userId,
+                exchange, symbol: realSymbol, buyOrSell, realBuyOrSell, Quantity, realQuantity, Price, Product, OrderType, TriggerPrice, 
+                stopLoss, validity, variety, last_price: real_last_price, createdBy, userId, createdOn, uId, 
+                algoBox: {algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, 
+                productChange, tradingAccount}, order_id:dummyOrderId, instrumentToken, realTrade
+
             })
         });
         const dataResp = await res.json();
-        console.log(dataResp);
         if (dataResp.status === 422 || dataResp.error || !dataResp) {
             window.alert(dataResp.error);
             console.log("Failed to Trade");
-        }else{
-            console.log(dataResp); 
+        } else {
+            console.log(dataResp);
             // window.alert("Trade succesfull");
             console.log("entry succesfull");
         }

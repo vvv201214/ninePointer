@@ -2,18 +2,25 @@ const axios = require("axios")
 const express = require("express");
 const router = express.Router();
 const getOrderData = require("./retrieveOrder");
+const BrokerageDetail = require("../models/Trading Account/brokerageSchema");
+
 
 router.post("/placeorder", (async (req, res)=>{
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
-    const CompanyTradeData = require("../models/TradeDetails/companyTradeSchema");
+    const CompanyTradeData = require("../models/TradeDetails/liveTradeSchema");
     const TradeData = require("../models/TradeDetails/allTradeSchema");
-    const UserTradeData = require("../models/User/userTradeSchema");
-    console.log(req.body.Product);
-    let {exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice,
-         stopLoss, validity, variety, uId, createdBy, createdOn, last_price, realBuyOrSell,
-          realSymbol, realQuantity, instrument, realInstrument, apiKey, accessToken, userId, 
-          realBrokerage, realAmount, brokerageCharge, real_last_price, tradeBy} = req.body;
-        console.log("this is req.body", req.body);
+
+    let {exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType,
+        TriggerPrice, stopLoss, validity, variety, last_price, createdBy,
+         createdOn, uId, algoBox, order_id, instrumentToken, realTrade, realBuyOrSell, realQuantity, apiKey, accessToken, userId} = req.body
+       console.log(req.body);
+       console.log("in the company auth");
+    const {algoName, transactionChange, instrumentChange
+       , exchangeChange, lotMultipler, productChange, tradingAccount} = algoBox
+
+       const brokerageDetailBuy = await BrokerageDetail.find({transaction:"BUY"});
+       const brokerageDetailSell = await BrokerageDetail.find({transaction:"SELL"});
+
     const api_key = apiKey;
     const access_token = accessToken;
     let auth = 'token ' + api_key + ':' + access_token;
@@ -27,7 +34,7 @@ router.post("/placeorder", (async (req, res)=>{
     let orderData;
     if(variety === "amo"){
         orderData = new URLSearchParams({
-            "tradingsymbol":realSymbol,
+            "tradingsymbol":symbol,
             "exchange":exchange,
             "transaction_type":realBuyOrSell,
             "order_type":OrderType,
@@ -39,7 +46,7 @@ router.post("/placeorder", (async (req, res)=>{
         })
     } else if(variety === "regular"){
         orderData = new URLSearchParams({
-            "tradingsymbol":realSymbol,
+            "tradingsymbol":symbol,
             "exchange":exchange,
             "transaction_type":realBuyOrSell,
             "order_type":OrderType,
@@ -75,40 +82,72 @@ router.post("/placeorder", (async (req, res)=>{
                     if(transaction_type === "SELL"){
                         quantity = -quantity;
                     }
+
+
+                    function buyBrokerage(totalAmount){
+                        let brokerage = Number(brokerageDetailBuy[0].brokerageCharge);
+                        // let totalAmount = Number(Details.last_price) * Number(quantity);
+                        let exchangeCharge = totalAmount * (Number(brokerageDetailBuy[0].exchangeCharge) / 100);
+                        // console.log("exchangeCharge", exchangeCharge, totalAmount, (Number(brokerageDetailBuy[0].exchangeCharge)));
+                        let gst = (brokerage + exchangeCharge) * (Number(brokerageDetailBuy[0].gst) / 100);
+                        let sebiCharges = totalAmount * (Number(brokerageDetailBuy[0].sebiCharge) / 100);
+                        let stampDuty = totalAmount * (Number(brokerageDetailBuy[0].stampDuty) / 100);
+                        // console.log("stampDuty", stampDuty);
+                        let sst = totalAmount * (Number(brokerageDetailBuy[0].sst) / 100);
+                        let finalCharge = brokerage + exchangeCharge + gst + sebiCharges + stampDuty + sst;
+                        return finalCharge;
+                    }
+                
+                    function sellBrokerage(totalAmount){
+                        let brokerage = Number(brokerageDetailSell[0].brokerageCharge);
+                        // let totalAmount = Number(Details.last_price) * Number(quantity);
+                        let exchangeCharge = totalAmount * (Number(brokerageDetailSell[0].exchangeCharge) / 100);
+                        let gst = (brokerage + exchangeCharge) * (Number(brokerageDetailSell[0].gst) / 100);
+                        let sebiCharges = totalAmount * (Number(brokerageDetailSell[0].sebiCharge) / 100);
+                        let stampDuty = totalAmount * (Number(brokerageDetailSell[0].stampDuty) / 100);
+                        let sst = totalAmount * (Number(brokerageDetailSell[0].sst) / 100);
+                        let finalCharge = brokerage + exchangeCharge + gst + sebiCharges + stampDuty + sst;
+                
+                        return finalCharge
+                    }
+                
+                    let brokerageCompany;
+                
+                    if(transaction_type === "BUY"){
+                        brokerageCompany = buyBrokerage(Math.abs(Number(realQuantity)) * average_price);
+                    } else{
+                        brokerageCompany = sellBrokerage(Math.abs(Number(realQuantity)) * average_price);
+                    }
+                
+
                 CompanyTradeData.findOne({order_id : order_id})
                 .then((dateExist)=>{
                     if(dateExist){
                         console.log("data already");
                         return res.status(422).json({error : "data already exist..."})
                     }
-                    const companyTradeData = new CompanyTradeData({order_id , status , uId, createdOn, createdBy, real_last_price,
-                        average_price, Quantity:quantity, realInstrument, Product:product, buyOrSell:transaction_type, 
-                         order_timestamp , variety , validity , exchange , 
-                          order_type , price , filled_quantity , pending_quantity 
-                        , cancelled_quantity , guid , market_protection , disclosed_quantity , symbol:tradingsymbol 
-                        , placed_by, userId, realBrokerage, realAmount, tradeBy
+                    const companyTradeData = new CompanyTradeData({
+                        // order_id , status , uId, createdOn, createdBy, real_last_price,
+                        // average_price, Quantity:quantity, realInstrument, Product:product, buyOrSell:transaction_type, 
+                        //  order_timestamp , variety , validity , exchange , 
+                        //   order_type , price , filled_quantity , pending_quantity 
+                        // , cancelled_quantity , guid , market_protection , disclosed_quantity , symbol:tradingsymbol 
+                        // , placed_by, userId, realBrokerage, realAmount, tradeBy
+                        disclosed_quantity, price, 
+                        filled_quantity, pending_quantity, cancelled_quantity, market_protection, guid,
+                        status, uId, createdBy, average_price, Quantity: quantity, 
+                        Product:product, buyOrSell:transaction_type, order_timestamp: order_timestamp,
+                        variety, validity, exchange, order_type: order_type, symbol:tradingsymbol, placed_by: placed_by, userId,
+                         algoBox:{algoName, transactionChange, instrumentChange, exchangeChange, 
+                        lotMultipler, productChange, tradingAccount}, order_id, instrumentToken, brokerage: brokerageCompany,
+                        tradeBy: createdBy, isRealTrade: realTrade, amount: (Number(quantity)*average_price)
+            
                     });
                     console.log("this is CompanyTradeData", companyTradeData);
                     companyTradeData.save().then(()=>{
                     }).catch((err)=> res.status(500).json({error:"Failed to Trade company side"}));
                 }).catch(err => {console.log(err, "fail")});
 
-                // .then((dateExist)=>{
-                //     if(dateExist){
-                //         console.log("data already");
-                //         return res.status(422).json({error : "data already exist..."})
-                //     }
-                //     console.log("first instrument", instrument);
-                //     const userTradeData = new UserTradeData({order_id, status, uId, createdOn, 
-                //         createdBy, last_price, average_price:last_price , Quantity, symbol, Product, buyOrSell, 
-                //         validity, variety, order_timestamp, order_type, exchange, userId, brokerageCharge
-                //         , realAmount, tradeBy});
-            
-                //     console.log("second instrument", instrument);
-                //     userTradeData.save().then(()=>{
-                //         res.status(201).json({massage : "Trade successfull", CompanyTradeData: order_Id});
-                //     }).catch((err)=> res.status(500).json({error:"Failed to Trade user side"}));
-                // }).catch(err => {console.log(err, "fail")});
             }else{
                 let { order_id, placed_by, exchange_order_id, status, order_timestamp, exchange_timestamp
                     , variety, exchange, tradingsymbol, order_type, transaction_type, validity, product,
@@ -118,6 +157,43 @@ router.post("/placeorder", (async (req, res)=>{
                     if(transaction_type === "SELL"){
                         quantity = -quantity;
                     }
+
+
+                    function buyBrokerage(totalAmount){
+                        let brokerage = Number(brokerageDetailBuy[0].brokerageCharge);
+                        // let totalAmount = Number(Details.last_price) * Number(quantity);
+                        let exchangeCharge = totalAmount * (Number(brokerageDetailBuy[0].exchangeCharge) / 100);
+                        // console.log("exchangeCharge", exchangeCharge, totalAmount, (Number(brokerageDetailBuy[0].exchangeCharge)));
+                        let gst = (brokerage + exchangeCharge) * (Number(brokerageDetailBuy[0].gst) / 100);
+                        let sebiCharges = totalAmount * (Number(brokerageDetailBuy[0].sebiCharge) / 100);
+                        let stampDuty = totalAmount * (Number(brokerageDetailBuy[0].stampDuty) / 100);
+                        // console.log("stampDuty", stampDuty);
+                        let sst = totalAmount * (Number(brokerageDetailBuy[0].sst) / 100);
+                        let finalCharge = brokerage + exchangeCharge + gst + sebiCharges + stampDuty + sst;
+                        return finalCharge;
+                    }
+                
+                    function sellBrokerage(totalAmount){
+                        let brokerage = Number(brokerageDetailSell[0].brokerageCharge);
+                        // let totalAmount = Number(Details.last_price) * Number(quantity);
+                        let exchangeCharge = totalAmount * (Number(brokerageDetailSell[0].exchangeCharge) / 100);
+                        let gst = (brokerage + exchangeCharge) * (Number(brokerageDetailSell[0].gst) / 100);
+                        let sebiCharges = totalAmount * (Number(brokerageDetailSell[0].sebiCharge) / 100);
+                        let stampDuty = totalAmount * (Number(brokerageDetailSell[0].stampDuty) / 100);
+                        let sst = totalAmount * (Number(brokerageDetailSell[0].sst) / 100);
+                        let finalCharge = brokerage + exchangeCharge + gst + sebiCharges + stampDuty + sst;
+                
+                        return finalCharge
+                    }
+                
+                    let brokerageCompany;
+                
+                    if(transaction_type === "BUY"){
+                        brokerageCompany = buyBrokerage(Math.abs(Number(realQuantity)) * average_price);
+                    } else{
+                        brokerageCompany = sellBrokerage(Math.abs(Number(realQuantity)) * average_price);
+                    }
+
                     
                 CompanyTradeData.findOne({order_id : order_id})
                 .then((dateExist)=>{
@@ -127,12 +203,14 @@ router.post("/placeorder", (async (req, res)=>{
                     }
 
                     const companyTradeData = new CompanyTradeData({
-                        exchange_order_id, exchange_timestamp, order_id , status , uId, createdOn, createdBy, real_last_price,
-                        average_price, Quantity:quantity, realInstrument, Product:product, buyOrSell:transaction_type, 
-                         order_timestamp , variety , validity , exchange , 
-                          order_type , price , filled_quantity , pending_quantity 
-                        , cancelled_quantity , guid , market_protection , disclosed_quantity , symbol:tradingsymbol 
-                        , placed_by, userId, realBrokerage, realAmount, tradeBy
+                        exchange_order_id, exchange_timestamp, disclosed_quantity, price, 
+                        filled_quantity, pending_quantity, cancelled_quantity, market_protection, guid,
+                        status, uId, createdBy, average_price, Quantity: quantity, 
+                        Product:product, buyOrSell:transaction_type, order_timestamp: order_timestamp,
+                        variety, validity, exchange, order_type: order_type, symbol:tradingsymbol, placed_by: placed_by, userId,
+                         algoBox:{algoName, transactionChange, instrumentChange, exchangeChange, 
+                        lotMultipler, productChange, tradingAccount}, order_id, instrumentToken, brokerage: brokerageCompany,
+                        tradeBy: createdBy, isRealTrade: realTrade, amount: (Number(quantity)*average_price)
                     });
             
                     companyTradeData.save().then(()=>{

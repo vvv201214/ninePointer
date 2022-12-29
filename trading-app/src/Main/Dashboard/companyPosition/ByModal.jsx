@@ -247,8 +247,8 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany, symbo
             userPermission.map((subElem)=>{
                 if(subElem.algoName === elem.algoName){
                     if(subElem.isRealTradeEnable || elem.isRealTrade){
-
-                        sendOrderReq();
+                        console.log("REALTRADE",subElem.isRealTradeEnable, elem.isRealTrade)
+                        sendOrderReq(elem, "yes");
                         mockTradeCompany(elem, "yes");
                         // mockTradeUser("yes");
                     } else{
@@ -296,6 +296,7 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany, symbo
             // }
             tradingAlgo(uId, Details.last_price);
         } else {
+            console.log(userPermissionAlgo , !isCompany)
             companyTrade.realBuyOrSell = "BUY";
             companyTrade.realSymbol = Details.symbol
             companyTrade.realInstrument = Details.instrument
@@ -331,9 +332,11 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany, symbo
         
     }
 
-    async function sendOrderReq() {
-        const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price } = Details;
+    async function sendOrderReq(algoBox, realTrade) {
+        const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, instrumentToken } = Details;
+        const { algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount } = algoBox;
         const { realBuyOrSell, realSymbol, realQuantity, realInstrument, realBrokerage, realAmount, real_last_price } = companyTrade;
+
         const { instrument } = tradeData;
         const { apiKey } = apiKeyDetails[0];
         const { accessToken } = accessTokenDetails[0];
@@ -344,11 +347,13 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany, symbo
                 "content-type": "application/json"
             },
             body: JSON.stringify({
-                exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType,
-                TriggerPrice, stopLoss, variety, validity, uId, createdBy, createdOn,
-                last_price, realBuyOrSell, realSymbol, realQuantity, instrument,
-                realInstrument, apiKey, accessToken, userId, realBrokerage, realAmount,
-                real_last_price, tradeBy
+                
+                apiKey, accessToken, userId,
+                exchange, symbol: realSymbol, buyOrSell, realBuyOrSell, Quantity, realQuantity, Price, Product, OrderType, TriggerPrice, 
+                stopLoss, validity, variety, last_price: real_last_price, createdBy, userId, createdOn, uId, 
+                algoBox: {algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, 
+                productChange, tradingAccount}, order_id:dummyOrderId, instrumentToken, realTrade
+
             })
         });
         const dataResp = await res.json();
