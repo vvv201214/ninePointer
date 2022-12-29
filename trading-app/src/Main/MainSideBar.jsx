@@ -18,6 +18,7 @@ export default function MainSideBar({name}) {
                 <div className="menuheader">Trader Details</div>
                 <NavLink to="/main/user" style={({isActive}) => isActive?{color:'#5479FC'} :{color:'black'} }><div className="sidebar_items"><img className="linkicons" src={require("../media/user.png")}></img><div className="menuitembar">Users</div></div></NavLink>
                 <NavLink to="/main/userfunds" style={({isActive}) => isActive?{color:'#5479FC'} :{color:'black'} }><div className="sidebar_items"><img className="linkicons" src={require("../media/funds.png")}></img><div className="menuitembar">Funds</div></div></NavLink>
+                <NavLink to="/main/todayssummary" style={({isActive}) => isActive?{color:'#5479FC'} :{color:'black'} }><div className="sidebar_items"><img className="linkicons" src={require("../media/funds.png")}></img><div className="menuitembar">Today's Summary</div></div></NavLink>
                 <div className="menuheader">Reports</div>
                 <NavLink to="/main/report" style={({isActive}) => isActive?{color:'#5479FC'} :{color:'black'} }><div className="sidebar_items"><img className="linkicons" src={require("../media/reports.png")}></img><div className="menuitembar">Reports</div></div></NavLink>
                 
