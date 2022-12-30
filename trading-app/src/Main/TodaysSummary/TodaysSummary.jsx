@@ -32,6 +32,20 @@ export default function TodaysSummary({ socket }) {
     let numberOfTrade = 0;
     let lotUsed = 0;
     let name = "";
+    let alluserpnl = 0;
+    let allcompanypnl = 0;
+    let alluserbrokerage = 0;
+    let allcompanybrokerage = 0;
+    let alltrades = 0;
+    let alltodayuserpnl = 0;
+    let alltodaycompanypnl = 0;
+    let alltodayuserbrokerage = 0;
+    let alltodaycompanybrokerage = 0;
+    let allnetcompanypnl = 0;
+    let allnetuserpnl = 0;
+    let alltodaynetcompanypnl = 0;
+    let alltodaynetuserpnl = 0;
+    let alltodaytrades = 0;
     let runninglots = 0;
     let firstDateSplit;
 
@@ -135,6 +149,7 @@ export default function TodaysSummary({ socket }) {
                         newObjtodayCompany.overalluserbrokerage = newObjoverallUser.brokerage;
                         newObjtodayCompany.overallcompanypnl = newObjoverallCompany.pnl;
                         newObjtodayCompany.overallcompanybrokerage = newObjoverallCompany.brokerage;
+                        newObjtodayCompany.overallusertrades = newObjoverallUser.numberOfTrade;
     
                         //detailPnl.push(JSON.parse(JSON.stringify(newObjtodayCompany)));
                     
@@ -172,6 +187,45 @@ export default function TodaysSummary({ socket }) {
         }
         return 0;
     })
+    
+    todayDetailpnl1.map((elem)=>{
+        if(elem.pnl){
+            allcompanypnl = allcompanypnl + Number(elem.overallcompanypnl);
+            alltodaycompanypnl = alltodaycompanypnl + Number(elem.pnl);
+        }
+
+        if(elem.brokerage){
+            allcompanybrokerage = allcompanybrokerage + Number(elem.overallcompanybrokerage);
+            alltodaycompanybrokerage = alltodaycompanybrokerage + Number(elem.brokerage);
+        }
+        
+        if(elem.traderpnl){
+            alluserpnl = alluserpnl + Number(elem.overalluserpnl);
+            alltodayuserpnl = alltodayuserpnl + Number(elem.traderpnl);
+        }
+
+        if(elem.traderbrokerage){
+            alluserbrokerage = alluserbrokerage + Number(elem.overalluserbrokerage);
+            alltodayuserbrokerage = alltodayuserbrokerage + Number(elem.traderbrokerage);
+        } 
+
+        if(elem.numberOfTrade){
+            alltrades = alltrades + Number(elem.overallusertrades);
+            alltodaytrades = alltodaytrades + Number(elem.numberOfTrade);
+        } 
+        console.log(allcompanypnl);
+        console.log(alltodaycompanypnl);
+       
+
+        // allNet =  (allGross - allBrokerage);
+        // userNet = (userGross - userBrokerage)
+
+    })
+
+    allnetcompanypnl = allcompanypnl - allcompanybrokerage;
+    allnetuserpnl = alluserpnl - alluserbrokerage;
+    alltodaynetcompanypnl = alltodaycompanypnl - alltodaycompanybrokerage;
+    alltodaynetuserpnl = alltodayuserpnl - alltodayuserbrokerage;
 
     // useEffect(() => {
     //     axios.get(`${baseUrl}api/v1/readmocktradeuserDate`)
@@ -310,6 +364,30 @@ export default function TodaysSummary({ socket }) {
             <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
               <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
                 <h6 class="text-white text-capitalize ps-3">Today's Summary</h6>
+                <div class="pnlinfoboxheader">
+                <div class="pnlinfobox">
+                <div class="text-white text-capitalize ps-3">Today's Gross(C-P&L): {alltodaycompanypnl.toFixed(0)}</div>
+                <div class="text-white text-capitalize ps-3">Today's Trans. Cost(C): {alltodaycompanybrokerage.toFixed(0)}</div>
+                <div class="text-white text-capitalize ps-3">Today's Net(C-P&L): {alltodaynetcompanypnl.toFixed(0)}</div>
+                <div class="text-white text-capitalize ps-3">Today's Trades: {alltodaytrades}</div>
+                </div>
+                <div class="pnlinfobox">
+                <div class="text-white text-capitalize ps-3">Today's Gross(T-P&L): {alltodayuserpnl.toFixed(0)}</div>
+                <div class="text-white text-capitalize ps-3">Today's Trans. Cost(T): {alltodayuserbrokerage.toFixed(0)}</div>
+                <div class="text-white text-capitalize ps-3">Today's Net(T-P&L): {alltodaynetuserpnl.toFixed(0)}</div>
+                </div>
+                <div class="pnlinfobox">    
+                <div class="text-white text-capitalize ps-3">Lifetime Gross(C-P&L): {allcompanypnl.toFixed(0)}</div>
+                <div class="text-white text-capitalize ps-3">Lifetime Trans. Cost(C): {allcompanybrokerage.toFixed(0)}</div>
+                <div class="text-white text-capitalize ps-3">Lifetime Net(C-P&L): {allnetcompanypnl.toFixed(0)}</div>
+                </div>
+                <div class="pnlinfobox">    
+                <div class="text-white text-capitalize ps-3">Lifetime Gross(T-P&L): {alluserpnl.toFixed(0)}</div>
+                <div class="text-white text-capitalize ps-3">Lifetime Trans. Cost(T): {alluserbrokerage.toFixed(0)}</div>
+                <div class="text-white text-capitalize ps-3">Lifetime Net(T-P&L): {allnetuserpnl.toFixed(0)}</div>
+                <div class="text-white text-capitalize ps-3">Lifetime Trades: {alltrades}</div>
+                </div>
+                </div>
               </div>
             </div>
             <div class="card-body px-0 pb-2">
@@ -325,9 +403,9 @@ export default function TodaysSummary({ socket }) {
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Trans. Cost(T)</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Net(T-P&L)</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"># of Trades</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Details</th>
+                      {/* <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Details</th> */}
                       <th class="text-secondary opacity-7"></th>
-                    </tr>
+                      </tr>
                         {todayDetailpnl1.map((elem)=>{
                             return(
                                 <>
@@ -371,9 +449,9 @@ export default function TodaysSummary({ socket }) {
                                                 <td class="align-middle text-center">
                                                     <span class="text-secondary text-xs font-weight-bold">{elem.numberOfTrade}</span>
                                                 </td>
-                                                <td class="align-middle text-center text-sm">
+                                                {/* <td class="align-middle text-center text-sm">
                                                     <span class="badge badge-sm bg-gradient-success">DETAILS</span>
-                                                </td>
+                                                </td> */}
                                                 {/* <td class="align-middle">
                                                     <a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
                                                     Edit
