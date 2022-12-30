@@ -3,6 +3,7 @@ const RequestToken = require("../models/Trading Account/requestTokenSchema");
 exports.getAccess = async (req, res, next) => {
     const apiKey = await Account.find();
     const accessToken = await RequestToken.find();
+    console.log(accessToken);
     let getApiKey, getAccessToken;
     let date = new Date();
     let today = `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`;

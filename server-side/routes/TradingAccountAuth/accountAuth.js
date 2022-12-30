@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 require("../../db/conn");
 const Account = require("../../models/Trading Account/accountSchema");
+const {disconnectTicker}  = require('../../marketData/kiteTicker');
 
 router.post("/account", (req, res)=>{
     const {brokerName, accountId, accountName, apiKey, apiSecret, status, uId, createdOn, lastModified, createdBy} = req.body;
@@ -63,7 +64,8 @@ router.put("/readAccountDetails/:id", async (req, res)=>{
                 status: req.body.Status,
                 lastModified: req.body.lastModified
             }
-        })
+        });
+        console.log(disconnectTicker);
         console.log("this is role", account);
         res.send(account)
     } catch (e){

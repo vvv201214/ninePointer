@@ -1,7 +1,9 @@
 const express = require("express");
 const router = express.Router();
 require("../../db/conn");
-const RequestToken = require("../../models/Trading Account/requestTokenSchema")
+const RequestToken = require("../../models/Trading Account/requestTokenSchema");
+const {disconnectTicker, createNewTicker}  = require('../../marketData/kiteTicker');
+const getKiteCred = require('../../marketData/getKiteCred');
 
 router.post("/requestToken", (req, res)=>{
     const {accountId, accessToken, requestToken, status, generatedOn, lastModified, createdBy, uId} = req.body;
@@ -62,6 +64,12 @@ router.put("/readRequestToken/:id", async (req, res)=>{
                 lastModified: req.body.lastModified
             }
         });
+        disconnectTicker();
+        getKiteCred.getAccess().then((data) => {
+            console.log(data);
+            createNewTicker(data.getApiKey, data.getAccessToken);
+        });
+        
         console.log("this is role", requestToken);
         res.send(requestToken)
         // res.status(201).json({massage : "data edit succesfully"});
