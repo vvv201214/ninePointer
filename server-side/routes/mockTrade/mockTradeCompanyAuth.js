@@ -147,7 +147,6 @@ router.post("/mocktradecompany", async (req, res)=>{
     }).catch(err => {console.log(err, "fail")});
 })
 
-
 router.get("/readmocktradecompany", (req, res)=>{
     MockTradeDetails.find((err, data)=>{
         if(err){
@@ -225,7 +224,6 @@ router.get("/readmocktradecompanyDate", (req, res)=>{
         return res.status(422).json({error : "date not found"})
     })
 })
-
 
 router.get("/readmocktradecompanypariculardate/:date", (req, res)=>{
     // let date = new Date();
