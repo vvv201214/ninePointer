@@ -1132,7 +1132,6 @@ export default function PNLReport() {
                     </div>
                 </div>
             </div>
-
         </div>
     )
 }

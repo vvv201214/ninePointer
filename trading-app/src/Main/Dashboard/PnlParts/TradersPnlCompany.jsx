@@ -123,6 +123,7 @@ export default function TradersPnlCompany({marketData, tradeData}) {
             })
         })
 
+        
         let name = "";
         overallPnl.map((elem, index)=>{
             name = elem.name;

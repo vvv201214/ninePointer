@@ -22,6 +22,9 @@ export default function SummaryHeader({role}) {
                 <li>
                     <NavLink className='headers_li_links' style={({isActive}) => isActive?{color: "#5479FC"} :{color:'black'} } to={"/main/admindashboard/summary/tradermetrics/"}>Trader Metrics</NavLink>
                 </li>
+                {/* <li>
+                    <NavLink className='headers_li_links' style={({isActive}) => isActive?{color: "#5479FC"} :{color:'black'} } to={"/main/admindashboard/summary/traderview/"}>Trader View</NavLink>
+                </li> */}
             </ul>
            
             <Outlet/>

@@ -4,7 +4,7 @@ import Styles from "./UserFunds.module.css";
 import axios from "axios";
 import { userContext } from "../AuthContext";
 
-export default function Funds() {
+export default function UserFunds() {
     const getDetails = useContext(userContext);
     const [userDetail, setUserDetail] = useState([]);
     const [userTradeDetails, setUserTradeDetails] = useState([]);
@@ -458,60 +458,8 @@ export default function Funds() {
     }
 
     return (
-        <div>
-            <div className="main_Container">
-                <div className="right_side">
-                    <div className="rightside_maindiv">
-                        <div className={Styles.main_dateSelData}>
-                            <div className={Styles.form_div}>
-                                <form action="">
-                                    <label htmlFor="" className={Styles.formLable}>Start Date</label>
-                                    <input type="date" className={Styles.formInput} onChange={(e)=>{firstDateChange(e)}}/>
-                                    <label htmlFor="" className={Styles.formLable}>End Date</label>
-                                    <input type="date" className={Styles.formInput} onChange={(e)=>{secondDateChange(e)}}/>
-                                    <label htmlFor="" className={Styles.formLable}>Trader</label>
-                                    { getDetails.userDetails.role === "user" ?
-                                        <select name="" id="" className={Styles.formSelect} onChange={(e)=>{selectUser(e)}} >
-                                            <option value="">{getDetails.userDetails.name}</option>
-                                        </select>
-                                    :
-                                    getDetails.userDetails.role === "admin" &&
-                                    <select name="" id="" className={Styles.formSelect} onChange={(e)=>{selectUser(e)}} >
-                                        <option value="">Select User</option>
-                                        {userDetail.map((elem)=>{
-                                            return(
-                                                <option value={elem.name}>{elem.name}</option>
-                                            )
-                                        })}
-                                        <option value="">All User</option>
-                                    </select> }
-                                </form>
-                            </div>
-                            <div className={Styles.btn_div}>
-                                <span className={`${Styles.formLable}`}>Gross P&L</span> <input type="text" className={`${Styles.formInput} ${Styles.formInput1}`} />
-                                <span className={Styles.formLable}>Transaction Cost</span> <input type="text" className={Styles.formInput} />
-                                <span className={Styles.formLable}>Net P&L</span> <input type="text" className={Styles.formInput} />
-                                <button className={Styles.formButton}> Download Report</button>
-
-                            </div>
-                        </div>
-                        <div className={Styles.grid_1}>
-                            <table className="grid1_table">
-                                <tr className="grid2_tr">
-                                    <th className="grid2_th">Trader Name</th>
-                                    <th className="grid2_th">Date</th>
-                                    <th className="grid2_th">Gross P&L(₹)</th>
-                                    <th className="grid2_th">Transaction Cost(₹)</th>
-                                    <th className="grid2_th">Net PNL(₹)</th>
-                                    <th className="grid2_th"># of Trades</th>
-                                    <th className="grid2_th"># of Lots Used</th>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+        <div style={{fontSize:100,textAlign:"center",margin:30}}>
+            Coming Soon
         </div>
     )
 }

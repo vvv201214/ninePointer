@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { useEffect } from "react";
 import { userContext } from "../AuthContext";
-import FundsHeader from "./UserFundsHeader";
+import UserFundsHeader from "./UserFundsHeader";
 
 function UserFundsMain(){
     const getDetails = useContext(userContext);
@@ -19,7 +19,7 @@ function UserFundsMain(){
                 </div>
                 <button className="logo_btn" >ninepointer</button>
             </div>
-            {/* <UserFundsHeader role = {getDetails.userDetails.role}/> */}
+            <UserFundsHeader role = {getDetails.userDetails.role}/>
         </>
     )
 }
