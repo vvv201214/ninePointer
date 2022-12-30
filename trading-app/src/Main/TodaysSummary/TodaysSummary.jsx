@@ -395,9 +395,9 @@ export default function TodaysSummary({ socket }) {
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Trans. Cost(T)</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Net(T-P&L)</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"># of Trades</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Details</th>
+                      {/* <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Details</th> */}
                       <th class="text-secondary opacity-7"></th>
-                    </tr>
+                      </tr>
                         {todayDetailpnl1.map((elem)=>{
                             return(
                                 <>
@@ -441,9 +441,9 @@ export default function TodaysSummary({ socket }) {
                                                 <td class="align-middle text-center">
                                                     <span class="text-secondary text-xs font-weight-bold">{elem.numberOfTrade}</span>
                                                 </td>
-                                                <td class="align-middle text-center text-sm">
+                                                {/* <td class="align-middle text-center text-sm">
                                                     <span class="badge badge-sm bg-gradient-success">DETAILS</span>
-                                                </td>
+                                                </td> */}
                                                 {/* <td class="align-middle">
                                                     <a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
                                                     Edit
