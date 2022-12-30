@@ -149,6 +149,7 @@ export default function TodaysSummary({ socket }) {
                         newObjtodayCompany.overalluserbrokerage = newObjoverallUser.brokerage;
                         newObjtodayCompany.overallcompanypnl = newObjoverallCompany.pnl;
                         newObjtodayCompany.overallcompanybrokerage = newObjoverallCompany.brokerage;
+                        newObjtodayCompany.overallusertrades = newObjoverallUser.numberOfTrade;
     
                         //detailPnl.push(JSON.parse(JSON.stringify(newObjtodayCompany)));
                     
@@ -206,6 +207,11 @@ export default function TodaysSummary({ socket }) {
         if(elem.traderbrokerage){
             alluserbrokerage = alluserbrokerage + Number(elem.overalluserbrokerage);
             alltodayuserbrokerage = alltodayuserbrokerage + Number(elem.traderbrokerage);
+        } 
+
+        if(elem.numberOfTrade){
+            alltrades = alltrades + Number(elem.overallusertrades);
+            alltodaytrades = alltodaytrades + Number(elem.numberOfTrade);
         } 
         console.log(allcompanypnl);
         console.log(alltodaycompanypnl);
@@ -363,6 +369,7 @@ export default function TodaysSummary({ socket }) {
                 <div class="text-white text-capitalize ps-3">Today's Gross(C-P&L): {alltodaycompanypnl.toFixed(0)}</div>
                 <div class="text-white text-capitalize ps-3">Today's Trans. Cost(C): {alltodaycompanybrokerage.toFixed(0)}</div>
                 <div class="text-white text-capitalize ps-3">Today's Net(C-P&L): {alltodaynetcompanypnl.toFixed(0)}</div>
+                <div class="text-white text-capitalize ps-3">Today's Trades: {alltodaytrades}</div>
                 </div>
                 <div class="pnlinfobox">
                 <div class="text-white text-capitalize ps-3">Today's Gross(T-P&L): {alltodayuserpnl.toFixed(0)}</div>
@@ -378,6 +385,7 @@ export default function TodaysSummary({ socket }) {
                 <div class="text-white text-capitalize ps-3">Lifetime Gross(T-P&L): {alluserpnl.toFixed(0)}</div>
                 <div class="text-white text-capitalize ps-3">Lifetime Trans. Cost(T): {alluserbrokerage.toFixed(0)}</div>
                 <div class="text-white text-capitalize ps-3">Lifetime Net(T-P&L): {allnetuserpnl.toFixed(0)}</div>
+                <div class="text-white text-capitalize ps-3">Lifetime Trades: {alltrades}</div>
                 </div>
                 </div>
               </div>
