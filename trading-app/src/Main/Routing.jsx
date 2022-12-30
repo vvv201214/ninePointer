@@ -37,6 +37,8 @@ import TraderMetrics from './AdminDashboard/TraderMetrics/TraderMetrics';
 import TraderPosition from './Dashboard/newTraderPosition/NewTraderPosition';
 import UserFundsMain from './UserFunds/UserFundsMain';
 import UserFunds from './UserFunds/UserFunds';
+import TodaysSummaryMain from './TodaysSummary/TodaysSummaryMain';
+import TodaysSummary from './TodaysSummary/TodaysSummary';
 import TodaysTradesMock from './Dashboard/CompanyOrderTabs/TodaysTradesMock';
 import HistoryTradesMock from './Dashboard/CompanyOrderTabs/HistoryTradesMock';
 import TodaysTrades from './Dashboard/TraderOrdersTabs/TodaysTrades';
@@ -125,6 +127,9 @@ export default function Routing() {
                             </Route>
                             <Route path='/main/userfunds' element={<UserFundsMain />}>
                                 <Route path='/main/userfunds/' element={<UserFunds />}></Route>
+                            </Route>
+                            <Route path='/main/todayssummary' element={<TodaysSummaryMain />}>
+                                <Route path='/main/todayssummary/' element={<TodaysSummary />}></Route>
                             </Route>
                             
                             

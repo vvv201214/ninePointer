@@ -304,7 +304,7 @@ router.get("/readmocktradeusertodaydatapagination/:email/:skip/:limit", (req, re
 
 router.get("/readmocktradeuserDate", (req, res)=>{
     let date = new Date();
-    let todayDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
+    let todayDate = `${(date.getDate()-1)}-${date.getMonth() + 1}-${date.getFullYear()}`
     const {email} = req.params
     MockTradeDetails.find({order_timestamp: {$regex: todayDate}})
     .then((data)=>{
