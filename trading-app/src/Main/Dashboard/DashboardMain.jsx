@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { useEffect } from "react";
 import { userContext } from "../AuthContext";
 import DashboardHeader from "./DashboardHeader";
+import Styles from "../TodaysSummary/css/material-dashboard.css"
 
 function DashboardMain(){
     const getDetails = useContext(userContext);
@@ -19,6 +20,7 @@ function DashboardMain(){
                 </div>
                 <div className="logo_btn" >ninepointer</div>
             </div>
+             
             <DashboardHeader role = {getDetails.userDetails.role}/>
         </>
     )

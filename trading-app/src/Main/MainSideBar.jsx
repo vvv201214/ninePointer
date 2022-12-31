@@ -7,7 +7,6 @@ export default function MainSideBar({name}) {
         <div className="leftsidebar">
             <div className="userSidebar_div">
                 <div className="userbox"><img className="userimage" src="https://png.pngtree.com/png-vector/20190704/ourlarge/pngtree-businessman-user-avatar-free-vector-png-image_1538405.jpg" alt=""/><h6 className="username">{(name).toUpperCase()}</h6></div>
-                {/* <div className="sidebar_heading">Main</div> */}
                 <div className="menuheader">Analytics</div>
                 <NavLink to="/main/dashboard" style={({isActive}) => isActive?{color:'#5479FC'} :{color:'black'} }><div className="sidebar_items"><img className="linkicons" src={require("../media/Dashboard.png")}></img><div className="menuitembar">Dashboard</div></div></NavLink>
                 <NavLink to="/main/admindashboard/summary" style={({isActive}) => isActive?{color:'#5479FC'} :{color:'black'} }><div className="sidebar_items"><img className="linkicons" src={require("../media/admindashboard.png")}></img><div className="menuitembar">Admin Reports</div></div></NavLink>
@@ -29,6 +28,11 @@ export default function MainSideBar({name}) {
             </div>
 
         </div>
+        
+          
+            
+           
+      
     </>
   )
 }
