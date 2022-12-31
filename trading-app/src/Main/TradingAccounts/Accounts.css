@@ -225,4 +225,18 @@
     font-size: 13px;
     font-weight: bold;
     background-color: #f1f1f1;
+    /* border-radius: 5px; */
+
+    width: 9vw;
+    text-align: center;
+    border-bottom: 1px solid #aba8a8;
+    border-spacing: 3px;
+    width: fit-content;
+    padding: 0.5px;
+    white-space: nowrap;
 }
+
+/* .navbarlinks{
+    float:right;
+
+} */

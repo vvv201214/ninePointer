@@ -10,7 +10,7 @@ export default function MainSideBar({name}) {
                 {/* <div className="sidebar_heading">Main</div> */}
                 <div className="menuheader">Analytics</div>
                 <NavLink to="/main/dashboard" style={({isActive}) => isActive?{color:'#5479FC'} :{color:'black'} }><div className="sidebar_items"><img className="linkicons" src={require("../media/Dashboard.png")}></img><div className="menuitembar">Dashboard</div></div></NavLink>
-                <NavLink to="/main/admindashboard/summary" style={({isActive}) => isActive?{color:'#5479FC'} :{color:'black'} }><div className="sidebar_items"><img className="linkicons" src={require("../media/admindashboard.png")}></img><div className="menuitembar">Admin Dashboard</div></div></NavLink>
+                <NavLink to="/main/admindashboard/summary" style={({isActive}) => isActive?{color:'#5479FC'} :{color:'black'} }><div className="sidebar_items"><img className="linkicons" src={require("../media/admindashboard.png")}></img><div className="menuitembar">Admin Reports</div></div></NavLink>
                 <div className="menuheader">Settings</div>
                 <NavLink to="/main/instrument" style={({isActive}) => isActive?{color:'#5479FC'} :{color:'black'} }><div className="sidebar_items"><img className="linkicons" src={require("../media/instruments.png")}></img><div className="menuitembar">Instruments</div></div></NavLink>
                 <NavLink to="/main/algobox" style={({isActive}) => isActive?{color:'#5479FC'} :{color:'black'} }><div className="sidebar_items"><img className="linkicons" src={require("../media/algo.png")}></img><div className="menuitembar">Algo Box</div></div></NavLink>
