@@ -45,8 +45,18 @@ export default function TodaysSummary({ socket }) {
     let allnetuserpnl = 0;
     let alltodaynetcompanypnl = 0;
     let alltodaynetuserpnl = 0;
-    let alltodaytrades = 0;
+    let allmonthtrades = 0;
     let todayusertrades = 0;
+    let allmonthcompanybrokerage = 0;
+    let allmonthuserbrokerage = 0;
+    let allmonthuserpnl = 0;
+    let allmonthcompanypnl = 0;
+    let monthusertrades = 0;
+    let allweekcompanypnl = 0;
+    let allweekcompanybrokerage = 0;
+    let allweekuserpnl = 0;
+    let allweekuserbrokerage = 0;
+    let weekusertrades = 0;
 
 
     console.log(todayDate);
@@ -107,14 +117,33 @@ export default function TodaysSummary({ socket }) {
                     const request4 = axios.get(`${baseUrl}api/v1/readmocktradeuseremail/${elem.email}`)
                     console.log(`${baseUrl}api/v1/readmocktradeuseremail/${elem.email}`);
                     console.log(request4);
+                    const request5 = axios.get(`${baseUrl}api/v1/readmocktradeuserThisMonth/${elem.email}`)
+                    console.log(`${baseUrl}api/v1/readmocktradecompanyThisMonth/${elem.email}`);
+                    const request6 = axios.get(`${baseUrl}api/v1/readmocktradecompanyThisMonth/${elem.email}`)
+                    console.log(`${baseUrl}api/v1/readmocktradecompanyThisMonth/${elem.email}`);
+                    const request7 = axios.get(`${baseUrl}api/v1/readmocktradeuserThisWeek/${elem.email}`)
+                    console.log(`${baseUrl}api/v1/readmocktradecompanyThisMonth/${elem.email}`);
+                    const request8 = axios.get(`${baseUrl}api/v1/readmocktradecompanyThisWeek/${elem.email}`)
+                    console.log(`${baseUrl}api/v1/readmocktradecompanyThisMonth/${elem.email}`);
+                    const request9 = axios.get(`${baseUrl}api/v1/readmocktradeuserThisYear/${elem.email}`)
+                    console.log(`${baseUrl}api/v1/readmocktradeuserThisYear/${elem.email}`);
+                    const request10 = axios.get(`${baseUrl}api/v1/readmocktradecompanyThisYear/${elem.email}`)
+                    console.log(`${baseUrl}api/v1/readmocktradecompanyThisYear/${elem.email}`);
 
 
-                    Promise.all([request1, request2, request3, request4])
-                        .then(([response1, response2, response3, response4]) => {
+                    Promise.all([request1, request2, request3, request4, request5, request6,request7, request8, request9, request10])
+                        .then(([response1, response2, response3, response4, response5, response6, response7, response8, response9, response10]) => {
                             const todaycompany = response2.data;
                             const todayuser = response1.data;
                             const overallcompany = response3.data;
                             const overalluser = response4.data;
+                            const monthUser = response5.data;
+                            const monthCompany = response6.data;
+                            const weekUser = response7.data;
+                            const weekCompany = response8.data;
+                            const yearUser = response9.data;
+                            const yearCompany = response10.data;
+                            
                             
                             let newObjtodayCompany = pnlCalculation(todaycompany);
                             transactionCost = 0;
@@ -122,7 +151,6 @@ export default function TodaysSummary({ socket }) {
                             numberOfTrade = 0;
                             lotUsed = 0;
                             
-                          
                             let newObjtodayUser = pnlCalculation(todayuser);
                             transactionCost = 0;
                             totalPnl = 0;
@@ -141,15 +169,73 @@ export default function TodaysSummary({ socket }) {
                             totalPnl = 0;
                             numberOfTrade = 0;
                             lotUsed = 0;
+
+                            let newObjmonthUser = pnlCalculation(monthUser);
+                            transactionCost = 0;
+                            totalPnl = 0;
+                            numberOfTrade = 0;
+                            lotUsed = 0;
+
+                            let newObjmonthCompany = pnlCalculation(monthCompany);
+                            transactionCost = 0;
+                            totalPnl = 0;
+                            numberOfTrade = 0;
+                            lotUsed = 0;
+
+                            let newObjweekUser = pnlCalculation(weekUser);
+                            transactionCost = 0;
+                            totalPnl = 0;
+                            numberOfTrade = 0;
+                            lotUsed = 0;
+
+                            let newObjweekCompany = pnlCalculation(weekCompany);
+                            transactionCost = 0;
+                            totalPnl = 0;
+                            numberOfTrade = 0;
+                            lotUsed = 0;
+
+                            let newObjyearUser = pnlCalculation(yearUser);
+                            transactionCost = 0;
+                            totalPnl = 0;
+                            numberOfTrade = 0;
+                            lotUsed = 0;
+
+                            let newObjyearCompany = pnlCalculation(yearCompany);
+                            transactionCost = 0;
+                            totalPnl = 0;
+                            numberOfTrade = 0;
+                            lotUsed = 0;
                             
                             newObjoverallCompany.traderpnl = newObjtodayUser.pnl;
                             newObjoverallCompany.traderbrokerage = newObjtodayUser.brokerage;
                             newObjoverallCompany.overalluserpnl = newObjoverallUser.pnl;
                             newObjoverallCompany.overalluserbrokerage = newObjoverallUser.brokerage;
+                            
                             newObjoverallCompany.todaycompanypnl = newObjtodayCompany.pnl;
                             newObjoverallCompany.todaycompanybrokerage = newObjtodayCompany.brokerage;
                             newObjoverallCompany.overallusertrades = newObjoverallUser.numberOfTrade;
                             newObjoverallCompany.todayusertrades = newObjtodayUser.numberOfTrade;
+                            
+                            newObjoverallCompany.monthuserpnl = newObjmonthUser.pnl;
+                            newObjoverallCompany.monthuserbrokerage = newObjmonthUser.brokerage;
+                            newObjoverallCompany.monthusertrades = newObjmonthUser.numberOfTrade;
+                            newObjoverallCompany.monthcompanypnl = newObjmonthCompany.pnl;
+                            newObjoverallCompany.monthcompanybrokerage = newObjmonthCompany.brokerage;
+                            newObjoverallCompany.monthcompanytrades = newObjmonthCompany.numberOfTrade;
+                            
+                            newObjoverallCompany.weekuserpnl = newObjweekUser.pnl;
+                            newObjoverallCompany.weekuserbrokerage = newObjweekUser.brokerage;
+                            newObjoverallCompany.weekusertrades = newObjweekUser.numberOfTrade;
+                            newObjoverallCompany.weekcompanypnl = newObjweekCompany.pnl;
+                            newObjoverallCompany.weekcompanybrokerage = newObjweekCompany.brokerage;
+                            newObjoverallCompany.weekcompanytrades = newObjweekCompany.numberOfTrade;
+
+                            newObjoverallCompany.yearuserpnl = newObjyearUser.pnl;
+                            newObjoverallCompany.yearuserbrokerage = newObjyearUser.brokerage;
+                            newObjoverallCompany.yearusertrades = newObjyearUser.numberOfTrade;
+                            newObjoverallCompany.yearcompanypnl = newObjyearCompany.pnl;
+                            newObjoverallCompany.yearcompanybrokerage = newObjyearCompany.brokerage;
+                            newObjoverallCompany.yearcompanytrades = newObjyearCompany.numberOfTrade;
                             console.log(newObjoverallCompany);
 
                             //detailPnl.push(JSON.parse(JSON.stringify(newObjtodayCompany)));
@@ -197,40 +283,68 @@ export default function TodaysSummary({ socket }) {
         if (elem.todaycompanypnl) {
             alltodaycompanypnl = alltodaycompanypnl + Number(elem.todaycompanypnl);
         }
+        if (elem.monthcompanypnl) {
+            allmonthcompanypnl = allmonthcompanypnl + Number(elem.monthcompanypnl);
+        }
+        if (elem.weekcompanypnl) {
+            allweekcompanypnl = allweekcompanypnl + Number(elem.weekcompanypnl);
+        }
+
 
 
         if (elem.brokerage) {
             allcompanybrokerage = allcompanybrokerage + Number(elem.brokerage);
         }
-
         if(elem.todaycompanybrokerage){
             alltodaycompanybrokerage = alltodaycompanybrokerage + Number(elem.todaycompanybrokerage);
+        }
+        if(elem.monthcompanybrokerage){
+            allmonthcompanybrokerage = allmonthcompanybrokerage + Number(elem.monthcompanybrokerage);
+        }
+        if(elem.weekcompanybrokerage){
+            allweekcompanybrokerage = allweekcompanybrokerage + Number(elem.weekcompanybrokerage);
         }
 
         if (elem.overalluserpnl) {
             alluserpnl = alluserpnl + Number(elem.overalluserpnl);
-
         }
-
         if (elem.alltodayuserpnl) {
             alltodayuserpnl = alltodayuserpnl + Number(elem.alltodayuserpnl);
+        }
+        if (elem.allmonthuserpnl) {
+            allmonthuserpnl = allmonthuserpnl + Number(elem.monthuserpnl);
+        }
+        if (elem.allweekuserpnl) {
+            allweekuserpnl = allweekuserpnl + Number(elem.weekuserpnl);
         }
 
         if (elem.overalluserbrokerage) {
             alluserbrokerage = alluserbrokerage + Number(elem.overalluserbrokerage);
         }
-
         if (elem.traderbrokerage) {
             alltodayuserbrokerage = alltodayuserbrokerage + Number(elem.traderbrokerage);
+        }
+        if (elem.monthuserbrokerage) {
+            allmonthuserbrokerage = allmonthuserbrokerage + Number(elem.monthuserbrokerage);
+        }
+        if (elem.weekuserbrokerage) {
+            allweekuserbrokerage = allweekuserbrokerage + Number(elem.weekuserbrokerage);
         }
 
         if (elem.numberOfTrade) {
             alltrades = alltrades + Number(elem.numberOfTrade);
         }
-
         if (elem.todayusertrades) {
             todayusertrades = todayusertrades + Number(elem.todayusertrades);
         }
+        if (elem.monthusertrades) {
+            monthusertrades = monthusertrades + Number(elem.monthusertrades);
+        }
+        if (elem.weekusertrades) {
+            weekusertrades = weekusertrades + Number(elem.weekusertrades);
+        }
+
+      
 
         console.log(allcompanypnl);
         console.log(alltodaycompanypnl);
@@ -245,6 +359,8 @@ export default function TodaysSummary({ socket }) {
     allnetuserpnl = alluserpnl - alluserbrokerage;
     alltodaynetcompanypnl = alltodaycompanypnl - alltodaycompanybrokerage;
     alltodaynetuserpnl = alltodayuserpnl - alltodayuserbrokerage;
+
+    
 
     // useEffect(() => {
     //     axios.get(`${baseUrl}api/v1/readmocktradeuserDate`)
@@ -430,7 +546,7 @@ export default function TodaysSummary({ socket }) {
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Gross(T-P&L)</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Trans. Cost(T)</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Net(T-P&L)</th>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"># of Trades</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"># of Trades</th>
                                     {/* <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Details</th> */}
                                     <th class="text-secondary opacity-7"></th>
                                 </tr>
@@ -453,30 +569,53 @@ export default function TodaysSummary({ socket }) {
                                                 <td>
                                                     <p class="text-xs font-weight-bold mb-0" style={elem.todaycompanypnl > 0 ? { color: "green" } : !elem.todaycompanypnl ? { color:"grey"} : { color: "red" }}>{elem.todaycompanypnl >= 0.00 ? "+₹" + (elem.todaycompanypnl.toFixed(0)) : !elem.todaycompanypnl ? 0 : "-₹" + ((-(elem.todaycompanypnl)).toFixed(0))}</p>
                                                     <p class="text-xs text-secondary mb-0" style={elem.pnl >= 0.00 ? { color: "green" } : { color: "red" }}>Lifetime: {elem.pnl > 0.00 ? "+₹" + (elem.pnl.toFixed(0)) : elem.pnl === 0 ? " " : "-₹" + ((-(elem.pnl)).toFixed(0))}</p>
+                                                    <p class="text-xs text-secondary mb-0" style={elem.yearcompanypnl >= 0.00 ? { color: "green" } : { color: "red" }}>YTD: {elem.yearcompanypnl > 0.00 ? "+₹" + (elem.yearcompanypnl.toFixed(0)) : elem.yearcompanypnl === 0 ? " " : "-₹" + ((-(elem.yearcompanypnl)).toFixed(0))}</p>
+                                                    <p class="text-xs text-secondary mb-0" style={elem.monthcompanypnl >= 0.00 ? { color: "green" } : { color: "red" }}>MTD: {elem.monthcompanypnl > 0.00 ? "+₹" + (elem.monthcompanypnl.toFixed(0)) : elem.monthcompanypnl === 0 ? " " : "-₹" + ((-(elem.monthcompanypnl)).toFixed(0))}</p>
+                                                    <p class="text-xs text-secondary mb-0" style={elem.weekcompanypnl >= 0.00 ? { color: "green" } : { color: "red" }}>WTD: {elem.weekcompanypnl > 0.00 ? "+₹" + (elem.weekcompanypnl.toFixed(0)) : elem.weekcompanypnl === 0 ? " " : "-₹" + ((-(elem.weekcompanypnl)).toFixed(0))}</p>
                                                 </td>
 
                                                 <td>
                                                     <p class="text-xs font-weight-bold mb-0">₹{elem.todaycompanybrokerage ? (elem.todaycompanybrokerage).toFixed(0) : elem.todaycompanybrokerage}</p>
                                                     <p class="text-xs text-secondary mb-0">Lifetime: ₹{elem.brokerage ? (elem.brokerage).toFixed(0) : elem.brokerage}</p>
+                                                    <p class="text-xs text-secondary mb-0">YTD: ₹{elem.yearcompanybrokerage ? (elem.yearcompanybrokerage).toFixed(0) : elem.yearcompanybrokerage}</p>
+                                                    <p class="text-xs text-secondary mb-0">MTD: ₹{elem.monthcompanybrokerage ? (elem.monthcompanybrokerage).toFixed(0) : elem.monthcompanybrokerage}</p>
+                                                    <p class="text-xs text-secondary mb-0">WTD: ₹{elem.weekcompanybrokerage ? (elem.weekcompanybrokerage).toFixed(0) : elem.weekcompanybrokerage}</p>
                                                 </td>
                                                 <td>
                                                     <p class="text-xs font-weight-bold mb-0" style={(elem.todaycompanypnl - elem.todaycompanybrokerage) > 0.00 ? { color: "green" } : !(elem.todaycompanypnl - elem.todaycompanybrokerage) ? {color : "grey"} : { color: "red" }}>{(elem.todaycompanypnl - elem.todaycompanybrokerage) > 0.00 ? "+₹" + ((elem.todaycompanypnl - elem.todaycompanybrokerage).toFixed(0)) : !(elem.todaycompanypnl - elem.todaycompanybrokerage) ? "₹" + 0 : "-₹" + ((-((elem.todaycompanypnl - elem.todaycompanybrokerage))).toFixed(0))}</p>
                                                     <p class="text-xs text-secondary mb-0" style={(elem.pnl - elem.brokerage) >= 0.00 ? { color: "green" } : { color: "red" }}>Lifetime: {(elem.pnl - elem.brokerage) > 0.00 ? "+₹" + ((elem.pnl - elem.brokerage).toFixed(0)) : (elem.pnl - elem.brokerage) === 0 ? " " : "-₹" + ((-((elem.pnl - elem.brokerage))).toFixed(0))}</p>
+                                                    <p class="text-xs text-secondary mb-0" style={(elem.yearcompanypnl - elem.yearcompanybrokerage) >= 0.00 ? { color: "green" } : { color: "red" }}>YTD: {(elem.yearcompanypnl - elem.yearcompanybrokerage) > 0.00 ? "+₹" + ((elem.yearcompanypnl - elem.yearcompanybrokerage).toFixed(0)) : (elem.yearcompanypnl - elem.yearcompanybrokerage) === 0 ? " " : "-₹" + ((-((elem.yearcompanypnl - elem.yearcompanybrokerage))).toFixed(0))}</p>
+                                                    <p class="text-xs text-secondary mb-0" style={(elem.monthcompanypnl - elem.monthcompanybrokerage) >= 0.00 ? { color: "green" } : { color: "red" }}>MTD: {(elem.monthcompanypnl - elem.monthcompanybrokerage) > 0.00 ? "+₹" + ((elem.monthcompanypnl - elem.monthcompanybrokerage).toFixed(0)) : (elem.monthcompanypnl - elem.monthcompanybrokerage) === 0 ? " " : "-₹" + ((-((elem.monthcompanypnl - elem.monthcompanybrokerage))).toFixed(0))}</p>
+                                                    <p class="text-xs text-secondary mb-0" style={(elem.weekcomanypnl - elem.weekcompanybrokerage) >= 0.00 ? { color: "green" } : { color: "red" }}>WTD: {(elem.weekcompanypnl - elem.weekcompanybrokerage) > 0.00 ? "+₹" + ((elem.weekcompanypnl - elem.weekcompanybrokerage).toFixed(0)) : (elem.weekcompanypnl - elem.weekcompanybrokerage) === 0 ? " " : "-₹" + ((-((elem.weekcompanypnl - elem.weekcompanybrokerage))).toFixed(0))}</p>
                                                 </td>
                                                 <td>
                                                     <p class="text-xs font-weight-bold mb-0" style={elem.traderpnl > 0.00 ? { color: "green" } : !elem.traderpnl ? {color:"grey"} : { color: "red" }}>{elem.traderpnl > 0.00 ? "+₹" + (elem.traderpnl.toFixed(0)) : !elem.traderpnl ? "₹" + 0 : "-₹" + ((-(elem.traderpnl)).toFixed(0))}</p>
                                                     <p class="text-xs text-secondary mb-0" style={elem.overalluserpnl >= 0.00 ? { color: "green" } : { color: "red" }}>Lifetime: {(elem.overalluserpnl) > 0.00 ? "+₹" + ((elem.overalluserpnl).toFixed(0)) : (elem.overalluserpnl) === 0 ? " " : "-₹" + ((-((elem.overalluserpnl))).toFixed(0))}</p>
+                                                    <p class="text-xs text-secondary mb-0" style={elem.yearuserpnl >= 0.00 ? { color: "green" } : { color: "red" }}>YTD: {(elem.yearuserpnl) > 0.00 ? "+₹" + ((elem.yearuserpnl).toFixed(0)) : (elem.yearuserpnl) === 0 ? " " : "-₹" + ((-((elem.yearuserpnl))).toFixed(0))}</p>
+                                                    <p class="text-xs text-secondary mb-0" style={elem.monthuserpnl >= 0.00 ? { color: "green" } : { color: "red" }}>MTD: {(elem.monthuserpnl) > 0.00 ? "+₹" + ((elem.monthuserpnl).toFixed(0)) : (elem.monthuserpnl) === 0 ? " " : "-₹" + ((-((elem.monthuserpnl))).toFixed(0))}</p>
+                                                    <p class="text-xs text-secondary mb-0" style={elem.weekuserpnl >= 0.00 ? { color: "green" } : { color: "red" }}>WTD: {(elem.weekuserpnl) > 0.00 ? "+₹" + ((elem.weekuserpnl).toFixed(0)) : (elem.weekuserpnl) === 0 ? " " : "-₹" + ((-((elem.weekuserpnl))).toFixed(0))}</p>
                                                 </td>
                                                 <td>
                                                     <p class="text-xs font-weight-bold mb-0">₹{elem.traderbrokerage ? (elem.traderbrokerage).toFixed(0) : 0}</p>
                                                     <p class="text-xs text-secondary mb-0">Lifetime: ₹{(elem.overalluserbrokerage).toFixed(0)}</p>
+                                                    <p class="text-xs text-secondary mb-0">YTD: ₹{(elem.yearuserbrokerage).toFixed(0)}</p>
+                                                    <p class="text-xs text-secondary mb-0">MTD: ₹{(elem.monthuserbrokerage).toFixed(0)}</p>
+                                                    <p class="text-xs text-secondary mb-0">WTD: ₹{(elem.weekuserbrokerage).toFixed(0)}</p>
                                                 </td>
                                                 <td>
                                                     <p class="text-xs font-weight-bold mb-0" style={(elem.traderpnl - elem.traderbrokerage) > 0.00 ? { color: "green" } : !(elem.traderpnl - elem.traderbrokerage) ? {color:"grey"} : { color: "red" }}>{(elem.traderpnl - elem.traderbrokerage) > 0.00 ? "+₹" + ((elem.traderpnl - elem.traderbrokerage).toFixed(0)) : !(elem.traderpnl - elem.traderbrokerage) ? "₹" + 0 : "-₹" + ((-((elem.traderpnl - elem.traderbrokerage))).toFixed(0))}</p>
                                                     <p class="text-xs text-secondary mb-0" style={(elem.overalluserpnl - elem.overalluserbrokerage) >= 0.00 ? { color: "green" } : { color: "red" }}>Lifetime: {(elem.overalluserpnl - elem.overalluserbrokerage) > 0.00 ? "+₹" + ((elem.overalluserpnl - elem.overalluserbrokerage).toFixed(0)) : (elem.overalluserpnl - elem.overalluserbrokerage) === 0 ? " " : "-₹" + ((-((elem.overalluserpnl - elem.overalluserbrokerage))).toFixed(0))}</p>
+                                                    <p class="text-xs text-secondary mb-0" style={(elem.yearuserpnl - elem.yearuserbrokerage) >= 0.00 ? { color: "green" } : { color: "red" }}>YTD: {(elem.yearuserpnl - elem.yearuserbrokerage) > 0.00 ? "+₹" + ((elem.yearuserpnl - elem.yearuserbrokerage).toFixed(0)) : (elem.yearuserpnl - elem.yearuserbrokerage) === 0 ? " " : "-₹" + ((-((elem.yearuserpnl - elem.yearuserbrokerage))).toFixed(0))}</p>
+                                                    <p class="text-xs text-secondary mb-0" style={(elem.monthuserpnl - elem.monthuserbrokerage) >= 0.00 ? { color: "green" } : { color: "red" }}>MTD: {(elem.monthuserpnl - elem.monthuserbrokerage) > 0.00 ? "+₹" + ((elem.monthuserpnl - elem.monthuserbrokerage).toFixed(0)) : (elem.monthuserpnl - elem.monthuserbrokerage) === 0 ? " " : "-₹" + ((-((elem.monthuserpnl - elem.monthuserbrokerage))).toFixed(0))}</p>
+                                                    <p class="text-xs text-secondary mb-0" style={(elem.weekuserpnl - elem.weekuserbrokerage) >= 0.00 ? { color: "green" } : { color: "red" }}>WTD: {(elem.weekuserpnl - elem.weekuserbrokerage) > 0.00 ? "+₹" + ((elem.weekuserpnl - elem.weekuserbrokerage).toFixed(0)) : (elem.weekuserpnl - elem.weekuserbrokerage) === 0 ? " " : "-₹" + ((-((elem.weekuserpnl - elem.weekuserbrokerage))).toFixed(0))}</p>
                                                 </td>
-                                                <td class="align-middle text-center">
-                                                    <span class="text-secondary text-xs font-weight-bold">{elem.numberOfTrade}</span>
+                                                <td class="text-xs font-weight-bold mb-0">
+                                                    <p class="text-xs font-weight-bold mb-0">{elem.todayusertrades}</p>
+                                                    <p class="text-xs text-secondary mb-0">Lifetime: {elem.numberOfTrade}</p>
+                                                    {/* <span class="text-secondary text-xs font-weight-bold">{elem.numberOfTrade}</span> */}
+                                                    <p class="text-xs text-secondary mb-0">YTD: {elem.yearusertrades}</p>
+                                                    <p class="text-xs text-secondary mb-0">MTD: {elem.monthusertrades}</p>
+                                                    <p class="text-xs text-secondary mb-0">WTD: {elem.weekusertrades}</p>
                                                 </td>
                                                 {/* <td class="align-middle text-center text-sm">
                                                     <span class="badge badge-sm bg-gradient-success">DETAILS</span>

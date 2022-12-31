@@ -302,4 +302,87 @@ router.get("/readmocktradeuserpariculardate/:date", (req, res)=>{
     })
 })
 
+router.get("/readmocktradeuserThisWeek/:email", (req, res)=>{
+    const {email} = req.params
+    let date = new Date();
+    console.log(date);
+    let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
+    console.log(todayDate);
+    let weekday = date.getDay();
+    let weekStartDate = `${String((date.getDate())-weekday).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
+    // let weekStart = `${String(1).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
+    MockTradeDetails.find({order_timestamp: {$gte:weekStartDate,$lt: todayDate}, userId: {$regex: email}})
+    .then((data)=>{
+        (data).sort((a, b)=> {
+
+            if (a.order_timestamp < b.order_timestamp) {
+              return 1;
+            }
+            if (a.order_timestamp > b.order_timestamp) {
+              return -1;
+            }
+            return 0;
+          });
+        data.reverse();
+        return res.status(200).send(data);
+    })
+    .catch((err)=>{
+        return res.status(422).json({error : "date not found"})
+    })
+
+})
+
+router.get("/readmocktradeuserThisMonth/:email", (req, res)=>{
+    const {email} = req.params
+    let date = new Date();
+    let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
+    console.log(todayDate);
+    let monthStart = `${String(1).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
+    MockTradeDetails.find({order_timestamp: {$gte:monthStart,$lt: todayDate}, userId: {$regex: email}})
+    .then((data)=>{
+        (data).sort((a, b)=> {
+
+            if (a.order_timestamp < b.order_timestamp) {
+              return 1;
+            }
+            if (a.order_timestamp > b.order_timestamp) {
+              return -1;
+            }
+            return 0;
+          });
+        data.reverse();
+        return res.status(200).send(data);
+    })
+    .catch((err)=>{
+        return res.status(422).json({error : "date not found"})
+    })
+})
+
+router.get("/readmocktradeuserThisYear/:email", (req, res)=>{
+    const {email} = req.params
+    let date = new Date();
+    let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
+    console.log(todayDate);
+    let yearStart = `${String(1).padStart(2, '0')}-${String(1).padStart(2, '0')}-${(date.getFullYear())}`
+    MockTradeDetails.find({order_timestamp: {$gte:yearStart,$lt: todayDate}, userId: {$regex: email}})
+    .then((data)=>{
+        (data).sort((a, b)=> {
+
+            if (a.order_timestamp < b.order_timestamp) {
+              return 1;
+            }
+            if (a.order_timestamp > b.order_timestamp) {
+              return -1;
+            }
+            return 0;
+          });
+        data.reverse();
+        return res.status(200).send(data);
+    })
+    .catch((err)=>{
+        return res.status(422).json({error : "date not found"})
+    })
+})
+
+
 module.exports = router;
