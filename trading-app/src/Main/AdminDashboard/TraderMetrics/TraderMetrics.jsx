@@ -3,21 +3,11 @@ import { useEffect } from "react";
 import Styles from "./TraderMetrics.module.css";
 import axios from "axios";
 import { userContext } from "../../AuthContext";
-import { io } from "socket.io-client";
 
 
 export default function DailyPNLReport() {
-    let baseUrl1 = process.env.NODE_ENV === "production" ? "/" : "http://localhost:9000/"
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
-    let socket;
-    try{
-        // socket = io.connect("http://localhost:9000/")
-        socket = io.connect(`${baseUrl1}`)
-
-    } catch(err){
-        throw new Error(err);
-    }
 
     let date = new Date();
     let valueInSecondDate = `${(date.getFullYear())}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
@@ -37,9 +27,9 @@ export default function DailyPNLReport() {
     const [allDate, setAllDate] = useState([]);
 
     let totalArr = [];
-    let [allBrokerage, setAllBrokerage] = useState(0);
-    let [allNet, setAllNet] = useState(0);
-    let [allGross, setAllGross] = useState(0);
+    let allBrokerage = 0;
+    let allNet = 0;
+    let allGross = 0;
     let userBrokerage = 0;
     let userGross = 0;
     let userNet = 0;
@@ -58,19 +48,7 @@ export default function DailyPNLReport() {
     let [checkingRunningLot, setcheckingRunningLot] = useState({});
     let detailArr = [];
 
-    useEffect(()=>{
-        //console.log("rendering")
-        //console.log(socket);
-        socket.on("connect", ()=>{
-            //console.log(socket.id);
-            socket.emit("hi",true)
-        })
 
-        socket.on("tick", (data) => {
-            //console.log("this is live market data", data);
-            setMarketData(data);
-        })
-    },[])
 
     useEffect(()=>{
         let userData = [];
@@ -181,14 +159,6 @@ export default function DailyPNLReport() {
 
 
     }, [getDetails, ])
-//detailPnlArr render
-
-    useEffect(() => {
-        return () => {
-            //console.log('closing');
-            socket.close();
-        }
-    }, [])
 
 
     function firstDateChange(e){
@@ -586,34 +556,6 @@ export default function DailyPNLReport() {
         }
     }
 
-    // let hashmap = new Map();
-    // for(let i = 0; i < detailPnl.length; i++){
-    //     if(hashmap.has(detailPnl[i].name)){
-    //         let obj = hashmap.get(detailPnl[i].name);
-
-    //         obj.pnl = obj.pnl + detailPnl[i].pnl ;
-    //         obj.brokerage = obj.brokerage + detailPnl[i].brokerage ;
-    //         obj.traderpnl = obj.traderpnl + detailPnl[i].traderpnl ;
-    //         obj.traderbrokerage = obj.traderbrokerage + detailPnl[i].traderbrokerage ;
-    //         obj.numberOfTrade = obj.numberOfTrade + detailPnl[i].numberOfTrade ;
-    //         obj.lotUsed = obj.lotUsed + detailPnl[i].lotUsed ;
-    //         obj.runninglots = obj.runninglots + detailPnl[i].runningLots
-
-    //     } else{
-    //         hashmap.set(detailPnl[i].name, {
-    //             pnl: detailPnl[i].pnl,
-    //             brokerage: detailPnl[i].brokerage,
-    //             traderpnl: detailPnl[i].traderpnl,
-    //             traderbrokerage: detailPnl[i].traderbrokerage,
-    //             numberOfTrade: detailPnl[i].numberOfTrade,
-    //             lotUsed: detailPnl[i].lotUsed,
-    //             runninglots: detailPnl[i].runningLots,
-    //             name: detailPnl[i].name
-    //         })
-    //     }
-    // }
-
-    // console.log(hashmap);
 
     let totalDateWisePnl = [];
     for (let value of hashmap.values()){

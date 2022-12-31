@@ -3,14 +3,67 @@ const router = express.Router();
 const cors = require('cors');
 const app = express();
 const dotenv = require('dotenv');
-const kiteConnect = require('./marketData/kiteConnect');
+// const kiteConnect = require('./marketData/kiteConnect');
 const fetch = require('./marketData/placeOrder');
 app.use(require("cookie-parser")());
 
+const fetchData = require('./marketData/fetchToken');
+const io = require('./marketData/socketio');
+const {createNewTicker, disconnectTicker, getTicker, subscribeTokens, getTicks, onError} = require('./marketData/kiteTicker');
+const getKiteCred = require('./marketData/getKiteCred'); 
+
+
+getKiteCred.getAccess().then((data)=>{
+  console.log("this is code ",data);
+  createNewTicker(data.getApiKey, data.getAccessToken);
+});
+
+// const ticker = createNewTicker('nq0gipdzk0yexyko','DKW7CYJN50QSnjgzahQ9UjJqPFrChzOh');
+io.on("connection", (socket) => {
+  console.log('client socket is' + socket.id);
+  // socket1 = socket;
+  socket.on('hi', async (data) => {
+    // eventEmitOnError = data;
+    getKiteCred.getAccess().then(async (data)=>{
+      console.log(data);
+      // if(!data.getApiKey || !data.getAccessToken){
+      //   alert("AccessToken or ApiKey incorrect")
+      // }
+      let tokens = await fetchData(data.getApiKey, data.getAccessToken);
+      // console.log('tokens index', tokens);
+  
+      subscribeTokens();
+      getTicks(socket, tokens);
+      onError();
+
+    });
+    // let tokens = await fetchData('nq0gipdzk0yexyko', '3oaejV3W4O56Bwk46QNQElg3n3HlIapg');
+    // console.log('tokens index', tokens.data);
+
+
+    // ticker.subscribe(tokens);
+    // ticker.setMode(ticker.modeFull, tokens);
+    // ticker.on('ticks', (ticks) => {
+    //   console.log('ticking');
+    //   console.log('tick', ticks);
+    //   if(ticks.length == tokens.length){
+    //     console.log('sending ticks', ticks);
+    //     socket.emit('tick', ticks); 
+    //   }
+    // });
+    // ticker.on('error', (error)=>{
+    //   console.log(error);
+    // });
+    // console.log(data);
+  });
+});
+
+io.on('disconnection', () => {disconnectTicker()});
+
 dotenv.config({ path: './config.env' });
 
-console.log(kiteConnect);
-app.get('/api/v1/ws', kiteConnect);
+// console.log(kiteConnect);
+// app.get('/api/v1/ws', kiteConnect.parameters);
 app.get('/api/v1/data', fetch);
 
 // app.get('/ws', kiteConnect);
@@ -19,8 +72,8 @@ let newCors = process.env.NODE_ENV === "production" ? "http://3.110.187.5/" : "h
 app.use(cors({
   credentials:true,
 
-  origin: "http://3.110.187.5/"
-  // origin: newCors
+  // origin: "http://3.110.187.5/"
+  origin: newCors
 
 }));
 
