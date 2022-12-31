@@ -7,17 +7,7 @@ import { io } from "socket.io-client";
 
 
 export default function DailyPNLReport() {
-    let baseUrl1 = process.env.NODE_ENV === "production" ? "/" : "http://localhost:9000/"
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
-
-    let socket;
-    try{
-        // socket = io.connect("http://localhost:9000/")
-        socket = io.connect(`${baseUrl1}`)
-
-    } catch(err){
-        throw new Error(err);
-    }
 
     let date = new Date();
     let valueInSecondDate = `${(date.getFullYear())}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
@@ -37,9 +27,9 @@ export default function DailyPNLReport() {
     const [allDate, setAllDate] = useState([]);
 
     let totalArr = [];
-    let [allBrokerage, setAllBrokerage] = useState(0);
-    let [allNet, setAllNet] = useState(0);
-    let [allGross, setAllGross] = useState(0);
+    let allBrokerage = 0;
+    let allNet = 0;
+    let allGross = 0;
     let userBrokerage = 0;
     let userGross = 0;
     let userNet = 0;
@@ -59,117 +49,9 @@ export default function DailyPNLReport() {
     let [checkingRunningLot, setcheckingRunningLot] = useState({});
     let detailArr = [];
 
-    useEffect(()=>{
-        //console.log("rendering")
-        //console.log(socket);
-        socket.on("connect", ()=>{
-            //console.log(socket.id);
-            socket.emit("hi",true)
-        })
-
-        socket.on("tick", (data) => {
-            //console.log("this is live market data", data);
-            setMarketData(data);
-        })
-    },[])
 
     useEffect(()=>{
         let userData = [];
-        
-        // axios.get(`${baseUrl}api/v1/readmocktradecompanypariculardate/${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`)
-        // .then((res) => {
-        //     setcheckingRunningLot(pnlCalculation(res.data));
-        //     transactionCost = 0;
-        //     totalPnl = 0;
-        //     numberOfTrade = 0;
-        //     lotUsed = 0;
-        //     // console.log(checkingRunningLot);
-        // }).catch((err)=>{
-        //     return new Error(err);
-        // })
-
-        // axios.get(`${baseUrl}api/v1/readuserdetails`)
-        // .then((res) => {
-        //     userData = (res.data)
-        //     setUserDetail(res.data);
-
-        //     userData.map((elem)=>{
-        //         console.log(checkingRunningLot);
-        //         let mainObj = {};
-        //         firstDateSplit = (firstDate).split("-");
-        
-        //         if(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate  && noRender.current){
-        //             while(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
-        //                 //console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` , secondDate)
-    
-        //                 const request1 = axios.get(`${baseUrl}api/v1/readmocktradecompanypariculardatewithemail/${`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`}/${elem.email}`)
-        //                 const request2 = axios.get(`${baseUrl}api/v1/readmocktradeuserpariculardatewithemail/${`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`}/${elem.email}`)
-
-        //                 Promise.all([request1, request2])
-        //                 .then(([response1, response2]) => {
-        //                     const company = response1.data;
-        //                     const user = response2.data;
-        //                     let newObjCompany = pnlCalculation(company);
-        //                     transactionCost = 0;
-        //                     totalPnl = 0;
-        //                     numberOfTrade = 0;
-        //                     lotUsed = 0;
-        //                     let newObjUser = pnlCalculation(user);
-        //                     //console.log(newObjCompany, newObjUser)
-        //                     newObjCompany.traderpnl = newObjUser.pnl;
-        //                     newObjCompany.traderbrokerage = newObjUser.brokerage;
-        
-        //                     detailPnl.push(JSON.parse(JSON.stringify(newObjCompany)));
-                                
-        //                     transactionCost = 0;
-        //                     totalPnl = 0;
-        //                     numberOfTrade = 0;
-        //                     lotUsed = 0;
-                        
-        //                     // console.log(detailPnl);
-        //                     setDetailPnl(JSON.parse(JSON.stringify(detailPnl)))
-        //                     // do something with the users and posts data
-
-
-        //                 })
-        //                 .catch(error => {
-        //                     throw new Error(error);
-        //                 });
-     
-        //                 if((firstDateSplit[2]) < 9){
-        //                     (firstDateSplit[2]) = `0${Number(firstDateSplit[2]) + 1}`
-        //                 }
-        //                 else if((firstDateSplit[2]) === 31){
-        //                     (firstDateSplit[2]) = `01`;
-                            
-        //                     //console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}`)
-        //                     if((firstDateSplit[1]) < 9){
-        //                         (firstDateSplit[1]) = `0${Number(firstDateSplit[1]) + 1}`;
-        //                     }
-        //                     else if((firstDateSplit[1]) === 13){
-        //                         (firstDateSplit[1]) = `01`;
-        //                         (firstDateSplit[0]) = Number(firstDateSplit[0])+ 1;
-        //                     }else{
-        //                         (firstDateSplit[1]) = Number(firstDateSplit[1]) + 1;
-        //                     }
-        //                 }else{
-        //                     (firstDateSplit[2]) = Number(firstDateSplit[2]) + 1;
-        //                 }
-        //             }
-        //         } 
-    
-        //         // arr.push(detailPnlArr);
-        //         // setAllDate(arr)
-        //         console.log(detailPnlArr);
-                
-        //     })
-        //     noRender.current = false;
-
-        // }).catch((err)=>{
-        //     return new Error(err);
-        // })
-
-
 
         const request1 = axios.get(`${baseUrl}api/v1/readuserdetails`)
         const request2 = axios.get(`${baseUrl}api/v1/readmocktradecompanypariculardate/${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`)
@@ -177,7 +59,8 @@ export default function DailyPNLReport() {
 
         Promise.all([request1, request2])
         .then(([response1, response2]) => {
-
+            console.log(response1, response2)
+            setUserDetail(response1.data);
             setcheckingRunningLot(pnlCalculation(response2.data));
             transactionCost = 0;
             totalPnl = 0;
@@ -193,6 +76,7 @@ export default function DailyPNLReport() {
             runningLots = 0;
 
             userData = (response1.data)
+            console.log(userData)
             setUserDetail(response1.data);
 
             userData.map((elem)=>{
@@ -279,15 +163,13 @@ export default function DailyPNLReport() {
         });
 
 
-
-
-
         axios.get(`${baseUrl}api/v1/readInstrumentDetails`)
         .then((res) => {
             let dataArr = (res.data).filter((elem) => {
                 return  elem.status === "Active"
             })
             detailArr = dataArr;
+            console.log(detailArr)
             setTradeData(dataArr)
         }).catch((err)=>{
             return new Error(err);
@@ -295,15 +177,111 @@ export default function DailyPNLReport() {
 
 
     }, [getDetails, ])
-//detailPnlArr render
 
-    useEffect(() => {
-        return () => {
-            //console.log('closing');
-            socket.close();
-        }
-    }, [])
 
+    // function firstDateChange(e){
+    //     e.preventDefault();
+    //     if((((e.target.value) > secondDate) && secondDate)){
+    //         window.alert("Date range is not valid")
+    //         return;
+    //     }
+    //     noRender.current = false;
+    //     console.log(userDetail)
+    //     firstDateSplit = (e.target.value).split("-");
+    //     firstDate = `${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}`
+    //     setFirstDate(firstDate);
+    //     //console.log(firstDate);
+    //     let secondDateSplit = (secondDate).split("-");
+    //     secondDate = `${secondDateSplit[0]}-${secondDateSplit[1]}-${secondDateSplit[2]}`
+    //     setSecondDate(secondDate);
+
+    //     userDetail.map((elem)=>{
+    //         //console.log(elem);
+    //         let mainObj = {};
+    //         firstDateSplit = (firstDate).split("-");
+    
+    //         console.log("checkingRunningLot", checkingRunningLot);
+
+
+    //         if(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
+    //             while(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
+    //                 console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` , secondDate)
+
+    //                 console.log(!checkingRunningLot.runningLots, checkingRunningLot.runningLots)
+    //                 if(((checkingRunningLot.runningLots === 0) || (checkingRunningLot.runningLots === null) || (checkingRunningLot.runningLots === undefined))  || (`${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}` !== `${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`)){
+
+                    
+    //                     const request1 = axios.get(`${baseUrl}api/v1/readmocktradecompanypariculardatewithemail/${`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`}/${elem.email}`)
+    //                     const request2 = axios.get(`${baseUrl}api/v1/readmocktradeuserpariculardatewithemail/${`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`}/${elem.email}`)
+        
+    //                     Promise.all([request1, request2])
+    //                     .then(([response1, response2]) => {
+    //                         const company = response1.data;
+    //                         const user = response2.data;
+        
+    //                         console.log((checkingRunningLot.runningLots))
+
+    //                             let newObjCompany = pnlCalculation(company);
+    //                             transactionCost = 0;
+    //                             totalPnl = 0;
+    //                             numberOfTrade = 0;
+    //                             lotUsed = 0;
+    //                             runningLots = 0;
+    //                             let newObjUser = pnlCalculation(user);
+    //                             //console.log(newObjCompany, newObjUser)
+    //                             newObjCompany.traderpnl = newObjUser.pnl;
+    //                             newObjCompany.traderbrokerage = newObjUser.brokerage;
+            
+    //                             detailPnl.push(JSON.parse(JSON.stringify(newObjCompany)));
+                                    
+    //                             transactionCost = 0;
+    //                             totalPnl = 0;
+    //                             numberOfTrade = 0;
+    //                             lotUsed = 0;
+    //                             runningLots = 0;
+    //                             // console.log(detailPnl);
+    //                             setDetailPnl(JSON.parse(JSON.stringify(detailPnl)))
+    //                             // do something with the users and posts data
+    //                         // }
+    //                     })
+    //                     .catch(error => {
+    //                         throw new Error(error);
+    //                     });
+    //                 }
+    
+    //                 if((firstDateSplit[2]) < 9){
+    //                     (firstDateSplit[2]) = `0${Number(firstDateSplit[2]) + 1}`
+    //                 }
+    //                 else if((firstDateSplit[2]) === 31){
+    //                     (firstDateSplit[2]) = `01`;
+                        
+    //                     //console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}`)
+    //                     if((firstDateSplit[1]) < 9){
+    //                         (firstDateSplit[1]) = `0${Number(firstDateSplit[1]) + 1}`;
+    //                     }
+    //                     else if((firstDateSplit[1]) === 13){
+    //                         (firstDateSplit[1]) = `01`;
+    //                         (firstDateSplit[0]) = Number(firstDateSplit[0])+ 1;
+    //                     }else{
+    //                         (firstDateSplit[1]) = Number(firstDateSplit[1]) + 1;
+    //                     }
+    //                 }else{
+    //                     (firstDateSplit[2]) = Number(firstDateSplit[2]) + 1;
+    //                 }
+                
+    //             }
+    //         } 
+
+    //         // setDetailPnl(JSON.parse(JSON.stringify(detailPnl)))
+    //         // arr.push(detailPnlArr);
+    //         // setAllDate(arr)
+    //         console.log(detailPnl);
+
+    //     })
+
+    // }
+
+    console.log(userDetail)
 
     function firstDateChange(e){
         e.preventDefault();
@@ -320,130 +298,20 @@ export default function DailyPNLReport() {
         let secondDateSplit = (secondDate).split("-");
         secondDate = `${secondDateSplit[0]}-${secondDateSplit[1]}-${secondDateSplit[2]}`
         setSecondDate(secondDate);
-        //console.log(firstDate ,secondDate);
-        //console.log(firstDate < secondDate);
 
-            //<= secondDate && noRender.current
-            // if(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}`){
-            //     while(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
-            //         //console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` , secondDate)
-            //         // let newObj = {};
-            //         const request1 = axios.get(`${baseUrl}api/v1/readmocktradecompanypariculardatewithemail/${`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`}/${elem.email}`)
-            //         const request2 = axios.get(`${baseUrl}api/v1/readmocktradeuserpariculardatewithemail/${`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`}/${elem.email}`)
-    
-            //         Promise.all([request1, request2])
-            //         .then(([response1, response2]) => {
-            //             const company = response1.data;
-            //             const user = response2.data;
-            //             //console.log(company, user)
-            //             let newObjCompany = pnlCalculation(company);
-            //             transactionCost = 0;
-            //             totalPnl = 0;
-            //             numberOfTrade = 0;
-            //             lotUsed = 0;
-
-            //             let newObjUser = pnlCalculation(user);
-            //             //console.log(newObjCompany, newObjUser)
-
-            //             newObjCompany.traderpnl = newObjUser.pnl;
-            //             newObjCompany.traderbrokerage = newObjUser.brokerage;
-
-            //             if(!mainObj.pnl){
-            //                 mainObj.pnl = newObjCompany.pnl;
-            //             } else{
-            //                 mainObj.pnl = mainObj.pnl + newObjCompany.pnl;
-            //             }
-
-            //             if(!mainObj.brokerage){
-            //                 mainObj.brokerage = newObjCompany.brokerage;
-            //             } else{
-            //                 mainObj.brokerage = mainObj.brokerage + newObjCompany.brokerage;
-            //             }
-
-            //             if(!mainObj.traderpnl){
-            //                 mainObj.traderpnl = newObjCompany.traderpnl;
-            //             } else{
-            //                 mainObj.traderpnl = mainObj.traderpnl + newObjCompany.traderpnl;
-            //             }
-
-            //             if(!mainObj.traderbrokerage){
-            //                 mainObj.traderbrokerage = newObjCompany.traderbrokerage;
-            //             } else{
-            //                 mainObj.traderbrokerage = mainObj.traderbrokerage + newObjCompany.traderbrokerage;
-            //             }
-
-            //             if(!mainObj.numberOfTrade){
-            //                 mainObj.numberOfTrade = newObjCompany.numberOfTrade;
-            //             } else{
-            //                 mainObj.numberOfTrade = mainObj.numberOfTrade + newObjCompany.numberOfTrade;
-            //             }
-    
-            //             // detailPnl.push(JSON.parse(JSON.stringify(newObjCompany)));
-                            
-            //             transactionCost = 0;
-            //             totalPnl = 0;
-            //             numberOfTrade = 0;
-            //             lotUsed = 0;
-                    
-            //             // //console.log(detailPnl);
-            //             // setDetailPnl(detailPnl)
-            //             // do something with the users and posts data
-            //         })
-            //         .catch(error => {
-            //             throw new Error(error);
-            //         });
-        
-        
-        
-            //         if((firstDateSplit[2]) < 9){
-            //             (firstDateSplit[2]) = `0${Number(firstDateSplit[2]) + 1}`
-            //         }
-            //         else if((firstDateSplit[2]) === 31){
-            //             (firstDateSplit[2]) = `01`;
-                        
-            //             //console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}`)
-            //             if((firstDateSplit[1]) < 9){
-            //                 (firstDateSplit[1]) = `0${Number(firstDateSplit[1]) + 1}`;
-            //             }
-            //             else if((firstDateSplit[1]) === 13){
-            //                 (firstDateSplit[1]) = `01`;
-            //                 (firstDateSplit[0]) = Number(firstDateSplit[0])+ 1;
-            //             }else{
-            //                 (firstDateSplit[1]) = Number(firstDateSplit[1]) + 1;
-            //             }
-            //         }else{
-            //             (firstDateSplit[2]) = Number(firstDateSplit[2]) + 1;
-            //         }
-                    
-            //     }
-                
-            //     //console.log(mainObj); 
-            //     detailPnl.push(JSON.parse(JSON.stringify(mainObj)));
-                            
-            //     // transactionCost = 0;
-            //     // totalPnl = 0;
-            //     // numberOfTrade = 0;
-            //     // lotUsed = 0;
-            //     // mainObj = {};
-            
-            //     //console.log(detailPnl); 
-            //     setDetailPnl((JSON.parse(JSON.stringify(detailPnl))))
-            // }
         userDetail.map((elem)=>{
             //console.log(elem);
             let mainObj = {};
             firstDateSplit = (firstDate).split("-");
     
-            console.log("checkingRunningLot", checkingRunningLot);
+            // console.log("checkingRunningLot", checkingRunningLot);
 
 
             if(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
                 while(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
-                    console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` , secondDate)
+                    //console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` , secondDate)
 
-                    console.log(!checkingRunningLot.runningLots, checkingRunningLot.runningLots)
-                    if(((checkingRunningLot.runningLots === 0) || (checkingRunningLot.runningLots === null) || (checkingRunningLot.runningLots === undefined))  || (`${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}` !== `${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`)){
-
+                    // if(((checkingRunningLot.runningLots === 0) || (checkingRunningLot.runningLots === null) || (checkingRunningLot.runningLots === undefined))  || (`${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}` !== `${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`)){
                     
                         const request1 = axios.get(`${baseUrl}api/v1/readmocktradecompanypariculardatewithemail/${`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`}/${elem.email}`)
                         const request2 = axios.get(`${baseUrl}api/v1/readmocktradeuserpariculardatewithemail/${`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`}/${elem.email}`)
@@ -453,17 +321,12 @@ export default function DailyPNLReport() {
                             const company = response1.data;
                             const user = response2.data;
         
-                            console.log((checkingRunningLot.runningLots))
-                            // console.log((!(`${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}` === `${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}`)), (`${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}` ))
-                            // console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}`)
-                            // console.log((!checkingRunningLot.runningLots && !(`${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}` === `${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}`)))
-                            // if(!checkingRunningLot.runningLots && !(`${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}` === `${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}`)){
+                            // if(checkingRunningLot.runningLots === 0){
                                 let newObjCompany = pnlCalculation(company);
                                 transactionCost = 0;
                                 totalPnl = 0;
                                 numberOfTrade = 0;
                                 lotUsed = 0;
-                                runningLots = 0;
                                 let newObjUser = pnlCalculation(user);
                                 //console.log(newObjCompany, newObjUser)
                                 newObjCompany.traderpnl = newObjUser.pnl;
@@ -475,7 +338,7 @@ export default function DailyPNLReport() {
                                 totalPnl = 0;
                                 numberOfTrade = 0;
                                 lotUsed = 0;
-                                runningLots = 0;
+                            
                                 // console.log(detailPnl);
                                 setDetailPnl(JSON.parse(JSON.stringify(detailPnl)))
                                 // do something with the users and posts data
@@ -484,7 +347,7 @@ export default function DailyPNLReport() {
                         .catch(error => {
                             throw new Error(error);
                         });
-                    }
+                    // }
     
                     if((firstDateSplit[2]) < 9){
                         (firstDateSplit[2]) = `0${Number(firstDateSplit[2]) + 1}`
@@ -505,7 +368,6 @@ export default function DailyPNLReport() {
                     }else{
                         (firstDateSplit[2]) = Number(firstDateSplit[2]) + 1;
                     }
-                
                 }
             } 
 
@@ -807,23 +669,23 @@ export default function DailyPNLReport() {
     }
             let lastdatepnl = [];
             
-            console.log(detailPnlArr); 
-            userDetail.map((elem)=>{
-              for(let i = 0; i < detailPnlArr.length; i++)  
-              {
-                if(elem.name == detailPnlArr[i].name)
-                {
-                    
-                    lastdatepnl.push(detailPnlArr[i]);
-                    break;
-                }
-                
+    console.log(detailPnlArr); 
+    userDetail.map((elem)=>{
+        for(let i = 0; i < detailPnlArr.length; i++)  
+        {
+        if(elem.name == detailPnlArr[i].name)
+        {
+            
+            lastdatepnl.push(detailPnlArr[i]);
+            break;
+        }
+        
 
-                }
-                
-              }
-            )
-            console.log(lastdatepnl);
+        }
+        
+        }
+    )
+    console.log(lastdatepnl);
 
     let totalDateWisePnl = [];
     for (let value of hashmap.values()){

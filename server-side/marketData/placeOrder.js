@@ -32,6 +32,15 @@ router.post("/placeorder", (async (req, res)=>{
         "content-type" : "application/x-www-form-urlencoded"
     }
     let orderData;
+
+
+    variety = "amo";
+    Price = 8;
+    TriggerPrice = 8;
+    realQuantity = 10;
+    OrderType = "LIMIT";
+    Product = "MIS"
+
     if(variety === "amo"){
         orderData = new URLSearchParams({
             "tradingsymbol":symbol,
@@ -127,14 +136,7 @@ router.post("/placeorder", (async (req, res)=>{
                         return res.status(422).json({error : "data already exist..."})
                     }
                     const companyTradeData = new CompanyTradeData({
-                        // order_id , status , uId, createdOn, createdBy, real_last_price,
-                        // average_price, Quantity:quantity, realInstrument, Product:product, buyOrSell:transaction_type, 
-                        //  order_timestamp , variety , validity , exchange , 
-                        //   order_type , price , filled_quantity , pending_quantity 
-                        // , cancelled_quantity , guid , market_protection , disclosed_quantity , symbol:tradingsymbol 
-                        // , placed_by, userId, realBrokerage, realAmount, tradeBy
-                        disclosed_quantity, price, 
-                        filled_quantity, pending_quantity, cancelled_quantity, market_protection, guid,
+                        disclosed_quantity, price, filled_quantity, pending_quantity, cancelled_quantity, market_protection, guid,
                         status, uId, createdBy, average_price, Quantity: quantity, 
                         Product:product, buyOrSell:transaction_type, order_timestamp: order_timestamp,
                         variety, validity, exchange, order_type: order_type, symbol:tradingsymbol, placed_by: placed_by, userId,
@@ -212,14 +214,11 @@ router.post("/placeorder", (async (req, res)=>{
                         lotMultipler, productChange, tradingAccount}, order_id, instrumentToken, brokerage: brokerageCompany,
                         tradeBy: createdBy, isRealTrade: realTrade, amount: (Number(quantity)*average_price)
                     });
-            
+
                     companyTradeData.save().then(()=>{
                     }).catch((err)=> res.status(500).json({error:"Failed to Trade"}));
                 }).catch(err => {console.log(err, "fail")});
-
             }
-
-
         }).catch((err)=>{
             console.log("i am receiving error", err);
         })

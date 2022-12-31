@@ -4,6 +4,7 @@ import Styles from "./DailyPNLReport.module.css";
 import axios from "axios";
 import { userContext } from "../../AuthContext";
 import { io } from "socket.io-client";
+import DetailsButtonPopup from "./DetailsButton/DetailsButtonPopup";
 import { LineChart, Line, XAxis, YAxis,CartesianGrid, BarChart, Bar, Tooltip, Legend,Label, ReferenceLine} from 'recharts';
 
 
@@ -16,28 +17,8 @@ export default function DailyPNLReport() {
 
     const graphdata = graphdataarr;
 
-    
-
-    // const renderLineChart = (
-    //   <LineChart width={200} height={300} data={graphdata} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
-    //     <Line type="monotone" dataKey="pv" stroke="#8884d8" />
-    //     <CartesianGrid stroke="#ccc" strokeDasharray="2 5" />
-    //     <XAxis dataKey="name" />
-    //     <YAxis />
-    //     {/* <Tooltip /> */}
-    //   </LineChart>
-    // );
-    let baseUrl1 = process.env.NODE_ENV === "production" ? "/" : "http://localhost:9000/"
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
-    let socket;
-    try{
-        // socket = io.connect("http://localhost:9000/")
-        socket = io.connect(`${baseUrl1}`)
-
-    } catch(err){
-        throw new Error(err);
-    }
 
     let date = new Date();
     let valueInSecondDate = `${(date.getFullYear())}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
@@ -56,9 +37,9 @@ export default function DailyPNLReport() {
     const [marketData, setMarketData] = useState([]);
 
     let totalArr = [];
-    let [allBrokerage, setAllBrokerage] = useState(0);
-    let [allNet, setAllNet] = useState(0);
-    let [allGross, setAllGross] = useState(0);
+    let allBrokerage = 0;
+    let allNet = 0;
+    let allGross = 0;
     let userBrokerage = 0;
     let userGross = 0;
     let userNet = 0;
@@ -77,19 +58,6 @@ export default function DailyPNLReport() {
 
     let detailArr = [];
 
-    useEffect(()=>{
-        console.log("rendering")
-        console.log(socket);
-        socket.on("connect", ()=>{
-            console.log(socket.id);
-            socket.emit("hi",true)
-        })
-
-        socket.on("tick", (data) => {
-            console.log("this is live market data", data);
-            setMarketData(data);
-        })
-    },[])
 
     useEffect(()=>{
         axios.get(`${baseUrl}api/v1/readuserdetails`)
@@ -111,12 +79,8 @@ export default function DailyPNLReport() {
         })
         
         firstDateSplit = (firstDate).split("-");
-        // firstDate = `${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}`
-        // console.log(firstDate);
         let secondDateSplit = (secondDate).split("-");
-        // secondDate = `${secondDateSplit[0]}-${secondDateSplit[1]}-${secondDateSplit[2]}`
-        // console.log(firstDate ,secondDate);
-        // console.log(firstDate < secondDate);
+
     
         if(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate && noRender.current){
             while(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
@@ -179,19 +143,8 @@ export default function DailyPNLReport() {
             }
         }
 
-        // setInterval(()=>{
-        //     render ? setRender(false) : setRender(true)
-        // }, 5000)
-
     }, [getDetails,render, detailPnlArr])
 
-
-    useEffect(() => {
-        return () => {
-            console.log('closing');
-            socket.close();
-        }
-    }, [])
 
 
     function firstDateChange(e){
@@ -658,7 +611,7 @@ export default function DailyPNLReport() {
 
                                             <td className="grid2_td">{elem.numberOfTrader}</td>
                                             <td className="grid2_td">{elem.numberOfTrade}</td>
-                                            <td className="grid2_td"><button>Details</button></td>
+                                            <td className="grid2_td"><DetailsButtonPopup/></td>
 
                                         </tr>}
                                         </>

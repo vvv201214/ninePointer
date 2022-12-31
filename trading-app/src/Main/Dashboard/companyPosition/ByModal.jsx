@@ -46,18 +46,18 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany, symbo
     const [selected, setSelected] = useState("NRML");
     Details.Product = selected;
     const radioHandler = (e) => {
-        console.log(e.target.value);
+        //console.log(e.target.value);
         setSelected(e.target.value);
         Details.Product = e.target.value;
-        console.log(Details.Product);
+        //console.log(Details.Product);
     }
     const [marketselected, setMarketselected] = useState("MARKET");
     Details.OrderType = marketselected
     const radioHandlerTwo = (e)=>{
-        console.log(e.target.value);
+        //console.log(e.target.value);
         setMarketselected(e.target.value);
         Details.OrderType = e.target.value;
-        console.log(Details.OrderType)
+        //console.log(Details.OrderType)
     }
 
     const [validitySelected, setValiditySelected] = useState("DAY");
@@ -91,15 +91,15 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany, symbo
     for(let i =1; i<= finalLot; i++){
         optionData.push( <option value={i * lotSize} key={i}>{ i * lotSize}</option>)
     }
-    
-    // console.log(optionData);
 
-    useEffect(() => {
-
-        axios.get(`${baseUrl}api/v1/readpermission`)
+    const toggleModal = () => {
+        console.log("in toggle",modal)
+        if(!modal){
+            console.log("in modal")
+            axios.get(`${baseUrl}api/v1/readpermission`)
             .then((res) => {
                 let perticularUser = (res.data).filter((elem) => {
-                    console.log(elem.userId, userId);
+                    //console.log(elem.userId, userId);
                     return elem.userId === userId;
                 })
                 setUserPermission(perticularUser);
@@ -107,6 +107,41 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany, symbo
                 // window.alert("Server Down");
                 return new Error(err);
             })
+    
+            axios.get(`${baseUrl}api/v1/readtradingAlgo`)
+            .then((res) => {
+                setTradingAlgoData(res.data);
+            }).catch((err) => {
+                return new Error(err);
+            })
+
+        }
+
+
+        setModal(!modal);
+        console.log(modal)
+    };
+
+    if (modal) {
+        document.body.classList.add('active-modal')
+    } else {
+        document.body.classList.remove('active-modal')
+    }
+    
+
+    useEffect(() => {
+        console.log("rendering")
+        // axios.get(`${baseUrl}api/v1/readpermission`)
+        //     .then((res) => {
+        //         let perticularUser = (res.data).filter((elem) => {
+        //             //console.log(elem.userId, userId);
+        //             return elem.userId === userId;
+        //         })
+        //         setUserPermission(perticularUser);
+        //     }).catch((err) => {
+        //         // window.alert("Server Down");
+        //         return new Error(err);
+        //     })
 
         axios.get(`${baseUrl}api/v1/readRequestToken`)
             .then((res) => {
@@ -128,12 +163,12 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany, symbo
 
                 return new Error(err);
             })
-        axios.get(`${baseUrl}api/v1/readtradingAlgo`)
-            .then((res) => {
-                setTradingAlgoData(res.data);
-            }).catch((err) => {
-                return new Error(err);
-            })
+        // axios.get(`${baseUrl}api/v1/readtradingAlgo`)
+        //     .then((res) => {
+        //         setTradingAlgoData(res.data);
+        //     }).catch((err) => {
+        //         return new Error(err);
+        //     })
         axios.get(`${baseUrl}api/v1/readBrokerage`)
             .then((res) => {
                 setBrokerageData(res.data)
@@ -169,10 +204,10 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany, symbo
         perticularInstrumentData = tradeData.filter((elem) => {
             return elem.uId === uIdProps;
         })
-        console.log(perticularInstrumentData);
+        //console.log(perticularInstrumentData);
     }, [getDetails])
 
-
+    // console.log(tradingAlgoData, userPermission);
 
     const tradingAlgoArr = [];
     apiKeyDetails.map((elem) => {
@@ -185,84 +220,93 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany, symbo
         })
     })
 
-    console.log(userPermission, tradingAlgoArr);
+    
     const userPermissionAlgo = [];
     for (let elem of tradingAlgoArr) {
         for (let subElem of userPermission) {
-            if (elem.algoName === subElem.algoName) {
+            if (elem.algoName === subElem.algoName && subElem.isTradeEnable) {
                 userPermissionAlgo.push(elem)
             }
         }
     }
 
-    console.log(userPermissionAlgo); //its an array do everything according it
+    //console.log(userPermissionAlgo); //its an array do everything according it
 
 
-    const toggleModal = () => {
-        setModal(!modal);
-    };
 
-    if (modal) {
-        document.body.classList.add('active-modal')
-    } else {
-        document.body.classList.remove('active-modal')
-    }
     function FormHandler(e) {
         e.preventDefault()
     }
 
+    let tradeEnable ;
+    userPermission.map((elem)=>{
+        console.log(elem)
+        if(elem.isTradeEnable){
+            tradeEnable = true;
+        }
+    })
 
     function tradingAlgo(uId, lastPrice) {
         // if (userPermissionAlgo.length) {
         userPermissionAlgo.map((elem) => {
-            console.log(elem);
-            if (elem.transactionChange === "TRUE") {
-                companyTrade.realBuyOrSell = "SELL"
-            } else {
-                companyTrade.realBuyOrSell = "BUY"
-            }
+            //console.log(elem);
+            // if(elem.isTradeEnable){
 
-            companyTrade.realSymbol = Details.symbol
-            companyTrade.realInstrument = Details.instrument
-
-            // const getLastPrice = marketData.filter((elem)=>{
-            //     return elem.instrument_token === arr[0].instrumentToken;
-            // })
-
-            companyTrade.realQuantity = elem.lotMultipler * (Details.Quantity);
-            accessTokenDetails = accessTokenDetails.filter((element) => {
-                return elem.tradingAccount === element.accountId
-            })
-            setAccessToken(accessTokenDetails);
-            apiKeyDetails = apiKeyDetails.filter((element) => {
-                return elem.tradingAccount === element.accountId
-            })
-            setApiKey(apiKeyDetails);
-            companyTrade.real_last_price = lastPrice;
-            companyTrade.realAmount = companyTrade.real_last_price * companyTrade.realQuantity;
-            companyTrade.realBrokerage = buyBrokerageCharge(brokerageData, companyTrade.realQuantity, companyTrade.realAmount);
-            
-            setCompanyTrade(companyTrade)
-            console.log("companyTrade", companyTrade);
-            userPermission.map((subElem)=>{
-                if(subElem.algoName === elem.algoName){
-                    if(subElem.isRealTradeEnable || elem.isRealTrade){
-                        console.log("REALTRADE",subElem.isRealTradeEnable, elem.isRealTrade)
-                        sendOrderReq(elem, "yes");
-                        mockTradeCompany(elem, "yes");
-                        // mockTradeUser("yes");
-                    } else{
-                        // mockTradeUser("no");
-                        mockTradeCompany(elem, "no");
-                    }
+                if (elem.transactionChange === "TRUE") {
+                    companyTrade.realBuyOrSell = "SELL"
+                } else {
+                    companyTrade.realBuyOrSell = "BUY"
                 }
-            })
+    
+                companyTrade.realSymbol = Details.symbol
+                companyTrade.realInstrument = Details.instrument
+    
+                // const getLastPrice = marketData.filter((elem)=>{
+                //     return elem.instrument_token === arr[0].instrumentToken;
+                // })
+    
+                companyTrade.realQuantity = elem.lotMultipler * (Details.Quantity);
+                accessTokenDetails = accessTokenDetails.filter((element) => {
+                    return elem.tradingAccount === element.accountId
+                })
+                setAccessToken(accessTokenDetails);
+                apiKeyDetails = apiKeyDetails.filter((element) => {
+                    return elem.tradingAccount === element.accountId
+                })
+                setApiKey(apiKeyDetails);
+                companyTrade.real_last_price = lastPrice;
+                companyTrade.realAmount = companyTrade.real_last_price * companyTrade.realQuantity;
+                companyTrade.realBrokerage = buyBrokerageCharge(brokerageData, companyTrade.realQuantity, companyTrade.realAmount);
+                
+                setCompanyTrade(companyTrade)
+                //console.log("companyTrade", companyTrade);
+                userPermission.map((subElem)=>{
+                    if(subElem.algoName === elem.algoName){
+                        if(subElem.isRealTradeEnable || elem.isRealTrade){
+                            //console.log("REALTRADE",subElem.isRealTradeEnable, elem.isRealTrade)
+                            sendOrderReq(elem, "yes");
+                            mockTradeCompany(elem, "yes");
+                            // mockTradeUser("yes");
+                        } else{
+                            // mockTradeUser("no");
+                            mockTradeCompany(elem, "no");
+                        }
+                    }
+                })
+    
+
+            // }
             setModal(!modal);
         })
     }
 
     async function Buy(e, uId) {
         e.preventDefault()
+        if(!tradeEnable){
+            console.log("tradeEnable", tradeEnable)
+            window.alert("Your trade is disable, please contact to authorise person");
+            return;
+        }
         Details.buyOrSell = "BUY";
 
         if (bsBtn === true) {
@@ -296,7 +340,7 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany, symbo
             // }
             tradingAlgo(uId, Details.last_price);
         } else {
-            console.log(userPermissionAlgo , !isCompany)
+            //console.log(userPermissionAlgo , !isCompany)
             companyTrade.realBuyOrSell = "BUY";
             companyTrade.realSymbol = Details.symbol
             companyTrade.realInstrument = Details.instrument
@@ -359,11 +403,11 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany, symbo
         const dataResp = await res.json();
         if (dataResp.status === 422 || dataResp.error || !dataResp) {
             window.alert(dataResp.error);
-            console.log("Failed to Trade");
+            //console.log("Failed to Trade");
         } else {
-            console.log(dataResp);
+            //console.log(dataResp);
             // window.alert("Trade succesfull");
-            console.log("entry succesfull");
+            //console.log("entry succesfull");
         }
     }
 
@@ -389,11 +433,11 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany, symbo
         //     window.alert("Market is closed now");
         //     return;
         // }
-        // console.log(exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, createdBy, userId, createdOn, uId,
+        // //console.log(exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, createdBy, userId, createdOn, uId,
         //     realTrade, dummyOrderId);
         const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, instrumentToken } = Details;
         // const {algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount} = algoBox
-        console.log("instrumentToken", instrumentToken)
+        //console.log("instrumentToken", instrumentToken)
         const res = await fetch(`${baseUrl}api/v1/mocktradeuser`, {
             method: "POST",
             headers: {
@@ -406,28 +450,28 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany, symbo
             })
         });
         const dataResp = await res.json();
-        console.log(dataResp);
+        //console.log(dataResp);
         if (dataResp.status === 422 || dataResp.error || !dataResp) {
             window.alert(dataResp.error);
-            console.log("Failed to Trade");
+            //console.log("Failed to Trade");
         } else {
-            console.log(dataResp);
+            //console.log(dataResp);
             window.alert("Trade succesfull");
-            console.log("entry succesfull");
+            //console.log("entry succesfull");
         }
         // reRender ? setReRender(false) : setReRender(true)
     }
 
     async function mockTradeCompany(algoBox, realTrade){
-        console.log(Details);
+        //console.log(Details);
         // let currentTime = `${date.getHours()}:${date.getMinutes()}`
-        // console.log("currentTime", currentTime);
+        // //console.log("currentTime", currentTime);
         // if(currentTime > "15:30" || currentTime < "9:15"){
-        //     console.log("current if")
+        //     //console.log("current if")
         //     // window.alert("Market is closed now");
         //     return;
         // }
-        // console.log("compny side", exchange, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount, realBuyOrSell, realSymbol, realQuantity, real_last_price);
+        // //console.log("compny side", exchange, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount, realBuyOrSell, realSymbol, realQuantity, real_last_price);
         const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, instrumentToken } = Details;
         const { algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount } = algoBox;
         const { realBuyOrSell, realSymbol, realQuantity, realInstrument, realBrokerage, realAmount, real_last_price } = companyTrade;
@@ -447,27 +491,34 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany, symbo
         const dataResp = await res.json();
         if (dataResp.status === 422 || dataResp.error || !dataResp) {
             window.alert(dataResp.error);
-            console.log("Failed to Trade");
+            //console.log("Failed to Trade");
         } else {
-            console.log(dataResp);
+            //console.log(dataResp);
             window.alert("Trade succesfull");
-            console.log("entry succesfull");
+            //console.log("entry succesfull");
         }
         
     }
 
-    console.log(perticularInstrumentData);
+
+
+
+    //console.log(perticularInstrumentData);
 
     return (
         <>
-            {userPermission[0] === undefined ?
+            {/* {userPermission[0] === undefined ?
                 <button disabled={!userPermission.isTradeEnable} onClick={toggleModal} className="btn-modal By_btn">
                     BUY
                 </button>
-                :
+                :  disabled={!userPermission[0].isTradeEnable}
                 <button disabled={!userPermission[0].isTradeEnable} onClick={toggleModal} className="btn-modal By_btn">
                     BUY
-                </button>}
+                </button>} */}
+
+                <button onClick={toggleModal} className="btn-modal By_btn">
+                    BUY
+                </button>
 
                 
 

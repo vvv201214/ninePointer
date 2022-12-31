@@ -163,7 +163,7 @@ router.get("/readmocktradeusertodaydatapagination/:email/:skip/:limit", (req, re
 
 router.get("/readmocktradeuserDate", (req, res)=>{
     let date = new Date();
-    let todayDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
+    let todayDate = `${(date.getDate())}-${date.getMonth() + 1}-${date.getFullYear()}`
     const {email} = req.params
     MockTradeDetails.find({order_timestamp: {$regex: todayDate}})
     .then((data)=>{
@@ -183,7 +183,6 @@ router.get("/readmocktradeuserDate", (req, res)=>{
         return res.status(422).json({error : "date not found"})
     })
 })
-
 
 router.get("/readmocktradeusertodaydatapagination/:skip/:limit", (req, res)=>{
     let date = new Date();
