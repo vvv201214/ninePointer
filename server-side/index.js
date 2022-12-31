@@ -18,7 +18,6 @@ getKiteCred.getAccess().then((data)=>{
   createNewTicker(data.getApiKey, data.getAccessToken);
 });
 
-// const ticker = createNewTicker('nq0gipdzk0yexyko','DKW7CYJN50QSnjgzahQ9UjJqPFrChzOh');
 io.on("connection", (socket) => {
   console.log('client socket is' + socket.id);
   // socket1 = socket;
@@ -26,9 +25,7 @@ io.on("connection", (socket) => {
     // eventEmitOnError = data;
     getKiteCred.getAccess().then(async (data)=>{
       console.log(data);
-      // if(!data.getApiKey || !data.getAccessToken){
-      //   alert("AccessToken or ApiKey incorrect")
-      // }
+
       let tokens = await fetchData(data.getApiKey, data.getAccessToken);
       // console.log('tokens index', tokens);
   
@@ -37,24 +34,6 @@ io.on("connection", (socket) => {
       onError();
 
     });
-    // let tokens = await fetchData('nq0gipdzk0yexyko', '3oaejV3W4O56Bwk46QNQElg3n3HlIapg');
-    // console.log('tokens index', tokens.data);
-
-
-    // ticker.subscribe(tokens);
-    // ticker.setMode(ticker.modeFull, tokens);
-    // ticker.on('ticks', (ticks) => {
-    //   console.log('ticking');
-    //   console.log('tick', ticks);
-    //   if(ticks.length == tokens.length){
-    //     console.log('sending ticks', ticks);
-    //     socket.emit('tick', ticks); 
-    //   }
-    // });
-    // ticker.on('error', (error)=>{
-    //   console.log(error);
-    // });
-    // console.log(data);
   });
 });
 
