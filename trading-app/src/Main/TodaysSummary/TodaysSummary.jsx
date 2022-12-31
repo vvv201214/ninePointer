@@ -46,18 +46,8 @@ export default function TodaysSummary({ socket }) {
     let alltodaynetcompanypnl = 0;
     let alltodaynetuserpnl = 0;
     let alltodaytrades = 0;
-    let runninglots = 0;
-    let firstDateSplit;
+    let todayusertrades = 0;
 
-    let detailArr = [];
-
-    let detailPnlArr = [];
-
-    let totalArr = [];
-    let [allBrokerage, setAllBrokerage] = useState(0);
-    let [allNet, setAllNet] = useState(0);
-    let [allGross, setAllGross] = useState(0);
-    let [totaltrades, setTotalTrades] = useState(0);
 
     console.log(todayDate);
     let fake_date = "16-12-2022";
@@ -159,6 +149,7 @@ export default function TodaysSummary({ socket }) {
                             newObjoverallCompany.todaycompanypnl = newObjtodayCompany.pnl;
                             newObjoverallCompany.todaycompanybrokerage = newObjtodayCompany.brokerage;
                             newObjoverallCompany.overallusertrades = newObjoverallUser.numberOfTrade;
+                            newObjoverallCompany.todayusertrades = newObjtodayUser.numberOfTrade;
                             console.log(newObjoverallCompany);
 
                             //detailPnl.push(JSON.parse(JSON.stringify(newObjtodayCompany)));
@@ -234,8 +225,11 @@ export default function TodaysSummary({ socket }) {
         }
 
         if (elem.numberOfTrade) {
-            alltrades = alltrades + Number(elem.overallusertrades);
-            alltodaytrades = alltodaytrades + Number(elem.numberOfTrade);
+            alltrades = alltrades + Number(elem.numberOfTrade);
+        }
+
+        if (elem.todayusertrades) {
+            todayusertrades = todayusertrades + Number(elem.todayusertrades);
         }
 
         console.log(allcompanypnl);
@@ -403,7 +397,7 @@ export default function TodaysSummary({ socket }) {
                                     {/* {alltodaycompanypnl>0.00 ? "+₹" + (alltodaycompanypnl): "-₹" + (-(alltodaycompanypnl)) } */}
                                     <div class="text-white text-capitalize ps-3">Today's Trans. Cost(C):₹{(alltodaycompanybrokerage).toFixed(0)}</div>
                                     <div class="text-white text-capitalize ps-3">Today's Net(C-P&L): {alltodaynetcompanypnl >= 0.00 ? "+₹" + ((alltodaynetcompanypnl).toFixed(0)) : "-₹" + (-(alltodaynetcompanypnl).toFixed(0))}</div>
-                                    <div class="text-white text-capitalize ps-3">Today's Trades: {alltodaytrades}</div>
+                                    <div class="text-white text-capitalize ps-3">Today's Trades: {todayusertrades}</div>
                                 </div>
                                 <div class="pnlinfobox">
                                     <div class="text-white text-capitalize ps-3">Today's Gross(T-P&L): {alltodayuserpnl >= 0.00 ? "+₹" + ((alltodayuserpnl).toFixed(0)) : "-₹" + (-(alltodayuserpnl).toFixed(0))}</div>
