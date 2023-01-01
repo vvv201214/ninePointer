@@ -229,6 +229,7 @@ img{
 .Editbutton{
     float: left;
     font-size: 18px;
+    
 }
 .DetailsBtn{
     width: 5rem;
@@ -250,6 +251,7 @@ img{
     grid-gap: 5px;
     min-height: 40px;
     margin-bottom: 50px;
+    /* max-height: 40px; */
 }
 
 .userimage{
