@@ -75,102 +75,6 @@ export default function DailyPNLReport() {
 
     useEffect(()=>{
         let userData = [];
-        
-        // axios.get(`${baseUrl}api/v1/readmocktradecompanypariculardate/${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`)
-        // .then((res) => {
-        //     setcheckingRunningLot(pnlCalculation(res.data));
-        //     transactionCost = 0;
-        //     totalPnl = 0;
-        //     numberOfTrade = 0;
-        //     lotUsed = 0;
-        //     // console.log(checkingRunningLot);
-        // }).catch((err)=>{
-        //     return new Error(err);
-        // })
-
-        // axios.get(`${baseUrl}api/v1/readuserdetails`)
-        // .then((res) => {
-        //     userData = (res.data)
-        //     setUserDetail(res.data);
-
-        //     userData.map((elem)=>{
-        //         console.log(checkingRunningLot);
-        //         let mainObj = {};
-        //         firstDateSplit = (firstDate).split("-");
-        
-        //         if(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate  && noRender.current){
-        //             while(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` <= secondDate){
-        //                 //console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}` , secondDate)
-    
-        //                 const request1 = axios.get(`${baseUrl}api/v1/readmocktradecompanypariculardatewithemail/${`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`}/${elem.email}`)
-        //                 const request2 = axios.get(`${baseUrl}api/v1/readmocktradeuserpariculardatewithemail/${`${firstDateSplit[2]}-${firstDateSplit[1]}-${firstDateSplit[0]}`}/${elem.email}`)
-
-        //                 Promise.all([request1, request2])
-        //                 .then(([response1, response2]) => {
-        //                     const company = response1.data;
-        //                     const user = response2.data;
-        //                     let newObjCompany = pnlCalculation(company);
-        //                     transactionCost = 0;
-        //                     totalPnl = 0;
-        //                     numberOfTrade = 0;
-        //                     lotUsed = 0;
-        //                     let newObjUser = pnlCalculation(user);
-        //                     //console.log(newObjCompany, newObjUser)
-        //                     newObjCompany.traderpnl = newObjUser.pnl;
-        //                     newObjCompany.traderbrokerage = newObjUser.brokerage;
-        
-        //                     detailPnl.push(JSON.parse(JSON.stringify(newObjCompany)));
-                                
-        //                     transactionCost = 0;
-        //                     totalPnl = 0;
-        //                     numberOfTrade = 0;
-        //                     lotUsed = 0;
-                        
-        //                     // console.log(detailPnl);
-        //                     setDetailPnl(JSON.parse(JSON.stringify(detailPnl)))
-        //                     // do something with the users and posts data
-
-
-        //                 })
-        //                 .catch(error => {
-        //                     throw new Error(error);
-        //                 });
-     
-        //                 if((firstDateSplit[2]) < 9){
-        //                     (firstDateSplit[2]) = `0${Number(firstDateSplit[2]) + 1}`
-        //                 }
-        //                 else if((firstDateSplit[2]) === 31){
-        //                     (firstDateSplit[2]) = `01`;
-                            
-        //                     //console.log(`${firstDateSplit[0]}-${firstDateSplit[1]}-${firstDateSplit[2]}`)
-        //                     if((firstDateSplit[1]) < 9){
-        //                         (firstDateSplit[1]) = `0${Number(firstDateSplit[1]) + 1}`;
-        //                     }
-        //                     else if((firstDateSplit[1]) === 13){
-        //                         (firstDateSplit[1]) = `01`;
-        //                         (firstDateSplit[0]) = Number(firstDateSplit[0])+ 1;
-        //                     }else{
-        //                         (firstDateSplit[1]) = Number(firstDateSplit[1]) + 1;
-        //                     }
-        //                 }else{
-        //                     (firstDateSplit[2]) = Number(firstDateSplit[2]) + 1;
-        //                 }
-        //             }
-        //         } 
-    
-        //         // arr.push(detailPnlArr);
-        //         // setAllDate(arr)
-        //         console.log(detailPnlArr);
-                
-        //     })
-        //     noRender.current = false;
-
-        // }).catch((err)=>{
-        //     return new Error(err);
-        // })
-
-
-
         const request1 = axios.get(`${baseUrl}api/v1/readuserdetails`)
         const request2 = axios.get(`${baseUrl}api/v1/readmocktradecompanypariculardate/${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`)
 
@@ -178,6 +82,7 @@ export default function DailyPNLReport() {
         Promise.all([request1, request2])
         .then(([response1, response2]) => {
 
+            setUserDetail(response1.data);
             setcheckingRunningLot(pnlCalculation(response2.data));
             transactionCost = 0;
             totalPnl = 0;
