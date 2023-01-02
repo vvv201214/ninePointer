@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 require("../../db/conn");
 const Account = require("../../models/Trading Account/accountSchema");
+const {disconnectTicker, createNewTicker}  = require('../../marketData/kiteTicker');
+const getKiteCred = require('../../marketData/getKiteCred');
 
 router.post("/account", (req, res)=>{
     const {brokerName, accountId, accountName, apiKey, apiSecret, status, uId, createdOn, lastModified, createdBy} = req.body;
@@ -20,6 +22,14 @@ router.post("/account", (req, res)=>{
         const account = new Account({brokerName, accountId, accountName, apiKey, apiSecret, status, uId, createdOn, lastModified, createdBy});
 
         account.save().then(()=>{
+
+            disconnectTicker();
+            getKiteCred.getAccess().then((data) => {
+                console.log(data);
+                createNewTicker(data.getApiKey, data.getAccessToken);
+            });  
+
+            
             res.status(201).json({massage : "data enter succesfully"});
         }).catch((err)=> res.status(500).json({error:"Failed to enter data"}));
     }).catch(err => {console.log(err, "fail")});
@@ -63,7 +73,14 @@ router.put("/readAccountDetails/:id", async (req, res)=>{
                 status: req.body.Status,
                 lastModified: req.body.lastModified
             }
-        })
+        });
+        
+        disconnectTicker();
+        getKiteCred.getAccess().then((data) => {
+            console.log(data);
+            createNewTicker(data.getApiKey, data.getAccessToken);
+        });      
+
         console.log("this is role", account);
         res.send(account)
     } catch (e){

@@ -22,7 +22,7 @@ body {
     flex-direction: column;
     justify-content:space-around;
     /* margin-right: -1rem; */
-    background-color: #ffffff;
+    background-color: #f4f4f4;
     /* border-radius: 5px; */
     position: fixed;
     box-shadow: inset 2px 0px 0px 0px #eee;

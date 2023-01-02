@@ -10,7 +10,7 @@ function TodaysSummaryMain(){
     }, [])
 
     return(
-        < >
+        <>
             <div className="User_header">
             <h1>{`Hello ${getDetails.userDetails.name}! Welcome Back`}</h1>
             <div className="indexheader">

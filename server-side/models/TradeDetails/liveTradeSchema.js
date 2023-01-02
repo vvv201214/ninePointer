@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const mockTradeCompanySchema = new mongoose.Schema({
+const liveTrade = new mongoose.Schema({
     order_id:{
         type: String,
         required: true
@@ -84,10 +84,45 @@ const mockTradeCompanySchema = new mongoose.Schema({
         type: Number,
         required: true        
     },
+    exchange_order_id:{
+        type: String,
+    },
+    exchange_timestamp:{
+        type: String,
+    },
+    disclosed_quantity:{
+        type: String,
+        required: true
+    },
+    price:{
+        type: String,
+        required: true
+    },
+    filled_quantity:{
+        type: String,
+        required: true
+    },
+    pending_quantity:{
+        type: String,
+        required: true
+    },
+    cancelled_quantity:{
+        type: String,
+        required: true
+    },
+    market_protection:{
+        type: String,
+        required: true
+    },
+    guid:{
+        type: String,
+        required: true
+    },
     trade_time:{
         type: String,
-        required: true        
+        required: true
     },
+
     algoBox:{
         algoName:{
             type: String,
@@ -120,7 +155,10 @@ const mockTradeCompanySchema = new mongoose.Schema({
     }
 })
 
-const mockTradeCompanyDetails = mongoose.model("mock-trade-company", mockTradeCompanySchema);
-module.exports = mockTradeCompanyDetails;
+const liveTradeDetails = mongoose.model("live-trade-company", liveTrade);
+module.exports = liveTradeDetails;
+
+
+
 
 
