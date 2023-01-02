@@ -1,17 +1,32 @@
 import React, { useContext, useState } from "react";
 import { useEffect } from "react";
+import Styles from "./css/material-dashboard.css";
 import axios from "axios";
+import { userContext } from "../AuthContext";
+// import fonts from "./fonts";
+// import js from "./js";
+
+
+{/* <link id="pagestyle" href="./assets/css/material-dashboard.css?v=3.0.4" rel="stylesheet" /> */ }
 
 export default function TodaysSummary({ socket }) {
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
+    const setDetails = useContext(userContext);
+    const getDetails = useContext(userContext);
+    const [reRender, setReRender] = useState(true);
     const [tradeData, setTradeData] = useState([]);
+    const [data, setData] = useState([]);
+    const [userDetail, setUserDetail] = useState([]);
+    const [todaysTrades, setTodaysTrades] = useState([]);
     const [todayDetailpnl1, settodayDetailpnl1] = useState([]);
     const [marketData, setMarketData] = useState([]);
 
     let date = new Date();
     let todayDate = `${String((date.getDate()) - 1).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
+    // let fake_date = "2022-12-16"
 
     let todaydetailPnl = [];
+    let overalldetailPnl = [];
     let totalPnl = 0;
     let transactionCost = 0;
     let numberOfTrade = 0;
@@ -58,6 +73,38 @@ export default function TodaysSummary({ socket }) {
 
     console.log(todayDate);
     let fake_date = "16-12-2022";
+
+    // History Trade all users
+    // useEffect(() => {
+    //     axios.get(`${baseUrl}api/v1/readuserdetails`)
+    //         .then((res) => {
+    //             res.data.map((elem)=>{
+
+    //                 axios.get(`${baseUrl}api/v1/readmocktradeuseremail/${elem.email}`)
+    //                     .then((res) => {
+    //                         let overallpnl = pnlCalculation(res.data)
+    //                                 overallpnl = 0;
+    //                                 totalPnl = 0;
+    //                                 numberOfTrade = 0;
+    //                                 lotUsed = 0;
+    //                         console.log(overallpnl);
+    //                         overalldetailPnl.push(JSON.parse(JSON.stringify(overallpnl)));
+    //                         // todaydetailPnl.push(todayspnl);
+    //                         settodayDetailpnl1(JSON.parse(JSON.stringify(overalldetailPnl)));
+    //                     }).catch((err) => {
+    //                         return new Error(err);
+    //                     })
+
+    //             })
+    //             console.log(overalldetailPnl);
+    //             setUserDetail(res.data);
+    //         }).catch((err) => {
+    //             return new Error(err);
+    //         })
+    // },[])
+
+    // History Trades all users ends
+
 
 
     // New Code
@@ -241,7 +288,7 @@ export default function TodaysSummary({ socket }) {
 
                 })
                 console.log(todaydetailPnl);
-                // setUserDetail(res.data);
+                setUserDetail(res.data);
             }).catch((err) => {
                 return new Error(err);
             })
@@ -364,6 +411,23 @@ export default function TodaysSummary({ socket }) {
     allmonthnetuserpnl = allmonthuserpnl - allmonthuserbrokerage;
     allyearnetcompanypnl = allyearcompanypnl - allyearcompanybrokerage;
     allyearnetuserpnl = allyearuserpnl - allyearuserbrokerage;
+
+    
+
+    // useEffect(() => {
+    //     axios.get(`${baseUrl}api/v1/readmocktradeuserDate`)
+    //         .then((res) => {
+    //             setTodaysTrades(res.data);
+    //         }).catch((err) => {
+    //             return new Error(err);
+    //         })
+    // },[])
+    // console.log(todaysTrades);
+
+
+
+    // pnl calculation function start
+
 
 
     function pnlCalculation(data){
@@ -660,7 +724,11 @@ export default function TodaysSummary({ socket }) {
                                                     <p class="text-xs text-secondary mb-0">WTD: ₹{elem.weekcompanybrokerage ? (elem.weekcompanybrokerage).toFixed(0) : elem.weekcompanybrokerage}</p>
                                                 </td>
                                                 <td>
-
+                                                    <p class="text-xs font-weight-bold mb-0" style={(elem.todaycompanypnl - elem.todaycompanybrokerage) > 0.00 ? { color: "green" } : !(elem.todaycompanypnl - elem.todaycompanybrokerage) ? {color : "grey"} : { color: "red" }}>{elem.todaycompanyrunningLots === 0 ? ((elem.todaycompanypnl - elem.todaycompanybrokerage) > 0.00 ? "+₹" + ((elem.todaycompanypnl - elem.todaycompanybrokerage).toFixed(0)) : !(elem.todaycompanypnl - elem.todaycompanybrokerage) ? "₹" + 0 : "-₹" + ((-((elem.todaycompanypnl - elem.todaycompanybrokerage))).toFixed(0))) : "₹" + 0}</p>
+                                                    <p class="text-xs text-secondary mb-0" style={(elem.pnl - elem.brokerage) >= 0.00 ? { color: "green" } : { color: "red" }}>Lifetime: {elem.todaycompanyrunningLots === 0 ?((elem.pnl - elem.brokerage) > 0.00 ? "+₹" + ((elem.pnl - elem.brokerage).toFixed(0)) : (elem.pnl - elem.brokerage) === 0 ? " " : "-₹" + ((-((elem.pnl - elem.brokerage))).toFixed(0))) : "₹" + 0}</p>
+                                                    <p class="text-xs text-secondary mb-0" style={(elem.yearcompanypnl - elem.yearcompanybrokerage) >= 0.00 ? { color: "green" } : { color: "red" }}>YTD: {((elem.yearcompanypnl - elem.yearcompanybrokerage) ? (elem.yearcompanypnl - elem.yearcompanybrokerage) > 0.00 ? "+₹" + ((elem.yearcompanypnl - elem.yearcompanybrokerage).toFixed(0)) : (elem.yearcompanypnl - elem.yearcompanybrokerage) === 0 ? " " : "-₹" + ((-((elem.yearcompanypnl - elem.yearcompanybrokerage))).toFixed(0)) : "₹" + 0)}</p>
+                                                    <p class="text-xs text-secondary mb-0" style={(elem.monthcompanypnl - elem.monthcompanybrokerage) >= 0.00 ? { color: "green" } : { color: "red" }}>MTD: {((elem.monthcompanypnl - elem.monthcompanybrokerage) ? (elem.monthcompanypnl - elem.monthcompanybrokerage) > 0.00 ? "+₹" + ((elem.monthcompanypnl - elem.monthcompanybrokerage).toFixed(0)) : (elem.monthcompanypnl - elem.monthcompanybrokerage) === 0 ? " " : "-₹" + ((-((elem.monthcompanypnl - elem.monthcompanybrokerage))).toFixed(0)): "₹" + 0)}</p>
+                                                    <p class="text-xs text-secondary mb-0" style={(elem.weekcompanypnl - elem.weekcompanybrokerage) >= 0.00 ? { color: "green" } : { color: "red" }}>WTD: {((elem.weekcompanypnl - elem.weekcompanybrokerage) ? (elem.weekcompanypnl - elem.weekcompanybrokerage) > 0.00 ? "+₹" + ((elem.weekcompanypnl - elem.weekcompanybrokerage).toFixed(0)) : (elem.weekcompanypnl - elem.weekcompanybrokerage) === 0 ? " " : "-₹" + ((-((elem.weekcompanypnl - elem.weekcompanybrokerage))).toFixed(0)) : "₹" + 0)}</p>
                                                 </td>
                                                 <td>
                                                     <p class="text-xs font-weight-bold mb-0" style={elem.traderpnl > 0.00 ? { color: "green" } : !elem.traderpnl ? {color:"grey"} : { color: "red" }}>{elem.traderpnl > 0.00 ? "+₹" + (elem.traderpnl.toFixed(0)) : !elem.traderpnl ? "₹" + 0 : "-₹" + ((-(elem.traderpnl)).toFixed(0))}</p>
@@ -705,6 +773,8 @@ export default function TodaysSummary({ socket }) {
 
                                     )
                                 })}
+
+
 
                             </table>
                         </div>
