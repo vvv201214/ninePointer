@@ -34,12 +34,12 @@ router.post("/placeorder", (async (req, res)=>{
     let orderData;
 
 
-    variety = "amo";
-    Price = 8;
-    TriggerPrice = 8;
-    realQuantity = 10;
-    OrderType = "LIMIT";
-    Product = "MIS"
+    // variety = "amo";
+    // Price = 8;
+    // TriggerPrice = 8;
+    // realQuantity = 10;
+    // OrderType = "LIMIT";
+    // Product = "MIS"
 
     if(variety === "amo"){
         orderData = new URLSearchParams({
