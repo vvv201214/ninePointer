@@ -846,3 +846,4 @@ export default function DailyPNLReport() {
         </div>
     )
 }
+

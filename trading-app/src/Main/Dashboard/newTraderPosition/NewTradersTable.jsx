@@ -30,6 +30,7 @@ export default function NewTradersTable({socket}) {
         return new Error(err);
     })
 
+    
   axios.get(`${baseUrl}api/v1/readmocktradeuserDate`)
       .then((res) => {
         //   let data = (res.data).filter((elem) => {

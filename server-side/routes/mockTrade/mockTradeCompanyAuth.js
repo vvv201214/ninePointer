@@ -153,7 +153,6 @@ router.get("/readmocktradecompany", (req, res)=>{
             return res.status(500).send(err);
         }else{
             (data).sort((a, b)=> {
-
                 if (a.order_timestamp < b.order_timestamp) {
                   return 1;
                 }
@@ -165,6 +164,16 @@ router.get("/readmocktradecompany", (req, res)=>{
             return res.status(200).send(data);
         }
     }).sort({$natural:-1})
+})
+
+router.get("/readmocktradecompanycount", (req, res)=>{
+    MockTradeDetails.count((err, data)=>{
+        if(err){
+            return res.status(500).send(err);
+        }else{
+            res.json(data)
+        }
+    })
 })
 
 router.get("/readmocktradecompany/:id", (req, res)=>{
