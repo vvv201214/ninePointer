@@ -3,18 +3,29 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Styles from "./CompanyOrder.module.css"
 
-export default function HistoryTradesMock({setOrderCountHistoryCompany, orderCountHistoryCompany}){
+export default function CompanyHistoryTradesLive(){
 
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
     const [data, setData] = useState([]);
     const [clickToRemove, setclickToRemove] = useState(1);
     const [skip, setSkip] = useState(0);
+    const [griddatacount, setgriddatacount] = useState(0);
     let numberOfClickForRemoveNext = 0
 
     useEffect(()=>{
 
-        axios.get(`${baseUrl}api/v1/readmocktradecompanypagination/${skip}/${30}`)
+        axios.get(`${baseUrl}api/v1/readlivetradecompany`)
+        .then((res)=>{
+
+            
+            setgriddatacount((res.data).length);
+        }).catch((err)=>{
+            window.alert("Server Down");
+            return new Error(err);
+        })
+
+        axios.get(`${baseUrl}api/v1/readlivetradecompanypagination/${skip}/${30}`)
         .then((res)=>{
 
             setData(res.data);
@@ -27,7 +38,7 @@ export default function HistoryTradesMock({setOrderCountHistoryCompany, orderCou
     function nextData(){
         setSkip((prev)=> prev+30)
         console.log(skip)
-        axios.get(`${baseUrl}api/v1/readmocktradecompanypagination/${skip+30}/${30}`)
+        axios.get(`${baseUrl}api/v1/readlivetradecompanypagination/${skip+30}/${30}`)
         .then((res)=>{
 
             setData(res.data);
@@ -41,7 +52,7 @@ export default function HistoryTradesMock({setOrderCountHistoryCompany, orderCou
     function prevData(){
         setSkip((prev)=> prev-30)
         console.log(skip)
-        axios.get(`${baseUrl}api/v1/readmocktradecompanypagination/${skip-30}/${30}`)
+        axios.get(`${baseUrl}api/v1/readlivetradecompanypagination/${skip-30}/${30}`)
         .then((res)=>{
 
             setData(res.data);
@@ -51,8 +62,8 @@ export default function HistoryTradesMock({setOrderCountHistoryCompany, orderCou
         })
         setclickToRemove((prev)=>prev-1)
     }
-    numberOfClickForRemoveNext = Math.ceil(((orderCountHistoryCompany))/30);
-    console.log(numberOfClickForRemoveNext, clickToRemove, orderCountHistoryCompany)
+    numberOfClickForRemoveNext = Math.ceil(((griddatacount))/30);
+    console.log(numberOfClickForRemoveNext, clickToRemove, griddatacount)
 
 
     return(

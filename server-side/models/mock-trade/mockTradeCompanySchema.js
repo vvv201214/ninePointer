@@ -84,6 +84,10 @@ const mockTradeCompanySchema = new mongoose.Schema({
         type: Number,
         required: true        
     },
+    trade_time:{
+        type: String,
+        required: true        
+    },
     algoBox:{
         algoName:{
             type: String,

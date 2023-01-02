@@ -3,18 +3,27 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Styles from "./CompanyOrder.module.css"
 
-export default function HistoryTradesMock({setOrderCountHistoryCompany, orderCountHistoryCompany}){
-
+function CompanyTodaysTradesLive(){
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
     const [data, setData] = useState([]);
     const [clickToRemove, setclickToRemove] = useState(1);
     const [skip, setSkip] = useState(0);
+    const [length, setLength] = useState(0);
     let numberOfClickForRemoveNext = 0
 
     useEffect(()=>{
 
-        axios.get(`${baseUrl}api/v1/readmocktradecompanypagination/${skip}/${30}`)
+        axios.get(`${baseUrl}api/v1/readlivetradecompanyDate`)
+        .then((res)=>{
+            setLength((res.data).length);            
+            //setOrderCountTodayCompany((res.data).length);
+        }).catch((err)=>{
+            window.alert("Server Down");
+            return new Error(err);
+        })
+
+        axios.get(`${baseUrl}api/v1/readlivetradecompanytodaydatapagination/${skip}/${30}`)
         .then((res)=>{
 
             setData(res.data);
@@ -27,7 +36,7 @@ export default function HistoryTradesMock({setOrderCountHistoryCompany, orderCou
     function nextData(){
         setSkip((prev)=> prev+30)
         console.log(skip)
-        axios.get(`${baseUrl}api/v1/readmocktradecompanypagination/${skip+30}/${30}`)
+        axios.get(`${baseUrl}api/v1/readlivetradecompanytodaydatapagination/${skip+30}/${30}`)
         .then((res)=>{
 
             setData(res.data);
@@ -41,7 +50,7 @@ export default function HistoryTradesMock({setOrderCountHistoryCompany, orderCou
     function prevData(){
         setSkip((prev)=> prev-30)
         console.log(skip)
-        axios.get(`${baseUrl}api/v1/readmocktradecompanypagination/${skip-30}/${30}`)
+        axios.get(`${baseUrl}api/v1/readlivetradecompanytodaydatapagination/${skip-30}/${30}`)
         .then((res)=>{
 
             setData(res.data);
@@ -51,9 +60,8 @@ export default function HistoryTradesMock({setOrderCountHistoryCompany, orderCou
         })
         setclickToRemove((prev)=>prev-1)
     }
-    numberOfClickForRemoveNext = Math.ceil(((orderCountHistoryCompany))/30);
-    console.log(numberOfClickForRemoveNext, clickToRemove, orderCountHistoryCompany)
-
+    numberOfClickForRemoveNext = Math.ceil(((length))/30);
+    console.log(numberOfClickForRemoveNext, clickToRemove, length)
 
     return(
         <div>
@@ -75,7 +83,6 @@ export default function HistoryTradesMock({setOrderCountHistoryCompany, orderCou
                                     <th className="grid2_th">Status</th>
                                     <th className="grid2_th">AlgoName</th>
                                     <th className="grid2_th">Account</th>
-                                    
                                 </tr> 
                                 {data.map((elem)=>{
                                     return(
@@ -91,14 +98,14 @@ export default function HistoryTradesMock({setOrderCountHistoryCompany, orderCou
                                             <td className="grid2_td" style={elem.status == "COMPLETE" ? {color : "#008000",backgroundColor : "#99ff99" , fontWeight : 700} : {color : "white",backgroundColor : "red" , fontWeight : 700}}>{elem.status}</td>
                                             <td className="grid2_td">{elem.algoBox.algoName}</td>
                                             <td className="grid2_td">{elem.placed_by}</td>
-                                            
                                         </tr> 
                                     )
                                 })}        
                             </table> 
                             <div className={Styles.pegination_div}>
                                 <button className={Styles.PrevButtons} disabled={!(skip !== 0)} onClick={prevData}>Prev</button>
-                                <div className={Styles.pageCounting}>{(clickToRemove-1)*30}-{(clickToRemove)*30}</div>
+                                {(numberOfClickForRemoveNext !== clickToRemove) &&
+                                <div className={Styles.pageCounting}>{(clickToRemove-1)*30}-{(clickToRemove)*30}</div>}
                                 <button className={Styles.nextButtons} disabled={!(numberOfClickForRemoveNext !== clickToRemove)} onClick={nextData}>Next</button>
                             </div>
                         </div>
@@ -108,3 +115,4 @@ export default function HistoryTradesMock({setOrderCountHistoryCompany, orderCou
         </div>
     )
 }
+export default CompanyTodaysTradesLive;

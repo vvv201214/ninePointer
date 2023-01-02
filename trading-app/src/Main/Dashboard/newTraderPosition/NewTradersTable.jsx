@@ -37,6 +37,7 @@ export default function NewTradersTable({socket}) {
         //       return elem.order_timestamp.includes(todayDate) && elem.status === "COMPLETE";
         //   })
           setData(res.data);
+          
       }).catch((err) => {
           return new Error(err);
       })
@@ -77,6 +78,7 @@ export default function NewTradersTable({socket}) {
       }
   }, [])
 
+  console.log(data);
   console.log(marketData);
 
 
@@ -90,7 +92,15 @@ export default function NewTradersTable({socket}) {
                     <div className="rightside_maindiv">
                     <div className={Styles.gridheader}>
                     <div className={Styles.box}>
-                        <span className={Styles.header}>Overall P&L(Traders)-Mock</span>
+                        <span className={Styles.header}>Overall P&L(Traders) - Mock</span>
+                        <div className="grid_2">
+                            <OverallPnl marketData={marketData} tradeData={tradeData} data={data} />
+                        </div>
+                    </div>
+                    </div>
+                    <div className={Styles.gridheader}>
+                    <div className={Styles.box}>
+                        <span className={Styles.header}>Overall P&L(Traders) - Live</span>
                         <div className="grid_2">
                             <OverallPnl marketData={marketData} tradeData={tradeData} data={data} />
                         </div>
@@ -104,6 +114,13 @@ export default function NewTradersTable({socket}) {
                         <div className="grid_2">
                             <ClosedPnl marketData={marketData} tradeData={tradeData} data={data} />
                         </div> */}
+                        <div className={Styles.gridheader}>
+                        <div className={Styles.box}>
+                        <span className={Styles.header}>Traders Wise P&L(Traders)-Mock</span>
+                        
+                            <TradersPNLTrader marketData={marketData} tradeData={tradeData} />
+                        
+                        </div></div>
                         <div className={Styles.gridheader}>
                         <div className={Styles.box}>
                         <span className={Styles.header}>Traders Wise P&L(Traders)-Mock</span>

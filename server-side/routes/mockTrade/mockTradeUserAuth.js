@@ -1,5 +1,8 @@
 const express = require("express");
 const router = express.Router();
+const pnlcalucationnorunninglots = require("../pnlcalculation");
+const pnlcalucationnorunninglotsuser = require("../userpnlcalculation");
+const UserDetails = require("../../models/User/userDetailSchema");
 require("../../db/conn");
 const MockTradeDetails = require("../../models/mock-trade/mockTradeUserSchema");
 const axios = require('axios');
@@ -163,7 +166,7 @@ router.get("/readmocktradeusertodaydatapagination/:email/:skip/:limit", (req, re
 
 router.get("/readmocktradeuserDate", (req, res)=>{
     let date = new Date();
-    let todayDate = `${(date.getDate())}-${date.getMonth() + 1}-${date.getFullYear()}`
+    let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
     const {email} = req.params
     MockTradeDetails.find({order_timestamp: {$regex: todayDate}})
     .then((data)=>{
@@ -267,5 +270,199 @@ router.get("/readmocktradeuserpariculardate/:date", (req, res)=>{
         return res.status(422).json({error : "date not found"})
     })
 })
+
+router.get("/readmocktradeuserThisWeek/:email", (req, res)=>{
+    const {email} = req.params
+    let date = new Date();
+    console.log(date);
+    let todayDate = `${(date.getFullYear())}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
+    console.log(todayDate);
+
+    let weekday = date.getDay();
+    console.log("Weekday"+weekday);
+    
+    var day = new Date(todayDate);
+    console.log(day); // Apr 30 2000
+
+    var nextDay = new Date(day);
+    nextDay.setDate(day.getDate() + 2);
+    console.log(nextDay);
+    let nextDate = `${(nextDay.getFullYear())}-${String(nextDay.getMonth() + 1).padStart(2, '0')}-${String(nextDay.getDate()).padStart(2, '0')}`
+
+    var weekStartDay = new Date(day);
+    weekStartDay.setDate(day.getDate() - weekday);
+    //console.log(String(weekStartDay).slice(0,10));
+    let weekStartDate = `${(weekStartDay.getFullYear())}-${String(weekStartDay.getMonth() + 1).padStart(2, '0')}-${String(weekStartDay.getDate()).padStart(2, '0')}`
+
+    MockTradeDetails.find({trade_time: {$gte:weekStartDate,$lt:nextDate}, userId:email})
+    .then((data)=>{
+        return res.status(200).send(data);
+    })
+    .catch((err)=>{
+        return res.status(422).json({error : "date not found"})
+    })
+
+})
+
+router.get("/readmocktradeuserThisMonth/:email", (req, res)=>{
+    const {email} = req.params
+    let date = new Date();
+    let todayDate = `${(date.getFullYear())}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
+    console.log(todayDate);
+
+    var day = new Date(todayDate);
+    console.log(day); // Apr 30 2000
+
+    var nextDay = new Date(day);
+    nextDay.setDate(day.getDate() + 1);
+    console.log(nextDay);
+
+    let monthStart = `${(date.getFullYear())}-${String(date.getMonth() + 1).padStart(2, '0')}-01`
+    MockTradeDetails.find({trade_time: {$gte:monthStart,$lt: nextDay}, userId: {$regex: email}})
+    .then((data)=>{
+        return res.status(200).send(data);
+    })
+    .catch((err)=>{
+        return res.status(422).json({error : "date not found"})
+    })
+})
+
+router.get("/readmocktradeuserThisYear/:email", (req, res)=>{
+    const {email} = req.params
+    let date = new Date();
+    let todayDate = `${(date.getFullYear())}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
+    console.log("Today Date"+todayDate);
+
+    var day = new Date(todayDate);
+    console.log(day); // Apr 30 2000
+
+    var nextDay = new Date(day);
+    nextDay.setDate(day.getDate() + 1);
+    console.log(nextDay);
+
+    let yearStart = `${(date.getFullYear())}-01-01`
+    console.log(yearStart);
+    console.log(email);
+    MockTradeDetails.find({trade_time: {$gte:yearStart,$lt:nextDay}, userId:email})
+    .then((data)=>{
+        return res.status(200).send(data);
+    })
+    .catch((err)=>{
+        return res.status(422).json({error : "date not found"})
+    })
+})
+
+router.get("/updatemocktradedatatradetimeuser", async(req, res)=>{
+    // let date = new Date();
+    // let id = data._id;
+    // let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
+    // const {email} = req.params
+    // console.log(todayDate)
+    let datatoupdate = await MockTradeDetails.find()
+   
+    //console.log(datatoupdate);
+
+   
+        for(let i = 0; i< datatoupdate.length; i++ ){
+            if(!datatoupdate[i].trade_time){
+            // console.log(datatoupdate[i]);
+            let datetime = datatoupdate[i].order_timestamp.split(" ");
+            let datepart = datetime[0];
+            let datetoupdate = datetime[0].split("-");
+            let timepart = datetime[1]; 
+            let trade_time = `${datetoupdate[2]}-${datetoupdate[1]}-${datetoupdate[0]} ${datetime[1]}`
+            console.log(trade_time);
+
+            await MockTradeDetails.findByIdAndUpdate(datatoupdate[i]._id, {trade_time : trade_time},
+                function (err, trade_time) {
+                    if (err){
+                        console.log(err)
+                    }
+                    else{
+                        console.log("Trade Time : ", trade_time);
+                    }
+        }).clone();
+        }
+    }
+})
+
+router.get("/updatemocktradedataamountuser", async(req, res)=>{
+    // let date = new Date();
+    // let id = data._id;
+    // let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
+    // const {email} = req.params
+    // console.log(todayDate)
+    let datatoupdate = await MockTradeDetails.find()
+    console.log(datatoupdate);
+
+
+        for(let i = 0; i< datatoupdate.length; i++ ){
+            if(!datatoupdate[i].amount){
+            //console.log(datatoupdate[i]);
+            await MockTradeDetails.findByIdAndUpdate(datatoupdate[i]._id, {amount : Number(datatoupdate[i].Quantity) * datatoupdate[i].average_price},
+                function (err, amount) {
+                    if (err){
+                        console.log(err)
+                    }
+                    else{
+                        console.log("Trade Time : ", amount);
+                    }
+        }).clone();
+        }
+    }
+})
+
+router.get("/pnlcalucationmocktradeallusertoday", (req, res)=>{
+    let date = new Date();
+    let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
+    const {email} = req.params
+    MockTradeDetails.find({order_timestamp: {$regex: todayDate}})
+    .then((data)=>{
+        // (data).sort((a, b)=> {
+
+        //     if (a.order_timestamp < b.order_timestamp) {
+        //       return 1;
+        //     }
+        //     if (a.order_timestamp > b.order_timestamp) {
+        //       return -1;
+        //     }
+        //     return 0;
+        //   });
+
+        //pnl calculation start
+
+            let overallnewpnl = pnlcalucationnorunninglots(data);
+            console.log(overallnewpnl);
+    
+    
+        //pnl calculation ends
+        return res.status(200).send(overallnewpnl);
+    })
+    .catch((err)=>{
+        return res.status(422).json({error : "date not found"})
+    })
+})
+
+router.get("/pnlcalucationmocktradeusertoday", async(req, res)=>{
+    let date = new Date();
+    let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
+    const {email} = req.params
+
+        MockTradeDetails.find({order_timestamp: {$regex: todayDate}})
+            .then(async(data)=>{
+                let overallnewpnl = await pnlcalucationnorunninglotsuser(data);
+                console.log(overallnewpnl);
+                //traderwisepnl.push(overallnewpnl);
+                console.log(overallnewpnl);
+                return res.status(200).send(overallnewpnl);
+            })
+                .catch((err)=>{
+                    return res.status(422).json({error : "date not found"})
+                })
+
+        //return res.status(200).send(traderwisepnl);
+})
+
+
 
 module.exports = router;

@@ -95,7 +95,7 @@ function TodaysTradesMock({setOrderCountTodayCompany, orderCountTodayCompany}){
                                             <td className="grid2_td">{elem.Product}</td>
                                             <td className="grid2_td" style={elem.Quantity > 0 ? {color : "#428BCA",backgroundColor : "#b3ccff",fontWeight : 700}:{color : "red", backgroundColor : "#ffb3b3",fontWeight : 700}}>{elem.Quantity}</td>
                                             <td className="grid2_td">₹{elem.average_price.toFixed(2)}</td>
-                                            <td className="grid2_td" style={{color : "#008000",backgroundColor : "#99ff99" , fontWeight : 700}}>{elem.status}</td>
+                                            <td className="grid2_td" style={elem.status == "COMPLETE" ? {color : "#008000",backgroundColor : "#99ff99" , fontWeight : 700} : {color : "white",backgroundColor : "red" , fontWeight : 700}}>{elem.status}</td>
                                             <td className="grid2_td">{elem.algoBox.algoName}</td>
                                             <td className="grid2_td">{elem.placed_by}</td>
                                         </tr> 

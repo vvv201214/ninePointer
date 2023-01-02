@@ -51,13 +51,17 @@ let newCors = process.env.NODE_ENV === "production" ? "http://3.110.187.5/" : "h
 app.use(cors({
   credentials:true,
 
-  // origin: "http://3.110.187.5/"
-  origin: newCors
+  origin: "http://3.110.187.5/"
+  // origin: newCors
 
 }));
 
 app.use(express.json());
 
+
+//Update 
+// app.use('/api/v1', require("./routes/TradeData/getCompanyTrade"));
+//Update
 app.use('/api/v1', require("./marketData/livePrice"));
 app.use('/api/v1', require("./routes/user/userLogin"));
 app.use('/api/v1', require('./routes/TradeData/getUserTrade'));
