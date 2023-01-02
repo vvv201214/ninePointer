@@ -10,6 +10,7 @@ import RunningPnl from "../PnlParts/RunningPnl";
 import ClosedPnl from "../PnlParts/ClosedPnl";
 import OverallPnl from "../PnlParts/OverallPnl";
 import TradersPnlCompany from "../PnlParts/TradersPnlCompany";
+import TradersPnlLiveCompany from "../PnlParts/TradersPnlLiveCompany";
 import Styles from "../Dashboard.module.css";
 
 function CompanyPositionTable({ socket }) {
@@ -21,6 +22,7 @@ function CompanyPositionTable({ socket }) {
     const [reRender, setReRender] = useState(true);
     const [marketData, setMarketData] = useState([]);
     const [data, setData] = useState([]);
+    const [livedata, setLiveData] = useState([]);
     let date = new Date();
     let todayDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
     let fake_date = "16-12-2022"
@@ -33,6 +35,17 @@ function CompanyPositionTable({ socket }) {
                 // })
                 console.log("data", res.data)
                 setData(res.data);
+            }).catch((err) => {
+                return new Error(err);
+            })
+        
+            axios.get(`${baseUrl}api/v1/readlivetradecompanyDate`)
+            .then((res) => {
+                // let data = (res.data).filter((elem) => {
+                //     return elem.order_timestamp.includes(todayDate) && elem.status === "COMPLETE";
+                // })
+                console.log("data", res.data)
+                setLiveData(res.data);
             }).catch((err) => {
                 return new Error(err);
             })
@@ -137,7 +150,7 @@ function CompanyPositionTable({ socket }) {
                         <span className={Styles.gridheader}>
                         <div className={Styles.box}>
                                 <div class={Styles.header}>Overall P&L(Company) - Live</div>
-                            <OverallPnl marketData={marketData} tradeData={tradeData} data={data} />
+                            <OverallPnl marketData={marketData} tradeData={tradeData} data={livedata} />
                         </div></span>
                         
                         {/* <span className="grid2_span">Running PNL-Company</span>
@@ -156,7 +169,7 @@ function CompanyPositionTable({ socket }) {
                         <span className={Styles.gridheader}>
                             <div className={Styles.box}>
                             <div className={Styles.header}>Trader Wise P&L(Company) - Live</div>
-                                <TradersPnlCompany marketData={marketData} tradeData={tradeData}/>          
+                                <TradersPnlLiveCompany marketData={marketData} tradeData={tradeData}/>          
                         </div></span>
                 </div>
             </div>

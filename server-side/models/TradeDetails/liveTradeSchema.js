@@ -118,6 +118,10 @@ const liveTrade = new mongoose.Schema({
         type: String,
         required: true
     },
+    trade_time:{
+        type: String,
+        required: true
+    },
 
     algoBox:{
         algoName:{

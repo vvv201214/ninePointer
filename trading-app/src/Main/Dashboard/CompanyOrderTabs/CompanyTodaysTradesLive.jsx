@@ -3,7 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Styles from "./CompanyOrder.module.css"
 
-function TodaysTradesLive({setOrderCountTodayCompany, orderCountTodayCompany}){
+function CompanyTodaysTradesLive(){
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
     const [data, setData] = useState([]);
@@ -14,16 +14,16 @@ function TodaysTradesLive({setOrderCountTodayCompany, orderCountTodayCompany}){
 
     useEffect(()=>{
 
-        axios.get(`${baseUrl}api/v1/readmocktradecompanyDate`)
+        axios.get(`${baseUrl}api/v1/readlivetradecompanyDate`)
         .then((res)=>{
             setLength((res.data).length);            
-            setOrderCountTodayCompany((res.data).length);
+            //setOrderCountTodayCompany((res.data).length);
         }).catch((err)=>{
             window.alert("Server Down");
             return new Error(err);
         })
 
-        axios.get(`${baseUrl}api/v1/readmocktradecompanytodaydatapagination/${skip}/${30}`)
+        axios.get(`${baseUrl}api/v1/readlivetradecompanytodaydatapagination/${skip}/${30}`)
         .then((res)=>{
 
             setData(res.data);
@@ -36,7 +36,7 @@ function TodaysTradesLive({setOrderCountTodayCompany, orderCountTodayCompany}){
     function nextData(){
         setSkip((prev)=> prev+30)
         console.log(skip)
-        axios.get(`${baseUrl}api/v1/readmocktradecompanytodaydatapagination/${skip+30}/${30}`)
+        axios.get(`${baseUrl}api/v1/readlivetradecompanytodaydatapagination/${skip+30}/${30}`)
         .then((res)=>{
 
             setData(res.data);
@@ -50,7 +50,7 @@ function TodaysTradesLive({setOrderCountTodayCompany, orderCountTodayCompany}){
     function prevData(){
         setSkip((prev)=> prev-30)
         console.log(skip)
-        axios.get(`${baseUrl}api/v1/readmocktradecompanytodaydatapagination/${skip-30}/${30}`)
+        axios.get(`${baseUrl}api/v1/readlivetradecompanytodaydatapagination/${skip-30}/${30}`)
         .then((res)=>{
 
             setData(res.data);
@@ -95,7 +95,7 @@ function TodaysTradesLive({setOrderCountTodayCompany, orderCountTodayCompany}){
                                             <td className="grid2_td">{elem.Product}</td>
                                             <td className="grid2_td" style={elem.Quantity > 0 ? {color : "#428BCA",backgroundColor : "#b3ccff",fontWeight : 700}:{color : "red", backgroundColor : "#ffb3b3",fontWeight : 700}}>{elem.Quantity}</td>
                                             <td className="grid2_td">₹{elem.average_price.toFixed(2)}</td>
-                                            <td className="grid2_td" style={{color : "#008000",backgroundColor : "#99ff99" , fontWeight : 700}}>{elem.status}</td>
+                                            <td className="grid2_td" style={elem.status == "COMPLETE" ? {color : "#008000",backgroundColor : "#99ff99" , fontWeight : 700} : {color : "white",backgroundColor : "red" , fontWeight : 700}}>{elem.status}</td>
                                             <td className="grid2_td">{elem.algoBox.algoName}</td>
                                             <td className="grid2_td">{elem.placed_by}</td>
                                         </tr> 
@@ -115,4 +115,4 @@ function TodaysTradesLive({setOrderCountTodayCompany, orderCountTodayCompany}){
         </div>
     )
 }
-export default TodaysTradesLive;
+export default CompanyTodaysTradesLive;

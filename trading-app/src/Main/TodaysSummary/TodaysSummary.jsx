@@ -57,6 +57,18 @@ export default function TodaysSummary({ socket }) {
     let allweekuserpnl = 0;
     let allweekuserbrokerage = 0;
     let weekusertrades = 0;
+    let runningLots = 0;
+    let allweeknetcompanypnl = 0;
+    let allmonthnetcompanypnl = 0;
+    let allyearcompanypnl = 0;
+    let allyearcompanybrokerage = 0;
+    let allyearuserpnl = 0;
+    let allyearuserbrokerage = 0;
+    let allyearnetcompanypnl = 0;
+    let yearusertrades = 0;
+    let allyearnetuserpnl = 0;
+    let allmonthnetuserpnl = 0;
+    let allweeknetuserpnl = 0;
 
 
     console.log(todayDate);
@@ -129,6 +141,7 @@ export default function TodaysSummary({ socket }) {
                     console.log(`${baseUrl}api/v1/readmocktradeuserThisYear/${elem.email}`);
                     const request10 = axios.get(`${baseUrl}api/v1/readmocktradecompanyThisYear/${elem.email}`)
                     console.log(`${baseUrl}api/v1/readmocktradecompanyThisYear/${elem.email}`);
+                 
 
 
                     Promise.all([request1, request2, request3, request4, request5, request6,request7, request8, request9, request10])
@@ -143,6 +156,7 @@ export default function TodaysSummary({ socket }) {
                             const weekCompany = response8.data;
                             const yearUser = response9.data;
                             const yearCompany = response10.data;
+                        
                             
                             
                             let newObjtodayCompany = pnlCalculation(todaycompany);
@@ -150,12 +164,14 @@ export default function TodaysSummary({ socket }) {
                             totalPnl = 0;
                             numberOfTrade = 0;
                             lotUsed = 0;
+                            runningLots = 0;
                             
                             let newObjtodayUser = pnlCalculation(todayuser);
                             transactionCost = 0;
                             totalPnl = 0;
                             numberOfTrade = 0;
                             lotUsed = 0;
+                            runningLots = 0;
                             
                             console.log(overallcompany);
                             let newObjoverallCompany = pnlCalculation(overallcompany);
@@ -163,60 +179,68 @@ export default function TodaysSummary({ socket }) {
                             totalPnl = 0;
                             numberOfTrade = 0;
                             lotUsed = 0;
+                            runningLots = 0;
 
                             let newObjoverallUser = pnlCalculation(overalluser);
                             transactionCost = 0;
                             totalPnl = 0;
                             numberOfTrade = 0;
                             lotUsed = 0;
+                            runningLots = 0;
 
                             let newObjmonthUser = pnlCalculation(monthUser);
                             transactionCost = 0;
                             totalPnl = 0;
                             numberOfTrade = 0;
                             lotUsed = 0;
+                            runningLots = 0;
 
                             let newObjmonthCompany = pnlCalculation(monthCompany);
                             transactionCost = 0;
                             totalPnl = 0;
                             numberOfTrade = 0;
                             lotUsed = 0;
+                            runningLots = 0;
 
                             let newObjweekUser = pnlCalculation(weekUser);
                             transactionCost = 0;
                             totalPnl = 0;
                             numberOfTrade = 0;
                             lotUsed = 0;
+                            runningLots = 0;
 
                             let newObjweekCompany = pnlCalculation(weekCompany);
                             transactionCost = 0;
                             totalPnl = 0;
                             numberOfTrade = 0;
                             lotUsed = 0;
+                            runningLots = 0;
 
                             let newObjyearUser = pnlCalculation(yearUser);
                             transactionCost = 0;
                             totalPnl = 0;
                             numberOfTrade = 0;
                             lotUsed = 0;
+                            runningLots = 0;
 
                             let newObjyearCompany = pnlCalculation(yearCompany);
                             transactionCost = 0;
                             totalPnl = 0;
                             numberOfTrade = 0;
                             lotUsed = 0;
+                            runningLots = 0;
                             
                             newObjoverallCompany.traderpnl = newObjtodayUser.pnl;
                             newObjoverallCompany.traderbrokerage = newObjtodayUser.brokerage;
                             newObjoverallCompany.overalluserpnl = newObjoverallUser.pnl;
                             newObjoverallCompany.overalluserbrokerage = newObjoverallUser.brokerage;
-                            //newObjoverallCompany.todaycompanyrunninglots = newObjtodayCompany.runningLots;
+                            // newObjoverallCompany.todaycompanyrunninglots = newObjtodayCompany.runningLots;
                             
                             newObjoverallCompany.todaycompanypnl = newObjtodayCompany.pnl;
                             newObjoverallCompany.todaycompanybrokerage = newObjtodayCompany.brokerage;
                             newObjoverallCompany.overallusertrades = newObjoverallUser.numberOfTrade;
                             newObjoverallCompany.todayusertrades = newObjtodayUser.numberOfTrade;
-                            newObjoverallCompany.todaycompanyrunninglots = newObjtodayCompany.runningLots;
+                            newObjoverallCompany.todaycompanyrunningLots = newObjtodayCompany.runningLots;
                             
                             
                             newObjoverallCompany.monthuserpnl = newObjmonthUser.pnl;
@@ -239,6 +263,8 @@ export default function TodaysSummary({ socket }) {
                             newObjoverallCompany.yearcompanypnl = newObjyearCompany.pnl;
                             newObjoverallCompany.yearcompanybrokerage = newObjyearCompany.brokerage;
                             newObjoverallCompany.yearcompanytrades = newObjyearCompany.numberOfTrade;
+
+                      
 
                             console.log(newObjoverallCompany);
                             console.log(newObjoverallCompany.runningLots);
@@ -283,7 +309,6 @@ export default function TodaysSummary({ socket }) {
     todayDetailpnl1.map((elem) => {
         if (elem.pnl) {
             allcompanypnl = allcompanypnl + Number(elem.pnl);
-            alltodaycompanypnl = alltodaycompanypnl + Number(elem.todaycompanypnl);
         }
         if (elem.todaycompanypnl) {
             alltodaycompanypnl = alltodaycompanypnl + Number(elem.todaycompanypnl);
@@ -293,6 +318,9 @@ export default function TodaysSummary({ socket }) {
         }
         if (elem.weekcompanypnl) {
             allweekcompanypnl = allweekcompanypnl + Number(elem.weekcompanypnl);
+        }
+        if (elem.yearcompanypnl) {
+            allyearcompanypnl = allyearcompanypnl + Number(elem.yearcompanypnl);
         }
 
 
@@ -309,18 +337,24 @@ export default function TodaysSummary({ socket }) {
         if(elem.weekcompanybrokerage){
             allweekcompanybrokerage = allweekcompanybrokerage + Number(elem.weekcompanybrokerage);
         }
+        if(elem.yearcompanybrokerage){
+            allyearcompanybrokerage = allyearcompanybrokerage + Number(elem.yearcompanybrokerage);
+        }
 
         if (elem.overalluserpnl) {
             alluserpnl = alluserpnl + Number(elem.overalluserpnl);
         }
-        if (elem.alltodayuserpnl) {
-            alltodayuserpnl = alltodayuserpnl + Number(elem.alltodayuserpnl);
+        if (elem.traderpnl) {
+            alltodayuserpnl = alltodayuserpnl + Number(elem.traderpnl);
         }
-        if (elem.allmonthuserpnl) {
+        if (elem.monthuserpnl) {
             allmonthuserpnl = allmonthuserpnl + Number(elem.monthuserpnl);
         }
-        if (elem.allweekuserpnl) {
+        if (elem.weekuserpnl) {
             allweekuserpnl = allweekuserpnl + Number(elem.weekuserpnl);
+        }
+        if (elem.yearuserpnl) {
+            allyearuserpnl = allyearuserpnl + Number(elem.yearuserpnl);
         }
 
         if (elem.overalluserbrokerage) {
@@ -335,6 +369,9 @@ export default function TodaysSummary({ socket }) {
         if (elem.weekuserbrokerage) {
             allweekuserbrokerage = allweekuserbrokerage + Number(elem.weekuserbrokerage);
         }
+        if (elem.yearuserbrokerage) {
+            allyearuserbrokerage = allyearuserbrokerage + Number(elem.yearuserbrokerage);
+        }
 
         if (elem.numberOfTrade) {
             alltrades = alltrades + Number(elem.numberOfTrade);
@@ -347,6 +384,9 @@ export default function TodaysSummary({ socket }) {
         }
         if (elem.weekusertrades) {
             weekusertrades = weekusertrades + Number(elem.weekusertrades);
+        }
+        if (elem.yearusertrades) {
+            yearusertrades = yearusertrades + Number(elem.yearusertrades);
         }
 
       
@@ -365,6 +405,12 @@ export default function TodaysSummary({ socket }) {
     allnetuserpnl = alluserpnl - alluserbrokerage;
     alltodaynetcompanypnl = alltodaycompanypnl - alltodaycompanybrokerage;
     alltodaynetuserpnl = alltodayuserpnl - alltodayuserbrokerage;
+    allweeknetcompanypnl = allweekcompanypnl - allweekcompanybrokerage;
+    allweeknetuserpnl = allweekuserpnl - allweekuserbrokerage;
+    allmonthnetcompanypnl = allmonthcompanypnl - allmonthcompanybrokerage;
+    allmonthnetuserpnl = allmonthuserpnl - allmonthuserbrokerage;
+    allyearnetcompanypnl = allyearcompanypnl - allyearcompanybrokerage;
+    allyearnetuserpnl = allyearuserpnl - allyearuserbrokerage;
 
     
 
@@ -431,6 +477,7 @@ export default function TodaysSummary({ socket }) {
                         symbol: data[i].symbol,
                         Product: data[i].Product,
                         name: data[0].createdBy,
+                        userId: data[0].userId,
                         date: ((data[0].order_timestamp).split(" "))[0]
                     })
                 }if(data[i].buyOrSell === "SELL"){
@@ -442,6 +489,7 @@ export default function TodaysSummary({ socket }) {
                         symbol: data[i].symbol,
                         Product: data[i].Product,
                         name: data[0].createdBy,
+                        userId: data[0].userId,
                         date: ((data[0].order_timestamp).split(" "))[0]
                     })
                 }
@@ -466,10 +514,12 @@ export default function TodaysSummary({ socket }) {
         })
 
         console.log(hashForTraderCount)
-        let runningLots;
+        
+        let userId = '';
         overallPnl.map((elem, index)=>{
             
                 name = elem.name;
+                userId = elem.userId;
             
             if(elem.totalBuyLot+elem.totalSellLot === 0){
                 totalPnl += -(elem.totalBuy+elem.totalSell)
@@ -492,6 +542,7 @@ export default function TodaysSummary({ socket }) {
             brokerage: transactionCost,
             pnl: totalPnl,
             name: name,
+            userId: userId,
             numberOfTrade: numberOfTrade,
             lotUsed: lotUsed,
             date: `${date[2]}-${date[1]}-${date[0]}`,
@@ -512,33 +563,114 @@ export default function TodaysSummary({ socket }) {
                 <div class="card my-4">
                     <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                         <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-                            <h6 class="text-white text-capitalize ps-3">Today's Summary</h6>
+                            
                             <div class="pnlinfoboxheader">
+                            
                                 <div class="pnlinfobox">
-                                    <div class="text-white text-capitalize ps-3">Today's Gross(C-P&L): {alltodaycompanypnl >= 0.00 ? "+₹" + ((alltodaycompanypnl).toFixed(0)) : "-₹" + (-(alltodaycompanypnl).toFixed(0))}</div>
-                                    {/* {alltodaycompanypnl.toFixed(0)} */}
-                                    {/* {elem.pnl >0.00 ? "+₹" + (elem.pnl): "-₹" + (-(elem.pnl)) } */}
-                                    {/* {alltodaycompanypnl>0.00 ? "+₹" + (alltodaycompanypnl): "-₹" + (-(alltodaycompanypnl)) } */}
-                                    <div class="text-white text-capitalize ps-3">Today's Trans. Cost(C):₹{(alltodaycompanybrokerage).toFixed(0)}</div>
-                                    <div class="text-white text-capitalize ps-3">Today's Net(C-P&L): {alltodaynetcompanypnl >= 0.00 ? "+₹" + ((alltodaynetcompanypnl).toFixed(0)) : "-₹" + (-(alltodaynetcompanypnl).toFixed(0))}</div>
-                                    <div class="text-white text-capitalize ps-3">Today's Trades: {todayusertrades}</div>
+                                <h5 class="text-white text-capitalize ps-3">Today's Summary</h5>
+                                <div class="summarydiv">
+                                
+                                <div class="companysummary">
+                                <h6 class="text-white text-capitalize ps-3">Company</h6>
+                                    <div class="text-white text-capitalize ps-3">Gross P&L: {alltodaycompanypnl >= 0.00 ? "+₹" + ((alltodaycompanypnl).toFixed(0)) : "-₹" + (-(alltodaycompanypnl).toFixed(0))}</div>
+                                    <div class="text-white text-capitalize ps-3">Trans. Cost:₹{(alltodaycompanybrokerage).toFixed(0)}</div>
+                                    <div class="text-white text-capitalize ps-3">Net P&L: {alltodaynetcompanypnl >= 0.00 ? "+₹" + ((alltodaynetcompanypnl).toFixed(0)) : "-₹" + (-(alltodaynetcompanypnl).toFixed(0))}</div>
+                                       
                                 </div>
+                                <div>
+                                <h6 class="text-white text-capitalize ps-3">Trader</h6>
+                                    <div class="text-white text-capitalize ps-3">Gross P&L: {alltodayuserpnl >= 0.00 ? "+₹" + ((alltodayuserpnl).toFixed(0)) : "-₹" + (-(alltodayuserpnl).toFixed(0))}</div>
+                                    <div class="text-white text-capitalize ps-3">Trans. Cost:  ₹{(alltodayuserbrokerage).toFixed(0)}</div>
+                                    <div class="text-white text-capitalize ps-3">Net P&L: {alltodaynetuserpnl >= 0.00 ? "+₹" + ((alltodaynetuserpnl).toFixed(0)) : "-₹" + (-(alltodaynetuserpnl).toFixed(0))}</div>
+                                    <div class="text-white text-capitalize ps-3"># Trades: {todayusertrades}</div> 
+                                </div>
+                                </div>
+                                </div>
+
                                 <div class="pnlinfobox">
-                                    <div class="text-white text-capitalize ps-3">Today's Gross(T-P&L): {alltodayuserpnl >= 0.00 ? "+₹" + ((alltodayuserpnl).toFixed(0)) : "-₹" + (-(alltodayuserpnl).toFixed(0))}</div>
-                                    <div class="text-white text-capitalize ps-3">Today's Trans. Cost(T):  ₹{(alltodayuserbrokerage).toFixed(0)}</div>
-                                    <div class="text-white text-capitalize ps-3">Today's Net(T-P&L): {alltodaynetuserpnl >= 0.00 ? "+₹" + ((alltodaynetuserpnl).toFixed(0)) : "-₹" + (-(alltodaynetuserpnl).toFixed(0))}</div>
+                                <h5 class="text-white text-capitalize ps-3">Weekly Summary</h5>
+                                <div class="summarydiv">
+                                <div class="companysummary">
+                                <h6 class="text-white text-capitalize ps-3">Company</h6>
+                                <div>
+                                    <div class="text-white text-capitalize ps-3">Gross P&L: {allweekcompanypnl >= 0.00 ? "+₹" + ((allweekcompanypnl).toFixed(0)) : "-₹" + (-(allweekcompanypnl).toFixed(0))}</div>
+                                    <div class="text-white text-capitalize ps-3">Trans. Cost: ₹{(allweekcompanybrokerage).toFixed(0)}</div>
+                                    <div class="text-white text-capitalize ps-3">Net P&L: {allweeknetcompanypnl >= 0.00 ? "+₹" + ((allweeknetcompanypnl).toFixed(0)) : "-₹" + (-(allweeknetcompanypnl).toFixed(0))}</div>
                                 </div>
+                                </div>
+                                <div>
+                                <h6 class="text-white text-capitalize ps-3">Trader</h6>
+                                    <div class="text-white text-capitalize ps-3">Gross P&L: {allweekuserpnl >= 0.00 ? "+₹" + ((allweekuserpnl).toFixed(0)) : "-₹" + (-(allweekuserpnl).toFixed(0))}</div>
+                                    <div class="text-white text-capitalize ps-3">Trans. Cost: ₹{(allweekuserbrokerage).toFixed(0)}</div>
+                                    <div class="text-white text-capitalize ps-3">Net P&L: {allweeknetuserpnl >= 0.00 ? "+₹" + ((allweeknetuserpnl).toFixed(0)) : "-₹" + (-(allweeknetuserpnl).toFixed(0))}</div>
+                                    <div class="text-white text-capitalize ps-3"># Trades: {weekusertrades}</div> 
+                                </div>
+                                </div>
+                                </div>
+
                                 <div class="pnlinfobox">
-                                    <div class="text-white text-capitalize ps-3">Lifetime Gross(C-P&L): {allcompanypnl >= 0.00 ? "+₹" + ((allcompanypnl).toFixed(0)) : "-₹" + (-(allcompanypnl).toFixed(0))}</div>
-                                    <div class="text-white text-capitalize ps-3">Lifetime Trans. Cost(C): ₹{(allcompanybrokerage).toFixed(0)}</div>
-                                    <div class="text-white text-capitalize ps-3">Lifetime Net(C-P&L): {allnetcompanypnl >= 0.00 ? "+₹" + ((allnetcompanypnl).toFixed(0)) : "-₹" + (-(allnetcompanypnl).toFixed(0))}</div>
+                                <h5 class="text-white text-capitalize ps-3">Monthly Summary</h5>
+                                <div class="summarydiv">
+                                <div class="companysummary">
+                                <h6 class="text-white text-capitalize ps-3">Company</h6>
+                                <div>
+                                    <div class="text-white text-capitalize ps-3">Gross P&L: {allmonthcompanypnl >= 0.00 ? "+₹" + ((allmonthcompanypnl).toFixed(0)) : "-₹" + (-(allmonthcompanypnl).toFixed(0))}</div>
+                                    <div class="text-white text-capitalize ps-3">Trans. Cost: ₹{(allmonthcompanybrokerage).toFixed(0)}</div>
+                                    <div class="text-white text-capitalize ps-3">Net P&L: {allmonthnetcompanypnl >= 0.00 ? "+₹" + ((allmonthnetcompanypnl).toFixed(0)) : "-₹" + (-(allmonthnetcompanypnl).toFixed(0))}</div>
                                 </div>
+                                </div>
+                                <div>
+                                <h6 class="text-white text-capitalize ps-3">Trader</h6>
+                                    <div class="text-white text-capitalize ps-3">Gross P&L: {allmonthuserpnl >= 0.00 ? "+₹" + ((allmonthuserpnl).toFixed(0)) : "-₹" + (-(allmonthuserpnl).toFixed(0))}</div>
+                                    <div class="text-white text-capitalize ps-3">Trans. Cost: ₹{(allmonthuserbrokerage).toFixed(0)}</div>
+                                    <div class="text-white text-capitalize ps-3">Net P&L: {allmonthnetuserpnl >= 0.00 ? "+₹" + ((allmonthnetuserpnl).toFixed(0)) : "-₹" + (-(allmonthnetuserpnl).toFixed(0))}</div>
+                                    <div class="text-white text-capitalize ps-3"># Trades: {monthusertrades}</div> 
+                                </div>
+                                </div>
+                                </div>
+
                                 <div class="pnlinfobox">
-                                    <div class="text-white text-capitalize ps-3">Lifetime Gross(T-P&L): {alluserpnl >= 0.00 ? "+₹" + ((alluserpnl).toFixed(0)) : "-₹" + (-(alluserpnl).toFixed(0))}</div>
-                                    <div class="text-white text-capitalize ps-3">Lifetime Trans. Cost(T): ₹{(alluserbrokerage).toFixed(0)}</div>
-                                    <div class="text-white text-capitalize ps-3">Lifetime Net(T-P&L): {allnetuserpnl >= 0.00 ? "+₹" + ((allnetuserpnl).toFixed(0)) : "-₹" + (-(allnetuserpnl).toFixed(0))}</div>
-                                    <div class="text-white text-capitalize ps-3">Lifetime Trades: {alltrades}</div>
+                                <h5 class="text-white text-capitalize ps-3">Yearly Summary</h5>
+                                <div class="summarydiv">
+                                <div class="companysummary">
+                                <h6 class="text-white text-capitalize ps-3">Company</h6>
+                                <div>
+                                    <div class="text-white text-capitalize ps-3">Gross P&L: {allyearcompanypnl >= 0.00 ? "+₹" + ((allyearcompanypnl).toFixed(0)) : "-₹" + (-(allyearcompanypnl).toFixed(0))}</div>
+                                    <div class="text-white text-capitalize ps-3">Trans. Cost: ₹{(allyearcompanybrokerage).toFixed(0)}</div>
+                                    <div class="text-white text-capitalize ps-3">Net P&L: {allyearnetcompanypnl >= 0.00 ? "+₹" + ((allyearnetcompanypnl).toFixed(0)) : "-₹" + (-(allyearnetcompanypnl).toFixed(0))}</div>
                                 </div>
+                                </div>
+                                <div>
+                                <h6 class="text-white text-capitalize ps-3">Trader</h6>
+                                    <div class="text-white text-capitalize ps-3">Gross P&L: {allyearuserpnl >= 0.00 ? "+₹" + ((allyearuserpnl).toFixed(0)) : "-₹" + (-(allyearuserpnl).toFixed(0))}</div>
+                                    <div class="text-white text-capitalize ps-3">Trans. Cost: ₹{(allyearuserbrokerage).toFixed(0)}</div>
+                                    <div class="text-white text-capitalize ps-3">Net P&L: {allyearnetuserpnl >= 0.00 ? "+₹" + ((allyearnetuserpnl).toFixed(0)) : "-₹" + (-(allyearnetuserpnl).toFixed(0))}</div>
+                                    <div class="text-white text-capitalize ps-3"># Trades: {yearusertrades}</div> 
+                                </div>
+                                </div>
+                                </div>
+
+                                <div class="pnlinfobox">
+                                <h5 class="text-white text-capitalize ps-3">Lifetime Summary</h5>
+                                <div class="summarydiv">
+                                <div class="companysummary">
+                                <h6 class="text-white text-capitalize ps-3">Company</h6>
+                                <div>
+                                    <div class="text-white text-capitalize ps-3">Gross P&L: {allcompanypnl >= 0.00 ? "+₹" + ((allcompanypnl).toFixed(0)) : "-₹" + (-(allcompanypnl).toFixed(0))}</div>
+                                    <div class="text-white text-capitalize ps-3">Trans. Cost: ₹{(allcompanybrokerage).toFixed(0)}</div>
+                                    <div class="text-white text-capitalize ps-3">Net P&L: {allnetcompanypnl >= 0.00 ? "+₹" + ((allnetcompanypnl).toFixed(0)) : "-₹" + (-(allnetcompanypnl).toFixed(0))}</div>
+                                </div>
+                                </div>
+                                <div>
+                                <h6 class="text-white text-capitalize ps-3">Trader</h6>
+                                    <div class="text-white text-capitalize ps-3">Gross P&L: {alluserpnl >= 0.00 ? "+₹" + ((alluserpnl).toFixed(0)) : "-₹" + (-(alluserpnl).toFixed(0))}</div>
+                                    <div class="text-white text-capitalize ps-3">Trans. Cost: ₹{(alluserbrokerage).toFixed(0)}</div>
+                                    <div class="text-white text-capitalize ps-3">Net P&L: {allnetuserpnl >= 0.00 ? "+₹" + ((allnetuserpnl).toFixed(0)) : "-₹" + (-(allnetuserpnl).toFixed(0))}</div>
+                                    <div class="text-white text-capitalize ps-3"># Trades: {alltrades}</div> 
+                                </div>
+                                </div>
+                                </div>
+                                
                             </div>
                         </div>
                     </div>
@@ -559,6 +691,7 @@ export default function TodaysSummary({ socket }) {
                                     <th class="text-secondary opacity-7"></th>
                                 </tr>
                                 {todayDetailpnl1.map((elem) => {
+                                    console.log(elem.todaycompanyrunningLots)
                                     return (
                                         <>
                                         {elem.pnl !==0 &&
@@ -570,7 +703,8 @@ export default function TodaysSummary({ socket }) {
                                                         </div>
                                                         <div class="d-flex flex-column justify-content-center">
                                                             <h6 class="mb-0 text-sm">{elem.name}</h6>
-                                                            <p class="text-xs text-secondary mb-0">{elem.email}</p>
+                                                            <p class="text-xs text-secondary mb-0">{elem.userId}</p>
+                                                           
                                                         </div>
                                                     </div>
                                                 </td>
@@ -579,7 +713,7 @@ export default function TodaysSummary({ socket }) {
                                                     <p class="text-xs text-secondary mb-0" style={elem.pnl >= 0.00 ? { color: "green" } : { color: "red" }}>Lifetime: {elem.pnl > 0.00 ? "+₹" + (elem.pnl.toFixed(0)) : elem.pnl === 0 ? " " : "-₹" + ((-(elem.pnl)).toFixed(0))}</p>
                                                     <p class="text-xs text-secondary mb-0" style={elem.yearcompanypnl >= 0.00 ? { color: "green" } : { color: "red" }}>YTD: {elem.yearcompanypnl ? (elem.yearcompanypnl > 0.00 ? "+₹" + (elem.yearcompanypnl.toFixed(0)) : elem.yearcompanypnl === 0 ? " " : "-₹" + ((-(elem.yearcompanypnl)).toFixed(0))) : "₹" + 0}</p>
                                                     <p class="text-xs text-secondary mb-0" style={elem.monthcompanypnl >= 0.00 ? { color: "green" } : { color: "red" }}>MTD: {elem.monthcompanypnl ? (elem.monthcompanypnl > 0.00 ? "+₹" + (elem.monthcompanypnl.toFixed(0)) : elem.monthcompanypnl === 0 ? " " : "-₹" + ((-(elem.monthcompanypnl)).toFixed(0))) : "₹" + 0}</p>
-                                                    <p class="text-xs text-secondary mb-0" style={elem.weekcompanypnl >= 0.00 ? { color: "green" } : { color: "red" }}>WTD: {elem.weekcomanypnl ? (elem.weekcompanypnl > 0.00 ? "+₹" + (elem.weekcompanypnl.toFixed(0)) : elem.weekcompanypnl === 0 ? " " : "-₹" + ((-(elem.weekcompanypnl)).toFixed(0))) : "₹" + 0}</p>
+                                                    <p class="text-xs text-secondary mb-0" style={elem.weekcompanypnl >= 0.00 ? { color: "green" } : { color: "red" }}>WTD: {elem.weekcompanypnl ? (elem.weekcompanypnl > 0.00 ? "+₹" + (elem.weekcompanypnl.toFixed(0)) : elem.weekcompanypnl === 0 ? " " : "-₹" + ((-(elem.weekcompanypnl)).toFixed(0))) : "₹" + 0}</p>
                                                 </td>
 
                                                 <td>
@@ -590,11 +724,11 @@ export default function TodaysSummary({ socket }) {
                                                     <p class="text-xs text-secondary mb-0">WTD: ₹{elem.weekcompanybrokerage ? (elem.weekcompanybrokerage).toFixed(0) : elem.weekcompanybrokerage}</p>
                                                 </td>
                                                 <td>
-                                                    <p class="text-xs font-weight-bold mb-0" style={(elem.todaycompanypnl - elem.todaycompanybrokerage) > 0.00 ? { color: "green" } : !(elem.todaycompanypnl - elem.todaycompanybrokerage) ? {color : "grey"} : { color: "red" }}>{elem.todaycompanyrunningLots = 0 ? ((elem.todaycompanypnl - elem.todaycompanybrokerage) > 0.00 ? "+₹" + ((elem.todaycompanypnl - elem.todaycompanybrokerage).toFixed(0)) : !(elem.todaycompanypnl - elem.todaycompanybrokerage) ? "₹" + 0 : "-₹" + ((-((elem.todaycompanypnl - elem.todaycompanybrokerage))).toFixed(0))) : "₹" + 0}</p>
+                                                    <p class="text-xs font-weight-bold mb-0" style={(elem.todaycompanypnl - elem.todaycompanybrokerage) > 0.00 ? { color: "green" } : !(elem.todaycompanypnl - elem.todaycompanybrokerage) ? {color : "grey"} : { color: "red" }}>{elem.todaycompanyrunningLots === 0 ? ((elem.todaycompanypnl - elem.todaycompanybrokerage) > 0.00 ? "+₹" + ((elem.todaycompanypnl - elem.todaycompanybrokerage).toFixed(0)) : !(elem.todaycompanypnl - elem.todaycompanybrokerage) ? "₹" + 0 : "-₹" + ((-((elem.todaycompanypnl - elem.todaycompanybrokerage))).toFixed(0))) : "₹" + 0}</p>
                                                     <p class="text-xs text-secondary mb-0" style={(elem.pnl - elem.brokerage) >= 0.00 ? { color: "green" } : { color: "red" }}>Lifetime: {elem.todaycompanyrunningLots === 0 ?((elem.pnl - elem.brokerage) > 0.00 ? "+₹" + ((elem.pnl - elem.brokerage).toFixed(0)) : (elem.pnl - elem.brokerage) === 0 ? " " : "-₹" + ((-((elem.pnl - elem.brokerage))).toFixed(0))) : "₹" + 0}</p>
                                                     <p class="text-xs text-secondary mb-0" style={(elem.yearcompanypnl - elem.yearcompanybrokerage) >= 0.00 ? { color: "green" } : { color: "red" }}>YTD: {((elem.yearcompanypnl - elem.yearcompanybrokerage) ? (elem.yearcompanypnl - elem.yearcompanybrokerage) > 0.00 ? "+₹" + ((elem.yearcompanypnl - elem.yearcompanybrokerage).toFixed(0)) : (elem.yearcompanypnl - elem.yearcompanybrokerage) === 0 ? " " : "-₹" + ((-((elem.yearcompanypnl - elem.yearcompanybrokerage))).toFixed(0)) : "₹" + 0)}</p>
                                                     <p class="text-xs text-secondary mb-0" style={(elem.monthcompanypnl - elem.monthcompanybrokerage) >= 0.00 ? { color: "green" } : { color: "red" }}>MTD: {((elem.monthcompanypnl - elem.monthcompanybrokerage) ? (elem.monthcompanypnl - elem.monthcompanybrokerage) > 0.00 ? "+₹" + ((elem.monthcompanypnl - elem.monthcompanybrokerage).toFixed(0)) : (elem.monthcompanypnl - elem.monthcompanybrokerage) === 0 ? " " : "-₹" + ((-((elem.monthcompanypnl - elem.monthcompanybrokerage))).toFixed(0)): "₹" + 0)}</p>
-                                                    <p class="text-xs text-secondary mb-0" style={(elem.weekcomanypnl - elem.weekcompanybrokerage) >= 0.00 ? { color: "green" } : { color: "red" }}>WTD: {((elem.weekcompanypnl - elem.weekcompanybrokerage) ? (elem.weekcompanypnl - elem.weekcompanybrokerage) > 0.00 ? "+₹" + ((elem.weekcompanypnl - elem.weekcompanybrokerage).toFixed(0)) : (elem.weekcompanypnl - elem.weekcompanybrokerage) === 0 ? " " : "-₹" + ((-((elem.weekcompanypnl - elem.weekcompanybrokerage))).toFixed(0)) : "₹" + 0)}</p>
+                                                    <p class="text-xs text-secondary mb-0" style={(elem.weekcompanypnl - elem.weekcompanybrokerage) >= 0.00 ? { color: "green" } : { color: "red" }}>WTD: {((elem.weekcompanypnl - elem.weekcompanybrokerage) ? (elem.weekcompanypnl - elem.weekcompanybrokerage) > 0.00 ? "+₹" + ((elem.weekcompanypnl - elem.weekcompanybrokerage).toFixed(0)) : (elem.weekcompanypnl - elem.weekcompanybrokerage) === 0 ? " " : "-₹" + ((-((elem.weekcompanypnl - elem.weekcompanybrokerage))).toFixed(0)) : "₹" + 0)}</p>
                                                 </td>
                                                 <td>
                                                     <p class="text-xs font-weight-bold mb-0" style={elem.traderpnl > 0.00 ? { color: "green" } : !elem.traderpnl ? {color:"grey"} : { color: "red" }}>{elem.traderpnl > 0.00 ? "+₹" + (elem.traderpnl.toFixed(0)) : !elem.traderpnl ? "₹" + 0 : "-₹" + ((-(elem.traderpnl)).toFixed(0))}</p>

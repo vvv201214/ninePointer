@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import axios from "axios";
 
 
-export default function TradersPnlCompany({marketData, tradeData}) {
+export default function TradersPnlLiveCompany({marketData, tradeData}) {
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
     
     const [userDetail, setUserDetail] = useState([]);
@@ -36,7 +36,7 @@ export default function TradersPnlCompany({marketData, tradeData}) {
             return new Error(err);
         })
 
-        axios.get(`${baseUrl}api/v1/readmocktradecompanyDate`)
+        axios.get(`${baseUrl}api/v1/readlivetradecompanyDate`)
         .then((res) => {
             // let data = (res.data).filter((elem) => {
             //     return elem.order_timestamp.includes(todayDate) && elem.status === "COMPLETE";

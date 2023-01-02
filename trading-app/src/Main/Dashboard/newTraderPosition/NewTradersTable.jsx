@@ -36,6 +36,7 @@ export default function NewTradersTable({socket}) {
         //       return elem.order_timestamp.includes(todayDate) && elem.status === "COMPLETE";
         //   })
           setData(res.data);
+          
       }).catch((err) => {
           return new Error(err);
       })
@@ -76,6 +77,7 @@ export default function NewTradersTable({socket}) {
       }
   }, [])
 
+  console.log(data);
   console.log(marketData);
 
 

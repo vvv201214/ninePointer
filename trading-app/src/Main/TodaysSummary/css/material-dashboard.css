@@ -27724,3 +27724,9 @@ pre[class*="language-"] {
   margin-right:13px;
   font-weight: 500;
 }
+
+.companysummary{
+  /* display: flex; */
+  margin-bottom: 10px;
+
+}

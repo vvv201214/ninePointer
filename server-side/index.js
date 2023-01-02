@@ -58,6 +58,10 @@ app.use(cors({
 
 app.use(express.json());
 
+
+//Update 
+// app.use('/api/v1', require("./routes/TradeData/getCompanyTrade"));
+//Update
 app.use('/api/v1', require("./marketData/livePrice"));
 app.use('/api/v1', require("./routes/user/userLogin"));
 app.use('/api/v1', require('./routes/TradeData/getUserTrade'));
