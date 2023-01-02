@@ -1,5 +1,6 @@
 .main_new{
     display: flex;
+    background-color: #f4f4f4;
     /* border: 10px solid black; */
 }
 
@@ -7,10 +8,12 @@
     flex: .99;
     margin-right:5px;
     margin-left:3px;
+    background-color: #f4f4f4;
   
 
 }
 .sidebar_new{
     flex: .14;
+    background-color: #f4f4f4;
     /* border: 5px solid purple; */
 }

@@ -134,6 +134,11 @@ function CompanyPositionTable({ socket }) {
                                 <div class={Styles.header}>Overall P&L(Company) - Mock</div>
                             <OverallPnl marketData={marketData} tradeData={tradeData} data={data} />
                         </div></span>
+                        <span className={Styles.gridheader}>
+                        <div className={Styles.box}>
+                                <div class={Styles.header}>Overall P&L(Company) - Live</div>
+                            <OverallPnl marketData={marketData} tradeData={tradeData} data={data} />
+                        </div></span>
                         
                         {/* <span className="grid2_span">Running PNL-Company</span>
                         <div className="grid_2">
@@ -147,7 +152,12 @@ function CompanyPositionTable({ socket }) {
                         <div className={Styles.box}>
                         <div className={Styles.header}>Trader Wise P&L(Company) - Mock</div>
                             <TradersPnlCompany marketData={marketData} tradeData={tradeData}/>          
-                    </div></span>
+                        </div></span>
+                        <span className={Styles.gridheader}>
+                            <div className={Styles.box}>
+                            <div className={Styles.header}>Trader Wise P&L(Company) - Live</div>
+                                <TradersPnlCompany marketData={marketData} tradeData={tradeData}/>          
+                        </div></span>
                 </div>
             </div>
             </div>
