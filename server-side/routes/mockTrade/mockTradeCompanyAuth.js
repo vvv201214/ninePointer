@@ -116,7 +116,7 @@ router.post("/mocktradecompany", async (req, res)=>{
             variety, validity, exchange, order_type: OrderType, symbol, placed_by: "ninepointer", userId,
              algoBox:{algoName, transactionChange, instrumentChange, exchangeChange, 
             lotMultipler, productChange, tradingAccount}, order_id, instrumentToken, brokerage: brokerageCompany,
-            tradeBy: createdBy, isRealTrade: realTrade
+            tradeBy: createdBy, isRealTrade: realTrade, amount: (Number(realQuantity)*originalLastPrice)
         });
 
         console.log("mockTradeDetails comapny", mockTradeDetails);
@@ -135,7 +135,7 @@ router.post("/mocktradecompany", async (req, res)=>{
             status:"COMPLETE", uId, createdBy, average_price: originalLastPrice, Quantity, Product, buyOrSell, order_timestamp: newTimeStamp,
             variety, validity, exchange, order_type: OrderType, symbol, placed_by: "ninepointer", userId,
             isRealTrade: realTrade, order_id, instrumentToken, brokerage: brokerageUser, 
-            tradeBy: createdBy
+            tradeBy: createdBy, amount: (Number(Quantity)*originalLastPrice)
         });
 
         console.log("mockTradeDetails", mockTradeDetailsUser);
@@ -146,7 +146,6 @@ router.post("/mocktradecompany", async (req, res)=>{
         });
     }).catch(err => {console.log(err, "fail")});
 })
-
 
 router.get("/readmocktradecompany", (req, res)=>{
     MockTradeDetails.find((err, data)=>{
@@ -225,7 +224,6 @@ router.get("/readmocktradecompanyDate", (req, res)=>{
         return res.status(422).json({error : "date not found"})
     })
 })
-
 
 router.get("/readmocktradecompanypariculardate/:date", (req, res)=>{
     // let date = new Date();

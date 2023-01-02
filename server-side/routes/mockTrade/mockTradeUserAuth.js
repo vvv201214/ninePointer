@@ -29,46 +29,21 @@ router.post("/mocktradeuser", async (req, res)=>{
     let originalLastPrice;
     let a;
     try{
-        // async function func(){
         
-            let liveData = await axios.get(`${baseUrl}api/v1/getliveprice`)
-            for(let elem of liveData.data){
-                if(elem.instrument_token == instrumentToken){
+        let liveData = await axios.get(`${baseUrl}api/v1/getliveprice`)
+        for(let elem of liveData.data){
+            if(elem.instrument_token == instrumentToken){
 
-                    originalLastPrice = elem.last_price;
-                    console.log("originalLastPrice 38 line", originalLastPrice)
-                }
+                originalLastPrice = elem.last_price;
+                console.log("originalLastPrice 38 line", originalLastPrice)
             }
-            
-            // return originalLastPrice; 
-            // originalLastPrice = await 
-        // }
-
-        //  a = func();
-
+        }
 
     } catch(err){
         return new Error(err);
     }
 
     console.log("originalLastPrice", a)
-//     MockTradeDetailsUser.findOne({uId : uId})
-//     .then((dateExist)=>{
-//         if(dateExist){
-//             console.log("data already");
-//             return res.status(422).json({error : "date already exist..."})
-//         }
-//         const mockTradeDetailsUser = new MockTradeDetailsUser({
-//             status:"COMPLETE", uId, createdBy, average_price: originalLastPrice, Quantity, Product, buyOrSell, order_timestamp: createdOn,
-//             variety, validity, exchange, order_type: OrderType, symbol, placed_by: "ninepointer", userId,
-//             isRealTrade, order_id, instrumentToken
-//         });
-
-//         console.log("mockTradeDetails", mockTradeDetailsUser);
-//         mockTradeDetailsUser.save().then(()=>{
-//             res.status(201).json({massage : "data enter succesfully"});
-//         }).catch((err)=> res.status(500).json({error:"Failed to enter data"}));
-//     }).catch(err => {console.log(err, "fail")});
 })
 
 router.get("/readmocktradeuser", (req, res)=>{

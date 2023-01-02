@@ -103,7 +103,7 @@ export default function TodaysSummary({ socket }) {
     useEffect(() => {
         axios.get(`${baseUrl}api/v1/readuserdetails`)
             .then((res) => {
-                res.data.map((elem) => {
+                (res.data).map((elem) => {
 
                     const request1 = axios.get(`${baseUrl}api/v1/readmocktradeuserDate/${elem.email}`)
                     console.log(`${baseUrl}api/v1/readmocktradeuserDate/${elem.email}`);
@@ -210,11 +210,14 @@ export default function TodaysSummary({ socket }) {
                             newObjoverallCompany.traderbrokerage = newObjtodayUser.brokerage;
                             newObjoverallCompany.overalluserpnl = newObjoverallUser.pnl;
                             newObjoverallCompany.overalluserbrokerage = newObjoverallUser.brokerage;
+                            //newObjoverallCompany.todaycompanyrunninglots = newObjtodayCompany.runningLots;
                             
                             newObjoverallCompany.todaycompanypnl = newObjtodayCompany.pnl;
                             newObjoverallCompany.todaycompanybrokerage = newObjtodayCompany.brokerage;
                             newObjoverallCompany.overallusertrades = newObjoverallUser.numberOfTrade;
                             newObjoverallCompany.todayusertrades = newObjtodayUser.numberOfTrade;
+                            newObjoverallCompany.todaycompanyrunninglots = newObjtodayCompany.runningLots;
+                            
                             
                             newObjoverallCompany.monthuserpnl = newObjmonthUser.pnl;
                             newObjoverallCompany.monthuserbrokerage = newObjmonthUser.brokerage;
@@ -236,7 +239,9 @@ export default function TodaysSummary({ socket }) {
                             newObjoverallCompany.yearcompanypnl = newObjyearCompany.pnl;
                             newObjoverallCompany.yearcompanybrokerage = newObjyearCompany.brokerage;
                             newObjoverallCompany.yearcompanytrades = newObjyearCompany.numberOfTrade;
+
                             console.log(newObjoverallCompany);
+                            console.log(newObjoverallCompany.runningLots);
 
                             //detailPnl.push(JSON.parse(JSON.stringify(newObjtodayCompany)));
 
@@ -348,6 +353,7 @@ export default function TodaysSummary({ socket }) {
 
         console.log(allcompanypnl);
         console.log(alltodaycompanypnl);
+        
 
 
         // allNet =  (allGross - allBrokerage);
@@ -375,6 +381,8 @@ export default function TodaysSummary({ socket }) {
 
 
     // pnl calculation function start
+
+
 
     function pnlCalculation(data){
         let hash = new Map();
@@ -567,33 +575,33 @@ export default function TodaysSummary({ socket }) {
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <p class="text-xs font-weight-bold mb-0" style={elem.todaycompanypnl > 0 ? { color: "green" } : !elem.todaycompanypnl ? { color:"grey"} : { color: "red" }}>{elem.todaycompanypnl >= 0.00 ? "+₹" + (elem.todaycompanypnl.toFixed(0)) : !elem.todaycompanypnl ? 0 : "-₹" + ((-(elem.todaycompanypnl)).toFixed(0))}</p>
+                                                    <p class="text-xs font-weight-bold mb-0" style={elem.todaycompanypnl > 0 ? { color: "green" } : !elem.todaycompanypnl ? { color:"grey"} : { color: "red" }}>{elem.todaycompanyrunningLots === 0 ? (elem.todaycompanypnl >= 0.00 ? "+₹" + (elem.todaycompanypnl.toFixed(0)) : !elem.todaycompanypnl ? 0 : "-₹" + ((-(elem.todaycompanypnl)).toFixed(0))) : "₹" + 0}</p>
                                                     <p class="text-xs text-secondary mb-0" style={elem.pnl >= 0.00 ? { color: "green" } : { color: "red" }}>Lifetime: {elem.pnl > 0.00 ? "+₹" + (elem.pnl.toFixed(0)) : elem.pnl === 0 ? " " : "-₹" + ((-(elem.pnl)).toFixed(0))}</p>
-                                                    <p class="text-xs text-secondary mb-0" style={elem.yearcompanypnl >= 0.00 ? { color: "green" } : { color: "red" }}>YTD: {elem.yearcompanypnl > 0.00 ? "+₹" + (elem.yearcompanypnl.toFixed(0)) : elem.yearcompanypnl === 0 ? " " : "-₹" + ((-(elem.yearcompanypnl)).toFixed(0))}</p>
-                                                    <p class="text-xs text-secondary mb-0" style={elem.monthcompanypnl >= 0.00 ? { color: "green" } : { color: "red" }}>MTD: {elem.monthcompanypnl > 0.00 ? "+₹" + (elem.monthcompanypnl.toFixed(0)) : elem.monthcompanypnl === 0 ? " " : "-₹" + ((-(elem.monthcompanypnl)).toFixed(0))}</p>
-                                                    <p class="text-xs text-secondary mb-0" style={elem.weekcompanypnl >= 0.00 ? { color: "green" } : { color: "red" }}>WTD: {elem.weekcompanypnl > 0.00 ? "+₹" + (elem.weekcompanypnl.toFixed(0)) : elem.weekcompanypnl === 0 ? " " : "-₹" + ((-(elem.weekcompanypnl)).toFixed(0))}</p>
+                                                    <p class="text-xs text-secondary mb-0" style={elem.yearcompanypnl >= 0.00 ? { color: "green" } : { color: "red" }}>YTD: {elem.yearcompanypnl ? (elem.yearcompanypnl > 0.00 ? "+₹" + (elem.yearcompanypnl.toFixed(0)) : elem.yearcompanypnl === 0 ? " " : "-₹" + ((-(elem.yearcompanypnl)).toFixed(0))) : "₹" + 0}</p>
+                                                    <p class="text-xs text-secondary mb-0" style={elem.monthcompanypnl >= 0.00 ? { color: "green" } : { color: "red" }}>MTD: {elem.monthcompanypnl ? (elem.monthcompanypnl > 0.00 ? "+₹" + (elem.monthcompanypnl.toFixed(0)) : elem.monthcompanypnl === 0 ? " " : "-₹" + ((-(elem.monthcompanypnl)).toFixed(0))) : "₹" + 0}</p>
+                                                    <p class="text-xs text-secondary mb-0" style={elem.weekcompanypnl >= 0.00 ? { color: "green" } : { color: "red" }}>WTD: {elem.weekcomanypnl ? (elem.weekcompanypnl > 0.00 ? "+₹" + (elem.weekcompanypnl.toFixed(0)) : elem.weekcompanypnl === 0 ? " " : "-₹" + ((-(elem.weekcompanypnl)).toFixed(0))) : "₹" + 0}</p>
                                                 </td>
 
                                                 <td>
-                                                    <p class="text-xs font-weight-bold mb-0">₹{elem.todaycompanybrokerage ? (elem.todaycompanybrokerage).toFixed(0) : elem.todaycompanybrokerage}</p>
+                                                    <p class="text-xs font-weight-bold mb-0">₹{elem.todaycompanyrunningLots === 0 ? (elem.todaycompanybrokerage ? (elem.todaycompanybrokerage).toFixed(0) : elem.todaycompanybrokerage) : 0}</p>
                                                     <p class="text-xs text-secondary mb-0">Lifetime: ₹{elem.brokerage ? (elem.brokerage).toFixed(0) : elem.brokerage}</p>
                                                     <p class="text-xs text-secondary mb-0">YTD: ₹{elem.yearcompanybrokerage ? (elem.yearcompanybrokerage).toFixed(0) : elem.yearcompanybrokerage}</p>
                                                     <p class="text-xs text-secondary mb-0">MTD: ₹{elem.monthcompanybrokerage ? (elem.monthcompanybrokerage).toFixed(0) : elem.monthcompanybrokerage}</p>
                                                     <p class="text-xs text-secondary mb-0">WTD: ₹{elem.weekcompanybrokerage ? (elem.weekcompanybrokerage).toFixed(0) : elem.weekcompanybrokerage}</p>
                                                 </td>
                                                 <td>
-                                                    <p class="text-xs font-weight-bold mb-0" style={(elem.todaycompanypnl - elem.todaycompanybrokerage) > 0.00 ? { color: "green" } : !(elem.todaycompanypnl - elem.todaycompanybrokerage) ? {color : "grey"} : { color: "red" }}>{(elem.todaycompanypnl - elem.todaycompanybrokerage) > 0.00 ? "+₹" + ((elem.todaycompanypnl - elem.todaycompanybrokerage).toFixed(0)) : !(elem.todaycompanypnl - elem.todaycompanybrokerage) ? "₹" + 0 : "-₹" + ((-((elem.todaycompanypnl - elem.todaycompanybrokerage))).toFixed(0))}</p>
-                                                    <p class="text-xs text-secondary mb-0" style={(elem.pnl - elem.brokerage) >= 0.00 ? { color: "green" } : { color: "red" }}>Lifetime: {(elem.pnl - elem.brokerage) > 0.00 ? "+₹" + ((elem.pnl - elem.brokerage).toFixed(0)) : (elem.pnl - elem.brokerage) === 0 ? " " : "-₹" + ((-((elem.pnl - elem.brokerage))).toFixed(0))}</p>
-                                                    <p class="text-xs text-secondary mb-0" style={(elem.yearcompanypnl - elem.yearcompanybrokerage) >= 0.00 ? { color: "green" } : { color: "red" }}>YTD: {(elem.yearcompanypnl - elem.yearcompanybrokerage) > 0.00 ? "+₹" + ((elem.yearcompanypnl - elem.yearcompanybrokerage).toFixed(0)) : (elem.yearcompanypnl - elem.yearcompanybrokerage) === 0 ? " " : "-₹" + ((-((elem.yearcompanypnl - elem.yearcompanybrokerage))).toFixed(0))}</p>
-                                                    <p class="text-xs text-secondary mb-0" style={(elem.monthcompanypnl - elem.monthcompanybrokerage) >= 0.00 ? { color: "green" } : { color: "red" }}>MTD: {(elem.monthcompanypnl - elem.monthcompanybrokerage) > 0.00 ? "+₹" + ((elem.monthcompanypnl - elem.monthcompanybrokerage).toFixed(0)) : (elem.monthcompanypnl - elem.monthcompanybrokerage) === 0 ? " " : "-₹" + ((-((elem.monthcompanypnl - elem.monthcompanybrokerage))).toFixed(0))}</p>
-                                                    <p class="text-xs text-secondary mb-0" style={(elem.weekcomanypnl - elem.weekcompanybrokerage) >= 0.00 ? { color: "green" } : { color: "red" }}>WTD: {(elem.weekcompanypnl - elem.weekcompanybrokerage) > 0.00 ? "+₹" + ((elem.weekcompanypnl - elem.weekcompanybrokerage).toFixed(0)) : (elem.weekcompanypnl - elem.weekcompanybrokerage) === 0 ? " " : "-₹" + ((-((elem.weekcompanypnl - elem.weekcompanybrokerage))).toFixed(0))}</p>
+                                                    <p class="text-xs font-weight-bold mb-0" style={(elem.todaycompanypnl - elem.todaycompanybrokerage) > 0.00 ? { color: "green" } : !(elem.todaycompanypnl - elem.todaycompanybrokerage) ? {color : "grey"} : { color: "red" }}>{elem.todaycompanyrunningLots = 0 ? ((elem.todaycompanypnl - elem.todaycompanybrokerage) > 0.00 ? "+₹" + ((elem.todaycompanypnl - elem.todaycompanybrokerage).toFixed(0)) : !(elem.todaycompanypnl - elem.todaycompanybrokerage) ? "₹" + 0 : "-₹" + ((-((elem.todaycompanypnl - elem.todaycompanybrokerage))).toFixed(0))) : "₹" + 0}</p>
+                                                    <p class="text-xs text-secondary mb-0" style={(elem.pnl - elem.brokerage) >= 0.00 ? { color: "green" } : { color: "red" }}>Lifetime: {elem.todaycompanyrunningLots === 0 ?((elem.pnl - elem.brokerage) > 0.00 ? "+₹" + ((elem.pnl - elem.brokerage).toFixed(0)) : (elem.pnl - elem.brokerage) === 0 ? " " : "-₹" + ((-((elem.pnl - elem.brokerage))).toFixed(0))) : "₹" + 0}</p>
+                                                    <p class="text-xs text-secondary mb-0" style={(elem.yearcompanypnl - elem.yearcompanybrokerage) >= 0.00 ? { color: "green" } : { color: "red" }}>YTD: {((elem.yearcompanypnl - elem.yearcompanybrokerage) ? (elem.yearcompanypnl - elem.yearcompanybrokerage) > 0.00 ? "+₹" + ((elem.yearcompanypnl - elem.yearcompanybrokerage).toFixed(0)) : (elem.yearcompanypnl - elem.yearcompanybrokerage) === 0 ? " " : "-₹" + ((-((elem.yearcompanypnl - elem.yearcompanybrokerage))).toFixed(0)) : "₹" + 0)}</p>
+                                                    <p class="text-xs text-secondary mb-0" style={(elem.monthcompanypnl - elem.monthcompanybrokerage) >= 0.00 ? { color: "green" } : { color: "red" }}>MTD: {((elem.monthcompanypnl - elem.monthcompanybrokerage) ? (elem.monthcompanypnl - elem.monthcompanybrokerage) > 0.00 ? "+₹" + ((elem.monthcompanypnl - elem.monthcompanybrokerage).toFixed(0)) : (elem.monthcompanypnl - elem.monthcompanybrokerage) === 0 ? " " : "-₹" + ((-((elem.monthcompanypnl - elem.monthcompanybrokerage))).toFixed(0)): "₹" + 0)}</p>
+                                                    <p class="text-xs text-secondary mb-0" style={(elem.weekcomanypnl - elem.weekcompanybrokerage) >= 0.00 ? { color: "green" } : { color: "red" }}>WTD: {((elem.weekcompanypnl - elem.weekcompanybrokerage) ? (elem.weekcompanypnl - elem.weekcompanybrokerage) > 0.00 ? "+₹" + ((elem.weekcompanypnl - elem.weekcompanybrokerage).toFixed(0)) : (elem.weekcompanypnl - elem.weekcompanybrokerage) === 0 ? " " : "-₹" + ((-((elem.weekcompanypnl - elem.weekcompanybrokerage))).toFixed(0)) : "₹" + 0)}</p>
                                                 </td>
                                                 <td>
                                                     <p class="text-xs font-weight-bold mb-0" style={elem.traderpnl > 0.00 ? { color: "green" } : !elem.traderpnl ? {color:"grey"} : { color: "red" }}>{elem.traderpnl > 0.00 ? "+₹" + (elem.traderpnl.toFixed(0)) : !elem.traderpnl ? "₹" + 0 : "-₹" + ((-(elem.traderpnl)).toFixed(0))}</p>
-                                                    <p class="text-xs text-secondary mb-0" style={elem.overalluserpnl >= 0.00 ? { color: "green" } : { color: "red" }}>Lifetime: {(elem.overalluserpnl) > 0.00 ? "+₹" + ((elem.overalluserpnl).toFixed(0)) : (elem.overalluserpnl) === 0 ? " " : "-₹" + ((-((elem.overalluserpnl))).toFixed(0))}</p>
-                                                    <p class="text-xs text-secondary mb-0" style={elem.yearuserpnl >= 0.00 ? { color: "green" } : { color: "red" }}>YTD: {(elem.yearuserpnl) > 0.00 ? "+₹" + ((elem.yearuserpnl).toFixed(0)) : (elem.yearuserpnl) === 0 ? " " : "-₹" + ((-((elem.yearuserpnl))).toFixed(0))}</p>
-                                                    <p class="text-xs text-secondary mb-0" style={elem.monthuserpnl >= 0.00 ? { color: "green" } : { color: "red" }}>MTD: {(elem.monthuserpnl) > 0.00 ? "+₹" + ((elem.monthuserpnl).toFixed(0)) : (elem.monthuserpnl) === 0 ? " " : "-₹" + ((-((elem.monthuserpnl))).toFixed(0))}</p>
-                                                    <p class="text-xs text-secondary mb-0" style={elem.weekuserpnl >= 0.00 ? { color: "green" } : { color: "red" }}>WTD: {(elem.weekuserpnl) > 0.00 ? "+₹" + ((elem.weekuserpnl).toFixed(0)) : (elem.weekuserpnl) === 0 ? " " : "-₹" + ((-((elem.weekuserpnl))).toFixed(0))}</p>
+                                                    <p class="text-xs text-secondary mb-0" style={elem.overalluserpnl >= 0.00 ? { color: "green" } : { color: "red" }}>Lifetime: {((elem.overalluserpnl) ? (elem.overalluserpnl) > 0.00 ? "+₹" + ((elem.overalluserpnl).toFixed(0)) : (elem.overalluserpnl) === 0 ? " " : "-₹" + ((-((elem.overalluserpnl))).toFixed(0)) : "₹" + 0)}</p>
+                                                    <p class="text-xs text-secondary mb-0" style={elem.yearuserpnl >= 0.00 ? { color: "green" } : { color: "red" }}>YTD: {( elem.yearuserpnl ? (elem.yearuserpnl) > 0.00 ? "+₹" + ((elem.yearuserpnl).toFixed(0)) : (elem.yearuserpnl) === 0 ? " " : "-₹" + ((-((elem.yearuserpnl))).toFixed(0)) : "₹" + 0)}</p>
+                                                    <p class="text-xs text-secondary mb-0" style={elem.monthuserpnl >= 0.00 ? { color: "green" } : { color: "red" }}>MTD: {( elem.monthuserpnl ? (elem.monthuserpnl) > 0.00 ? "+₹" + ((elem.monthuserpnl).toFixed(0)) : (elem.monthuserpnl) === 0 ? " " : "-₹" + ((-((elem.monthuserpnl))).toFixed(0)) : "₹" + 0)}</p>
+                                                    <p class="text-xs text-secondary mb-0" style={elem.weekuserpnl >= 0.00 ? { color: "green" } : { color: "red" }}>WTD: {(elem.weekuserpnl ? (elem.weekuserpnl) > 0.00 ? "+₹" + ((elem.weekuserpnl).toFixed(0)) : (elem.weekuserpnl) === 0 ? " " : "-₹" + ((-((elem.weekuserpnl))).toFixed(0)) : "₹" + 0)}</p>
                                                 </td>
                                                 <td>
                                                     <p class="text-xs font-weight-bold mb-0">₹{elem.traderbrokerage ? (elem.traderbrokerage).toFixed(0) : 0}</p>
@@ -605,9 +613,9 @@ export default function TodaysSummary({ socket }) {
                                                 <td>
                                                     <p class="text-xs font-weight-bold mb-0" style={(elem.traderpnl - elem.traderbrokerage) > 0.00 ? { color: "green" } : !(elem.traderpnl - elem.traderbrokerage) ? {color:"grey"} : { color: "red" }}>{(elem.traderpnl - elem.traderbrokerage) > 0.00 ? "+₹" + ((elem.traderpnl - elem.traderbrokerage).toFixed(0)) : !(elem.traderpnl - elem.traderbrokerage) ? "₹" + 0 : "-₹" + ((-((elem.traderpnl - elem.traderbrokerage))).toFixed(0))}</p>
                                                     <p class="text-xs text-secondary mb-0" style={(elem.overalluserpnl - elem.overalluserbrokerage) >= 0.00 ? { color: "green" } : { color: "red" }}>Lifetime: {(elem.overalluserpnl - elem.overalluserbrokerage) > 0.00 ? "+₹" + ((elem.overalluserpnl - elem.overalluserbrokerage).toFixed(0)) : (elem.overalluserpnl - elem.overalluserbrokerage) === 0 ? " " : "-₹" + ((-((elem.overalluserpnl - elem.overalluserbrokerage))).toFixed(0))}</p>
-                                                    <p class="text-xs text-secondary mb-0" style={(elem.yearuserpnl - elem.yearuserbrokerage) >= 0.00 ? { color: "green" } : { color: "red" }}>YTD: {(elem.yearuserpnl - elem.yearuserbrokerage) > 0.00 ? "+₹" + ((elem.yearuserpnl - elem.yearuserbrokerage).toFixed(0)) : (elem.yearuserpnl - elem.yearuserbrokerage) === 0 ? " " : "-₹" + ((-((elem.yearuserpnl - elem.yearuserbrokerage))).toFixed(0))}</p>
-                                                    <p class="text-xs text-secondary mb-0" style={(elem.monthuserpnl - elem.monthuserbrokerage) >= 0.00 ? { color: "green" } : { color: "red" }}>MTD: {(elem.monthuserpnl - elem.monthuserbrokerage) > 0.00 ? "+₹" + ((elem.monthuserpnl - elem.monthuserbrokerage).toFixed(0)) : (elem.monthuserpnl - elem.monthuserbrokerage) === 0 ? " " : "-₹" + ((-((elem.monthuserpnl - elem.monthuserbrokerage))).toFixed(0))}</p>
-                                                    <p class="text-xs text-secondary mb-0" style={(elem.weekuserpnl - elem.weekuserbrokerage) >= 0.00 ? { color: "green" } : { color: "red" }}>WTD: {(elem.weekuserpnl - elem.weekuserbrokerage) > 0.00 ? "+₹" + ((elem.weekuserpnl - elem.weekuserbrokerage).toFixed(0)) : (elem.weekuserpnl - elem.weekuserbrokerage) === 0 ? " " : "-₹" + ((-((elem.weekuserpnl - elem.weekuserbrokerage))).toFixed(0))}</p>
+                                                    <p class="text-xs text-secondary mb-0" style={(elem.yearuserpnl - elem.yearuserbrokerage) >= 0.00 ? { color: "green" } : { color: "red" }}>YTD: {((elem.yearuserpnl - elem.yearuserbrokerage) ? (elem.yearuserpnl - elem.yearuserbrokerage) > 0.00 ? "+₹" + ((elem.yearuserpnl - elem.yearuserbrokerage).toFixed(0)) : (elem.yearuserpnl - elem.yearuserbrokerage) === 0 ? " " : "-₹" + ((-((elem.yearuserpnl - elem.yearuserbrokerage))).toFixed(0)) : "₹" + 0)}</p>
+                                                    <p class="text-xs text-secondary mb-0" style={(elem.monthuserpnl - elem.monthuserbrokerage) >= 0.00 ? { color: "green" } : { color: "red" }}>MTD: {((elem.monthuserpnl - elem.monthuserbrokerage) ? (elem.monthuserpnl - elem.monthuserbrokerage) > 0.00 ? "+₹" + ((elem.monthuserpnl - elem.monthuserbrokerage).toFixed(0)) : (elem.monthuserpnl - elem.monthuserbrokerage) === 0 ? " " : "-₹" + ((-((elem.monthuserpnl - elem.monthuserbrokerage))).toFixed(0)) : "₹" + 0)}</p>
+                                                    <p class="text-xs text-secondary mb-0" style={(elem.weekuserpnl - elem.weekuserbrokerage) >= 0.00 ? { color: "green" } : { color: "red" }}>WTD: {((elem.weekuserpnl - elem.weekuserbrokerage) ? (elem.weekuserpnl - elem.weekuserbrokerage) > 0.00 ? "+₹" + ((elem.weekuserpnl - elem.weekuserbrokerage).toFixed(0)) : (elem.weekuserpnl - elem.weekuserbrokerage) === 0 ? " " : "-₹" + ((-((elem.weekuserpnl - elem.weekuserbrokerage))).toFixed(0)) : "₹" + 0)}</p>
                                                 </td>
                                                 <td class="text-xs font-weight-bold mb-0">
                                                     <p class="text-xs font-weight-bold mb-0">{elem.todayusertrades}</p>
