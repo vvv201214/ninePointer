@@ -9,6 +9,7 @@ export default function TradersPnlCompany({marketData, tradeData}) {
     
     const [userDetail, setUserDetail] = useState([]);
     const [allTrade, setAllTrade] = useState([]);
+    
 
     let detailPnl = [];
 
@@ -44,6 +45,7 @@ export default function TradersPnlCompany({marketData, tradeData}) {
         }).catch((err)=>{
             return new Error(err);
         })
+
 
     }, [marketData])
     userDetail.map((elem)=>{

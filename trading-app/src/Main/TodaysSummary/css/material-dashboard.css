@@ -744,6 +744,7 @@ progress {
   margin-top: calc(-1 * var(--bs-gutter-y));
   margin-right: calc(-.5 * var(--bs-gutter-x));
   margin-left: calc(-.5 * var(--bs-gutter-x));
+  padding-bottom: 30px;
 }
 
 .row>* {
@@ -27722,4 +27723,10 @@ pre[class*="language-"] {
   justify-content: space-between;
   margin-right:13px;
   font-weight: 500;
+}
+
+.companysummary{
+  /* display: flex; */
+  margin-bottom: 10px;
+
 }

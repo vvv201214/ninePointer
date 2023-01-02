@@ -70,16 +70,18 @@ export default function RealTrade({Render, id, buttonTextBool, tradingAlgo}) {
             
             return new Error(err);
         })
+
         axios.get(`${baseUrl}api/v1/readAccountDetails`)
-            .then((res) => {
-                let activeApiKey = (res.data).filter((elem)=>{
-                    return elem.status === "Active"
-                })
-                setApiKey(activeApiKey);
-            }).catch((err)=>{
-                
-                return new Error(err);
+        .then((res) => {
+            let activeApiKey = (res.data).filter((elem)=>{
+                return elem.status === "Active"
             })
+            setApiKey(activeApiKey);
+        }).catch((err)=>{
+            
+            return new Error(err);
+        })
+
         axios.get(`${baseUrl}api/v1/readInstrumentDetails`)
         .then((res) => {
             let dataArr = (res.data).filter((elem) => {
@@ -90,6 +92,7 @@ export default function RealTrade({Render, id, buttonTextBool, tradingAlgo}) {
             
             return new Error(err);
         })
+
     }, [])
 
     // console.log("mappedUser", mappedUser);
@@ -97,14 +100,14 @@ export default function RealTrade({Render, id, buttonTextBool, tradingAlgo}) {
     mappedUser.map((elem)=>{
         // console.log(oneUserRunningPnl(elem));
         // allUserRunningPnl.push(oneUserRunningPnl(elem))
-        axios.get(`${baseUrl}api/v1/readmocktradeuser`)
+        axios.get(`${baseUrl}api/v1/readmocktradeuserDate/${elem.userId}`)
         .then((res) => {
-            let singleUserPnl = (res.data).filter((element)=>{
-                return element.order_timestamp.includes(todayDate) && element.status === "COMPLETE" && element.userId === elem.userId;
-            })
+            // let singleUserPnl = (res.data).filter((element)=>{
+            //     return element.order_timestamp.includes(todayDate) && element.status === "COMPLETE" && element.userId === elem.userId;
+            // })
             // setSingleUserPnl(data);
 
-            let hash = mappedUserHelper(singleUserPnl, elem);
+            let hash = mappedUserHelper(res.data, elem);
             // console.log(hash);
             let runningPnl = [];
             for (let value of hash.values()){
@@ -120,7 +123,7 @@ export default function RealTrade({Render, id, buttonTextBool, tradingAlgo}) {
         })
 
 
-        axios.get(`${baseUrl}api/v1/companytradedata`)
+        axios.get(`${baseUrl}api/v1/companylivetradedatatodaywithemail/${elem.userId}`)
         .then((res) => {
             let singleUserCompanyPnl = (res.data).filter((element)=>{
                 return element.createdOn.includes(todayDate) && element.status === "COMPLETE" && element.userId === elem.userId;
@@ -140,7 +143,6 @@ export default function RealTrade({Render, id, buttonTextBool, tradingAlgo}) {
         }).catch((err)=>{
             return new Error(err);
         })
-
     })
 
     function mappedUserHelper(tradeDataArr, mappedUserElem){
@@ -312,8 +314,11 @@ export default function RealTrade({Render, id, buttonTextBool, tradingAlgo}) {
         reRender ? setReRender(false) : setReRender(true)
     }
 
-    async function sendOrderReq(name, userId) {
-        const {realSymbol ,exchange ,realBuyOrSell ,OrderType ,realQuantity ,Product ,validity ,variety} = companyTrade;
+    async function sendOrderReq(name, userId, algoBox, realTrade) {
+        // const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, instrumentToken } = Details;
+        const { algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount } = algoBox;
+        const { realBuyOrSell, realSymbol, realQuantity, realInstrument, realBrokerage, realAmount, real_last_price } = companyTrade;
+        
         const { apiKey } = apiKeyDetails[0];
         const { accessToken } = accessTokenDetails[0];
         console.log("inside sendOrder")
@@ -323,8 +328,13 @@ export default function RealTrade({Render, id, buttonTextBool, tradingAlgo}) {
                 "content-type": "application/json"
             },
             body: JSON.stringify({
-                realSymbol ,exchange ,realBuyOrSell ,OrderType ,realQuantity ,Product ,validity ,variety,
-                apiKey, accessToken, uId, createdBy, createdOn, userId: userId, tradeBy: name
+
+                // apiKey, accessToken, userId,
+                // exchange, symbol: realSymbol, buyOrSell, realBuyOrSell, Quantity, realQuantity, Price, Product, OrderType, TriggerPrice, 
+                // stopLoss, validity, variety, last_price: real_last_price, createdBy, userId, createdOn, uId, 
+                // algoBox: {algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, 
+                // productChange, tradingAccount}, instrumentToken, realTrade
+                
             })
         });
         const dataResp = await res.json();
@@ -337,6 +347,40 @@ export default function RealTrade({Render, id, buttonTextBool, tradingAlgo}) {
             console.log("entry succesfull");
         }
     }
+    // async function sendOrderReq(algoBox, realTrade) {
+    //     const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, instrumentToken } = Details;
+    //     const { algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount } = algoBox;
+    //     const { realBuyOrSell, realSymbol, realQuantity, realInstrument, realBrokerage, realAmount, real_last_price } = companyTrade;
+
+    //     const { instrument } = tradeData;
+    //     const { apiKey } = apiKeyDetails[0];
+    //     const { accessToken } = accessTokenDetails[0];
+
+    //     const res = await fetch(`${baseUrl}api/v1/placeorder`, {
+    //         method: "POST",
+    //         headers: {
+    //             "content-type": "application/json"
+    //         },
+    //         body: JSON.stringify({
+                
+    //             // apiKey, accessToken, userId,
+    //             // exchange, symbol: realSymbol, buyOrSell, realBuyOrSell, Quantity, realQuantity, Price, Product, OrderType, TriggerPrice, 
+    //             // stopLoss, validity, variety, last_price: real_last_price, createdBy, userId, createdOn, uId, 
+    //             // algoBox: {algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, 
+    //             // productChange, tradingAccount}, order_id:dummyOrderId, instrumentToken, realTrade
+
+    //         })
+    //     });
+    //     const dataResp = await res.json();
+    //     if (dataResp.status === 422 || dataResp.error || !dataResp) {
+    //         window.alert(dataResp.error);
+    //         console.log("Failed to Trade");
+    //     } else {
+    //         console.log(dataResp);
+    //         // window.alert("Trade succesfull");
+    //         console.log("entry succesfull");
+    //     }
+    // }
   return (
     <>
         <button onClick={()=>{functionality()}} >{buttonText}</button>

@@ -38,4 +38,3 @@ var mychart = new Chart(ctx, {
 
 export default mychart;
    
- 

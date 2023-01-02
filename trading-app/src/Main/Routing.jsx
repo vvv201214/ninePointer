@@ -41,6 +41,8 @@ import TodaysSummaryMain from './TodaysSummary/TodaysSummaryMain';
 import TodaysSummary from './TodaysSummary/TodaysSummary';
 import TodaysTradesMock from './Dashboard/CompanyOrderTabs/TodaysTradesMock';
 import HistoryTradesMock from './Dashboard/CompanyOrderTabs/HistoryTradesMock';
+import CompanyTodaysTradesLive from './Dashboard/CompanyOrderTabs/CompanyTodaysTradesLive';
+import CompanyHistoryTradesLive from './Dashboard/CompanyOrderTabs/CompanyHistoryTradesLive';
 import TodaysTrades from './Dashboard/TraderOrdersTabs/TodaysTrades';
 import HistoryTrades from './Dashboard/TraderOrdersTabs/HistoryTrades';
 import Dashboard from './Dashboard/Dashboard';
@@ -103,6 +105,8 @@ export default function Routing() {
                                 <Route path='/main/dashboard/CompanyOrders' element={<CompanyOrders orderCountHistoryCompany={orderCountHistoryCompany} orderCountTodayCompany={orderCountTodayCompany}/>}> 
                                 <Route path='/main/dashboard/CompanyOrders' element={<TodaysTradesMock setOrderCountTodayCompany={setOrderCountTodayCompany}/>} ></Route>
                                 <Route path='/main/dashboard/CompanyOrders/HistoryTradesMock' element={<HistoryTradesMock setOrderCountHistoryCompany={setOrderCountHistoryCompany}/>} ></Route>
+                                <Route path='/main/dashboard/CompanyOrders/CompanyTodaysTradesLive' element={<CompanyTodaysTradesLive />} ></Route>
+                                <Route path='/main/dashboard/CompanyOrders/CompanyHistoryTradesLive' element={<CompanyHistoryTradesLive />} ></Route>
                             </Route>
                             <Route path='/main/dashboard/TradersOrders' element={<TradersOrders orderCountHistoryUser={orderCountHistoryUser} orderCountTodayUser={orderCountTodayUser}/>}>
                                 <Route path='/main/dashboard/TradersOrders' element={<TodaysTrades info={details} setOrderCountTodayUser={setOrderCountTodayUser}/>} ></Route>
