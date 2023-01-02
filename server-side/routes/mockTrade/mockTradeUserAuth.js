@@ -364,19 +364,19 @@ router.get("/readmocktradeuserThisYear/:email", (req, res)=>{
     let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
     console.log(todayDate);
     let yearStart = `${String(1).padStart(2, '0')}-${String(1).padStart(2, '0')}-${(date.getFullYear())}`
-    MockTradeDetails.find({order_timestamp: {$gte:yearStart,$lt: todayDate}, userId: {$regex: email}})
+    MockTradeDetails.find({trade_time: {$gte:"2022-01-01",$lt: "2022-12-31"}, userId: {$regex: email}})
     .then((data)=>{
-        (data).sort((a, b)=> {
+        // (data).sort((a, b)=> {
 
-            if (a.order_timestamp < b.order_timestamp) {
-              return 1;
-            }
-            if (a.order_timestamp > b.order_timestamp) {
-              return -1;
-            }
-            return 0;
-          });
-        data.reverse();
+        //     if (a.order_timestamp < b.order_timestamp) {
+        //       return 1;
+        //     }
+        //     if (a.order_timestamp > b.order_timestamp) {
+        //       return -1;
+        //     }
+        //     return 0;
+        //   });
+        // data.reverse();
         return res.status(200).send(data);
     })
     .catch((err)=>{
