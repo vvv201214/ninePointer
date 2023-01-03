@@ -6,9 +6,12 @@ const BrokerageDetail = require("../models/Trading Account/brokerageSchema");
 const CompanyTradeData = require("../models/TradeDetails/liveTradeSchema");
 const TradeData = require("../models/TradeDetails/allTradeSchema"); 
 const UserTradeData = require("../models/TradeDetails/liveTradeUserSchema")
+const MockTradeCompany = require("../models/mock-trade/mockTradeCompanySchema")
+const MockTradeUser = require("../models/mock-trade/mockTradeUserSchema")
 
 
 router.post("/placeorder", (async (req, res)=>{
+    let responseMsg;
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
     let {exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType,
@@ -84,7 +87,7 @@ router.post("/placeorder", (async (req, res)=>{
         }
 
         TradeData.findOne({order_id : data.order_id})
-        .then((data)=>{
+        .then((data)=>{ ;
             console.log("i am receiving data", data)
             if(data.exchange_timestamp === undefined){
                 console.log("in the if condition of exchange", data.exchange_timestamp);
@@ -92,6 +95,9 @@ router.post("/placeorder", (async (req, res)=>{
                     , variety, exchange, tradingsymbol, order_type, transaction_type, validity, product,
                     quantity, disclosed_quantity, price, average_price, filled_quantity, pending_quantity,
                     cancelled_quantity, market_protection, guid } = data;
+
+                    responseMsg = status;
+
                     if(transaction_type === "SELL"){
                         quantity = -quantity;
                     }
@@ -181,13 +187,58 @@ router.post("/placeorder", (async (req, res)=>{
                         lotMultipler, productChange, tradingAccount}, order_id, instrumentToken, brokerage: brokerageUser,
                         tradeBy: createdBy, isRealTrade: true, amount: (Number(quantity)*average_price), trade_time:trade_time
 
-            
                     });
                     console.log("this is userTradeData", userTradeData);
                     userTradeData.save().then(()=>{
                     }).catch((err)=> res.status(500).json({error:"Failed to Trade company side"}));
                 }).catch(err => {console.log(err, "fail")});
 
+                MockTradeCompany.findOne({uId : uId})
+                .then((dateExist)=>{
+                    if(dateExist){
+                        console.log("data already");
+                        return res.status(422).json({error : "date already exist..."})
+                    }
+                    const mockTradeDetails = new MockTradeCompany({
+
+                        status, uId, createdBy, average_price, Quantity: quantity, 
+                        Product:product, buyOrSell:transaction_type, order_timestamp: new_order_timestamp,
+                        variety, validity, exchange, order_type: order_type, symbol:tradingsymbol, placed_by: placed_by, userId,
+                         algoBox:{algoName, transactionChange, instrumentChange, exchangeChange, 
+                        lotMultipler, productChange, tradingAccount}, order_id, instrumentToken, brokerage: brokerageCompany,
+                        tradeBy: createdBy, isRealTrade: false, amount: (Number(quantity)*average_price), trade_time:trade_time
+                    });
+            
+                    console.log("mockTradeDetails comapny", mockTradeDetails);
+                    mockTradeDetails.save().then(()=>{
+                        // res.status(201).json({massage : "data enter succesfully"});
+                    }).catch((err)=> res.status(500).json({error:"Failed to enter data"}));
+                }).catch(err => {console.log(err, "fail")});
+
+                MockTradeUser.findOne({uId : uId})
+                .then((dateExist)=>{
+                    if(dateExist){
+                        console.log("data already");
+                        return res.status(422).json({error : "date already exist..."})
+                    }
+            
+                    const mockTradeDetailsUser = new MockTradeUser({
+
+                        status, uId, createdBy, average_price, Quantity: Quantity, 
+                        Product:Product, buyOrSell:buyOrSell, order_timestamp: new_order_timestamp,
+                        variety, validity, exchange, order_type: OrderType, symbol:symbol, placed_by: placed_by, userId,
+                         order_id, instrumentToken, brokerage: brokerageUser,
+                        tradeBy: createdBy, isRealTrade: true, amount: (Number(quantity)*average_price), trade_time:trade_time
+                    });
+            
+                    console.log("mockTradeDetails", mockTradeDetailsUser);
+                    mockTradeDetailsUser.save().then(()=>{
+                        // res.status(201).json({massage : "data enter succesfully"});
+                    }).catch((err)=> {
+                        // res.status(500).json({error:"Failed to enter data"})
+                    });
+            
+                }).catch(err => {console.log(err, "fail")});
 
             }else{
                 let { order_id, placed_by, exchange_order_id, status, order_timestamp, exchange_timestamp
@@ -293,6 +344,52 @@ router.post("/placeorder", (async (req, res)=>{
                     }).catch((err)=> res.status(500).json({error:"Failed to Trade company side"}));
                 }).catch(err => {console.log(err, "fail")});
 
+                MockTradeCompany.findOne({uId : uId})
+                .then((dateExist)=>{
+                    if(dateExist){
+                        console.log("data already");
+                        return res.status(422).json({error : "date already exist..."})
+                    }
+                    const mockTradeDetails = new MockTradeCompany({
+
+                        status, uId, createdBy, average_price, Quantity: quantity, 
+                        Product:product, buyOrSell:transaction_type, order_timestamp: new_order_timestamp,
+                        variety, validity, exchange, order_type: order_type, symbol:tradingsymbol, placed_by: placed_by, userId,
+                         algoBox:{algoName, transactionChange, instrumentChange, exchangeChange, 
+                        lotMultipler, productChange, tradingAccount}, order_id, instrumentToken, brokerage: brokerageCompany,
+                        tradeBy: createdBy, isRealTrade: false, amount: (Number(quantity)*average_price), trade_time:trade_time
+                    });
+            
+                    console.log("mockTradeDetails comapny", mockTradeDetails);
+                    mockTradeDetails.save().then(()=>{
+                        // res.status(201).json({massage : "data enter succesfully"});
+                    }).catch((err)=> res.status(500).json({error:"Failed to enter data"}));
+                }).catch(err => {console.log(err, "fail")});
+
+                MockTradeUser.findOne({uId : uId})
+                .then((dateExist)=>{
+                    if(dateExist){
+                        console.log("data already");
+                        return res.status(422).json({error : "date already exist..."})
+                    }
+            
+                    const mockTradeDetailsUser = new MockTradeUser({
+
+                        status, uId, createdBy, average_price, Quantity: Quantity, 
+                        Product:Product, buyOrSell:buyOrSell, order_timestamp: new_order_timestamp,
+                        variety, validity, exchange, order_type: OrderType, symbol:symbol, placed_by: placed_by, userId,
+                         order_id, instrumentToken, brokerage: brokerageUser,
+                        tradeBy: createdBy, isRealTrade: true, amount: (Number(quantity)*average_price), trade_time:trade_time
+                    });
+            
+                    console.log("mockTradeDetails", mockTradeDetailsUser);
+                    mockTradeDetailsUser.save().then(()=>{
+                        // res.status(201).json({massage : "data enter succesfully"});
+                    }).catch((err)=> {
+                        // res.status(500).json({error:"Failed to enter data"})
+                    });
+            
+                }).catch(err => {console.log(err, "fail")});
             }
         }).catch((err)=>{
             console.log("i am receiving error", err);
@@ -301,6 +398,8 @@ router.post("/placeorder", (async (req, res)=>{
     }).catch((err)=>{
         console.log("error to getting order_id", err);
     })
+
+    // res.status(201).json({massage : responseMsg})
 }))
 
 

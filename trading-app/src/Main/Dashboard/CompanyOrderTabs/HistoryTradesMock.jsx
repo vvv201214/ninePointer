@@ -11,10 +11,11 @@ export default function HistoryTradesMock({setOrderCountHistoryCompany, orderCou
     const [clickToRemove, setclickToRemove] = useState(1);
     const [skip, setSkip] = useState(0);
     let numberOfClickForRemoveNext = 0
+    const limit = 15;
 
     useEffect(()=>{
 
-        axios.get(`${baseUrl}api/v1/readmocktradecompanypagination/${skip}/${30}`)
+        axios.get(`${baseUrl}api/v1/readmocktradecompanypagination/${skip}/${limit}`)
         .then((res)=>{
 
             setData(res.data);
@@ -25,9 +26,9 @@ export default function HistoryTradesMock({setOrderCountHistoryCompany, orderCou
     },[])
 
     function nextData(){
-        setSkip((prev)=> prev+30)
+        setSkip((prev)=> prev+limit)
         console.log(skip)
-        axios.get(`${baseUrl}api/v1/readmocktradecompanypagination/${skip+30}/${30}`)
+        axios.get(`${baseUrl}api/v1/readmocktradecompanypagination/${skip+limit}/${limit}`)
         .then((res)=>{
 
             setData(res.data);
@@ -39,9 +40,9 @@ export default function HistoryTradesMock({setOrderCountHistoryCompany, orderCou
     }
 
     function prevData(){
-        setSkip((prev)=> prev-30)
+        setSkip((prev)=> prev-limit)
         console.log(skip)
-        axios.get(`${baseUrl}api/v1/readmocktradecompanypagination/${skip-30}/${30}`)
+        axios.get(`${baseUrl}api/v1/readmocktradecompanypagination/${skip-limit}/${limit}`)
         .then((res)=>{
 
             setData(res.data);
@@ -51,7 +52,7 @@ export default function HistoryTradesMock({setOrderCountHistoryCompany, orderCou
         })
         setclickToRemove((prev)=>prev-1)
     }
-    numberOfClickForRemoveNext = Math.ceil(((orderCountHistoryCompany))/30);
+    numberOfClickForRemoveNext = Math.ceil(((orderCountHistoryCompany))/limit);
     console.log(numberOfClickForRemoveNext, clickToRemove, orderCountHistoryCompany)
 
 
@@ -98,7 +99,7 @@ export default function HistoryTradesMock({setOrderCountHistoryCompany, orderCou
                             </table> 
                             <div className={Styles.pegination_div}>
                                 <button className={Styles.PrevButtons} disabled={!(skip !== 0)} onClick={prevData}>Prev</button>
-                                <div className={Styles.pageCounting}>{(clickToRemove-1)*30}-{(clickToRemove)*30}</div>
+                                <div className={Styles.pageCounting}>{(clickToRemove-1)*limit}-{(clickToRemove)*limit}</div>
                                 <button className={Styles.nextButtons} disabled={!(numberOfClickForRemoveNext !== clickToRemove)} onClick={nextData}>Next</button>
                             </div>
                         </div>

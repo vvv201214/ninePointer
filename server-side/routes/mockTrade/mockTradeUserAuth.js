@@ -54,19 +54,9 @@ router.get("/readmocktradeuser", (req, res)=>{
         if(err){
             return res.status(500).send(err);
         }else{
-            (data).sort((a, b)=> {
-
-                if (a.order_timestamp < b.order_timestamp) {
-                  return 1;
-                }
-                if (a.order_timestamp > b.order_timestamp) {
-                  return -1;
-                }
-                return 0;
-              });
             return res.status(200).send(data);
         }
-    }).sort({$natural:-1})
+    })
 })
 
 router.get("/readmocktradeuser/:id", (req, res)=>{
@@ -83,18 +73,8 @@ router.get("/readmocktradeuser/:id", (req, res)=>{
 
 router.get("/readmocktradeuseremail/:email", (req, res)=>{
     const {email} = req.params
-    MockTradeDetails.find({userId: email})
+    MockTradeDetails.find({userId: email}).sort({trade_time: -1})
     .then((data)=>{
-        (data).sort((a, b)=> {
-
-            if (a.order_timestamp < b.order_timestamp) {
-              return 1;
-            }
-            if (a.order_timestamp > b.order_timestamp) {
-              return -1;
-            }
-            return 0;
-          });
         return res.status(200).send(data);
     })
     .catch((err)=>{
@@ -102,6 +82,30 @@ router.get("/readmocktradeuseremail/:email", (req, res)=>{
     })
 })
 
+router.get("/readmocktradeusercountTodaybyemail/:email", (req, res)=>{
+    const {email} = req.params
+    let date = new Date();
+    let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
+
+    MockTradeDetails.count({order_timestamp: {$regex: todayDate}, userId: email},(err, data)=>{
+        if(err){
+            return res.status(500).send(err);
+        }else{
+            res.json(data)
+        }
+    })
+})
+
+router.get("/readmocktradecompanycountbyemail/:email", (req, res)=>{
+    const {email} = req.params
+    MockTradeDetails.count({userId: email},(err, data)=>{
+        if(err){
+            return res.status(500).send(err);
+        }else{
+            res.json(data)
+        }
+    })
+})
 
 router.get("/readmocktradeuserpnl/:email/:status", (req, res)=>{
     const {email, status} = req.params
@@ -119,19 +123,8 @@ router.get("/readmocktradeuserDate/:email", (req, res)=>{
     let date = new Date();
     let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
     console.log(todayDate);
-    MockTradeDetails.find({order_timestamp: {$regex: todayDate}, userId: {$regex: email}})
+    MockTradeDetails.find({order_timestamp: {$regex: todayDate}, userId: {$regex: email}}).sort({trade_time: -1})
     .then((data)=>{
-        (data).sort((a, b)=> {
-
-            if (a.order_timestamp < b.order_timestamp) {
-              return 1;
-            }
-            if (a.order_timestamp > b.order_timestamp) {
-              return -1;
-            }
-            return 0;
-          });
-        data.reverse();
         return res.status(200).send(data);
     })
     .catch((err)=>{
@@ -144,19 +137,8 @@ router.get("/readmocktradeusertodaydatapagination/:email/:skip/:limit", (req, re
     let date = new Date();
     let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
     console.log(todayDate);
-    MockTradeDetails.find({order_timestamp: {$regex: todayDate}, userId: {$regex: email}}).sort({order_timestamp:-1}).skip(skip).limit(limit)
+    MockTradeDetails.find({order_timestamp: {$regex: todayDate}, userId: {$regex: email}}).sort({trade_time: -1}).skip(skip).limit(limit)
     .then((data)=>{
-        // (data).sort((a, b)=> {
-
-        //     if (a.order_timestamp < b.order_timestamp) {
-        //       return 1;
-        //     }
-        //     if (a.order_timestamp > b.order_timestamp) {
-        //       return -1;
-        //     }
-        //     return 0;
-        //   });
-        // data.reverse();
         return res.status(200).send(data);
     })
     .catch((err)=>{
@@ -168,18 +150,8 @@ router.get("/readmocktradeuserDate", (req, res)=>{
     let date = new Date();
     let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
     const {email} = req.params
-    MockTradeDetails.find({order_timestamp: {$regex: todayDate}})
+    MockTradeDetails.find({order_timestamp: {$regex: todayDate}}).sort({trade_time: -1})
     .then((data)=>{
-        (data).sort((a, b)=> {
-
-            if (a.order_timestamp < b.order_timestamp) {
-              return 1;
-            }
-            if (a.order_timestamp > b.order_timestamp) {
-              return -1;
-            }
-            return 0;
-          });
         return res.status(200).send(data);
     })
     .catch((err)=>{
@@ -189,11 +161,10 @@ router.get("/readmocktradeuserDate", (req, res)=>{
 
 router.get("/readmocktradeusertodaydatapagination/:skip/:limit", (req, res)=>{
     let date = new Date();
-    let todayDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
+    let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
     const {skip, limit} = req.params
-    MockTradeDetails.find({order_timestamp: {$regex: todayDate}}).sort({order_timestamp:-1}).skip(skip).limit(limit)
+    MockTradeDetails.find({order_timestamp: {$regex: todayDate}}).sort({trade_time:-1}).skip(skip).limit(limit)
     .then((data)=>{
-
         return res.status(200).send(data);
     })
     .catch((err)=>{
@@ -203,7 +174,7 @@ router.get("/readmocktradeusertodaydatapagination/:skip/:limit", (req, res)=>{
 
 router.get("/readmocktradeuserpagination/:email/:skip/:limit", (req, res)=>{
     const {email, skip, limit} = req.params
-    MockTradeDetails.find({userId: email}).sort({order_timestamp:-1}).skip(skip).limit(limit)
+    MockTradeDetails.find({userId: email}).sort({trade_time: -1}).skip(skip).limit(limit)
     .then((data)=>{
         return res.status(200).send(data);
     })
@@ -214,7 +185,7 @@ router.get("/readmocktradeuserpagination/:email/:skip/:limit", (req, res)=>{
 
 router.get("/readmocktradeuserpagination/:skip/:limit", (req, res)=>{
     const {skip, limit} = req.params
-    MockTradeDetails.find().sort({order_timestamp:-1}).skip(skip).limit(limit)
+    MockTradeDetails.find().sort({trade_time: -1}).skip(skip).limit(limit)
     .then((data)=>{
         return res.status(200).send(data);
     })
@@ -224,22 +195,9 @@ router.get("/readmocktradeuserpagination/:skip/:limit", (req, res)=>{
 })
 
 router.get("/readmocktradeuserpariculardatewithemail/:date/:email", (req, res)=>{
-    // let date = new Date();
-    // let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
     const {date, email} = req.params
     MockTradeDetails.find({order_timestamp: {$regex: date}, userId: email})
     .then((data)=>{
-        // (data).sort((a, b)=> {
-
-        //     if (a.order_timestamp < b.order_timestamp) {
-        //       return 1;
-        //     }
-        //     if (a.order_timestamp > b.order_timestamp) {
-        //       return -1;
-        //     }
-        //     return 0;
-        //   });
-        // data.reverse();
         return res.status(200).send(data);
     })
     .catch((err)=>{
@@ -248,22 +206,9 @@ router.get("/readmocktradeuserpariculardatewithemail/:date/:email", (req, res)=>
 })
 
 router.get("/readmocktradeuserpariculardate/:date", (req, res)=>{
-    // let date = new Date();
-    // let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
     const {date} = req.params
     MockTradeDetails.find({order_timestamp: {$regex: date}})
     .then((data)=>{
-        // (data).sort((a, b)=> {
-
-        //     if (a.order_timestamp < b.order_timestamp) {
-        //       return 1;
-        //     }
-        //     if (a.order_timestamp > b.order_timestamp) {
-        //       return -1;
-        //     }
-        //     return 0;
-        //   });
-        // data.reverse();
         return res.status(200).send(data);
     })
     .catch((err)=>{
@@ -418,24 +363,10 @@ router.get("/pnlcalucationmocktradeallusertoday", (req, res)=>{
     const {email} = req.params
     MockTradeDetails.find({order_timestamp: {$regex: todayDate}})
     .then((data)=>{
-        // (data).sort((a, b)=> {
-
-        //     if (a.order_timestamp < b.order_timestamp) {
-        //       return 1;
-        //     }
-        //     if (a.order_timestamp > b.order_timestamp) {
-        //       return -1;
-        //     }
-        //     return 0;
-        //   });
-
-        //pnl calculation start
 
             let overallnewpnl = pnlcalucationnorunninglots(data);
             console.log(overallnewpnl);
     
-    
-        //pnl calculation ends
         return res.status(200).send(overallnewpnl);
     })
     .catch((err)=>{
@@ -448,19 +379,18 @@ router.get("/pnlcalucationmocktradeusertoday", async(req, res)=>{
     let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
     const {email} = req.params
 
-        MockTradeDetails.find({order_timestamp: {$regex: todayDate}})
-            .then(async(data)=>{
-                let overallnewpnl = await pnlcalucationnorunninglotsuser(data);
-                console.log(overallnewpnl);
-                //traderwisepnl.push(overallnewpnl);
-                console.log(overallnewpnl);
-                return res.status(200).send(overallnewpnl);
-            })
-                .catch((err)=>{
-                    return res.status(422).json({error : "date not found"})
-                })
+    MockTradeDetails.find({order_timestamp: {$regex: todayDate}})
+    .then(async(data)=>{
+        let overallnewpnl = await pnlcalucationnorunninglotsuser(data);
+        console.log(overallnewpnl);
+        //traderwisepnl.push(overallnewpnl);
+        console.log(overallnewpnl);
+        return res.status(200).send(overallnewpnl);
+    })
+    .catch((err)=>{
+        return res.status(422).json({error : "date not found"})
+    })
 
-        //return res.status(200).send(traderwisepnl);
 })
 
 

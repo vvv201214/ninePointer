@@ -11,6 +11,7 @@ function TodaysTrades({info, setOrderCountTodayUser, orderCountTodayUser}){
     const [clickToRemove, setclickToRemove] = useState(1);
     const [skip, setSkip] = useState(0);
     const [length, setLength] = useState(0);
+    const limit = 15;
 
     let numberOfClickForRemoveNext = 0
 
@@ -20,13 +21,13 @@ function TodaysTrades({info, setOrderCountTodayUser, orderCountTodayUser}){
         .then((res)=>{
 
             setLength((res.data).length);            
-            setOrderCountTodayUser((res.data).length);
+            // setOrderCountTodayUser((res.data).length);
         }).catch((err)=>{
             window.alert("Server Down");
             return new Error(err);
         })
 
-        axios.get(`${baseUrl}api/v1/readmocktradeusertodaydatapagination/${info.email}/${skip}/${30}`)
+        axios.get(`${baseUrl}api/v1/readmocktradeusertodaydatapagination/${info.email}/${skip}/${limit}`)
         .then((res)=>{
 
             setData(res.data);
@@ -37,9 +38,9 @@ function TodaysTrades({info, setOrderCountTodayUser, orderCountTodayUser}){
     },[info])
 
     function nextData(){
-        setSkip((prev)=> prev+30)
+        setSkip((prev)=> prev+limit)
         console.log(skip)
-        axios.get(`${baseUrl}api/v1/readmocktradeusertodaydatapagination/${info.email}/${skip+30}/${30}`)
+        axios.get(`${baseUrl}api/v1/readmocktradeusertodaydatapagination/${info.email}/${skip+limit}/${limit}`)
         .then((res)=>{
 
             setData(res.data);
@@ -51,9 +52,9 @@ function TodaysTrades({info, setOrderCountTodayUser, orderCountTodayUser}){
     }
 
     function prevData(){
-        setSkip((prev)=> prev-30)
+        setSkip((prev)=> prev-limit)
         console.log(skip)
-        axios.get(`${baseUrl}api/v1/readmocktradeusertodaydatapagination/${info.email}/${skip-30}/${30}`)
+        axios.get(`${baseUrl}api/v1/readmocktradeusertodaydatapagination/${info.email}/${skip-limit}/${limit}`)
         .then((res)=>{
 
             setData(res.data);
@@ -63,7 +64,7 @@ function TodaysTrades({info, setOrderCountTodayUser, orderCountTodayUser}){
         })
         setclickToRemove((prev)=>prev-1)
     }
-    numberOfClickForRemoveNext = Math.ceil(((length))/30);
+    numberOfClickForRemoveNext = Math.ceil(((length))/limit);
     console.log(numberOfClickForRemoveNext, clickToRemove, length)
 
 
@@ -110,7 +111,7 @@ function TodaysTrades({info, setOrderCountTodayUser, orderCountTodayUser}){
                             <div className={Styles.pegination_div}>
                                 <button className={Styles.PrevButtons} disabled={!(skip !== 0)} onClick={prevData}>Prev</button>
                                 {(numberOfClickForRemoveNext !== clickToRemove) &&
-                                <div className={Styles.pageCounting}>{(clickToRemove-1)*30}-{(clickToRemove)*30}</div>}
+                                <div className={Styles.pageCounting}>{(clickToRemove-1)*limit}-{(clickToRemove)*limit}</div>}
                                 <button className={Styles.nextButtons} disabled={!(numberOfClickForRemoveNext !== clickToRemove)} onClick={nextData}>Next</button>
                             </div>
                             :

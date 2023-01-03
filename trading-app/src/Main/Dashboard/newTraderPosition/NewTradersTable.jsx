@@ -8,6 +8,7 @@ import ClosedPnl from "../PnlParts/ClosedPnl";
 import OverallPnl from "../PnlParts/OverallPnl";
 import TradersPNLTrader from '../PnlParts/TraderPNLTrader';
 import Styles from "../Dashboard.module.css";
+import TradersPnlLiveTrader from "../PnlParts/TradersPnlLiveTrader";
 
 export default function NewTradersTable({socket}) {
 
@@ -15,6 +16,7 @@ export default function NewTradersTable({socket}) {
   let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
   const [tradeData, setTradeData] = useState([]);
+  const [liveData, setLiveData] = useState([]);
   // const [reRender, setReRender] = useState(true);
   const [marketData, setMarketData] = useState([]);
   const [userDetail, setUserDetail] = useState([]);
@@ -33,10 +35,17 @@ export default function NewTradersTable({socket}) {
     
   axios.get(`${baseUrl}api/v1/readmocktradeuserDate`)
       .then((res) => {
-        //   let data = (res.data).filter((elem) => {
-        //       return elem.order_timestamp.includes(todayDate) && elem.status === "COMPLETE";
-        //   })
+
           setData(res.data);
+          
+      }).catch((err) => {
+          return new Error(err);
+      })
+
+      axios.get(`${baseUrl}api/v1/readliveTradeuserDate`)
+      .then((res) => {
+
+        setLiveData(res.data);
           
       }).catch((err) => {
           return new Error(err);
@@ -102,7 +111,7 @@ export default function NewTradersTable({socket}) {
                     <div className={Styles.box}>
                         <span className={Styles.header}>Overall P&L(Traders) - Live</span>
                         <div className="grid_2">
-                            <OverallPnl marketData={marketData} tradeData={tradeData} data={data} />
+                            <OverallPnl marketData={marketData} tradeData={tradeData} data={liveData} />
                         </div>
                     </div>
                     </div>
@@ -123,9 +132,9 @@ export default function NewTradersTable({socket}) {
                         </div></div>
                         <div className={Styles.gridheader}>
                         <div className={Styles.box}>
-                        <span className={Styles.header}>Traders Wise P&L(Traders)-Mock</span>
+                        <span className={Styles.header}>Traders Wise P&L(Traders)-Live</span>
                         
-                            <TradersPNLTrader marketData={marketData} tradeData={tradeData} />
+                            <TradersPnlLiveTrader marketData={marketData} tradeData={tradeData} />
                         
                         </div></div>
                     </div>

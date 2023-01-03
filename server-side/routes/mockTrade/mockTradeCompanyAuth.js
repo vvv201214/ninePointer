@@ -123,47 +123,20 @@ router.post("/mocktradecompany", async (req, res)=>{
             return res.status(422).json({error : "date already exist..."})
         }
 
-        if(realTrade === "yes"){
+        const mockTradeDetails = new MockTradeDetails({
+            status:"COMPLETE", uId, createdBy, average_price: originalLastPrice, Quantity: realQuantity, 
+            Product, buyOrSell:realBuyOrSell, order_timestamp: newTimeStamp,
+            variety, validity, exchange, order_type: OrderType, symbol, placed_by: "ninepointer", userId,
+                algoBox:{algoName, transactionChange, instrumentChange, exchangeChange, 
+            lotMultipler, productChange, tradingAccount}, order_id, instrumentToken, brokerage: brokerageCompany,
+            tradeBy: createdBy, isRealTrade: false, amount: (Number(realQuantity)*originalLastPrice), trade_time:trade_time
+        });
 
-                setTimeout(()=>{
-
-                    LiveTradeDetails.find({uId : uId})
-                    .then((res)=>{
-
-                        console.log("this is response", res);
-                        const mockTradeDetails = new MockTradeDetails({
-                            status: res[0].status, uId, createdBy, average_price: res[0].average_price, Quantity: realQuantity, 
-                            Product, buyOrSell:realBuyOrSell, order_timestamp: newTimeStamp,
-                            variety, validity, exchange, order_type: OrderType, symbol, placed_by: "ninepointer", userId,
-                            algoBox:{algoName, transactionChange, instrumentChange, exchangeChange, 
-                            lotMultipler, productChange, tradingAccount}, order_id: res[0].order_id, instrumentToken, brokerage: brokerageCompany,
-                            tradeBy: createdBy, isRealTrade: false, amount: (Number(realQuantity)*res[0].average_price), trade_time:trade_time
-                        });
-                
-                        console.log("mockTradeDetails comapny", mockTradeDetails);
-                        mockTradeDetails.save().then(()=>{
-                            // res.status(201).json({massage : "data enter succesfully"});
-                        }).catch((err)=> res.status(500).json({error:"Failed to enter data"}));
-    
-                    }).catch((err)=> res.status(500).json({error:"Failed to get data"}));
-
-                }, 2000)
-
-        } else{
-            const mockTradeDetails = new MockTradeDetails({
-                status:"COMPLETE", uId, createdBy, average_price: originalLastPrice, Quantity: realQuantity, 
-                Product, buyOrSell:realBuyOrSell, order_timestamp: newTimeStamp,
-                variety, validity, exchange, order_type: OrderType, symbol, placed_by: "ninepointer", userId,
-                 algoBox:{algoName, transactionChange, instrumentChange, exchangeChange, 
-                lotMultipler, productChange, tradingAccount}, order_id, instrumentToken, brokerage: brokerageCompany,
-                tradeBy: createdBy, isRealTrade: false, amount: (Number(realQuantity)*originalLastPrice), trade_time:trade_time
-            });
-    
-            console.log("mockTradeDetails comapny", mockTradeDetails);
-            mockTradeDetails.save().then(()=>{
-                res.status(201).json({massage : "data enter succesfully"});
-            }).catch((err)=> res.status(500).json({error:"Failed to enter data"}));
-        }
+        console.log("mockTradeDetails comapny", mockTradeDetails);
+        mockTradeDetails.save().then(()=>{
+            res.status(201).json({massage : "data enter succesfully"});
+        }).catch((err)=> res.status(500).json({error:"Failed to enter data"}));
+        
     }).catch(err => {console.log(err, "fail")});
 
     MockTradeDetailsUser.findOne({uId : uId})
@@ -173,46 +146,20 @@ router.post("/mocktradecompany", async (req, res)=>{
             return res.status(422).json({error : "date already exist..."})
         }
 
-        if(realTrade === "yes"){
-            setTimeout(()=>{
-                LiveTradeDetails.find({uId : uId})
-                .then((res)=>{
+        const mockTradeDetailsUser = new MockTradeDetailsUser({
+            status:"COMPLETE", uId, createdBy, average_price: originalLastPrice, Quantity, Product, buyOrSell, order_timestamp: newTimeStamp,
+            variety, validity, exchange, order_type: OrderType, symbol, placed_by: "ninepointer", userId,
+            isRealTrade: false, order_id, instrumentToken, brokerage: brokerageUser, 
+            tradeBy: createdBy, amount: (Number(Quantity)*originalLastPrice), trade_time:trade_time
+        });
 
-                    
-                    console.log("this is response user", res)
-                    const mockTradeDetailsUser = new MockTradeDetailsUser({
-                        status: res[0].status, uId, createdBy, average_price: res[0].average_price, Quantity, Product, buyOrSell, order_timestamp: newTimeStamp,
-                        variety, validity, exchange, order_type: OrderType, symbol, placed_by: "ninepointer", userId,
-                        isRealTrade: false, order_id:res[0].order_id, instrumentToken, brokerage: brokerageUser, 
-                        tradeBy: createdBy, amount: (Number(Quantity)*res[0].average_price), trade_time:trade_time
-                    });
-            
-                    console.log("mockTradeDetails", mockTradeDetailsUser);
-                    mockTradeDetailsUser.save().then(()=>{
-                        // res.status(201).json({massage : "data enter succesfully"});
-                    }).catch((err)=> {
-                        // res.status(500).json({error:"Failed to enter data"})
-                    });
-                }).catch((err)=> {
-                    // res.status(500).json({error:"Failed to enter data"})
-                });
-            }, 2000)
-
-        } else{
-            const mockTradeDetailsUser = new MockTradeDetailsUser({
-                status:"COMPLETE", uId, createdBy, average_price: originalLastPrice, Quantity, Product, buyOrSell, order_timestamp: newTimeStamp,
-                variety, validity, exchange, order_type: OrderType, symbol, placed_by: "ninepointer", userId,
-                isRealTrade: false, order_id, instrumentToken, brokerage: brokerageUser, 
-                tradeBy: createdBy, amount: (Number(Quantity)*originalLastPrice), trade_time:trade_time
-            });
-    
-            console.log("mockTradeDetails", mockTradeDetailsUser);
-            mockTradeDetailsUser.save().then(()=>{
-                // res.status(201).json({massage : "data enter succesfully"});
-            }).catch((err)=> {
-                // res.status(500).json({error:"Failed to enter data"})
-            });
-        }
+        console.log("mockTradeDetails", mockTradeDetailsUser);
+        mockTradeDetailsUser.save().then(()=>{
+            // res.status(201).json({massage : "data enter succesfully"});
+        }).catch((err)=> {
+            // res.status(500).json({error:"Failed to enter data"})
+        });
+        
 
     }).catch(err => {console.log(err, "fail")});
 })
@@ -225,22 +172,24 @@ router.get("/readmocktradecompany", (req, res)=>{
          
             return res.status(200).send(data);
         }
-    }).sort({trade_time:-1})
-})
-
-router.get("/readmocktradecompanycount", (req, res)=>{
-    MockTradeDetails.countDocuments((err, data)=>{
-        if(err){
-            return res.status(500).send(err);
-        }else{
-         
-            return res.status(200).json(data);
-        }
-    }).sort({trade_time:-1})
+    })
 })
 
 router.get("/readmocktradecompanycount", (req, res)=>{
     MockTradeDetails.count((err, data)=>{
+        if(err){
+            return res.status(500).send(err);
+        }else{
+            res.json(data)
+        }
+    })
+})
+
+router.get("/readmocktradecompanycountToday", (req, res)=>{
+    let date = new Date();
+    let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
+
+    MockTradeDetails.count({order_timestamp: {$regex: todayDate}},(err, data)=>{
         if(err){
             return res.status(500).send(err);
         }else{
@@ -263,18 +212,8 @@ router.get("/readmocktradecompany/:id", (req, res)=>{
 
 router.get("/readmocktradecompanyemail/:email", (req, res)=>{
     const {email} = req.params
-    MockTradeDetails.find({userId: email})
+    MockTradeDetails.find({userId: email}).sort({trade_time: -1})
     .then((data)=>{
-        (data).sort((a, b)=> {
-
-            if (a.order_timestamp < b.order_timestamp) {
-              return 1;
-            }
-            if (a.order_timestamp > b.order_timestamp) {
-              return -1;
-            }
-            return 0;
-          });
         return res.status(200).send(data);
     })
     .catch((err)=>{
@@ -287,19 +226,8 @@ router.get("/readmocktradecompanyDate", (req, res)=>{
     let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
     const {email} = req.params
     console.log(todayDate)
-    MockTradeDetails.find({order_timestamp: {$regex: todayDate}})
+    MockTradeDetails.find({order_timestamp: {$regex: todayDate}}).sort({trade_time: -1})
     .then((data)=>{
-        (data).sort((a, b)=> {
-
-            if (a.order_timestamp < b.order_timestamp) {
-              return 1;
-            }
-            if (a.order_timestamp > b.order_timestamp) {
-              return -1;
-            }
-            return 0;
-          });
-        data.reverse();
         return res.status(200).send(data);
     })
     .catch((err)=>{
@@ -308,22 +236,9 @@ router.get("/readmocktradecompanyDate", (req, res)=>{
 })
 
 router.get("/readmocktradecompanypariculardate/:date", (req, res)=>{
-    // let date = new Date();
-    // let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
     const {date} = req.params
     MockTradeDetails.find({order_timestamp: {$regex: date}})
     .then((data)=>{
-        // (data).sort((a, b)=> {
-
-        //     if (a.order_timestamp < b.order_timestamp) {
-        //       return 1;
-        //     }
-        //     if (a.order_timestamp > b.order_timestamp) {
-        //       return -1;
-        //     }
-        //     return 0;
-        //   });
-        // data.reverse();
         return res.status(200).send(data);
     })
     .catch((err)=>{
@@ -357,22 +272,9 @@ router.get("/readmocktradecompanytodaydatapagination/:skip/:limit", (req, res)=>
 })
 
 router.get("/readmocktradecompanypariculardatewithemail/:date/:email", (req, res)=>{
-    // let date = new Date();
-    // let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
     const {date, email} = req.params
     MockTradeDetails.find({order_timestamp: {$regex: date}, userId: email})
     .then((data)=>{
-        // (data).sort((a, b)=> {
-
-        //     if (a.order_timestamp < b.order_timestamp) {
-        //       return 1;
-        //     }
-        //     if (a.order_timestamp > b.order_timestamp) {
-        //       return -1;
-        //     }
-        //     return 0;
-        //   });
-        // data.reverse();
         return res.status(200).send(data);
     })
     .catch((err)=>{
@@ -490,17 +392,6 @@ router.get("/readmocktradecompanyThisYear/:email", (req, res)=>{
         return res.status(422).json({error : "date not found"})
     })
 })
-
-
-
-
-
-
-
-
-
-
-
 
 router.get("/updatemocktradedatatradetime", async(req, res)=>{
     // let date = new Date();
