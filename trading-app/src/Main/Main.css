@@ -1,27 +1,31 @@
 .main_new{
-    display: flex;
-    flex-direction: row;
+    /* display: flex;
+    flex-direction: row; */
     /* border: 10px solid black; */
-   
- 
-
+    float: right;
 }
 
 .main_content_new{
- min-width: 80vw;
- 
-  
-    
+    min-width: 80vw;
+    max-width: 83vw;
 }
 
-@media only screen and (min-width: 1200px) {
+/* @media only screen and (min-width: 1200px) {
     .main_content_new{
         max-width: 100vw;
     
     }
-}
+} */
 .sidebar_new{
     /* flex: 0.14; */
     /* border: 5px solid purple; */
-    min-width: 20vw;
+    /* min-width: 20vw; */
+}
+
+.mainbody{
+    display: grid;
+}
+
+.mainbody{
+    display: grid;
 }

@@ -17,11 +17,20 @@ export default function MainSideBar({name}) {
   return (
     <>
         <div class="g-sidenav-show  bg-gray-100">
-          <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark"
+          {/* <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark"
     id="sidenav-main">
 
           <div class="sidenav-header">
-          
+          <img src={require("./TodaysSummary/img/profileicon.png")} class="navbar-brand-img h-100" alt="user1" />
+          <span class="ms-1 font-weight-bold text-white">Material Dashboard 2</span>
+          </div> */}
+          <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark" id="sidenav-main">
+          <div class="sidenav-header">
+            <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
+            <a class="navbar-brand m-0" href="" target="_blank">
+              <img src={require("./TodaysSummary/img/profileicon.png")} class="navbar-brand-img h-100" alt="main_logo" style={{height:45,width:45}}/>
+              <span class="ms-4 font-weight-bold text-white">Material Dashboard 2</span>
+            </a>
           </div>
 
           <hr class="horizontal light mt-0 mb-2"/>
@@ -133,7 +142,7 @@ export default function MainSideBar({name}) {
               <div class="sidenav-footer position-absolute w-100 bottom-0 ">
               <NavLink  to="/">
                 <div class="mx-3">
-                  <span class="btn bg-gradient-primary mt-4 w-100" type="button">Go Out</span>
+                  <a class="btnnew bg-gradient-primary mt-4 w-100" type="button">Go Out</a>
                 </div>
                 </NavLink>
               </div>
@@ -147,6 +156,11 @@ export default function MainSideBar({name}) {
           </aside>
 
         </div>
+        
+          
+            
+           
+      
     </>
   )
 }

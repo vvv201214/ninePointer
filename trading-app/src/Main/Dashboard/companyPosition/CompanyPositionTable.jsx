@@ -10,6 +10,7 @@ import RunningPnl from "../PnlParts/RunningPnl";
 import ClosedPnl from "../PnlParts/ClosedPnl";
 import OverallPnl from "../PnlParts/OverallPnl";
 import TradersPnlCompany from "../PnlParts/TradersPnlCompany";
+import TradersPnlLiveCompany from "../PnlParts/TradersPnlLiveCompany";
 import Styles from "../Dashboard.module.css";
 
 function CompanyPositionTable({ socket }) {
@@ -21,6 +22,7 @@ function CompanyPositionTable({ socket }) {
     const [reRender, setReRender] = useState(true);
     const [marketData, setMarketData] = useState([]);
     const [data, setData] = useState([]);
+    const [livedata, setLiveData] = useState([]);
     let date = new Date();
     let todayDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
     let fake_date = "16-12-2022"
@@ -33,6 +35,17 @@ function CompanyPositionTable({ socket }) {
                 // })
                 console.log("data", res.data)
                 setData(res.data);
+            }).catch((err) => {
+                return new Error(err);
+            })
+        
+            axios.get(`${baseUrl}api/v1/readlivetradecompanyDate`)
+            .then((res) => {
+                // let data = (res.data).filter((elem) => {
+                //     return elem.order_timestamp.includes(todayDate) && elem.status === "COMPLETE";
+                // })
+                console.log("data", res.data)
+                setLiveData(res.data);
             }).catch((err) => {
                 return new Error(err);
             })
@@ -86,7 +99,7 @@ function CompanyPositionTable({ socket }) {
                     <div className="rightside_maindiv">
                     <div className={Styles.gridheader}>
                     <div className={Styles.box}>
-                    <span className={Styles.header}>Instruments Details</span>
+                    <span class="btnnew bg-gradient-secondary mt-0 w-100">Instruments Details</span>
                             <table className="grid1_table">
                                 <tr className="grid2_tr">
                                     <th className="grid2_th">Trading Date</th>
@@ -129,11 +142,16 @@ function CompanyPositionTable({ socket }) {
                             </table>
                         </div>
                         </div>
-                        <span className={Styles.gridheader}>
+                        <div className={Styles.gridheader}>
                             <div className={Styles.box}>
-                                <div class={Styles.header}>Overall P&L(Company) - Mock</div>
+                                <span class="btnnew bg-gradient-primary mt-0 w-100">Overall P&L(Company) - Mock</span>
                             <OverallPnl marketData={marketData} tradeData={tradeData} data={data} />
-                        </div></span>
+                        </div></div>
+                        <div className={Styles.gridheader}>
+                        <div className={Styles.box}>
+                                <span class="btnnew bg-gradient-success mt-0 w-100">Overall P&L(Company) - Live</span>
+                            <OverallPnl marketData={marketData} tradeData={tradeData} data={livedata} />
+                        </div></div>
                         
                         {/* <span className="grid2_span">Running PNL-Company</span>
                         <div className="grid_2">
@@ -145,9 +163,14 @@ function CompanyPositionTable({ socket }) {
                         </div> */}
                         <span className={Styles.gridheader}>
                         <div className={Styles.box}>
-                        <div className={Styles.header}>Trader Wise P&L(Company) - Mock</div>
+                        <div class="btnnew bg-gradient-primary mt-0 w-100">Trader Wise P&L(Company) - Mock</div>
                             <TradersPnlCompany marketData={marketData} tradeData={tradeData}/>          
-                    </div></span>
+                        </div></span>
+                        <span className={Styles.gridheader}>
+                            <div className={Styles.box}>
+                            <div class="btnnew bg-gradient-success mt-0 w-100">Trader Wise P&L(Company) - Live</div>
+                                <TradersPnlLiveCompany marketData={marketData} tradeData={tradeData}/>          
+                        </div></span>
                 </div>
             </div>
             </div>

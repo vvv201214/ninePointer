@@ -3,14 +3,46 @@ const router = express.Router();
 const cors = require('cors');
 const app = express();
 const dotenv = require('dotenv');
-const kiteConnect = require('./marketData/kiteConnect');
+// const kiteConnect = require('./marketData/kiteConnect');
 const fetch = require('./marketData/placeOrder');
 app.use(require("cookie-parser")());
 
+const fetchData = require('./marketData/fetchToken');
+const io = require('./marketData/socketio');
+const {createNewTicker, disconnectTicker, getTicker, subscribeTokens, getTicks, onError} = require('./marketData/kiteTicker');
+const getKiteCred = require('./marketData/getKiteCred'); 
+
+
+getKiteCred.getAccess().then((data)=>{
+  console.log("this is code ",data);
+  createNewTicker(data.getApiKey, data.getAccessToken);
+});
+
+io.on("connection", (socket) => {
+  console.log('client socket is' + socket.id);
+  // socket1 = socket;
+  socket.on('hi', async (data) => {
+    // eventEmitOnError = data;
+    getKiteCred.getAccess().then(async (data)=>{
+      console.log(data);
+
+      let tokens = await fetchData(data.getApiKey, data.getAccessToken);
+      // console.log('tokens index', tokens);
+  
+      subscribeTokens();
+      getTicks(socket, tokens);
+      onError();
+
+    });
+  });
+});
+
+io.on('disconnection', () => {disconnectTicker()});
+
 dotenv.config({ path: './config.env' });
 
-console.log(kiteConnect);
-app.get('/api/v1/ws', kiteConnect);
+// console.log(kiteConnect);
+// app.get('/api/v1/ws', kiteConnect.parameters);
 app.get('/api/v1/data', fetch);
 
 // app.get('/ws', kiteConnect);
@@ -19,13 +51,17 @@ let newCors = process.env.NODE_ENV === "production" ? "http://3.110.187.5/" : "h
 app.use(cors({
   credentials:true,
 
-  // origin: "http://3.110.187.5/"
+  //origin: "http://3.110.187.5/"
   origin: newCors
 
 }));
 
 app.use(express.json());
 
+
+//Update 
+// app.use('/api/v1', require("./routes/TradeData/getCompanyTrade"));
+//Update
 app.use('/api/v1', require("./marketData/livePrice"));
 app.use('/api/v1', require("./routes/user/userLogin"));
 app.use('/api/v1', require('./routes/TradeData/getUserTrade'));

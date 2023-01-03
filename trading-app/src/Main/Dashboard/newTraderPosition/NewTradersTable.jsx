@@ -30,12 +30,14 @@ export default function NewTradersTable({socket}) {
         return new Error(err);
     })
 
+    
   axios.get(`${baseUrl}api/v1/readmocktradeuserDate`)
       .then((res) => {
         //   let data = (res.data).filter((elem) => {
         //       return elem.order_timestamp.includes(todayDate) && elem.status === "COMPLETE";
         //   })
           setData(res.data);
+          
       }).catch((err) => {
           return new Error(err);
       })
@@ -76,6 +78,7 @@ export default function NewTradersTable({socket}) {
       }
   }, [])
 
+  console.log(data);
   console.log(marketData);
 
 
@@ -89,12 +92,20 @@ export default function NewTradersTable({socket}) {
                     <div className="rightside_maindiv">
                     <div className={Styles.gridheader}>
                     <div className={Styles.box}>
-                        <span className={Styles.header}>Overall P&L(Traders)-Mock</span>
+                        <span class="btnnew bg-gradient-primary mt-0 w-100">Overall P&L(Traders) - Mock</span>
                         <div className="grid_2">
                             <OverallPnl marketData={marketData} tradeData={tradeData} data={data} />
                         </div>
                     </div>
                     </div>
+                    <div className={Styles.gridheader}>
+                    <div className={Styles.box}>
+                        <span class="btnnew bg-gradient-success mt-0 w-100">Overall P&L(Traders) - Live</span>
+                        <div className="grid_2">
+                            <OverallPnl marketData={marketData} tradeData={tradeData} data={data} />
+                        </div>
+                    </div>
+                    </div> 
                         {/* <span className="grid2_span">Running PNL-Traders</span>
                         <div className="grid_2">
                             <RunningPnl marketData={marketData} tradeData={tradeData} data={data} />
@@ -105,7 +116,14 @@ export default function NewTradersTable({socket}) {
                         </div> */}
                         <div className={Styles.gridheader}>
                         <div className={Styles.box}>
-                        <span className={Styles.header}>Traders Wise P&L(Traders)-Mock</span>
+                        <span class="btnnew bg-gradient-primary mt-0 w-100">Traders Wise P&L(Traders)-Mock</span>
+                        
+                            <TradersPNLTrader marketData={marketData} tradeData={tradeData} />
+                        
+                        </div></div>
+                        <div className={Styles.gridheader}>
+                        <div className={Styles.box}>
+                        <span class="btnnew bg-gradient-success mt-0 w-100">Traders Wise P&L(Traders)-Mock</span>
                         
                             <TradersPNLTrader marketData={marketData} tradeData={tradeData} />
                         

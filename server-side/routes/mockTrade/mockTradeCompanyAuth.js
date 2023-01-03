@@ -36,6 +36,7 @@ router.post("/mocktradecompany", async (req, res)=>{
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
     let originalLastPrice;
     let newTimeStamp = "";
+    let trade_time = "";
     try{
         
         let liveData = await axios.get(`${baseUrl}api/v1/getliveprice`)
@@ -49,6 +50,7 @@ router.post("/mocktradecompany", async (req, res)=>{
             }
         }
 
+        trade_time = newTimeStamp;
         let firstDateSplit = (newTimeStamp).split(" ");
         let secondDateSplit = firstDateSplit[0].split("-");
         newTimeStamp = `${secondDateSplit[2]}-${secondDateSplit[1]}-${secondDateSplit[0]} ${firstDateSplit[1]}`
@@ -116,7 +118,7 @@ router.post("/mocktradecompany", async (req, res)=>{
             variety, validity, exchange, order_type: OrderType, symbol, placed_by: "ninepointer", userId,
              algoBox:{algoName, transactionChange, instrumentChange, exchangeChange, 
             lotMultipler, productChange, tradingAccount}, order_id, instrumentToken, brokerage: brokerageCompany,
-            tradeBy: createdBy, isRealTrade: realTrade
+            tradeBy: createdBy, isRealTrade: realTrade, amount: (Number(realQuantity)*originalLastPrice), trade_time:trade_time
         });
 
         console.log("mockTradeDetails comapny", mockTradeDetails);
@@ -135,7 +137,7 @@ router.post("/mocktradecompany", async (req, res)=>{
             status:"COMPLETE", uId, createdBy, average_price: originalLastPrice, Quantity, Product, buyOrSell, order_timestamp: newTimeStamp,
             variety, validity, exchange, order_type: OrderType, symbol, placed_by: "ninepointer", userId,
             isRealTrade: realTrade, order_id, instrumentToken, brokerage: brokerageUser, 
-            tradeBy: createdBy
+            tradeBy: createdBy, amount: (Number(Quantity)*originalLastPrice), trade_time:trade_time
         });
 
         console.log("mockTradeDetails", mockTradeDetailsUser);
@@ -147,25 +149,36 @@ router.post("/mocktradecompany", async (req, res)=>{
     }).catch(err => {console.log(err, "fail")});
 })
 
-
 router.get("/readmocktradecompany", (req, res)=>{
     MockTradeDetails.find((err, data)=>{
         if(err){
             return res.status(500).send(err);
         }else{
-            (data).sort((a, b)=> {
-
-                if (a.order_timestamp < b.order_timestamp) {
-                  return 1;
-                }
-                if (a.order_timestamp > b.order_timestamp) {
-                  return -1;
-                }
-                return 0;
-              });
+         
             return res.status(200).send(data);
         }
-    }).sort({$natural:-1})
+    }).sort({trade_time:-1})
+})
+
+router.get("/readmocktradecompanycount", (req, res)=>{
+    MockTradeDetails.countDocuments((err, data)=>{
+        if(err){
+            return res.status(500).send(err);
+        }else{
+         
+            return res.status(200).json(data);
+        }
+    }).sort({trade_time:-1})
+})
+
+router.get("/readmocktradecompanycount", (req, res)=>{
+    MockTradeDetails.count((err, data)=>{
+        if(err){
+            return res.status(500).send(err);
+        }else{
+            res.json(data)
+        }
+    })
 })
 
 router.get("/readmocktradecompany/:id", (req, res)=>{
@@ -226,7 +239,6 @@ router.get("/readmocktradecompanyDate", (req, res)=>{
     })
 })
 
-
 router.get("/readmocktradecompanypariculardate/:date", (req, res)=>{
     // let date = new Date();
     // let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
@@ -254,7 +266,7 @@ router.get("/readmocktradecompanypariculardate/:date", (req, res)=>{
 router.get("/readmocktradecompanypagination/:skip/:limit", (req, res)=>{
     console.log(req.params)
     const {limit, skip} = req.params
-    MockTradeDetails.find().sort({order_timestamp:-1}).skip(skip).limit(limit)
+    MockTradeDetails.find().sort({trade_time:-1}).skip(skip).limit(limit)
     .then((data)=>{
         return res.status(200).send(data);
     })
@@ -267,7 +279,7 @@ router.get("/readmocktradecompanytodaydatapagination/:skip/:limit", (req, res)=>
     let date = new Date();
     let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
     const {limit, skip} = req.params
-    MockTradeDetails.find({order_timestamp: {$regex: todayDate}}).sort({order_timestamp:-1}).skip(skip).limit(limit)
+    MockTradeDetails.find({order_timestamp: {$regex: todayDate}}).sort({trade_time:-1}).skip(skip).limit(limit)
     .then((data)=>{
         return res.status(200).send(data);
     })
@@ -305,19 +317,105 @@ router.get("/readmocktradecompanyDate/:email", (req, res)=>{
     let date = new Date();
     let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
     console.log(todayDate);
-    MockTradeDetails.find({order_timestamp: {$regex: todayDate}, userId: {$regex: email}})
+    MockTradeDetails.find({order_timestamp: {$regex: todayDate}, userId: {$regex: email}}).sort({trade_time:-1})
     .then((data)=>{
-        (data).sort((a, b)=> {
+        return res.status(200).send(data);
+    })
+    .catch((err)=>{
+        return res.status(422).json({error : "date not found"})
+    })
+})
 
-            if (a.order_timestamp < b.order_timestamp) {
-              return 1;
-            }
-            if (a.order_timestamp > b.order_timestamp) {
-              return -1;
-            }
-            return 0;
-          });
-        data.reverse();
+router.get("/readmocktradecompanyThisMonth", (req, res)=>{
+    let date = new Date();
+    let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
+    const {email} = req.params
+    let monthStart = `${String(01).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
+    console.log(todayDate)
+    // MockTradeDetails.find({order_timestamp: {$regex: todayDate}})
+    MockTradeDetails.find({trade_time: {$gte:monthStart,$lt: todayDate}})
+    .then((data)=>{
+        return res.status(200).send(data);
+    })
+    .catch((err)=>{
+        return res.status(422).json({error : "date not found"})
+    })
+})
+
+router.get("/readmocktradecompanyThisWeek/:email", (req, res)=>{
+    const {email} = req.params
+    let date = new Date();
+    console.log(date);
+    let todayDate = `${(date.getFullYear())}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
+    console.log(todayDate);
+
+    let weekday = date.getDay();
+    console.log("Weekday"+weekday);
+    
+    var day = new Date(todayDate);
+    console.log(day); // Apr 30 2000
+
+    var nextDay = new Date(day);
+    nextDay.setDate(day.getDate() + 2);
+    console.log(nextDay);
+    let nextDate = `${(nextDay.getFullYear())}-${String(nextDay.getMonth() + 1).padStart(2, '0')}-${String(nextDay.getDate()).padStart(2, '0')}`
+
+    var weekStartDay = new Date(day);
+    weekStartDay.setDate(day.getDate() - weekday);
+    //console.log(String(weekStartDay).slice(0,10));
+    let weekStartDate = `${(weekStartDay.getFullYear())}-${String(weekStartDay.getMonth() + 1).padStart(2, '0')}-${String(weekStartDay.getDate()).padStart(2, '0')}`
+
+    MockTradeDetails.find({trade_time: {$gte:weekStartDate,$lt:nextDate}, userId:email})
+    .then((data)=>{
+        return res.status(200).send(data);
+    })
+    .catch((err)=>{
+        return res.status(422).json({error : "date not found"})
+    })
+
+})
+
+router.get("/readmocktradecompanyThisMonth/:email", (req, res)=>{
+    const {email} = req.params
+    let date = new Date();
+    let todayDate = `${(date.getFullYear())}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
+    console.log(todayDate);
+
+    var day = new Date(todayDate);
+    console.log(day); // Apr 30 2000
+
+    var nextDay = new Date(day);
+    nextDay.setDate(day.getDate() + 1);
+    console.log(nextDay);
+
+    let monthStart = `${(date.getFullYear())}-${String(date.getMonth() + 1).padStart(2, '0')}-01`
+    MockTradeDetails.find({trade_time: {$gte:monthStart,$lt: nextDay}, userId: {$regex: email}})
+    .then((data)=>{
+        return res.status(200).send(data);
+    })
+    .catch((err)=>{
+        return res.status(422).json({error : "date not found"})
+    })
+})
+
+router.get("/readmocktradecompanyThisYear/:email", (req, res)=>{
+    const {email} = req.params
+    let date = new Date();
+    let todayDate = `${(date.getFullYear())}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
+    console.log("Today Date"+todayDate);
+
+    var day = new Date(todayDate);
+    console.log(day); // Apr 30 2000
+
+    var nextDay = new Date(day);
+    nextDay.setDate(day.getDate() + 1);
+    console.log(nextDay);
+
+    let yearStart = `${(date.getFullYear())}-01-01`
+    console.log(yearStart);
+    console.log(email);
+    MockTradeDetails.find({trade_time: {$gte:yearStart,$lt:nextDay}, userId:email})
+    .then((data)=>{
         return res.status(200).send(data);
     })
     .catch((err)=>{
@@ -327,11 +425,73 @@ router.get("/readmocktradecompanyDate/:email", (req, res)=>{
 
 
 
+
+
+
+
+
+
+
+
+
+router.get("/updatemocktradedatatradetime", async(req, res)=>{
+    // let date = new Date();
+    // let id = data._id;
+    // let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
+    // const {email} = req.params
+    // console.log(todayDate)
+    let datatoupdate = await MockTradeDetails.find()
+   
+    //console.log(datatoupdate);
+
+
+        for(let i = 0; i< datatoupdate.length; i++ ){
+            // console.log(datatoupdate[i]);
+            if(!datatoupdate[i].trade_time){
+            let datetime = datatoupdate[i].order_timestamp.split(" ");
+            let datepart = datetime[0];
+            let datetoupdate = datetime[0].split("-");
+            let timepart = datetime[1]; 
+            let trade_time = `${datetoupdate[2]}-${datetoupdate[1]}-${datetoupdate[0]} ${datetime[1]}`
+            console.log(trade_time);
+
+            await MockTradeDetails.findByIdAndUpdate(datatoupdate[i]._id, {trade_time : trade_time},
+                function (err, trade_time) {
+                    if (err){
+                        console.log(err)
+                    }
+                    else{
+                        console.log("Trade Time : ", trade_time);
+                    }
+        }).clone();
+        }
+    }
+})
+
+router.get("/updatemocktradedataamount", async(req, res)=>{
+    // let date = new Date();
+    // let id = data._id;
+    // let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
+    // const {email} = req.params
+    // console.log(todayDate)
+    let datatoupdate = await MockTradeDetails.find()
+    console.log(datatoupdate);
+
+
+        for(let i = 0; i< datatoupdate.length; i++ ){
+            if(!datatoupdate[i].amount){
+            //console.log(datatoupdate[i]);
+            await MockTradeDetails.findByIdAndUpdate(datatoupdate[i]._id, {amount : Number(datatoupdate[i].Quantity) * datatoupdate[i].average_price},
+                function (err, amount) {
+                    if (err){
+                        console.log(err)
+                    }
+                    else{
+                        console.log("Trade Time : ", amount);
+                    }
+        }).clone();
+        }
+    }
+})
+
 module.exports = router;
-
-
-
-
-
-
-  

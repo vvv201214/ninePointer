@@ -6,11 +6,7 @@ const axios = require('axios');
 const fetchToken = require("../../marketData/generateSingleToken");
 const RequestToken = require("../../models/Trading Account/requestTokenSchema");
 const Account = require("../../models/Trading Account/accountSchema");
-var tickerObj = require('../../marketData/kiteConnect')
-
-const {kiteTickerFunc} = tickerObj
-
-
+const {subscribeTokens, unSubscribeTokens} = require('../../marketData/kiteTicker');
 
 router.post("/instrument", async (req, res)=>{
 
@@ -39,9 +35,8 @@ router.post("/instrument", async (req, res)=>{
             }
             const instruments = new Instrument({instrument, exchange, symbol, status, uId, createdOn, lastModified, createdBy, lotSize, instrumentToken, contractDate, maxLot});
             console.log("instruments", instruments)
-            instruments.save().then(()=>{
-                // kiteTickerFunc();
-                // console.log("kiteTickerFunc");
+            instruments.save().then(async()=>{
+                 await subscribeTokens();
                 res.status(201).json({massage : "data enter succesfully"});
             }).catch((err)=> res.status(500).json({error:"Failed to enter data"}));
         }).catch(err => {console.log(err, "fail")});
@@ -85,12 +80,10 @@ router.put("/readInstrumentDetails/:id", async (req, res)=>{
         contract_Date = `${secondDateSplit[2]}-${secondDateSplit[1]}-${secondDateSplit[0]}`
     }
 
-
-    // const token = 1232444;
-    // console.log(token, req.body)
     try{ 
         const {id} = req.params
         const token = await fetchToken(Exchange, Symbole);
+        console.log(token)
         const instrument = await Instrument.findOneAndUpdate({_id : id}, {
             $set:{ 
                 instrument: req.body.Instrument,
@@ -105,10 +98,10 @@ router.put("/readInstrumentDetails/:id", async (req, res)=>{
             }
         })
         console.log("this is role", instrument);
-        // if(instrument[0].status === "Active"){
-            // kiteTickerFunc(token);
-            // console.log("kiteTickerFunc");
-        // }
+        if(((req.body).Symbole !== instrument.symbol) || (req.body).Status === "Inactive"){
+            unSubscribeTokens(instrument.instrumentToken).then(()=>{});
+        }
+        subscribeTokens().then(()=>{});           
 
         res.send(instrument)
     } catch (e){
@@ -120,9 +113,11 @@ router.delete("/readInstrumentDetails/:id", async (req, res)=>{
     console.log(req.params)
     try{
         const {id} = req.params
+        const instrumentDetail = await Instrument.findOne({_id : id})
         const instrument = await Instrument.deleteOne({_id : id})
-        console.log("this is userdetail", instrument);
-        // res.send(userDetail)
+        console.log("this is userdetail", instrument, instrumentDetail);
+
+        unSubscribeTokens(instrumentDetail.instrumentToken).then(()=>{});
         res.status(201).json({massage : "data delete succesfully"});
     } catch (e){
         res.status(500).json({error:"Failed to delete data"});

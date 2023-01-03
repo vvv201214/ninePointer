@@ -79,6 +79,14 @@ const mockTradeSchema = new mongoose.Schema({
     tradeBy:{
         type: String,
         required: true        
+    },
+    amount:{
+        type: Number,
+        required: true        
+    },
+    trade_time:{
+        type: String,
+        required: true        
     }
 })
 

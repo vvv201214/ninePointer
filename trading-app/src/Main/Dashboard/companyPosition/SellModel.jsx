@@ -4,7 +4,6 @@ import { useEffect } from 'react';
 import axios from "axios"
 import uniqid from "uniqid"
 import { userContext } from "../../AuthContext";
-import Styles from "./SellModel.module.css";
 
 export default function SellModel({marketData, uIdProps, Render, isCompany, symbol, ltp, maxlot, lotsize }) {
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
@@ -91,14 +90,15 @@ export default function SellModel({marketData, uIdProps, Render, isCompany, symb
         optionData.push( <option value={i * lotSize}>{ i * lotSize}</option>)
         
     }
-    console.log(optionData)
-
-    useEffect(() => {
-
-        axios.get(`${baseUrl}api/v1/readpermission`)
+    
+    const toggleModal = () => {
+        console.log("in toggle",modal)
+        if(!modal){
+            console.log("in modal")
+            axios.get(`${baseUrl}api/v1/readpermission`)
             .then((res) => {
                 let perticularUser = (res.data).filter((elem) => {
-                    console.log(elem.userId, userId);
+                    //console.log(elem.userId, userId);
                     return elem.userId === userId;
                 })
                 setUserPermission(perticularUser);
@@ -106,6 +106,40 @@ export default function SellModel({marketData, uIdProps, Render, isCompany, symb
                 // window.alert("Server Down");
                 return new Error(err);
             })
+    
+            axios.get(`${baseUrl}api/v1/readtradingAlgo`)
+            .then((res) => {
+                setTradingAlgoData(res.data);
+            }).catch((err) => {
+                return new Error(err);
+            })
+
+        }
+
+
+        setModal(!modal);
+        console.log(modal)
+    };
+
+    if (modal) {
+        document.body.classList.add('active-modal')
+    } else {
+        document.body.classList.remove('active-modal')
+    }
+
+    useEffect(() => {
+
+        // axios.get(`${baseUrl}api/v1/readpermission`)
+        //     .then((res) => {
+        //         let perticularUser = (res.data).filter((elem) => {
+        //             console.log(elem.userId, userId);
+        //             return elem.userId === userId;
+        //         })
+        //         setUserPermission(perticularUser);
+        //     }).catch((err) => {
+        //         // window.alert("Server Down");
+        //         return new Error(err);
+        //     })
 
         axios.get(`${baseUrl}api/v1/readRequestToken`)
             .then((res) => {
@@ -128,12 +162,12 @@ export default function SellModel({marketData, uIdProps, Render, isCompany, symb
                 return new Error(err);
             })
 
-        axios.get(`${baseUrl}api/v1/readtradingAlgo`)
-            .then((res) => {
-                setTradingAlgoData(res.data);
-            }).catch((err) => {
-                return new Error(err);
-            })
+        // axios.get(`${baseUrl}api/v1/readtradingAlgo`)
+        //     .then((res) => {
+        //         setTradingAlgoData(res.data);
+        //     }).catch((err) => {
+        //         return new Error(err);
+        //     })
 
         axios.get(`${baseUrl}api/v1/readBrokerage`)
             .then((res) => {
@@ -187,7 +221,7 @@ export default function SellModel({marketData, uIdProps, Render, isCompany, symb
     const userPermissionAlgo = [];
     for (let elem of tradingAlgoArr) {
         for (let subElem of userPermission) {
-            if (elem.algoName === subElem.algoName) {
+            if (elem.algoName === subElem.algoName && subElem.isTradeEnable) {
                 userPermissionAlgo.push(elem)
             }
         }
@@ -196,21 +230,17 @@ export default function SellModel({marketData, uIdProps, Render, isCompany, symb
     console.log(userPermissionAlgo); //its an array do everything according it
 
 
-
-    const toggleModal = () => {
-        setModal(!modal);
-    };
-
-    if (modal) {
-        document.body.classList.add('active-modal')
-    } else {
-        document.body.classList.remove('active-modal')
-    }
-
     function FormHandler(e) {
         e.preventDefault()
     }
 
+    let tradeEnable ;
+    userPermission.map((elem)=>{
+        console.log(elem)
+        if(elem.isTradeEnable){
+            tradeEnable = true;
+        }
+    })
 
     function tradingAlgo(uId, lastPrice) {
         // if(tradingAlgoData.length){
@@ -251,7 +281,7 @@ export default function SellModel({marketData, uIdProps, Render, isCompany, symb
             userPermission.map((subElem)=>{
                 if(subElem.algoName === elem.algoName){
                     if(subElem.isRealTradeEnable || elem.isRealTrade){
-                        sendOrderReq();
+                        sendOrderReq(elem, "yes");
                         // mockTradeUser("yes");
                         mockTradeCompany(elem, "yes");
                     } else{
@@ -335,9 +365,11 @@ export default function SellModel({marketData, uIdProps, Render, isCompany, symb
         }, 1000);
     }
     console.log(Details)
-    async function sendOrderReq() {
-        const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, brokerageCharge } = Details;
+    async function sendOrderReq(algoBox, realTrade) {
+        const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, instrumentToken } = Details;
+        const { algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount } = algoBox;
         const { realBuyOrSell, realSymbol, realQuantity, realInstrument, realBrokerage, realAmount, real_last_price } = companyTrade;
+
         const { instrument } = tradeData;
         const { apiKey } = apiKeyDetails[0];
         const { accessToken } = accessTokenDetails[0];
@@ -348,20 +380,21 @@ export default function SellModel({marketData, uIdProps, Render, isCompany, symb
                 "content-type": "application/json"
             },
             body: JSON.stringify({
-                exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType,
-                TriggerPrice, stopLoss, variety, validity, uId, createdBy, createdOn,
-                last_price, realBuyOrSell, realSymbol, realQuantity, instrument,
-                realInstrument, apiKey, accessToken, userId, realBrokerage, realAmount,
-                brokerageCharge, real_last_price, tradeBy
+                
+                apiKey, accessToken, userId,
+                exchange, symbol: realSymbol, buyOrSell, realBuyOrSell, Quantity, realQuantity, Price, Product, OrderType, TriggerPrice, 
+                stopLoss, validity, variety, last_price: real_last_price, createdBy, userId, createdOn, uId, 
+                algoBox: {algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, 
+                productChange, tradingAccount}, order_id:dummyOrderId, instrumentToken, realTrade
+
             })
         });
         const dataResp = await res.json();
-        console.log(dataResp);
         if (dataResp.status === 422 || dataResp.error || !dataResp) {
             window.alert(dataResp.error);
             console.log("Failed to Trade");
-        }else{
-            console.log(dataResp); 
+        } else {
+            console.log(dataResp);
             // window.alert("Trade succesfull");
             console.log("entry succesfull");
         }
@@ -457,14 +490,18 @@ export default function SellModel({marketData, uIdProps, Render, isCompany, symb
   
     return (
         <>
-        {userPermission[0] === undefined ?
+        {/* {userPermission[0] === undefined ?
             <button disabled={!userPermission.isTradeEnable} onClick={toggleModal} className="btn-modal Sell_btn">
                 SELL
             </button>
             :
             <button disabled={!userPermission[0].isTradeEnable} onClick={toggleModal} className="btn-modal Sell_btn">
             SELL
-            </button> }
+            </button> } */}
+
+            <button onClick={toggleModal} className="btnnew bg-gradient-primary mt-2 w-40 mx-sm-1">
+            SELL
+            </button>
 
             {modal && (
                <div className="modal">
