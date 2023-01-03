@@ -69,6 +69,7 @@ export default function HistoryTradesMock({setOrderCountHistoryCompany, orderCou
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-10 ps-2" style={{textAlign:"center"}}>Product</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-10 ps-2" style={{textAlign:"center"}}>Quantity</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-10 ps-2" style={{textAlign:"center"}}>Avg. Price</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-10 ps-2" style={{textAlign:"center"}}>Amount</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-10 ps-2" style={{textAlign:"center"}}>Status</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-10 ps-2" style={{textAlign:"center"}}>AlgoName</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-10 ps-2" style={{textAlign:"center"}}>Account</th>
@@ -111,6 +112,9 @@ export default function HistoryTradesMock({setOrderCountHistoryCompany, orderCou
                                                 <p class="text-xs font-weight-bold mb-0" style={{textAlign:"center"}}>₹{elem.average_price.toFixed(2)}</p>     
                                             </td>
                                             <td>
+                                                <p class="text-xs font-weight-bold mb-0" style={{textAlign:"center"}}>₹{Math.abs(elem.average_price*elem.Quantity).toFixed(2)}</p>     
+                                            </td>
+                                            <td>
                                                 <p class="text-xs font-weight-bold mb-0" style={elem.status == "COMPLETE" ? {color : "white",backgroundColor : "#04aa04",fontWeight : 700, textAlign:"center", borderRadius:10}:{color : "white", backgroundColor : "red",fontWeight : 700,textAlign:"center",borderRadius:10}}>{elem.status}</p>     
                                             </td>
                                             <td>
@@ -125,9 +129,9 @@ export default function HistoryTradesMock({setOrderCountHistoryCompany, orderCou
                                 })}        
                             </table> 
                             <div className={Styles.pegination_div}>
-                                <button className={Styles.PrevButtons} disabled={!(skip !== 0)} onClick={prevData}>Prev</button>
-                                <div className={Styles.pageCounting}>{(clickToRemove-1)*30}-{(clickToRemove)*30}</div>
-                                <button className={Styles.nextButtons} disabled={!(numberOfClickForRemoveNext !== clickToRemove)} onClick={nextData}>Next</button>
+                                <button class="btnnew bg-gradient-primary mt-3 w-10" disabled={!(skip !== 0)} onClick={prevData}>Prev</button>
+                                <div class="btnnew bg-gradient-secondary mt-3 w-10">{(clickToRemove-1)*30}-{(clickToRemove)*30}</div>
+                                <button class="btnnew bg-gradient-primary mt-3 w-10" disabled={!(numberOfClickForRemoveNext !== clickToRemove)} onClick={nextData}>Next</button>
                             </div>
                         
                     

@@ -54,16 +54,16 @@ router.get("/readmocktradeuser", (req, res)=>{
         if(err){
             return res.status(500).send(err);
         }else{
-            (data).sort((a, b)=> {
+            // (data).sort((a, b)=> {
 
-                if (a.order_timestamp < b.order_timestamp) {
-                  return 1;
-                }
-                if (a.order_timestamp > b.order_timestamp) {
-                  return -1;
-                }
-                return 0;
-              });
+            //     if (a.order_timestamp < b.order_timestamp) {
+            //       return 1;
+            //     }
+            //     if (a.order_timestamp > b.order_timestamp) {
+            //       return -1;
+            //     }
+            //     return 0;
+            //   });
             return res.status(200).send(data);
         }
     }).sort({$natural:-1})
@@ -189,7 +189,7 @@ router.get("/readmocktradeuserDate", (req, res)=>{
 
 router.get("/readmocktradeusertodaydatapagination/:skip/:limit", (req, res)=>{
     let date = new Date();
-    let todayDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
+    let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
     const {skip, limit} = req.params
     MockTradeDetails.find({order_timestamp: {$regex: todayDate}}).sort({order_timestamp:-1}).skip(skip).limit(limit)
     .then((data)=>{
