@@ -479,11 +479,11 @@ export default function SellModel({marketData, uIdProps, Render, isCompany, symb
         const dataResp = await res.json();
         if (dataResp.status === 422 || dataResp.error || !dataResp) {
             window.alert(dataResp.error);
-            console.log("Failed to Trade");
+            console.log(dataResp.error);
         } else {
             console.log(dataResp);
             window.alert("Trade succesfull");
-            console.log("entry succesfull");
+            //console.log("entry succesfull");
         }
         
     }

@@ -3,12 +3,13 @@ const express = require("express");
 const router = express.Router();
 const getOrderData = require("./retrieveOrder");
 const BrokerageDetail = require("../models/Trading Account/brokerageSchema");
+const CompanyTradeData = require("../models/TradeDetails/liveTradeSchema");
+const TradeData = require("../models/TradeDetails/allTradeSchema"); 
+const UserTradeData = require("../models/TradeDetails/liveTradeUserSchema")
 
 
 router.post("/placeorder", (async (req, res)=>{
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
-    const CompanyTradeData = require("../models/TradeDetails/liveTradeSchema");
-    const TradeData = require("../models/TradeDetails/allTradeSchema");
 
     let {exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType,
         TriggerPrice, stopLoss, validity, variety, last_price, createdBy,
@@ -34,12 +35,12 @@ router.post("/placeorder", (async (req, res)=>{
     let orderData;
 
 
-    // variety = "amo";
-    // Price = 8;
-    // TriggerPrice = 8;
-    // realQuantity = 10;
-    // OrderType = "LIMIT";
-    // Product = "MIS"
+    variety = "amo";
+    Price = 8;
+    TriggerPrice = 8;
+    realQuantity = 10;
+    OrderType = "LIMIT";
+    Product = "MIS"
 
     if(variety === "amo"){
         orderData = new URLSearchParams({
@@ -78,6 +79,9 @@ router.post("/placeorder", (async (req, res)=>{
         console.log("now i am in placeorder");
         console.log("this is order-id", data.order_id);
 
+        if(buyOrSell === "SELL"){
+            Quantity = -Quantity;
+        }
 
         TradeData.findOne({order_id : data.order_id})
         .then((data)=>{
@@ -92,6 +96,10 @@ router.post("/placeorder", (async (req, res)=>{
                         quantity = -quantity;
                     }
 
+                    let trade_time = order_timestamp
+                    let timestamp = order_timestamp.split(" ");
+                    let timestampArr = timestamp[0].split("-");
+                    let new_order_timestamp = `${timestampArr[2]}-${timestampArr[1]}-${timestampArr[0]} ${timestamp[1]}`
 
                     function buyBrokerage(totalAmount){
                         let brokerage = Number(brokerageDetailBuy[0].brokerageCharge);
@@ -121,13 +129,21 @@ router.post("/placeorder", (async (req, res)=>{
                     }
                 
                     let brokerageCompany;
+                    let brokerageUser;
                 
                     if(transaction_type === "BUY"){
                         brokerageCompany = buyBrokerage(Math.abs(Number(realQuantity)) * average_price);
                     } else{
                         brokerageCompany = sellBrokerage(Math.abs(Number(realQuantity)) * average_price);
                     }
+
+                    if(buyOrSell === "BUY"){
+                        brokerageUser = buyBrokerage(Math.abs(Number(Quantity)) * average_price);
+                    } else{
+                        brokerageUser = sellBrokerage(Math.abs(Number(Quantity)) * average_price);
+                    }
                 
+                    console.log("in placeorder", trade_time, new_order_timestamp)
 
                 CompanyTradeData.findOne({order_id : order_id})
                 .then((dateExist)=>{
@@ -138,17 +154,40 @@ router.post("/placeorder", (async (req, res)=>{
                     const companyTradeData = new CompanyTradeData({
                         disclosed_quantity, price, filled_quantity, pending_quantity, cancelled_quantity, market_protection, guid,
                         status, uId, createdBy, average_price, Quantity: quantity, 
-                        Product:product, buyOrSell:transaction_type, order_timestamp: order_timestamp,
+                        Product:product, buyOrSell:transaction_type, order_timestamp: new_order_timestamp,
                         variety, validity, exchange, order_type: order_type, symbol:tradingsymbol, placed_by: placed_by, userId,
                          algoBox:{algoName, transactionChange, instrumentChange, exchangeChange, 
                         lotMultipler, productChange, tradingAccount}, order_id, instrumentToken, brokerage: brokerageCompany,
-                        tradeBy: createdBy, isRealTrade: realTrade, amount: (Number(quantity)*average_price)
+                        tradeBy: createdBy, isRealTrade: realTrade, amount: (Number(quantity)*average_price), trade_time:trade_time
             
                     });
                     console.log("this is CompanyTradeData", companyTradeData);
                     companyTradeData.save().then(()=>{
                     }).catch((err)=> res.status(500).json({error:"Failed to Trade company side"}));
                 }).catch(err => {console.log(err, "fail")});
+
+                UserTradeData.findOne({order_id : order_id})
+                .then((dateExist)=>{
+                    if(dateExist){
+                        console.log("data already");
+                        return res.status(422).json({error : "data already exist..."})
+                    }
+                    const userTradeData = new UserTradeData({
+                        disclosed_quantity, price, filled_quantity, pending_quantity, cancelled_quantity, market_protection, guid,
+                        status, uId, createdBy, average_price, Quantity: Quantity, 
+                        Product:Product, buyOrSell:buyOrSell, order_timestamp: new_order_timestamp,
+                        variety, validity, exchange, order_type: OrderType, symbol:symbol, placed_by: placed_by, userId,
+                         algoBox:{algoName, transactionChange, instrumentChange, exchangeChange, 
+                        lotMultipler, productChange, tradingAccount}, order_id, instrumentToken, brokerage: brokerageUser,
+                        tradeBy: createdBy, isRealTrade: true, amount: (Number(quantity)*average_price), trade_time:trade_time
+
+            
+                    });
+                    console.log("this is userTradeData", userTradeData);
+                    userTradeData.save().then(()=>{
+                    }).catch((err)=> res.status(500).json({error:"Failed to Trade company side"}));
+                }).catch(err => {console.log(err, "fail")});
+
 
             }else{
                 let { order_id, placed_by, exchange_order_id, status, order_timestamp, exchange_timestamp
@@ -160,6 +199,10 @@ router.post("/placeorder", (async (req, res)=>{
                         quantity = -quantity;
                     }
 
+                    let trade_time = order_timestamp
+                    let timestamp = order_timestamp.split(" ");
+                    let timestampArr = timestamp[0].split("-");
+                    let new_order_timestamp = `${timestampArr[2]}-${timestampArr[1]}-${timestampArr[0]} ${timestamp[1]}`
 
                     function buyBrokerage(totalAmount){
                         let brokerage = Number(brokerageDetailBuy[0].brokerageCharge);
@@ -189,6 +232,7 @@ router.post("/placeorder", (async (req, res)=>{
                     }
                 
                     let brokerageCompany;
+                    let brokerageUser;
                 
                     if(transaction_type === "BUY"){
                         brokerageCompany = buyBrokerage(Math.abs(Number(realQuantity)) * average_price);
@@ -196,6 +240,13 @@ router.post("/placeorder", (async (req, res)=>{
                         brokerageCompany = sellBrokerage(Math.abs(Number(realQuantity)) * average_price);
                     }
 
+                    if(buyOrSell === "BUY"){
+                        brokerageUser = buyBrokerage(Math.abs(Number(Quantity)) * average_price);
+                    } else{
+                        brokerageUser = sellBrokerage(Math.abs(Number(Quantity)) * average_price);
+                    }
+
+                    console.log("in placeorder live", trade_time, new_order_timestamp)
                     
                 CompanyTradeData.findOne({order_id : order_id})
                 .then((dateExist)=>{
@@ -208,16 +259,40 @@ router.post("/placeorder", (async (req, res)=>{
                         exchange_order_id, exchange_timestamp, disclosed_quantity, price, 
                         filled_quantity, pending_quantity, cancelled_quantity, market_protection, guid,
                         status, uId, createdBy, average_price, Quantity: quantity, 
-                        Product:product, buyOrSell:transaction_type, order_timestamp: order_timestamp,
+                        Product:product, buyOrSell:transaction_type, order_timestamp: new_order_timestamp,
                         variety, validity, exchange, order_type: order_type, symbol:tradingsymbol, placed_by: placed_by, userId,
                          algoBox:{algoName, transactionChange, instrumentChange, exchangeChange, 
                         lotMultipler, productChange, tradingAccount}, order_id, instrumentToken, brokerage: brokerageCompany,
-                        tradeBy: createdBy, isRealTrade: realTrade, amount: (Number(quantity)*average_price)
+                        tradeBy: createdBy, isRealTrade: realTrade, amount: (Number(quantity)*average_price), trade_time:trade_time
                     });
 
                     companyTradeData.save().then(()=>{
+                        console.log("companyTradeData", companyTradeData)
                     }).catch((err)=> res.status(500).json({error:"Failed to Trade"}));
                 }).catch(err => {console.log(err, "fail")});
+
+                UserTradeData.findOne({order_id : order_id})
+                .then((dateExist)=>{
+                    if(dateExist){
+                        console.log("data already");
+                        return res.status(422).json({error : "data already exist..."})
+                    }
+                    const userTradeData = new UserTradeData({
+                        exchange_order_id, exchange_timestamp,disclosed_quantity, price, filled_quantity, pending_quantity, cancelled_quantity, market_protection, guid,
+                        status, uId, createdBy, average_price, Quantity: Quantity, 
+                        Product:Product, buyOrSell:buyOrSell, order_timestamp: new_order_timestamp,
+                        variety, validity, exchange, order_type: OrderType, symbol:symbol, placed_by: placed_by, userId,
+                         algoBox:{algoName, transactionChange, instrumentChange, exchangeChange, 
+                        lotMultipler, productChange, tradingAccount}, order_id, instrumentToken, brokerage: brokerageUser,
+                        tradeBy: createdBy, isRealTrade: true, amount: (Number(quantity)*average_price), trade_time:trade_time
+
+                    });
+                    console.log("this is userTradeData", userTradeData);
+                    userTradeData.save().then(()=>{
+                        console.log("userTradeData", userTradeData)
+                    }).catch((err)=> res.status(500).json({error:"Failed to Trade company side"}));
+                }).catch(err => {console.log(err, "fail")});
+
             }
         }).catch((err)=>{
             console.log("i am receiving error", err);

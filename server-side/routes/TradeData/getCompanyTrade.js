@@ -31,7 +31,7 @@ router.get("/companylivetradedatatodaywithemail/:email", (req, res)=>{
     let date = new Date();
     let todayDate = `${(date.getFullYear())}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
     console.log(todayDate);
-    CompanyTradeData.find({order_timestamp: {$regex: todayDate}, userId: {$regex: email}, status: "COMPLETE"})
+    LiveCompanyTradeData.find({order_timestamp: {$regex: todayDate}, userId: {$regex: email}, status: "COMPLETE"})
     .then((data)=>{
         (data).sort((a, b)=> {
 

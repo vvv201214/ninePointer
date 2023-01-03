@@ -14,7 +14,7 @@ const getKiteCred = require('./marketData/getKiteCred');
 
 
 getKiteCred.getAccess().then((data)=>{
-  console.log("this is code ",data);
+  // console.log("this is code ",data);
   createNewTicker(data.getApiKey, data.getAccessToken);
 });
 
@@ -51,8 +51,8 @@ let newCors = process.env.NODE_ENV === "production" ? "http://3.110.187.5/" : "h
 app.use(cors({
   credentials:true,
 
-  origin: "http://3.110.187.5/"
-  // origin: newCors
+  // origin: "http://3.110.187.5/"
+  origin: newCors
 
 }));
 
