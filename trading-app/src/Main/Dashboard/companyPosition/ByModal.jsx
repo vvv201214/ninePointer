@@ -516,7 +516,7 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany, symbo
                     BUY
                 </button>} */}
 
-                <button onClick={toggleModal} className="btn-modal By_btn">
+                <button onClick={toggleModal} className="btn bg-gradient-info mt-2 w-40">
                     BUY
                 </button>
 

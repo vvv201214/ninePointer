@@ -20641,6 +20641,7 @@ fieldset:disabled .btn {
 .btn-info,
 .btn.bg-gradient-info {
   box-shadow: 0 3px 3px 0 rgba(26, 115, 232, 0.15), 0 3px 1px -2px rgba(26, 115, 232, 0.2), 0 1px 5px 0 rgba(26, 115, 232, 0.15);
+  margin-right: 10px;
 }
 
 .btn-info:hover,
@@ -23252,6 +23253,7 @@ hr.horizontal.gray-light {
 .navbar {
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.16);
   margin-top: 15px;
+  margin-bottom: 0px;
 }
 
 .navbar .navbar-brand {
@@ -27725,8 +27727,6 @@ pre[class*="language-"] {
   font-weight: 500;
 }
 
-.companysummary{
-  /* display: flex; */
-  margin-bottom: 10px;
-
+.buysellbutton{
+  display: flex;
 }

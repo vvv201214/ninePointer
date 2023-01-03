@@ -59,7 +59,9 @@ export default function DailyPNLReport() {
 
         Promise.all([request1, request2])
         .then(([response1, response2]) => {
+
             console.log(response1, response2)
+
             setUserDetail(response1.data);
             setcheckingRunningLot(pnlCalculation(response2.data));
             transactionCost = 0;
@@ -846,3 +848,4 @@ export default function DailyPNLReport() {
         </div>
     )
 }
+

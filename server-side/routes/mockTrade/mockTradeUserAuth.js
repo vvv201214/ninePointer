@@ -193,16 +193,7 @@ router.get("/readmocktradeusertodaydatapagination/:skip/:limit", (req, res)=>{
     const {skip, limit} = req.params
     MockTradeDetails.find({order_timestamp: {$regex: todayDate}}).sort({order_timestamp:-1}).skip(skip).limit(limit)
     .then((data)=>{
-        // (data).sort((a, b)=> {
 
-        //     if (a.order_timestamp < b.order_timestamp) {
-        //       return 1;
-        //     }
-        //     if (a.order_timestamp > b.order_timestamp) {
-        //       return -1;
-        //     }
-        //     return 0;
-        //   });
         return res.status(200).send(data);
     })
     .catch((err)=>{

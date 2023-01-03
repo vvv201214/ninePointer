@@ -99,7 +99,7 @@ function CompanyPositionTable({ socket }) {
                     <div className="rightside_maindiv">
                     <div className={Styles.gridheader}>
                     <div className={Styles.box}>
-                    <span className={Styles.header}>Instruments Details</span>
+                    <span class="btn bg-gradient-secondary mt-0 w-100">Instruments Details</span>
                             <table className="grid1_table">
                                 <tr className="grid2_tr">
                                     <th className="grid2_th">Trading Date</th>
@@ -115,26 +115,55 @@ function CompanyPositionTable({ socket }) {
                                         return elem.instrumentToken === subElem.instrument_token;
                                     })
                                     return (
-                                        <tr className="grid1_table">
-                                            <td className="grid2_td">{todayDate}</td>
-                                            <td className="grid2_td">{elem.contractDate}</td>
-                                            <td className="grid2_td">{elem.symbol}</td>
-                                            <td className="grid2_td">{elem.instrument}</td>
+                                        <tr>
+                                            <td>
+                                                <p class="text-xs font-weight-bold mb-0" style={{textAlign:"center"}}>{todayDate}</p>  
+                                            </td>
+                                            <td>
+                                                <p class="text-xs font-weight-bold mb-0" style={{textAlign:"center"}}>{elem.contractDate}</p>  
+                                            </td>
+                                            <td>
+                                                <p class="text-xs font-weight-bold mb-0" style={{textAlign:"center"}}>{elem.symbol}</p>  
+                                            </td>
+                                            <td>
+                                                <p class="text-xs font-weight-bold mb-0" style={{textAlign:"center"}}>{elem.instrument}</p>  
+                                            </td>
+
                                             {(updatedMarketData[0]?.last_price) === undefined ?
-                                            <td className="grid2_td">₹{(updatedMarketData[0]?.last_price)}</td>
+                                            <td>
+                                                 <p class="text-xs font-weight-bold mb-0" style={{textAlign:"center"}}>₹{(updatedMarketData[0]?.last_price)}</p>
+                                            </td>
                                             :
-                                            <td className="grid2_td">₹{(updatedMarketData[0]?.last_price).toFixed(2)}</td>}
+                                            <td>
+                                                <p class="text-xs font-weight-bold mb-0" style={{textAlign:"center"}}>₹{(updatedMarketData[0]?.last_price).toFixed(2)}</p>
+                                            </td>}
 
                                             {console.log(updatedMarketData[0], updatedMarketData[0]?.change)}
                                             {(updatedMarketData[0]?.change === undefined) ?
-                                                <td className="grid2_td">{(Math.abs((updatedMarketData[0]?.last_price - updatedMarketData[0]?.average_price) / updatedMarketData[0]?.average_price)).toFixed(2)}%</td>
+                                                <td>
+                                                    <p class="text-xs font-weight-bold mb-0" style={{textAlign:"center"}}>{(Math.abs((updatedMarketData[0]?.last_price - updatedMarketData[0]?.average_price) / updatedMarketData[0]?.average_price)).toFixed(2)}%</p>
+                                                </td>
                                                 :
-                                                <td className="grid2_td">{updatedMarketData[0]?.change.toFixed(2)}%</td>}
-                                            <td className="grid2_th companyPosition_BSbtn2">
-                                                <div className="companyPosition_BSbtn">
-                                                    <ByModal symbol={elem.instrument} ltp={(updatedMarketData[0]?.last_price)} maxlot={(elem.maxLot)} lotsize={(elem.lotSize)} Render={{ setReRender, reRender }} marketData={marketData} uIdProps={elem.uId} isCompany={true} />
-                                                    <SellModel symbol={elem.instrument} ltp={(updatedMarketData[0]?.last_price)} maxlot={(elem.maxLot)} lotsize={(elem.lotSize)} Render={{ setReRender, reRender }} marketData={marketData} uIdProps={elem.uId} isCompany={true} />
-                                                </div>
+                                                <td>
+                                                    <p class="text-xs font-weight-bold mb-0" style={{textAlign:"center"}}>{updatedMarketData[0]?.change.toFixed(2)}%</p>
+                                                </td>}
+                                            <td>  
+                                            
+                                            <div>
+                                                        <div>
+                                                            <p><ByModal symbol={elem.instrument} ltp={(updatedMarketData[0]?.last_price)} maxlot={(elem.maxLot)} lotsize={(elem.lotSize)} Render={{ setReRender, reRender }} marketData={marketData} uIdProps={elem.uId} isCompany={true} /></p>
+                                                        </div>
+                                                        <div>
+                                                            <p><SellModel symbol={elem.instrument} ltp={(updatedMarketData[0]?.last_price)} maxlot={(elem.maxLot)} lotsize={(elem.lotSize)} Render={{ setReRender, reRender }} marketData={marketData} uIdProps={elem.uId} isCompany={true} /></p>
+                                                        </div>
+                                                        
+                                            </div>
+
+                                            {/* <div class="d-flex flex-column justify-content-center">
+                                            <p class="text-xs font-weight-bold mb-0" style={{textAlign:"center"}}><ByModal symbol={elem.instrument} ltp={(updatedMarketData[0]?.last_price)} maxlot={(elem.maxLot)} lotsize={(elem.lotSize)} Render={{ setReRender, reRender }} marketData={marketData} uIdProps={elem.uId} isCompany={true} /></p>
+                                            
+                                            <p class="text-xs font-weight-bold mb-0" style={{textAlign:"center"}}><SellModel symbol={elem.instrument} ltp={(updatedMarketData[0]?.last_price)} maxlot={(elem.maxLot)} lotsize={(elem.lotSize)} Render={{ setReRender, reRender }} marketData={marketData} uIdProps={elem.uId} isCompany={true} /></p>   
+                                            </div> */}
                                             </td>
                                         </tr>
                                     )
@@ -144,12 +173,12 @@ function CompanyPositionTable({ socket }) {
                         </div>
                         <span className={Styles.gridheader}>
                             <div className={Styles.box}>
-                                <div class={Styles.header}>Overall P&L(Company) - Mock</div>
+                                <div class="btn bg-gradient-primary mt-0 w-100">Overall P&L(Company) - Mock</div>
                             <OverallPnl marketData={marketData} tradeData={tradeData} data={data} />
                         </div></span>
                         <span className={Styles.gridheader}>
                         <div className={Styles.box}>
-                                <div class={Styles.header}>Overall P&L(Company) - Live</div>
+                                <div class="btn bg-gradient-success mt-0 w-100">Overall P&L(Company) - Live</div>
                             <OverallPnl marketData={marketData} tradeData={tradeData} data={livedata} />
                         </div></span>
                         
@@ -163,12 +192,12 @@ function CompanyPositionTable({ socket }) {
                         </div> */}
                         <span className={Styles.gridheader}>
                         <div className={Styles.box}>
-                        <div className={Styles.header}>Trader Wise P&L(Company) - Mock</div>
+                        <div class="btn bg-gradient-primary mt-0 w-100">Trader Wise P&L(Company) - Mock</div>
                             <TradersPnlCompany marketData={marketData} tradeData={tradeData}/>          
                         </div></span>
                         <span className={Styles.gridheader}>
                             <div className={Styles.box}>
-                            <div className={Styles.header}>Trader Wise P&L(Company) - Live</div>
+                            <div class="btn bg-gradient-success mt-0 w-100">Trader Wise P&L(Company) - Live</div>
                                 <TradersPnlLiveCompany marketData={marketData} tradeData={tradeData}/>          
                         </div></span>
                 </div>

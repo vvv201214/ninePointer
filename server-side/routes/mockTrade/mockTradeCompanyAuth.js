@@ -36,6 +36,7 @@ router.post("/mocktradecompany", async (req, res)=>{
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
     let originalLastPrice;
     let newTimeStamp = "";
+    let trade_time = "";
     try{
         
         let liveData = await axios.get(`${baseUrl}api/v1/getliveprice`)
@@ -49,6 +50,7 @@ router.post("/mocktradecompany", async (req, res)=>{
             }
         }
 
+        trade_time = newTimeStamp;
         let firstDateSplit = (newTimeStamp).split(" ");
         let secondDateSplit = firstDateSplit[0].split("-");
         newTimeStamp = `${secondDateSplit[2]}-${secondDateSplit[1]}-${secondDateSplit[0]} ${firstDateSplit[1]}`
@@ -116,7 +118,7 @@ router.post("/mocktradecompany", async (req, res)=>{
             variety, validity, exchange, order_type: OrderType, symbol, placed_by: "ninepointer", userId,
              algoBox:{algoName, transactionChange, instrumentChange, exchangeChange, 
             lotMultipler, productChange, tradingAccount}, order_id, instrumentToken, brokerage: brokerageCompany,
-            tradeBy: createdBy, isRealTrade: realTrade, amount: (Number(realQuantity)*originalLastPrice)
+            tradeBy: createdBy, isRealTrade: realTrade, amount: (Number(realQuantity)*originalLastPrice), trade_time:trade_time
         });
 
         console.log("mockTradeDetails comapny", mockTradeDetails);
@@ -135,7 +137,7 @@ router.post("/mocktradecompany", async (req, res)=>{
             status:"COMPLETE", uId, createdBy, average_price: originalLastPrice, Quantity, Product, buyOrSell, order_timestamp: newTimeStamp,
             variety, validity, exchange, order_type: OrderType, symbol, placed_by: "ninepointer", userId,
             isRealTrade: realTrade, order_id, instrumentToken, brokerage: brokerageUser, 
-            tradeBy: createdBy, amount: (Number(Quantity)*originalLastPrice)
+            tradeBy: createdBy, amount: (Number(Quantity)*originalLastPrice), trade_time:trade_time
         });
 
         console.log("mockTradeDetails", mockTradeDetailsUser);
@@ -167,6 +169,16 @@ router.get("/readmocktradecompanycount", (req, res)=>{
             return res.status(200).json(data);
         }
     }).sort({trade_time:-1})
+})
+
+router.get("/readmocktradecompanycount", (req, res)=>{
+    MockTradeDetails.count((err, data)=>{
+        if(err){
+            return res.status(500).send(err);
+        }else{
+            res.json(data)
+        }
+    })
 })
 
 router.get("/readmocktradecompany/:id", (req, res)=>{
@@ -483,10 +495,3 @@ router.get("/updatemocktradedataamount", async(req, res)=>{
 })
 
 module.exports = router;
-
-
-
-
-
-
-  
