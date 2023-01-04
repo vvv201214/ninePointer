@@ -748,6 +748,7 @@ progress {
   margin-top: calc(-1 * var(--bs-gutter-y));
   margin-right: calc(-.5 * var(--bs-gutter-x));
   margin-left: calc(-.5 * var(--bs-gutter-x));
+  z-index: 0;
 }
 
 .row1>* {
@@ -757,6 +758,7 @@ progress {
   padding-right: calc(var(--bs-gutter-x) * .5);
   padding-left: calc(var(--bs-gutter-x) * .5);
   margin-top: var(--bs-gutter-y);
+  z-index: 1;
 }
 
 .col {
@@ -861,6 +863,7 @@ progress {
 .col-12 {
   flex: 0 0 auto;
   width: 100%;
+  z-index: 0;
 }
 
 .offset-1 {
@@ -3101,6 +3104,7 @@ textarea.form-control-lg {
   position: absolute;
   clip: rect(0, 0, 0, 0);
   pointer-events: none;
+  z-index: -1;
 }
 
 
@@ -4777,7 +4781,7 @@ fieldset:disabled .btnnew {
 }
 
 .navbar-nav .dropdown-menu {
-  position: static;
+  /* position: static; */
 }
 
 .navbar-text {
@@ -4874,7 +4878,7 @@ fieldset:disabled .btnnew {
   }
 
   .navbar-expand-sm .offcanvas {
-    position: static;
+    /* position: static; */
     z-index: auto;
     flex-grow: 1;
     width: auto !important;
@@ -4931,7 +4935,7 @@ fieldset:disabled .btnnew {
   }
 
   .navbar-expand-md .offcanvas {
-    position: static;
+    /* position: static; */
     z-index: auto;
     flex-grow: 1;
     width: auto !important;
@@ -4988,7 +4992,7 @@ fieldset:disabled .btnnew {
   }
 
   .navbar-expand-lg .offcanvas {
-    position: static;
+    /* position: static; */
     z-index: auto;
     flex-grow: 1;
     width: auto !important;
@@ -5045,7 +5049,7 @@ fieldset:disabled .btnnew {
   }
 
   .navbar-expand-xl .offcanvas {
-    position: static;
+    /* position: static; */
     z-index: auto;
     flex-grow: 1;
     width: auto !important;
@@ -5102,7 +5106,7 @@ fieldset:disabled .btnnew {
   }
 
   .navbar-expand-xxl .offcanvas {
-    position: static;
+    /* position: static; */
     z-index: auto;
     flex-grow: 1;
     width: auto !important;
@@ -5158,8 +5162,8 @@ fieldset:disabled .btnnew {
 }
 
 .navbar-expand .offcanvas {
-  position: static;
-  z-index: auto;
+ 
+  z-index: 0;
   flex-grow: 1;
   width: auto !important;
   height: auto !important;
@@ -5220,6 +5224,7 @@ fieldset:disabled .btnnew {
   background-clip: border-box;
   border: var(--bs-card-border-width) solid var(--bs-card-border-color);
   border-radius: var(--bs-card-border-radius);
+  z-index: 0;
 }
 
 .card>hr {
@@ -5320,6 +5325,7 @@ fieldset:disabled .btnnew {
   left: 0;
   padding: var(--bs-card-img-overlay-padding);
   border-radius: var(--bs-card-inner-border-radius);
+  z-index: 0;
 }
 
 .card-img,
@@ -6440,7 +6446,7 @@ fieldset:disabled .btnnew {
 }
 
 .modal1 {
-  --bs-modal1-zindex: 1050;
+  /* --bs-modal1-zindex: 1050; */
   --bs-modal1-width: 500px;
   --bs-modal1-padding: 1rem;
   --bs-modal1-margin: 0.5rem;
@@ -7920,7 +7926,7 @@ fieldset:disabled .btnnew {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 1040;
+  z-index: 1;
   width: 100vw;
   height: 100vh;
   background-color: #000;
@@ -8179,7 +8185,7 @@ fieldset:disabled .btnnew {
   top: 0;
   right: 0;
   left: 0;
-  z-index: 1030;
+  z-index: 1;
 }
 
 .fixed-bottom {
@@ -8187,26 +8193,26 @@ fieldset:disabled .btnnew {
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: 1030;
+  z-index: 1;
 }
 
 .sticky-top {
   position: sticky;
   top: 0;
-  z-index: 1020;
+  z-index: 1;
 }
 
 .sticky-bottom {
   position: sticky;
   bottom: 0;
-  z-index: 1020;
+  z-index: 1;
 }
 
 @media (min-width: 576px) {
   .sticky-sm-top {
     position: sticky;
     top: 0;
-    z-index: 1020;
+    z-index: 1;
   }
 
   .sticky-sm-bottom {
@@ -8480,9 +8486,9 @@ fieldset:disabled .btnnew {
   box-shadow: none !important;
 }
 
-.position-static {
+/* .position-static {
   position: static !important;
-}
+} */
 
 .position-relative {
   position: relative !important;
@@ -9373,6 +9379,7 @@ fieldset:disabled .btnnew {
 .my-4 {
   margin-top: 1.5rem !important;
   margin-bottom: 1.5rem !important;
+  z-index: 0;
 }
 
 .my-5 {
@@ -21043,6 +21050,7 @@ fieldset:disabled .btnnew {
   -o-transition: all 300ms cubic-bezier(0.34, 1.61, 0.7, 1);
   -ms-transition: all 300ms cubic-bezier(0.34, 1.61, 0.7, 1);
   transition: all 300ms cubic-bezier(0.34, 1.61, 0.7, 1);
+  z-index: 0;
 }
 
 .card:hover[data-animation="true"] .card-header {
@@ -23423,9 +23431,9 @@ hr.horizontal.gray-light {
     width: 100%;
   }
 
-  .navbar-collapse .navbar-nav .nav-item.dropdown {
+  /* .navbar-collapse .navbar-nav .nav-item.dropdown {
     position: static;
-  }
+  } */
 
   .navbar-collapse .navbar-nav .nav-item.dropdown .dropdown-menu {
     left: 0;
@@ -24220,7 +24228,7 @@ hr.horizontal.gray-light {
 }
 
 .sidenav {
-  z-index: 9999;
+  z-index: 1;
 }
 
 .sidenav .navbar-brand,
