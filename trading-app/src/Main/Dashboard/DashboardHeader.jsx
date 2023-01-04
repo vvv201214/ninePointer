@@ -37,7 +37,7 @@ export default function DashboardHeader({ role }) {
                     </div>
                     :
                     <div className='navbarlinks'>
-                        <ul className='navbarUser'>
+                        <ul className='navbar navbarUser'>
                             <li>
                                 <NavLink className='headers_li_linksUser' to={"/main/dashboard/"}style={({isActive}) => isActive?{color: "#5479FC"} :{color:'black'} }>Positions</NavLink>
                             </li>

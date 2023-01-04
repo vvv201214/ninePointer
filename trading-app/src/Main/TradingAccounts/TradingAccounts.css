@@ -151,9 +151,14 @@ img{
     margin-left: 5px;
 }
 .navbarUser{
+    border-bottom: 2px solid #f6f6f6;
+    border-top: 2px solid #f6f6f6;
     display: flex;
     list-style: none;
-   
+    margin-left: 3px;
+    margin-right: 5px;
+    padding-bottom: 3px;
+    justify-content: flex-start;
 }
 .headers_li_linksUser{
     color: #000000;
