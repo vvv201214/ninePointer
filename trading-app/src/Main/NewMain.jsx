@@ -48,7 +48,6 @@ export default function NewMain({setter}) {
 
   return (
     <>
-
         <div className='main_new'>
             {/* <div className='sidebar_new'> */}
                 {info.role === "admin" ?

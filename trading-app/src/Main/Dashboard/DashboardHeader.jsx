@@ -37,16 +37,15 @@ export default function DashboardHeader({ role }) {
                     </div>
                     :
                     <div className='navbarlinks'>
-                        <ul className='navbar'>
+                        <ul className='navbarUser'>
                             <li>
-                                <NavLink className='headers_li_links' to={"/main/dashboard/"}style={({isActive}) => isActive?{color: "#5479FC"} :{color:'black'} }>Positions</NavLink>
+                                <NavLink className='headers_li_linksUser' to={"/main/dashboard/"}style={({isActive}) => isActive?{color: "#5479FC"} :{color:'black'} }>Positions</NavLink>
                             </li>
                             <li>
-                                <NavLink className='headers_li_links' to={"/main/dashboard/TradersOrders"} style={({isActive}) => isActive?{color: "#5479FC"} :{color:'black'} }>TradeBook</NavLink>
+                                <NavLink className='headers_li_linksUser' to={"/main/dashboard/TradersOrders"} style={({isActive}) => isActive?{color: "#5479FC"} :{color:'black'} }>TradeBook</NavLink>
                             </li>
                         </ul>
                     </div>}
-
                 <Outlet />
             </div>
         </>

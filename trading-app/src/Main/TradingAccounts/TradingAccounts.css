@@ -4,7 +4,7 @@
 }
 body {
     height: 100%;
-    background-color: #ffffff;
+    background-color:#F5F5F5;
     box-shadow: #f0efef;
   
 }
@@ -150,6 +150,18 @@ img{
     font-weight: 600;
     margin-left: 5px;
 }
+.navbarUser{
+    display: flex;
+    list-style: none;
+   
+}
+.headers_li_linksUser{
+    color: #000000;
+    margin-right: 10px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-left: 5px;
+}
 
 .sidebar_item {
    position: relative;
@@ -276,4 +288,30 @@ img{
     height: auto;
     width: auto;
     margin-top: 25px;
+}
+.btn_one{
+    /* z-index: 0; */
+    text-align: center;
+    color: white;
+    background-color: #4BB543;
+    height: 40px;
+    border-radius: 8px;
+    padding-top: 9px;
+    margin-bottom: 15px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 14px;
+  
+}
+.btn_two{
+    text-align: center;
+    color: white;
+    background-color: #D81B60;
+    height: 40px;
+    border-radius: 8px;
+    padding-top: 9px;
+    margin-bottom: 15px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 14px;
 }

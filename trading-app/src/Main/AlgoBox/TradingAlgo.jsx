@@ -83,9 +83,9 @@ function TradingAlgo(){
     }
 
     return(
-        <div> 
-            <div className="main_Container">
-                <div className="right_side">
+        <> 
+            {/* <div className="main_Container"> */}
+                {/* <div className="right_side"> */}
                     <div className="rightside_maindiv">
                     <button onClick={toggleModal} class="btnnew bg-gradient-info mt-3 mx-sm-3 w-15">Create Trading Algo</button>
                         {modal && (
@@ -175,7 +175,7 @@ function TradingAlgo(){
                             </table>
                         </div> */}
                     
-                    <div class="row1">
+                    <div class="row1 z-index-0">
                             <div class="col-12">
                             <div class="card my-4">
                                 <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-1">
@@ -184,7 +184,7 @@ function TradingAlgo(){
 
                                 </div>
                                 </div>
-                                <div class="card-body px-0 pb-2">
+                                <div class="card-body px-0 pb-2 py-0">
                                 <div class="table-responsive p-0">
                                     <table class="table align-items-center mb-0">
                                     <thead>
@@ -209,7 +209,7 @@ function TradingAlgo(){
                                     <tbody>
                                         <tr>
                                         <td>
-                                            <div class="d-flex px-2 py-1">
+                                            <div class="d-flex px-2 py-0">
                                             {/* <div>
                                                 <img src="../assets/img/team-2.jpg" class="avatar avatar-sm me-3 border-radius-lg" alt="user1"/>
                                             </div> */}
@@ -266,9 +266,9 @@ function TradingAlgo(){
                         </div>
 
                     </div>
-                </div>
-            </div>
-        </div>
+                {/* </div> */}
+            {/* </div> */}
+        </>
     )
 }
 export default TradingAlgo;

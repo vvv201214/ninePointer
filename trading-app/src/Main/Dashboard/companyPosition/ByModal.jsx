@@ -511,6 +511,7 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany, symbo
 
 
 
+
     //console.log(perticularInstrumentData);
 
     return (
@@ -524,11 +525,9 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany, symbo
                     BUY
                 </button>} */}
 
-                <button onClick={toggleModal} className="btnnew bg-gradient-info mt-2 w-40 mx-sm-1">
+                <button onClick={toggleModal} className="btnnew bg-gradient-info mt-2 w-40 mx-sm-0">
                     BUY
                 </button>
-
-                
 
             {modal && (
                 <div className="modal">

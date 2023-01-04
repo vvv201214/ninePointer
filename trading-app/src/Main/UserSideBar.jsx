@@ -4,7 +4,7 @@ import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
 import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
 
-export default function UserSideBar({name}) {
+export default function UserSideBar({ name }) {
     return (
         <>
           <div class="g-sidenav-show  bg-gray-100">
@@ -102,6 +102,6 @@ export default function UserSideBar({name}) {
     
             </div> */}
         </>
-      )
-    
+    )
+
 }

@@ -245,6 +245,10 @@ body.active-modal {
     display: flex;
     flex-direction: row;
     justify-content: center;
+    margin-top: -5px;
+    margin-bottom: -14px;
+    
+
 }
 .headingSymbol{
     border-radius: 5px;

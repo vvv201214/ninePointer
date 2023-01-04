@@ -136,7 +136,8 @@ function TraderPositionTable({ socket }) {
 
                         <div className={Styles.gridheader}>
                     <div className={Styles.box}>
-                    <span class="btnnew bg-gradient-success mt-0 w-100">Margin Details</span>
+                    {/* btnnew bg-gradient-success mt-0 w-100 */}
+                    <div className=" btn_one" >Margin Details</div>
                             <table className="grid1_table">
                                 <tr className="grid2_tr">
                                 <th className="grid2_th">Opening Balance</th>
@@ -178,7 +179,8 @@ function TraderPositionTable({ socket }) {
 
                         <span className={Styles.gridheader}>
                             <div className={Styles.box}>
-                                <div class="btnnew bg-gradient-primary mt-0 w-100">Overall P&L</div>
+                            {/* btnnew bg-gradient-primary mt-0 w-100 */}
+                                <div class="btn_two">Overall P&L</div>
                             <OverallPnl marketData={marketData} tradeData={tradeData} data={data}/>
                                 </div></span>
                         {/* <span className="grid2_span">Running PNL-Trader</span>

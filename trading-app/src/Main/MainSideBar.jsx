@@ -10,7 +10,7 @@ import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
 import SummarizeOutlinedIcon from '@mui/icons-material/SummarizeOutlined';
 import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
-import { style } from '@mui/system';
+
 
 
 export default function MainSideBar({name}) {
@@ -141,7 +141,8 @@ export default function MainSideBar({name}) {
               </div>
               </NavLink>
               </li> */}
-
+              
+              
               <div class="sidenav-footer position-absolute w-100 bottom-0 ">
               <NavLink  to="/">
                 <div class="mx-3">
@@ -149,7 +150,8 @@ export default function MainSideBar({name}) {
                 </div>
                 </NavLink>
               </div>
- 
+
+              
             </ul>
             
            

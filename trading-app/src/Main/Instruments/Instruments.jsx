@@ -106,7 +106,7 @@ function Instruments() {
                     <div className="rightside_maindiv">
                         <button onClick={toggleModal} class="btnnew bg-gradient-info mt-3 mx-sm-3 w-15">Create Instrument</button>
                         {modal && (
-                            <div className="modal">
+                            <div className="modal" >
                                 <div onClick={toggleModal} className="overlay"></div>
                                 <div className={Styles.modalContent}>
                                     <div className={Styles.form_btn}>
@@ -146,7 +146,7 @@ function Instruments() {
 
               </div>
             </div>
-            <div class="card-body px-0 pb-2">
+            <div class="card-body px-0 pb-2 py-0">
               <div class="table-responsive p-0">
                 <table class="table align-items-center mb-0">
                   <thead>
@@ -165,9 +165,9 @@ function Instruments() {
                     activeData.map((elem) => {
                     return (
                   <tbody>
-                    <tr>
-                      <td>
-                        <div class="d-flex px-2 py-1">
+                    <tr >
+                      <td >
+                        <div class="d-flex px-2 py-0">
                           {/* <div>
                             <img src="../assets/img/team-2.jpg" class="avatar avatar-sm me-3 border-radius-lg" alt="user1"/>
                           </div> */}
@@ -253,7 +253,7 @@ function Instruments() {
 
               </div>
             </div>
-            <div class="card-body px-0 pb-2">
+            <div class="card-body px-0 pb-2 py-0">
               <div class="table-responsive p-0">
                 <table class="table align-items-center mb-0">
                   <thead>
@@ -274,7 +274,7 @@ function Instruments() {
                   <tbody>
                     <tr>
                       <td>
-                        <div class="d-flex px-2 py-1">
+                        <div class="d-flex px-2 py-0">
                           {/* <div>
                             <img src="../assets/img/team-2.jpg" class="avatar avatar-sm me-3 border-radius-lg" alt="user1"/>
                           </div> */}
