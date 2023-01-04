@@ -7,13 +7,13 @@ import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
 export default function UserSideBar({name}) {
     return (
         <>
-            <div class="g-sidenav-show  bg-gray-100">
-                <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark"
-                id="sidenav-main">
-
-            <div class="sidenav-header">
-          
-            </div>
+          <div class="g-sidenav-show  bg-gray-100">
+          <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark" id="sidenav-main">
+          <div class="sidenav-header">
+          <div class="mx-3">
+          <div class="btnnew bg-gradient-primary text-lowercase mt-4 w-100"><span>ninepointer</span></div>
+          </div>
+          </div>
 
           <hr class="horizontal light mt-0 mb-2"/>
 
@@ -53,7 +53,7 @@ export default function UserSideBar({name}) {
                 <div class="sidenav-footer position-absolute w-100 bottom-0 ">
                     <NavLink  to="/">
                     <div class="mx-3">
-                    <a class="btn bg-gradient-primary mt-4 w-100" type="button">Go Out</a>
+                    <a class="btnnew bg-gradient-primary mt-4 w-100" type="button">Go Out</a>
                     </div>
                     </NavLink>
               </div>

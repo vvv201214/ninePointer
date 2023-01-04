@@ -87,7 +87,7 @@ function TradingAlgo(){
             <div className="main_Container">
                 <div className="right_side">
                     <div className="rightside_maindiv">
-                    <button onClick={toggleModal} class="btnnew bg-gradient-info mt-3 w-15">Create Trading Algo</button>
+                    <button onClick={toggleModal} class="btnnew bg-gradient-info mt-3 mx-sm-3 w-15">Create Trading Algo</button>
                         {modal && (
                             <div className="modal">
                                 <div onClick={toggleModal} className="overlay"></div>
