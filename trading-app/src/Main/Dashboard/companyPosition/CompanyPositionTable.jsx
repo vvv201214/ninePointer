@@ -176,7 +176,7 @@ function CompanyPositionTable({ socket }) {
                       <td class="align-middle text-center">
                         <span class="text-secondary text-xs font-weight-bold">{updatedMarketData[0]?.change.toFixed(2)}%</span>
                       </td>}
-                      <td class="align-middle">
+                      <td class="align-middle grid2_th companyPosition_BSbtn2">
                       <div className="companyPosition_BSbtn">
                             <ByModal symbol={elem.instrument} ltp={(updatedMarketData[0]?.last_price)} maxlot={(elem.maxLot)} lotsize={(elem.lotSize)} Render={{ setReRender, reRender }} marketData={marketData} uIdProps={elem.uId} isCompany={true} />
                             <SellModel symbol={elem.instrument} ltp={(updatedMarketData[0]?.last_price)} maxlot={(elem.maxLot)} lotsize={(elem.lotSize)} Render={{ setReRender, reRender }} marketData={marketData} uIdProps={elem.uId} isCompany={true} />
