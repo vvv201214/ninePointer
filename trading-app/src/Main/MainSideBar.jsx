@@ -1,31 +1,159 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
+import "./assets/css/material-dashboard.css?v=3.0.4";
+import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
+import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
+import CandlestickChartOutlinedIcon from '@mui/icons-material/CandlestickChartOutlined';
+import ManageAccountsOutlinedIcon from '@mui/icons-material/ManageAccountsOutlined';
+import AccountBalanceOutlinedIcon from '@mui/icons-material/AccountBalanceOutlined';
+import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
+import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
+import SummarizeOutlinedIcon from '@mui/icons-material/SummarizeOutlined';
+import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
+import { style } from '@mui/system';
+
 
 export default function MainSideBar({name}) {
   return (
     <>
-        <div className="leftsidebar">
-            <div className="userSidebar_div">
-                <div className="userbox"><img className="userimage" src="https://png.pngtree.com/png-vector/20190704/ourlarge/pngtree-businessman-user-avatar-free-vector-png-image_1538405.jpg" alt=""/><h6 className="username">{(name).toUpperCase()}</h6></div>
-                <div className="menuheader">Analytics</div>
-                <NavLink to="/main/dashboard" style={({isActive}) => isActive?{color:'#5479FC'} :{color:'black'} }><div className="sidebar_items"><img className="linkicons" src={require("../media/Dashboard.png")}></img><div className="menuitembar">Dashboard</div></div></NavLink>
-                <NavLink to="/main/admindashboard/summary" style={({isActive}) => isActive?{color:'#5479FC'} :{color:'black'} }><div className="sidebar_items"><img className="linkicons" src={require("../media/admindashboard.png")}></img><div className="menuitembar">Admin Reports</div></div></NavLink>
-                <div className="menuheader">Settings</div>
-                <NavLink to="/main/instrument" style={({isActive}) => isActive?{color:'#5479FC'} :{color:'black'} }><div className="sidebar_items"><img className="linkicons" src={require("../media/instruments.png")}></img><div className="menuitembar">Instruments</div></div></NavLink>
-                <NavLink to="/main/algobox" style={({isActive}) => isActive?{color:'#5479FC'} :{color:'black'} }><div className="sidebar_items"><img className="linkicons" src={require("../media/algo.png")}></img><div className="menuitembar">Algo Box</div></div></NavLink>
-                <NavLink to="/main/tradingAccount" style={({isActive}) => isActive?{color:'#5479FC'} :{color:'black'} }><div className="sidebar_items"><img className="linkicons" src={require("../media/account.png")}></img><div className="menuitembar">Trading Accounts</div></div></NavLink>
-                <div className="menuheader">Trader Details</div>
-                <NavLink to="/main/user" style={({isActive}) => isActive?{color:'#5479FC'} :{color:'black'} }><div className="sidebar_items"><img className="linkicons" src={require("../media/user.png")}></img><div className="menuitembar">Users</div></div></NavLink>
-                <NavLink to="/main/userfunds" style={({isActive}) => isActive?{color:'#5479FC'} :{color:'black'} }><div className="sidebar_items"><img className="linkicons" src={require("../media/funds.png")}></img><div className="menuitembar">Funds</div></div></NavLink>
-                <NavLink to="/main/todayssummary" style={({isActive}) => isActive?{color:'#5479FC'} :{color:'black'} }><div className="sidebar_items"><img className="linkicons" src={require("../media/funds.png")}></img><div className="menuitembar">Today's Summary</div></div></NavLink>
-                <div className="menuheader">Reports</div>
-                <NavLink to="/main/report" style={({isActive}) => isActive?{color:'#5479FC'} :{color:'black'} }><div className="sidebar_items"><img className="linkicons" src={require("../media/reports.png")}></img><div className="menuitembar">Reports</div></div></NavLink>
+        <div class="g-sidenav-show  bg-gray-100">
+          {/* <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark"
+    id="sidenav-main">
+
+          <div class="sidenav-header">
+          <img src={require("./TodaysSummary/img/profileicon.png")} class="navbar-brand-img h-100" alt="user1" />
+          <span class="ms-1 font-weight-bold text-white">Material Dashboard 2</span>
+          </div> */}
+          <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark" id="sidenav-main">
+          <div class="sidenav-header">
+            <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
+            <a class="navbar-brand m-0" href="" target="_blank">
+              <img src={require("./TodaysSummary/img/profileicon.png")} class="navbar-brand-img h-100" alt="main_logo" style={{height:45,width:45}}/>
+              <span class="ms-4 font-weight-bold text-white">Material Dashboard 2</span>
+            </a>
+          </div>
+
+          <hr class="horizontal light mt-0 mb-2"/>
+
+          <div>
+
+            <ul className="navbar-nav">
+
+              <li class="nav-item ">
+              <NavLink to="/main/dashboard">
+              <div className={`nav-link text-white`}>
+              <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <DashboardOutlinedIcon fontSize='small'/> 
+              <span class="nav-link-text ms-1">Dashboard</span></div>
+              </div>
+              </NavLink>
+              </li>
+
+              <li class="nav-item ">
+              <NavLink to="/main/admindashboard/summary">
+              <div class="nav-link text-white">
+              <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <AdminPanelSettingsOutlinedIcon fontSize='small'/>
+              <span class="nav-link-text ms-1">Admin Reports</span></div>
+              </div>
+              </NavLink>
+              </li>
+
+              <li class="nav-item ">
+              <NavLink  to="/main/instrument">
+              <div class="nav-link text-white">
+              <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <CandlestickChartOutlinedIcon fontSize='small'/>
+              <span class="nav-link-text ms-1">Instruments</span></div>
+              </div>
+              </NavLink>
+              </li>
+
+              <li class="nav-item ">
+              <NavLink  to="/main/algobox">
+              <div class="nav-link text-white">
+              <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <ManageAccountsOutlinedIcon fontSize='small'/>
+              <span class="nav-link-text ms-1">Algo Box</span></div>
+              </div>
+              </NavLink>
+              </li>
+
+              <li class="nav-item ">
+              <NavLink  to="/main/tradingAccount">
+              <div class="nav-link text-white">
+              <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <AccountBalanceOutlinedIcon fontSize='small'/>
+              <span class="nav-link-text ms-1">Trading Accounts</span></div>
+              </div>
+              </NavLink>
+              </li>
+
+              <li class="nav-item ">
+              <NavLink  to="/main/user">
+              <div class="nav-link text-white">
+              <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <PersonOutlinedIcon fontSize='small'/>
+              <span class="nav-link-text ms-1">Users</span></div>
+              </div>
+              </NavLink>
+              </li>
+
+              <li class="nav-item ">
+              <NavLink  to="/main/userfunds">
+              <div class="nav-link text-white">
+              <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <AttachMoneyOutlinedIcon fontSize='small' />
+              <span class="nav-link-text ms-1">Funds</span></div>
+              </div>
+              </NavLink>
+              </li>
+
+              <li class="nav-item ">
+              <NavLink  to="/main/todayssummary">
+              <div class="nav-link text-white">
+              <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <SummarizeOutlinedIcon fontSize='small'/>
+              <span class="nav-link-text ms-1">Today's Summary</span></div>
+              </div>
+              </NavLink>
+              </li>
+
+              <li class="nav-item ">
+              <NavLink  to="/main/report">
+              <div class="nav-link text-white">
+              <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <AssessmentOutlinedIcon fontSize='small'/>
+              <span class="nav-link-text ms-1">Reports</span></div>
+              </div>
+              </NavLink>
+              </li>
+
+              {/* <li class="nav-item ">
+              <NavLink  to="/">
+              <div class="nav-link text-white">
+              <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <span class="material-icons opacity-10"><img className="linkicons" src={require("../media/reports.png")}/></span>
+              <span class="nav-link-text ms-1">Go Out</span></div>
+              </div>
+              </NavLink>
+              </li> */}
+
+              <div class="sidenav-footer position-absolute w-100 bottom-0 ">
+              <NavLink  to="/">
+                <div class="mx-3">
+                  <a class="btnnew bg-gradient-primary mt-4 w-100" type="button">Go Out</a>
+                </div>
+                </NavLink>
+              </div>
+ 
+            </ul>
+            
+           
                 
-                
-            </div>
-            <div >
-                <div className="sidebar_item"><NavLink to={"/"}>Go Out</NavLink></div>
-            </div>
+
+          </div>
+          </aside>
 
         </div>
         

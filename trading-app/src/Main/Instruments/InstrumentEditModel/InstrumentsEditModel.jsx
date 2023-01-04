@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { TiEdit } from "react-icons/ti";
+import EditIcon from '@mui/icons-material/Edit';
 import Styles from "./InstrumentsEditModel.module.css";
 
 
@@ -127,7 +128,7 @@ export default function InstrumentsEditModel({ data, id, Render }) {
     }
     return (
         <>
-            <button onClick={toggleModal}><TiEdit /></button>
+            <button onClick={toggleModal}><EditIcon /></button>
             {modal && (
                 <div className="modal">
                     <div onClick={toggleModal} className="overlay"></div>

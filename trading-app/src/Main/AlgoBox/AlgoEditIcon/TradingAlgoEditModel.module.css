@@ -3,9 +3,11 @@
     display: block;
     /* margin: 100px auto 0; */
     font-size: 18px;
+    z-index: 2;
+  
 }
 
-.modal, .overlay {
+.modal {
     width: 100vw;
     height: 100vh;
     top: 0;
@@ -13,11 +15,22 @@
     right: 0;
     bottom: 0;
     position: fixed;
+    z-index: 2;
+  
     
 }
 
 .overlay {
     background: rgba(49,49,49,0.8);
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: fixed;
+    z-index: 0;
+
 }
 .modalContent {
     width: 100%;
@@ -32,7 +45,9 @@
     padding: 14px 28px;
     border-radius: 5px;
     max-width: 600px;
-    min-width: 300px;    
+    min-width: 300px;  
+
+ 
 }
 .tiicon:hover {
     cursor:pointer;
@@ -53,6 +68,7 @@
     width: 90%;
     height: 2rem;
     border-radius: 5px;
+
 }
 
 .Ac_form{

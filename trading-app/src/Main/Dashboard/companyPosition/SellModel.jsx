@@ -505,7 +505,7 @@ export default function SellModel({marketData, uIdProps, Render, isCompany, symb
             SELL
             </button> } */}
 
-            <button onClick={toggleModal} className="btn-modal Sell_btn">
+            <button onClick={toggleModal} className="btnnew bg-gradient-primary mt-2 w-40 mx-sm-1">
             SELL
             </button>
 
