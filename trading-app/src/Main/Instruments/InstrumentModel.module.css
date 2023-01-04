@@ -8,7 +8,7 @@
     font-size: 18px;
 }
 
-.modal, .overlay {
+.modal {
     width: 100vw;
     height: 100vh;
     top: 0;
@@ -16,11 +16,20 @@
     right: 0;
     bottom: 0;
     position: fixed;
+    z-index: 2;
     
 }
 
 .overlay {
     background: rgba(49,49,49,0.8);
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: fixed;
+    z-index: 0;
 }
 .modalContent {
     width: 100vw;
@@ -31,7 +40,8 @@
     transform: translate(-50%, -50%);
     line-height: 1.4;
     /* background: #f1f1f1; */
-    background-color: #4184F3;
+    /* background-color: #4184F3; */
+    background-color: #1A73E8;
     padding: 14px 20px 10px 28px;
     border-radius: 5px;
     max-width: 600px;

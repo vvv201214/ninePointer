@@ -116,14 +116,14 @@ export default function NewTradersTable({socket}) {
                         </div> */}
                         <div className={Styles.gridheader}>
                         <div className={Styles.box}>
-                        <span class="btnnew bg-gradient-primary mt-0 w-100">Traders Wise P&L(Traders)-Mock</span>
+                        <span class="btnnew bg-gradient-primary mt-0 w-100">Traders Wise P&L(Traders) - Mock</span>
                         
                             <TradersPNLTrader marketData={marketData} tradeData={tradeData} />
                         
                         </div></div>
                         <div className={Styles.gridheader}>
                         <div className={Styles.box}>
-                        <span class="btnnew bg-gradient-success mt-0 w-100">Traders Wise P&L(Traders)-Mock</span>
+                        <span class="btnnew bg-gradient-success mt-0 w-100">Traders Wise P&L(Traders) - Live</span>
                         
                             <TradersPNLTrader marketData={marketData} tradeData={tradeData} />
                         

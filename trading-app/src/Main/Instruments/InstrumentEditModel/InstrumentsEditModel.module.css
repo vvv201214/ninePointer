@@ -3,9 +3,11 @@
     display: block;
     /* margin: 100px auto 0; */
     font-size: 18px;
+    /* z-index: 5; */
+    
 }
 
-.modal, .overlay {
+.modal {
     width: 100vw;
     height: 100vh;
     top: 0;
@@ -13,53 +15,75 @@
     right: 0;
     bottom: 0;
     position: fixed;
+    /* z-index: 5; */
     
 }
 
 .overlay {
     background: rgba(49,49,49,0.8);
+    /* z-index: 0 !important; */
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: fixed;
+    overflow: hidden;
+    /* z-index: 2; */
 }
 .modalContent {
     width: 100%;
+    position: relative;
     max-height: 100% ;
-    position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     line-height: 1.4;
     /* background: #f1f1f1; */
-    background-color: #afb2e4;
+    background-color: #1A73E8;
     padding: 14px 28px;
     border-radius: 5px;
     max-width: 600px;
-    min-width: 300px;    
+    min-width: 300px; 
+    /* z-index: 2; */
+       
 }
 
 .Form_head{
-    margin-top: 3rem;  
+    margin-top: 3rem; 
+
+    
+    /* z-index: 2; */
 }
 
 .main_instrument_form{
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     margin-top: 10px ;
+    /* z-index: 2; */
 }
 
 .Ac_forminput{
+    
     margin: 2px;
     width: 90%;
     height: 2rem;
     border-radius: 5px;
+    /* z-index: 2; */
 }
 
 .Ac_form{
+    
     font-weight: bold;
     font-size: 18px;
     margin: 2px;
     text-align: left;
+    /* z-index: 3;  */
 }
 
 .ACform_tbn{
+    
     margin: 10px;
     width: 5rem;
     height: 2rem;
@@ -69,4 +93,5 @@
     color: white;
     border: none;
     border-radius: 5px;
+    /* z-index: 2; */
 }
