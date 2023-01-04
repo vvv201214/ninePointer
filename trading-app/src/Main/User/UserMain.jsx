@@ -28,10 +28,6 @@ function UserMain(){
             <li class="nav-item d-flex align-items-center mx-sm-1">
                 <div class="btnnew bg-gradient-info mt-3 w-200"><span>Nifty Bank</span><span> : </span><span>&nbsp; NA &nbsp; </span><span> </span><span> NA </span></div>
             </li>
-            <li class="nav-item d-flex align-items-center mx-sm-1">
-                <div class="btnnew bg-gradient-primary mt-3 w-100"><span>ninepointer</span></div>
-                
-            </li>
             </ul>
             </div>
             </div>

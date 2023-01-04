@@ -215,7 +215,7 @@ function CompanyPositionTable({ socket }) {
                         </div>
 
 
-                        <div class="row1">
+                        <div class="row1" style={{zIndex : "0"}}>
                             <div class="col-12">
                             <div class="card my-4">
                                 <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
@@ -226,7 +226,7 @@ function CompanyPositionTable({ socket }) {
                             <OverallPnl marketData={marketData} tradeData={tradeData} data={data} />
                         </div></div>
                         </div>
-                        <div class="row1">
+                        <div class="row1 " style={{zIndex : "0"}}>
                             <div class="col-12">
                             <div class="card my-4">
                                 <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
@@ -247,7 +247,7 @@ function CompanyPositionTable({ socket }) {
                         <div className="grid_2">
                             <ClosedPnl marketData={marketData} tradeData={tradeData} data={data} />
                         </div> */}
-                        <div class="row1">
+                        <div class="row1" style={{zIndex : "0"}}>
                             <div class="col-12">
                             <div class="card my-4">
                                 <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
@@ -258,7 +258,7 @@ function CompanyPositionTable({ socket }) {
                         </div>
                         </div>
                         </div>
-                        <div class="row1">
+                        <div class="row1" style={{zIndex : "0"}}>
                             <div class="col-12">
                             <div class="card my-4">
                                 <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
