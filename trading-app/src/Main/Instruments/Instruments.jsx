@@ -137,16 +137,16 @@ function Instruments() {
                         )}
 
 
-<div class="row1" style={{  zIndex: '1' }}>
+<div class="row1">
         <div class="col-12">
           <div class="card my-4">
-            <div class="card-header p-0 position-relative mt-n4 mx-3">
+            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
               <div class="bg-gradient-primary shadow-primary border-radius-lg pt-2 pb-1">
                 <div><h6 class="text-white text-capitalize ps-3">Active Instruments</h6></div>
 
               </div>
             </div>
-            <div class="card-body px-0 pb-2">
+            <div class="card-body px-0 pb-2 py-0">
               <div class="table-responsive p-0">
                 <table class="table align-items-center mb-0">
                   <thead>
@@ -244,16 +244,16 @@ function Instruments() {
                             </table>
                         </div> */}
 
-<div class="row1" style={{ zIndex: '1' }}>
-        <div class="col-12" >
+<div class="row1 z-index-0">
+        <div class="col-12">
           <div class="card my-4">
-          <div class="card-header p-0 position-relative mt-n4 mx-3">
+          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
               <div class="bg-gradient-primary shadow-primary border-radius-lg pt-2 pb-1">
-                <div><h6 className={`text-white text-capitalize ps-3`}>Inactive Instruments</h6></div>
+                <div><h6 class="text-white text-capitalize ps-3">Inactive Instruments</h6></div>
 
               </div>
             </div>
-            <div class="card-body px-0 pb-2">
+            <div class="card-body px-0 pb-2 py-0">
               <div class="table-responsive p-0">
                 <table class="table align-items-center mb-0">
                   <thead>
@@ -302,11 +302,11 @@ function Instruments() {
                       <td class="align-middle text-center">
                         <span class="text-secondary text-xs font-weight-bold">{elem.createdOn}</span>
                       </td>
-                      <td class="align-middle">
+                      {/* <td class="align-middle">
                         <a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
                         <InstrumentsEditModel data={inactiveData} id={elem._id} Render={{setReRender, reRender}}/>
                         </a>
-                      </td>
+                      </td> */}
                     </tr>
                   </tbody>
                     )}

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { TiEdit } from "react-icons/ti";
+import EditIcon from '@mui/icons-material/Edit';
 import Styles from "./TradingAlgoEditModel.module.css";
 import axios from "axios";
 
@@ -194,7 +195,7 @@ export default function TradingAlgoEditModel ({ data, id, Render }) {
     }
     return (
         <>
-            <button onClick={toggleModal} className={Styles.tiicon}><TiEdit /></button>
+            <button onClick={toggleModal} className={Styles.tiicon}><EditIcon /></button>
 
             {modal && (
                 <div className="modal">

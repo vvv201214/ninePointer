@@ -65,7 +65,7 @@ export default function Routing() {
     return (
         <AuthContext>
             <BrowserRouter>
-                <div>
+                <>
                     <Routes>
                         <Route path='/' element={<LogInForm />} />
                         <Route path='/main' element={<NewMain setter={setDetails} />}>
@@ -144,7 +144,7 @@ export default function Routing() {
                         // </Route> }                         */}
                         </Route>
                     </Routes>
-                </div>
+                </>
             </BrowserRouter>
         </AuthContext>
     )

@@ -138,7 +138,8 @@ export default function MainSideBar({name}) {
               </div>
               </NavLink>
               </li> */}
-
+              
+              
               <div class="sidenav-footer position-absolute w-100 bottom-0 ">
               <NavLink  to="/">
                 <div class="mx-3">
@@ -146,7 +147,8 @@ export default function MainSideBar({name}) {
                 </div>
                 </NavLink>
               </div>
- 
+
+              
             </ul>
             
            

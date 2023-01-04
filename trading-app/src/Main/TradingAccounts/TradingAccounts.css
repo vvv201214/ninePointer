@@ -4,7 +4,7 @@
 }
 body {
     height: 100%;
-    background-color: #ffffff;
+    background-color:#F5F5F5;
     box-shadow: #f0efef;
   
 }
@@ -144,6 +144,18 @@ img{
    
 }
 .headers_li_links{
+    color: #000000;
+    margin-right: 10px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-left: 5px;
+}
+.navbarUser{
+    display: flex;
+    list-style: none;
+   
+}
+.headers_li_linksUser{
     color: #000000;
     margin-right: 10px;
     font-size: 0.75rem;

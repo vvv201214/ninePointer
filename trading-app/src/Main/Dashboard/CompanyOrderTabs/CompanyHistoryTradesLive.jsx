@@ -12,6 +12,7 @@ export default function CompanyHistoryTradesLive(){
     const [skip, setSkip] = useState(0);
     const [griddatacount, setgriddatacount] = useState(0);
     let numberOfClickForRemoveNext = 0
+    const limit = 15;
 
     useEffect(()=>{
 
@@ -25,7 +26,7 @@ export default function CompanyHistoryTradesLive(){
             return new Error(err);
         })
 
-        axios.get(`${baseUrl}api/v1/readlivetradecompanypagination/${skip}/${30}`)
+        axios.get(`${baseUrl}api/v1/readlivetradecompanypagination/${skip}/${limit}`)
         .then((res)=>{
 
             setData(res.data);
@@ -36,9 +37,9 @@ export default function CompanyHistoryTradesLive(){
     },[])
 
     function nextData(){
-        setSkip((prev)=> prev+30)
+        setSkip((prev)=> prev+limit)
         console.log(skip)
-        axios.get(`${baseUrl}api/v1/readlivetradecompanypagination/${skip+30}/${30}`)
+        axios.get(`${baseUrl}api/v1/readlivetradecompanypagination/${skip+limit}/${limit}`)
         .then((res)=>{
 
             setData(res.data);
@@ -50,9 +51,9 @@ export default function CompanyHistoryTradesLive(){
     }
 
     function prevData(){
-        setSkip((prev)=> prev-30)
+        setSkip((prev)=> prev-limit)
         console.log(skip)
-        axios.get(`${baseUrl}api/v1/readlivetradecompanypagination/${skip-30}/${30}`)
+        axios.get(`${baseUrl}api/v1/readlivetradecompanypagination/${skip-limit}/${limit}`)
         .then((res)=>{
 
             setData(res.data);
@@ -62,7 +63,7 @@ export default function CompanyHistoryTradesLive(){
         })
         setclickToRemove((prev)=>prev-1)
     }
-    numberOfClickForRemoveNext = Math.ceil(((griddatacount))/30);
+    numberOfClickForRemoveNext = Math.ceil(((griddatacount))/limit);
     console.log(numberOfClickForRemoveNext, clickToRemove, griddatacount)
 
 
@@ -118,7 +119,15 @@ export default function CompanyHistoryTradesLive(){
         //     </div>
         // </div>
 
-        <div class="historydatatable">
+        <div class="row1">
+        <div class="col-12">
+        <div class="card my-4">
+            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-1">
+            <div class="bg-gradient-success shadow-success border-radius-lg pt-2 pb-1">
+                <div><h6 class="text-white text-capitalize ps-3">Historical Trades (Live)</h6></div>
+
+            </div>
+            </div>
             <div class="card-body px-0 pb-2">
                 <div class="table-responsive p-0">
                         <table class="table align-items-center mb-0">
@@ -192,11 +201,11 @@ export default function CompanyHistoryTradesLive(){
                             </table> 
                             <div className={Styles.pegination_div}>
                                 <button class="btnnew bg-gradient-primary mt-3 w-10" disabled={!(skip !== 0)} onClick={prevData}>Prev</button>
-                                <div class="btnnew bg-gradient-secondary mt-3 w-10">{(clickToRemove-1)*30}-{(clickToRemove)*30}</div>
+                                <div class="btnnew bg-gradient-primary mt-3 w-10">{(clickToRemove-1)*limit}-{(clickToRemove)*limit}</div>
                                 <button class="btnnew bg-gradient-primary mt-3 w-10" disabled={!(numberOfClickForRemoveNext !== clickToRemove)} onClick={nextData}>Next</button>
                             </div>
-                        
-                    
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

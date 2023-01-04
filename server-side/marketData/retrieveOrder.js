@@ -4,7 +4,7 @@ const express = require("express");
 const router = express.Router();
 
   const getOrderData = async (apiKey, accessToken, res, orderId) => {
-  const url = "https://api.kite.trade/orders";
+  const url = `https://api.kite.trade/orders/${orderId}`;
   const api_key = apiKey;
   const access_token = accessToken;
   let auth = 'token' + api_key + ':' + access_token;
@@ -20,26 +20,32 @@ const router = express.Router();
     const response = await axios.get(url, authOptions);
     // console.log("its json data", JSON.stringify(res.data));
     const allOrderData = (response.data).data;
-    console.log("in retrieve order");
+    console.log("in retrieve order", allOrderData);
     let len = allOrderData.length;
     let orderData;
     for(let i = len-1; i >= 0; i--){
-      if(allOrderData[i].order_id === orderId){
+      if(allOrderData[i].status === "COMPLETE" || allOrderData[i].status === "REJECTED"){
         orderData = JSON.parse(JSON.stringify(allOrderData[i]));
       }
     }
     console.log("order data", orderData);
-    const {order_id, status, average_price, quantity, product, transaction_type, exchange_order_id,
+    let {order_id, status, average_price, quantity, product, transaction_type, exchange_order_id,
            order_timestamp, variety, validity, exchange, exchange_timestamp, order_type, price, filled_quantity, 
-           pending_quantity, cancelled_quantity, guid, market_protection, disclosed_quantity, tradingsymbol, placed_by}
-            = orderData
+           pending_quantity, cancelled_quantity, guid, market_protection, disclosed_quantity, tradingsymbol, placed_by,     
+           status_message, status_message_raw} = orderData
           
-  
+          if(!status_message){
+            status_message = "null"
+          }
+          if(!status_message_raw){
+            status_message_raw = "null"
+          }
   
           if(exchange_order_id === null){
             const tradeData = (new TradeData({order_id, status, average_price, quantity, product, transaction_type,
               order_timestamp, variety, validity, exchange, order_type, price, filled_quantity, 
-              pending_quantity, cancelled_quantity, guid, market_protection, disclosed_quantity, tradingsymbol, placed_by}))
+              pending_quantity, cancelled_quantity, guid, market_protection, disclosed_quantity, tradingsymbol, placed_by,
+              status_message, status_message_raw}))
         
               console.log("this is trade data", tradeData, typeof(tradeData));
               tradeData.save()
@@ -53,7 +59,8 @@ const router = express.Router();
           }else{
               const tradeData = (new TradeData({order_id, status, average_price, quantity, product, transaction_type, exchange_order_id,
                 order_timestamp, variety, validity, exchange, exchange_timestamp, order_type, price, filled_quantity, 
-                pending_quantity, cancelled_quantity, guid, market_protection, disclosed_quantity, tradingsymbol, placed_by}))
+                pending_quantity, cancelled_quantity, guid, market_protection, disclosed_quantity, tradingsymbol, placed_by,
+                status_message, status_message_raw }))
   
               console.log("this is trade data", tradeData, typeof(tradeData));
               tradeData.save()

@@ -10,6 +10,7 @@ const TodaysTradersTrade = ({setOrderCountTodayCompany}) => {
     const [clickToRemove, setclickToRemove] = useState(1);
     const [skip, setSkip] = useState(0);
     const [length, setLength] = useState(0);
+    const limit = 15;
 
     let numberOfClickForRemoveNext = 0
 
@@ -19,13 +20,13 @@ const TodaysTradersTrade = ({setOrderCountTodayCompany}) => {
         .then((res)=>{
 
             setLength((res.data).length);
-            setOrderCountTodayCompany((res.data).length);
+            // setOrderCountTodayCompany((res.data).length);
         }).catch((err)=>{
             window.alert("Server Down");
             return new Error(err);
         })
 
-        axios.get(`${baseUrl}api/v1/readmocktradeusertodaydatapagination/${skip}/${30}`)
+        axios.get(`${baseUrl}api/v1/readmocktradeusertodaydatapagination/${skip}/${limit}`)
         .then((res)=>{
 
             setData(res.data);
@@ -36,9 +37,9 @@ const TodaysTradersTrade = ({setOrderCountTodayCompany}) => {
     },[])
 
     function nextData(){
-        setSkip((prev)=> prev+30)
+        setSkip((prev)=> prev+limit)
         console.log(skip)
-        axios.get(`${baseUrl}api/v1/readmocktradeusertodaydatapagination/${skip+30}/${30}`)
+        axios.get(`${baseUrl}api/v1/readmocktradeusertodaydatapagination/${skip+limit}/${limit}`)
         .then((res)=>{
 
             setData(res.data);
@@ -50,9 +51,9 @@ const TodaysTradersTrade = ({setOrderCountTodayCompany}) => {
     }
 
     function prevData(){
-        setSkip((prev)=> prev-30)
+        setSkip((prev)=> prev-limit)
         console.log(skip)
-        axios.get(`${baseUrl}api/v1/readmocktradeusertodaydatapagination/${skip-30}/${30}`)
+        axios.get(`${baseUrl}api/v1/readmocktradeusertodaydatapagination/${skip-limit}/${limit}`)
         .then((res)=>{
 
             setData(res.data);
@@ -62,7 +63,7 @@ const TodaysTradersTrade = ({setOrderCountTodayCompany}) => {
         })
         setclickToRemove((prev)=>prev-1)
     }
-    numberOfClickForRemoveNext = Math.ceil(((length))/30);
+    numberOfClickForRemoveNext = Math.ceil(((length))/limit);
     console.log(numberOfClickForRemoveNext, clickToRemove, length)
 
 
@@ -116,8 +117,16 @@ const TodaysTradersTrade = ({setOrderCountTodayCompany}) => {
     //             </div>
     //         </div>
     //     </div>
+    <div class="row1">
+                            <div class="col-12">
+                            <div class="card my-4">
+                                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-1">
+                                <div class="bg-gradient-primary shadow-primary border-radius-lg pt-2 pb-1">
+                                    <div><h6 class="text-white text-capitalize ps-3">Today's Trades (Mock)</h6></div>
 
-    <div class="historydatatable">
+                                </div>
+                                </div>
+  
             <div class="card-body px-0 pb-2">
                 <div class="table-responsive p-0">
                         <table class="table align-items-center mb-0">
@@ -183,10 +192,11 @@ const TodaysTradersTrade = ({setOrderCountTodayCompany}) => {
                             </table> 
                             <div className={Styles.pegination_div}>
                                 <button class="btnnew bg-gradient-primary mt-3 w-10" disabled={!(skip !== 0)} onClick={prevData}>Prev</button>
-                                <div class="btnnew bg-gradient-secondary mt-3 w-10">{(clickToRemove-1)*30}-{(clickToRemove)*30}</div>
+                                {(numberOfClickForRemoveNext !== clickToRemove) &&
+                                <div class="btnnew bg-gradient-primary mt-3 w-10">{(clickToRemove-1)*limit}-{(clickToRemove)*limit}</div>}
                                 <button class="btnnew bg-gradient-primary mt-3 w-10" disabled={!(numberOfClickForRemoveNext !== clickToRemove)} onClick={nextData}>Next</button>
                             </div>
-                        
+                        </div></div>
                     
                 </div>
             </div>
