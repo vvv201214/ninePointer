@@ -285,7 +285,7 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany, symbo
                         if(subElem.isRealTradeEnable || elem.isRealTrade){
                             //console.log("REALTRADE",subElem.isRealTradeEnable, elem.isRealTrade)
                             sendOrderReq(elem, "yes");
-                            mockTradeCompany(elem, "yes");
+                            // mockTradeCompany(elem, "yes");
                             // mockTradeUser("yes");
                         } else{
                             // mockTradeUser("no");
@@ -402,12 +402,17 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany, symbo
         });
         const dataResp = await res.json();
         if (dataResp.status === 422 || dataResp.error || !dataResp) {
+            console.log(dataResp.error)
             window.alert(dataResp.error);
             //console.log("Failed to Trade");
         } else {
-            //console.log(dataResp);
-            // window.alert("Trade succesfull");
-            //console.log("entry succesfull");
+            if(dataResp.massage === "COMPLETE"){
+                console.log(dataResp);
+                window.alert("Trade succesfull completed");
+            } else if(dataResp.massage === "REJECTED"){
+                console.log(dataResp);
+                window.alert("Trade is rejected due to insufficient fund");
+            }
         }
     }
 
@@ -490,10 +495,10 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany, symbo
         });
         const dataResp = await res.json();
         if (dataResp.status === 422 || dataResp.error || !dataResp) {
+            console.log(dataResp.error);
             window.alert(dataResp.error);
-            //console.log("Failed to Trade");
         } else {
-            //console.log(dataResp);
+            console.log(dataResp);
             window.alert("Trade succesfull");
             //console.log("entry succesfull");
         }

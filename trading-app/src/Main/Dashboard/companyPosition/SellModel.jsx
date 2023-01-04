@@ -283,7 +283,7 @@ export default function SellModel({marketData, uIdProps, Render, isCompany, symb
                     if(subElem.isRealTradeEnable || elem.isRealTrade){
                         sendOrderReq(elem, "yes");
                         // mockTradeUser("yes");
-                        mockTradeCompany(elem, "yes");
+                        // mockTradeCompany(elem, "yes");
                     } else{
                         // mockTradeUser("no");
                         mockTradeCompany(elem, "no");
@@ -394,8 +394,14 @@ export default function SellModel({marketData, uIdProps, Render, isCompany, symb
             window.alert(dataResp.error);
             console.log("Failed to Trade");
         } else {
-            console.log(dataResp);
-            // window.alert("Trade succesfull");
+            if(dataResp.massage === "COMPLETE"){
+                console.log(dataResp);
+                window.alert("Trade succesfull completed");
+            } else if(dataResp.massage === "REJECTED"){
+                console.log(dataResp);
+                window.alert("Trade is rejected due to insufficient fund");
+            }
+
             console.log("entry succesfull");
         }
     }
@@ -478,12 +484,12 @@ export default function SellModel({marketData, uIdProps, Render, isCompany, symb
         });
         const dataResp = await res.json();
         if (dataResp.status === 422 || dataResp.error || !dataResp) {
+            console.log(dataResp.error);
             window.alert(dataResp.error);
-            console.log("Failed to Trade");
         } else {
             console.log(dataResp);
             window.alert("Trade succesfull");
-            console.log("entry succesfull");
+            //console.log("entry succesfull");
         }
         
     }

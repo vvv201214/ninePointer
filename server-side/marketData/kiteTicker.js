@@ -29,13 +29,13 @@ const subscribeTokens = async() => {
 
 
     getKiteCred.getAccess().then(async (data)=>{
-        console.log(data);
+        // console.log(data);
         let tokens = await fetchData(data.getApiKey, data.getAccessToken);
     
         // subscribeTokens();
         // getTicks(socket, tokens);
         // onError();
-        console.log(tokens)
+        // console.log(tokens)
         ticker.subscribe(tokens);
   
       });
@@ -48,13 +48,13 @@ const unSubscribeTokens = async(token) => {
     let tokens = [];
     tokens.push(token)
    let x =  ticker.unsubscribe(tokens);
-   console.log("unsubscribed token", x, tokens);
+  //  console.log("unsubscribed token", x, tokens);
 }
 
 const getTicks = (socket, tokens) => {
     ticker.on('ticks', (ticks) => {
       if(ticks.length == tokens.length){
-        console.log('sending ticks', ticks);
+        // console.log('sending ticks', ticks);
         socket.emit('tick', ticks); 
       }
     });
@@ -62,7 +62,7 @@ const getTicks = (socket, tokens) => {
 
 const onError = ()=>{
     ticker.on('error', (error)=>{
-      console.log(error);
+      // console.log(error);
     });
 }
 
