@@ -66,7 +66,7 @@ const HistoryTradersTrade = ({setOrderCountHistoryCompany}) => {
     console.log(numberOfClickForRemoveNext, clickToRemove, length)
 
 
-    return (
+    return ( 
         // <div>
         //     <div className="main_Container">
         //         <div className="right_side">
@@ -116,8 +116,15 @@ const HistoryTradersTrade = ({setOrderCountHistoryCompany}) => {
         //         </div>
         //     </div>
         // </div>
+        <div class="row1">
+                            <div class="col-12">
+                            <div class="card my-4">
+                                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-1">
+                                <div class="bg-gradient-primary shadow-primary border-radius-lg pt-2 pb-1">
+                                    <div><h6 class="text-white text-capitalize ps-3">Historical Trades (Mock)</h6></div>
 
-        <div class="historydatatable">
+                                </div>
+                                </div>
             <div class="card-body px-0 pb-2">
                 <div class="table-responsive p-0">
                         <table class="table align-items-center mb-0">
@@ -186,11 +193,11 @@ const HistoryTradersTrade = ({setOrderCountHistoryCompany}) => {
                                 <div class="btnnew bg-gradient-secondary mt-3 w-10">{(clickToRemove-1)*30}-{(clickToRemove)*30}</div>
                                 <button class="btnnew bg-gradient-primary mt-3 w-10" disabled={!(numberOfClickForRemoveNext !== clickToRemove)} onClick={nextData}>Next</button>
                             </div>
-                        
-                    
+                            </div>
+                      </div>  
+                    </div>
                 </div>
             </div>
-        </div>
     )
 }
 

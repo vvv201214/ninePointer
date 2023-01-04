@@ -6,6 +6,7 @@
     display: block;
     /* margin: 100px auto 0; */
     font-size: 18px;
+    z-index: 2;
 }
 
 .modal {

@@ -102,8 +102,8 @@ function CompanyPositionTable({ socket }) {
                     <div class="col-12">
                     <div class="card my-4">
                         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-                        <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-                            <h6 class="text-white text-capitalize ps-3">Active Instrument</h6>
+                        <div class="bg-gradient-secondary shadow-secondary border-radius-lg pt-0 pb-0">
+                            <h6 class="text-white text-capitalize text-sm-center ps-3">Instruments</h6>
                         </div>
                         </div>
                         <div class="card-body px-0 pb-2">
@@ -213,17 +213,31 @@ function CompanyPositionTable({ socket }) {
                             </div>
                         </div>
                         </div>
-                        <div className={Styles.gridheader}>
-                            <div className={Styles.box}>
-                                <span class="btnnew bg-gradient-primary mt-0 w-100">Overall P&L(Company) - Mock</span>
+
+
+                        <div class="row1">
+                            <div class="col-12">
+                            <div class="card my-4">
+                                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                                <div class="bg-gradient-primary shadow-primary border-radius-lg pt-0 pb-0">
+                            <h6 class="text-white text-capitalize text-sm-center ps-3">Overall P&L (Company) - Mock</h6>
+                            </div>
+                            </div>
                             <OverallPnl marketData={marketData} tradeData={tradeData} data={data} />
                         </div></div>
-                        <div className={Styles.gridheader}>
-                        <div className={Styles.box}>
-                                <div class="btnnew bg-gradient-success mt-0 w-100">Overall P&L(Company) - Live</div>
+                        </div>
+                        <div class="row1">
+                            <div class="col-12">
+                            <div class="card my-4">
+                                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                                <div class="bg-gradient-success shadow-success border-radius-lg pt-0 pb-0">
+                            <h6 class="text-white text-capitalize text-sm-center ps-3">Overall P&L (Company) - Live</h6>
+                                </div></div>
                             <OverallPnl marketData={marketData} tradeData={tradeData} data={livedata} />
                         </div>
                         </div>
+                        </div>
+                      \
                         
                         {/* <span className="grid2_span">Running PNL-Company</span>
                         <div className="grid_2">
@@ -233,16 +247,28 @@ function CompanyPositionTable({ socket }) {
                         <div className="grid_2">
                             <ClosedPnl marketData={marketData} tradeData={tradeData} data={data} />
                         </div> */}
-                        <span className={Styles.gridheader}>
-                        <div className={Styles.box}>
-                        <div class="btnnew bg-gradient-primary mt-0 w-100">Trader Wise P&L(Company) - Mock</div>
+                        <div class="row1">
+                            <div class="col-12">
+                            <div class="card my-4">
+                                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                                <div class="bg-gradient-primary shadow-primary border-radius-lg pt-0 pb-0">
+                            <h6 class="text-white text-capitalize text-sm-center ps-3">Trader Wise P&L (Company) - Mock</h6>
+                                </div></div>
                             <TradersPnlCompany marketData={marketData} tradeData={tradeData}/>          
-                        </div></span>
-                        <span className={Styles.gridheader}>
-                            <div className={Styles.box}>
-                            <div class="btnnew bg-gradient-success mt-0 w-100">Trader Wise P&L(Company) - Live</div>
+                        </div>
+                        </div>
+                        </div>
+                        <div class="row1">
+                            <div class="col-12">
+                            <div class="card my-4">
+                                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                                <div class="bg-gradient-success shadow-success border-radius-lg pt-0 pb-0">
+                            <h6 class="text-white text-capitalize text-sm-center ps-3">Trader Wise P&L (Company) - Live</h6>
+                                </div></div>
                                 <TradersPnlLiveCompany marketData={marketData} tradeData={tradeData}/>          
-                        </div></span>
+                        </div>
+                        </div>
+                        </div>
                 </div>
             </div>
             </div>

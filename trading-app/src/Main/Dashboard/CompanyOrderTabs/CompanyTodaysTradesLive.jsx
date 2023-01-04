@@ -114,7 +114,15 @@ function CompanyTodaysTradesLive(){
         //     </div>
         // </div>
 
-        <div class="historydatatable">
+        <div class="row1">
+        <div class="col-12">
+        <div class="card my-4">
+            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-1">
+            <div class="bg-gradient-success shadow-success border-radius-lg pt-2 pb-1">
+                <div><h6 class="text-white text-capitalize ps-3">Today's Trades (Live)</h6></div>
+
+            </div>
+            </div>
             <div class="card-body px-0 pb-2">
                 <div class="table-responsive p-0">
                         <table class="table align-items-center mb-0">
@@ -191,8 +199,8 @@ function CompanyTodaysTradesLive(){
                                 <div class="btnnew bg-gradient-secondary mt-3 w-10">{(clickToRemove-1)*30}-{(clickToRemove)*30}</div>
                                 <button class="btnnew bg-gradient-primary mt-3 w-10" disabled={!(numberOfClickForRemoveNext !== clickToRemove)} onClick={nextData}>Next</button>
                             </div>
-                        
-                    
+                       </div> 
+                    </div>
                 </div>
             </div>
         </div>

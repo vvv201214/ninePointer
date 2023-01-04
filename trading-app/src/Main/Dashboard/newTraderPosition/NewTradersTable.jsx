@@ -90,20 +90,30 @@ export default function NewTradersTable({socket}) {
             <div className="main_Container">
                 <div className="right_side">
                     <div className="rightside_maindiv">
-                    <div className={Styles.gridheader}>
-                    <div className={Styles.box}>
-                        <span class="btnnew bg-gradient-primary mt-0 w-100">Overall P&L(Traders) - Mock</span>
-                        <div className="grid_2">
+                    <div class="row1">
+                            <div class="col-12">
+                            <div class="card my-4">
+                                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                                <div class="bg-gradient-primary shadow-primary border-radius-lg pt-0 pb-0">
+                            <h6 class="text-white text-capitalize text-sm-center ps-3">Overall P&L (Company) - Mock</h6>
+                                </div></div>
+                      
                             <OverallPnl marketData={marketData} tradeData={tradeData} data={data} />
-                        </div>
+                        
                     </div>
-                    </div>
-                    <div className={Styles.gridheader}>
-                    <div className={Styles.box}>
-                        <span class="btnnew bg-gradient-success mt-0 w-100">Overall P&L(Traders) - Live</span>
-                        <div className="grid_2">
+                    </div></div>
+
+                    <div class="row1">
+                            <div class="col-12">
+                            <div class="card my-4">
+                                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                                <div class="bg-gradient-success shadow-success border-radius-lg pt-0 pb-0">
+                            <h6 class="text-white text-capitalize text-sm-center ps-3">Overall P&L (Company) - Live</h6>
+                                </div></div>
+                     
                             <OverallPnl marketData={marketData} tradeData={tradeData} data={data} />
-                        </div>
+                        
+                    </div>
                     </div>
                     </div> 
                         {/* <span className="grid2_span">Running PNL-Traders</span>
@@ -114,20 +124,29 @@ export default function NewTradersTable({socket}) {
                         <div className="grid_2">
                             <ClosedPnl marketData={marketData} tradeData={tradeData} data={data} />
                         </div> */}
-                        <div className={Styles.gridheader}>
-                        <div className={Styles.box}>
-                        <span class="btnnew bg-gradient-primary mt-0 w-100">Traders Wise P&L(Traders) - Mock</span>
+                        <div class="row1">
+                            <div class="col-12">
+                            <div class="card my-4">
+                                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                                <div class="bg-gradient-primary shadow-primary border-radius-lg pt-0 pb-0">
+                            <h6 class="text-white text-capitalize text-sm-center ps-3">Trader Wise P&L (Company) - Mock</h6>
+                                </div></div>
                         
                             <TradersPNLTrader marketData={marketData} tradeData={tradeData} />
                         
                         </div></div>
-                        <div className={Styles.gridheader}>
-                        <div className={Styles.box}>
-                        <span class="btnnew bg-gradient-success mt-0 w-100">Traders Wise P&L(Traders) - Live</span>
+                        </div>
+                        <div class="row1">
+                            <div class="col-12">
+                            <div class="card my-4">
+                                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                                <div class="bg-gradient-success shadow-success border-radius-lg pt-0 pb-0">
+                            <h6 class="text-white text-capitalize text-sm-center ps-3">Trader Wise P&L (Company) - Live</h6>
+                                </div></div>
                         
                             <TradersPNLTrader marketData={marketData} tradeData={tradeData} />
                         
-                        </div></div>
+                        </div></div></div>
                     </div>
                 </div>
             </div>
