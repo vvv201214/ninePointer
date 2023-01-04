@@ -394,8 +394,14 @@ export default function SellModel({marketData, uIdProps, Render, isCompany, symb
             window.alert(dataResp.error);
             console.log("Failed to Trade");
         } else {
-            console.log(dataResp);
-            // window.alert("Trade succesfull");
+            if(dataResp.massage === "COMPLETE"){
+                console.log(dataResp);
+                window.alert("Trade succesfull completed");
+            } else if(dataResp.massage === "REJECTED"){
+                console.log(dataResp);
+                window.alert("Trade is rejected due to insufficient fund");
+            }
+
             console.log("entry succesfull");
         }
     }

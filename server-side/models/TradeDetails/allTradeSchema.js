@@ -86,6 +86,12 @@ const allTradeSchema = new mongoose.Schema({
     placed_by:{
         type: String,
         required: true
+    },
+    status_message:{
+        type: String,
+    },
+    status_message_raw:{
+        type: String,
     }
 })
 

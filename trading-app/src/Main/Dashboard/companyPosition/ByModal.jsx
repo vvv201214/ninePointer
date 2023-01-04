@@ -402,12 +402,17 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany, symbo
         });
         const dataResp = await res.json();
         if (dataResp.status === 422 || dataResp.error || !dataResp) {
+            console.log(dataResp.error)
             window.alert(dataResp.error);
             //console.log("Failed to Trade");
         } else {
-            console.log(dataResp);
-            window.alert(dataResp);
-            //console.log("entry succesfull");
+            if(dataResp.massage === "COMPLETE"){
+                console.log(dataResp);
+                window.alert("Trade succesfull completed");
+            } else if(dataResp.massage === "REJECTED"){
+                console.log(dataResp);
+                window.alert("Trade is rejected due to insufficient fund");
+            }
         }
     }
 
