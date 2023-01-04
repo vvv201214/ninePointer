@@ -201,7 +201,8 @@ export default function CompanyHistoryTradesLive(){
                             </table> 
                             <div className={Styles.pegination_div}>
                                 <button class="btnnew bg-gradient-primary mt-3 w-10" disabled={!(skip !== 0)} onClick={prevData}>Prev</button>
-                                <div class="btnnew bg-gradient-primary mt-3 w-10">{(clickToRemove-1)*limit}-{(clickToRemove)*limit}</div>
+                                {(numberOfClickForRemoveNext !== clickToRemove) &&
+                                <div class="btnnew bg-gradient-secondary mt-3 w-10">{(clickToRemove-1)*limit}-{(clickToRemove)*limit}</div>}
                                 <button class="btnnew bg-gradient-primary mt-3 w-10" disabled={!(numberOfClickForRemoveNext !== clickToRemove)} onClick={nextData}>Next</button>
                             </div>
                         </div>
