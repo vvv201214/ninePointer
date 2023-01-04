@@ -214,9 +214,13 @@ export default function Summary() {
         //         </div>
         //     </div>
         // </div>
-
+        <div>
+        <div className="main_Container">
+        <div className="right_side">
+        <div className="rightside_maindiv">
+        <div class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl">
         <div class="container-fluid py-4">
-        <div class="row">
+        <div class="row1">
           <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
             <div class="card">
               <div class="card-header p-3 pt-2">
@@ -286,12 +290,11 @@ export default function Summary() {
             </div>
           </div>
         </div>
-        <div class="row">
+        {/* <div class="row">
           <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
             <div class="card">
               <div class="card-header p-3 pt-2">
                 <div class="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center border-radius-xl mt-n4 position-absolute">
-                  {/* <i class="material-icons opacity-10">weekend</i> */}
                 </div>
                 <div class="text-end pt-1">
                   <p class="text-sm mb-0 text-capitalize">Profitable Traders (Today)</p>
@@ -308,7 +311,6 @@ export default function Summary() {
             <div class="card">
               <div class="card-header p-3 pt-2">
                 <div class="icon icon-lg icon-shape bg-gradient-primary shadow-primary text-center border-radius-xl mt-n4 position-absolute">
-                  {/* <i class="material-icons opacity-10">person</i> */}
                 </div>
                 <div class="text-end pt-1">
                   <p class="text-sm mb-0 text-capitalize">Profitable Traders (This Week)</p>
@@ -325,7 +327,6 @@ export default function Summary() {
             <div class="card">
               <div class="card-header p-3 pt-2">
                 <div class="icon icon-lg icon-shape bg-gradient-success shadow-success text-center border-radius-xl mt-n4 position-absolute">
-                  {/* <i class="material-icons opacity-10">person</i> */}
                 </div>
                 <div class="text-end pt-1">
                   <p class="text-sm mb-0 text-capitalize">Total Traders</p>
@@ -342,7 +343,6 @@ export default function Summary() {
             <div class="card">
               <div class="card-header p-3 pt-2">
                 <div class="icon icon-lg icon-shape bg-gradient-info shadow-info text-center border-radius-xl mt-n4 position-absolute">
-                  {/* <i class="material-icons opacity-10">weekend</i> */}
                 </div>
                 <div class="text-end pt-1">
                   <p class="text-sm mb-0 text-capitalize">Highest P&L</p>
@@ -355,9 +355,9 @@ export default function Summary() {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
          {/* next divison starts */}
-        <div class="row mt-4">
+        {/* <div class="row mt-4">
           <div class="col-lg-4 col-md-6 mt-4 mb-4">
             <div class="card z-index-2 ">
               <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
@@ -373,7 +373,6 @@ export default function Summary() {
                 <p class="text-sm ">Last Campaign Performance</p>
                 <hr class="dark horizontal"/>
                 <div class="d-flex ">
-                  {/* <i class="material-icons text-sm my-auto me-1">schedule</i> */}
                   <p class="mb-0 text-sm"> campaign sent 2 days ago </p>
                 </div>
               </div>
@@ -393,7 +392,6 @@ export default function Summary() {
                 <p class="text-sm "> (<span class="font-weight-bolder">+15%</span>) increase in today sales. </p>
                 <hr class="dark horizontal"/>
                 <div class="d-flex ">
-                  {/* <i class="material-icons text-sm my-auto me-1">schedule</i> */}
                   <p class="mb-0 text-sm"> updated 4 min ago </p>
                 </div>
               </div>
@@ -413,12 +411,16 @@ export default function Summary() {
                 <p class="text-sm ">Last Campaign Performance</p>
                 <hr class="dark horizontal"/>
                 <div class="d-flex ">
-                  {/* <i class="material-icons text-sm my-auto me-1">schedule</i> */}
                   <p class="mb-0 text-sm">just updated</p>
                 </div>
               </div>
             </div>
           </div>
+        </div> */}
+        </div>
+        </div>
+        </div>
+        </div>
         </div>
         </div>
 

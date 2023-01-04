@@ -49,12 +49,12 @@ export default function NewMain({setter}) {
   return (
     <>
         <div className='main_new'>
-            <div className='sidebar_new'>
+            {/* <div className='sidebar_new'> */}
                 {info.role === "admin" ?
                 <MainSideBar name={info.name}/>
                 :
                 <UserSideBar name={info.name}/> }
-            </div>
+            {/* </div> */}
 
             <div className="main_content_new">
                 <Outlet info={info}/>

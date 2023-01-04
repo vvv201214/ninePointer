@@ -352,11 +352,14 @@ export default function SellModel({marketData, uIdProps, Render, isCompany, symb
                 productChange: "no algo",
                 tradingAccount: "no algo"
             }
-            // if(!isCompany){
-            //     mockTradeUser("no");
-            // }
-            mockTradeCompany(fakeAlgo, "no");
+            if(isCompany){
+                mockTradeCompany(fakeAlgo, "no");
+            } else{
+                window.alert("Your Trade is Disabled, contact authorize person")
+            }
+            // mockTradeCompany(fakeAlgo, "no");
             // must keep inside both if and else
+            
             setModal(!modal);        
         }    
 
@@ -390,12 +393,19 @@ export default function SellModel({marketData, uIdProps, Render, isCompany, symb
             })
         });
         const dataResp = await res.json();
+        console.log("dataResp", dataResp)
         if (dataResp.status === 422 || dataResp.error || !dataResp) {
             window.alert(dataResp.error);
             console.log("Failed to Trade");
         } else {
-            console.log(dataResp);
-            // window.alert("Trade succesfull");
+            if(dataResp.massage === "COMPLETE"){
+                console.log(dataResp);
+                window.alert("Trade succesfull completed");
+            } else if(dataResp.massage === "REJECTED"){
+                console.log(dataResp);
+                window.alert("Trade is rejected due to insufficient fund");
+            }
+
             console.log("entry succesfull");
         }
     }
@@ -499,7 +509,7 @@ export default function SellModel({marketData, uIdProps, Render, isCompany, symb
             SELL
             </button> } */}
 
-            <button onClick={toggleModal} className="btn-modal Sell_btn">
+            <button onClick={toggleModal} className="btnnew bg-gradient-primary mt-2 w-40 mx-sm-1">
             SELL
             </button>
 

@@ -12,6 +12,7 @@ const MockTradeUser = require("../models/mock-trade/mockTradeUserSchema")
 
 router.post("/placeorder", (async (req, res)=>{
     let responseMsg;
+    let responseErr;
     let baseUrl = process.env.NODE_ENV === "production" ? "/" : "http://localhost:5000/"
 
     let {exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType,
@@ -28,7 +29,7 @@ router.post("/placeorder", (async (req, res)=>{
     const api_key = apiKey;
     const access_token = accessToken;
     let auth = 'token ' + api_key + ':' + access_token;
-    console.log("this is data ",req.body);
+    // console.log("this is data ",req.body);
 
     let headers = {
         'X-Kite-Version':'3',
@@ -38,12 +39,12 @@ router.post("/placeorder", (async (req, res)=>{
     let orderData;
 
 
-    variety = "amo";
-    Price = 8;
-    TriggerPrice = 8;
-    realQuantity = 10;
-    OrderType = "LIMIT";
-    Product = "MIS"
+    // variety = "amo";
+    // Price = 8;
+    // TriggerPrice = 8;
+    // realQuantity = 10;
+    // OrderType = "LIMIT";
+    // Product = "MIS"
 
     if(variety === "amo"){
         orderData = new URLSearchParams({
@@ -87,16 +88,18 @@ router.post("/placeorder", (async (req, res)=>{
         }
 
         TradeData.findOne({order_id : data.order_id})
-        .then((data)=>{ ;
+        .then((data)=>{ 
             console.log("i am receiving data", data)
             if(data.exchange_timestamp === undefined){
                 console.log("in the if condition of exchange", data.exchange_timestamp);
                 let { order_id, placed_by, exchange_order_id, status, order_timestamp, exchange_timestamp
                     , variety, exchange, tradingsymbol, order_type, transaction_type, validity, product,
                     quantity, disclosed_quantity, price, average_price, filled_quantity, pending_quantity,
-                    cancelled_quantity, market_protection, guid } = data;
+                    cancelled_quantity, market_protection, guid, status_message, status_message_raw } = data;
+
 
                     responseMsg = status;
+                    responseErr = status_message;
 
                     if(transaction_type === "SELL"){
                         quantity = -quantity;
@@ -167,7 +170,7 @@ router.post("/placeorder", (async (req, res)=>{
                         tradeBy: createdBy, isRealTrade: realTrade, amount: (Number(quantity)*average_price), trade_time:trade_time
             
                     });
-                    console.log("this is CompanyTradeData", companyTradeData);
+                    // console.log("this is CompanyTradeData", companyTradeData);
                     companyTradeData.save().then(()=>{
                     }).catch((err)=> res.status(500).json({error:"Failed to Trade company side"}));
                 }).catch(err => {console.log(err, "fail")});
@@ -183,12 +186,11 @@ router.post("/placeorder", (async (req, res)=>{
                         status, uId, createdBy, average_price, Quantity: Quantity, 
                         Product:Product, buyOrSell:buyOrSell, order_timestamp: new_order_timestamp,
                         variety, validity, exchange, order_type: OrderType, symbol:symbol, placed_by: placed_by, userId,
-                         algoBox:{algoName, transactionChange, instrumentChange, exchangeChange, 
-                        lotMultipler, productChange, tradingAccount}, order_id, instrumentToken, brokerage: brokerageUser,
+                        order_id, instrumentToken, brokerage: brokerageUser,
                         tradeBy: createdBy, isRealTrade: true, amount: (Number(quantity)*average_price), trade_time:trade_time
 
                     });
-                    console.log("this is userTradeData", userTradeData);
+                    // console.log("this is userTradeData", userTradeData);
                     userTradeData.save().then(()=>{
                     }).catch((err)=> res.status(500).json({error:"Failed to Trade company side"}));
                 }).catch(err => {console.log(err, "fail")});
@@ -209,7 +211,7 @@ router.post("/placeorder", (async (req, res)=>{
                         tradeBy: createdBy, isRealTrade: false, amount: (Number(quantity)*average_price), trade_time:trade_time
                     });
             
-                    console.log("mockTradeDetails comapny", mockTradeDetails);
+                    // console.log("mockTradeDetails comapny", mockTradeDetails);
                     mockTradeDetails.save().then(()=>{
                         // res.status(201).json({massage : "data enter succesfully"});
                     }).catch((err)=> res.status(500).json({error:"Failed to enter data"}));
@@ -231,7 +233,7 @@ router.post("/placeorder", (async (req, res)=>{
                         tradeBy: createdBy, isRealTrade: true, amount: (Number(quantity)*average_price), trade_time:trade_time
                     });
             
-                    console.log("mockTradeDetails", mockTradeDetailsUser);
+                    // console.log("mockTradeDetails", mockTradeDetailsUser);
                     mockTradeDetailsUser.save().then(()=>{
                         // res.status(201).json({massage : "data enter succesfully"});
                     }).catch((err)=> {
@@ -240,15 +242,24 @@ router.post("/placeorder", (async (req, res)=>{
             
                 }).catch(err => {console.log(err, "fail")});
 
+                console.log("responseMsg", responseMsg);
+
+                setTimeout(()=>{
+                    return res.status(201).json({massage : responseMsg, err: responseErr})
+                },0)
+
             }else{
                 let { order_id, placed_by, exchange_order_id, status, order_timestamp, exchange_timestamp
                     , variety, exchange, tradingsymbol, order_type, transaction_type, validity, product,
                     quantity, disclosed_quantity, price, average_price, filled_quantity, pending_quantity,
-                    cancelled_quantity, market_protection, guid} = data
+                    cancelled_quantity, market_protection, guid, status_message, status_message_raw} = data
 
                     if(transaction_type === "SELL"){
                         quantity = -quantity;
                     }
+
+                    responseMsg = status;
+                    responseErr = status_message;
 
                     let trade_time = order_timestamp
                     let timestamp = order_timestamp.split(" ");
@@ -318,7 +329,7 @@ router.post("/placeorder", (async (req, res)=>{
                     });
 
                     companyTradeData.save().then(()=>{
-                        console.log("companyTradeData", companyTradeData)
+                        // console.log("companyTradeData", companyTradeData)
                     }).catch((err)=> res.status(500).json({error:"Failed to Trade"}));
                 }).catch(err => {console.log(err, "fail")});
 
@@ -333,12 +344,11 @@ router.post("/placeorder", (async (req, res)=>{
                         status, uId, createdBy, average_price, Quantity: Quantity, 
                         Product:Product, buyOrSell:buyOrSell, order_timestamp: new_order_timestamp,
                         variety, validity, exchange, order_type: OrderType, symbol:symbol, placed_by: placed_by, userId,
-                         algoBox:{algoName, transactionChange, instrumentChange, exchangeChange, 
-                        lotMultipler, productChange, tradingAccount}, order_id, instrumentToken, brokerage: brokerageUser,
+                        order_id, instrumentToken, brokerage: brokerageUser,
                         tradeBy: createdBy, isRealTrade: true, amount: (Number(quantity)*average_price), trade_time:trade_time
 
                     });
-                    console.log("this is userTradeData", userTradeData);
+                    // console.log("this is userTradeData", userTradeData);
                     userTradeData.save().then(()=>{
                         console.log("userTradeData", userTradeData)
                     }).catch((err)=> res.status(500).json({error:"Failed to Trade company side"}));
@@ -360,7 +370,7 @@ router.post("/placeorder", (async (req, res)=>{
                         tradeBy: createdBy, isRealTrade: false, amount: (Number(quantity)*average_price), trade_time:trade_time
                     });
             
-                    console.log("mockTradeDetails comapny", mockTradeDetails);
+                    // console.log("mockTradeDetails comapny", mockTradeDetails);
                     mockTradeDetails.save().then(()=>{
                         // res.status(201).json({massage : "data enter succesfully"});
                     }).catch((err)=> res.status(500).json({error:"Failed to enter data"}));
@@ -382,7 +392,7 @@ router.post("/placeorder", (async (req, res)=>{
                         tradeBy: createdBy, isRealTrade: true, amount: (Number(quantity)*average_price), trade_time:trade_time
                     });
             
-                    console.log("mockTradeDetails", mockTradeDetailsUser);
+                    // console.log("mockTradeDetails", mockTradeDetailsUser);
                     mockTradeDetailsUser.save().then(()=>{
                         // res.status(201).json({massage : "data enter succesfully"});
                     }).catch((err)=> {
@@ -390,13 +400,24 @@ router.post("/placeorder", (async (req, res)=>{
                     });
             
                 }).catch(err => {console.log(err, "fail")});
+
+                console.log("responseMsg", responseMsg);
+                setTimeout(()=>{
+                    return res.status(201).json({massage : responseMsg, err: responseErr})
+                },0)
+                
             }
         }).catch((err)=>{
-            console.log("i am receiving error", err);
+            // console.log("i am receiving error", err);
         })
 
     }).catch((err)=>{
-        console.log("error to getting order_id", err);
+        // console.log("error to getting order_id", err);
+        // // console.log("error to getting config", err.config);
+        // console.log("error to getting request",  err.response.data.message);
+        // console.log("error to getting data", err.data);
+
+        res.status(422).json({error : err.response.data.message})
     })
 
     // res.status(201).json({massage : responseMsg})
@@ -405,4 +426,5 @@ router.post("/placeorder", (async (req, res)=>{
 
 
 module.exports = router;
+
 

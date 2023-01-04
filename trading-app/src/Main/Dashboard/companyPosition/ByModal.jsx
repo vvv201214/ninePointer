@@ -340,7 +340,6 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany, symbo
             // }
             tradingAlgo(uId, Details.last_price);
         } else {
-            //console.log(userPermissionAlgo , !isCompany)
             companyTrade.realBuyOrSell = "BUY";
             companyTrade.realSymbol = Details.symbol
             companyTrade.realInstrument = Details.instrument
@@ -361,11 +360,14 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany, symbo
                 productChange: "no algo",
                 tradingAccount: "no algo"
             }
-            // if(!isCompany){
-            //     mockTradeUser("no");
-            // }
-            mockTradeCompany(fakeAlgo, "no");
-            // must keep inside both if and else
+
+            if(isCompany){
+                mockTradeCompany(fakeAlgo, "no");
+            } else{
+                window.alert("Your Trade is Disabled, contact authorize person")
+            }
+
+            // mockTradeCompany(fakeAlgo, "no");
             setModal(!modal);
         } 
 
@@ -401,13 +403,19 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany, symbo
             })
         });
         const dataResp = await res.json();
+        console.log("dataResp", dataResp)
         if (dataResp.status === 422 || dataResp.error || !dataResp) {
+            console.log(dataResp.error)
             window.alert(dataResp.error);
             //console.log("Failed to Trade");
         } else {
-            console.log(dataResp);
-            window.alert(dataResp);
-            //console.log("entry succesfull");
+            if(dataResp.massage === "COMPLETE"){
+                console.log(dataResp);
+                window.alert("Trade succesfull completed");
+            } else if(dataResp.massage === "REJECTED"){
+                console.log(dataResp);
+                window.alert("Trade is rejected due to insufficient fund");
+            }
         }
     }
 
@@ -503,6 +511,7 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany, symbo
 
 
 
+
     //console.log(perticularInstrumentData);
 
     return (
@@ -516,11 +525,9 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany, symbo
                     BUY
                 </button>} */}
 
-                <button onClick={toggleModal} className="btn-modal By_btn">
+                <button onClick={toggleModal} className="btnnew bg-gradient-info mt-2 w-40 mx-sm-0">
                     BUY
                 </button>
-
-                
 
             {modal && (
                 <div className="modal">

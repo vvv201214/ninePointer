@@ -10,8 +10,7 @@ body.active-modal {
     text-align: center;
 }
 
-.modal,
-.overlay {
+.modal {
     width: 100vw;
     height: 100vh;
     top: 0;
@@ -19,11 +18,20 @@ body.active-modal {
     right: 0;
     bottom: 0;
     position: fixed;
+    z-index: 2;
 
 }
 
 .overlay {
     background: rgba(49, 49, 49, 0.8);
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: fixed;
+    z-index: 0;
 }
 
 .modal-content {
@@ -39,6 +47,7 @@ body.active-modal {
     border-radius: 3px;
     max-width: 600px;
     min-width: 300px;
+    z-index: 2;
 
 }
 
@@ -236,6 +245,10 @@ body.active-modal {
     display: flex;
     flex-direction: row;
     justify-content: center;
+    margin-top: -5px;
+    margin-bottom: -14px;
+    
+
 }
 .headingSymbol{
     border-radius: 5px;
