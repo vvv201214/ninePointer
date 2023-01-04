@@ -361,7 +361,13 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany, symbo
                 tradingAccount: "no algo"
             }
 
-            mockTradeCompany(fakeAlgo, "no");
+            if(isCompany){
+                mockTradeCompany(fakeAlgo, "no");
+            } else{
+                window.alert("Your Trade is Disabled, contact authorize person")
+            }
+
+            // mockTradeCompany(fakeAlgo, "no");
             setModal(!modal);
         } 
 

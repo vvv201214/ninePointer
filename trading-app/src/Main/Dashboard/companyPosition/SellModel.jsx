@@ -352,11 +352,14 @@ export default function SellModel({marketData, uIdProps, Render, isCompany, symb
                 productChange: "no algo",
                 tradingAccount: "no algo"
             }
-            // if(!isCompany){
-            //     mockTradeUser("no");
-            // }
-            mockTradeCompany(fakeAlgo, "no");
+            if(isCompany){
+                mockTradeCompany(fakeAlgo, "no");
+            } else{
+                window.alert("Your Trade is Disabled, contact authorize person")
+            }
+            // mockTradeCompany(fakeAlgo, "no");
             // must keep inside both if and else
+            
             setModal(!modal);        
         }    
 
