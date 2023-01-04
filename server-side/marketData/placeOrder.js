@@ -29,7 +29,7 @@ router.post("/placeorder", (async (req, res)=>{
     const api_key = apiKey;
     const access_token = accessToken;
     let auth = 'token ' + api_key + ':' + access_token;
-    console.log("this is data ",req.body);
+    // console.log("this is data ",req.body);
 
     let headers = {
         'X-Kite-Version':'3',
@@ -170,7 +170,7 @@ router.post("/placeorder", (async (req, res)=>{
                         tradeBy: createdBy, isRealTrade: realTrade, amount: (Number(quantity)*average_price), trade_time:trade_time
             
                     });
-                    console.log("this is CompanyTradeData", companyTradeData);
+                    // console.log("this is CompanyTradeData", companyTradeData);
                     companyTradeData.save().then(()=>{
                     }).catch((err)=> res.status(500).json({error:"Failed to Trade company side"}));
                 }).catch(err => {console.log(err, "fail")});
@@ -190,7 +190,7 @@ router.post("/placeorder", (async (req, res)=>{
                         tradeBy: createdBy, isRealTrade: true, amount: (Number(quantity)*average_price), trade_time:trade_time
 
                     });
-                    console.log("this is userTradeData", userTradeData);
+                    // console.log("this is userTradeData", userTradeData);
                     userTradeData.save().then(()=>{
                     }).catch((err)=> res.status(500).json({error:"Failed to Trade company side"}));
                 }).catch(err => {console.log(err, "fail")});
@@ -211,7 +211,7 @@ router.post("/placeorder", (async (req, res)=>{
                         tradeBy: createdBy, isRealTrade: false, amount: (Number(quantity)*average_price), trade_time:trade_time
                     });
             
-                    console.log("mockTradeDetails comapny", mockTradeDetails);
+                    // console.log("mockTradeDetails comapny", mockTradeDetails);
                     mockTradeDetails.save().then(()=>{
                         // res.status(201).json({massage : "data enter succesfully"});
                     }).catch((err)=> res.status(500).json({error:"Failed to enter data"}));
@@ -233,7 +233,7 @@ router.post("/placeorder", (async (req, res)=>{
                         tradeBy: createdBy, isRealTrade: true, amount: (Number(quantity)*average_price), trade_time:trade_time
                     });
             
-                    console.log("mockTradeDetails", mockTradeDetailsUser);
+                    // console.log("mockTradeDetails", mockTradeDetailsUser);
                     mockTradeDetailsUser.save().then(()=>{
                         // res.status(201).json({massage : "data enter succesfully"});
                     }).catch((err)=> {
@@ -329,7 +329,7 @@ router.post("/placeorder", (async (req, res)=>{
                     });
 
                     companyTradeData.save().then(()=>{
-                        console.log("companyTradeData", companyTradeData)
+                        // console.log("companyTradeData", companyTradeData)
                     }).catch((err)=> res.status(500).json({error:"Failed to Trade"}));
                 }).catch(err => {console.log(err, "fail")});
 
@@ -348,7 +348,7 @@ router.post("/placeorder", (async (req, res)=>{
                         tradeBy: createdBy, isRealTrade: true, amount: (Number(quantity)*average_price), trade_time:trade_time
 
                     });
-                    console.log("this is userTradeData", userTradeData);
+                    // console.log("this is userTradeData", userTradeData);
                     userTradeData.save().then(()=>{
                         console.log("userTradeData", userTradeData)
                     }).catch((err)=> res.status(500).json({error:"Failed to Trade company side"}));
@@ -370,7 +370,7 @@ router.post("/placeorder", (async (req, res)=>{
                         tradeBy: createdBy, isRealTrade: false, amount: (Number(quantity)*average_price), trade_time:trade_time
                     });
             
-                    console.log("mockTradeDetails comapny", mockTradeDetails);
+                    // console.log("mockTradeDetails comapny", mockTradeDetails);
                     mockTradeDetails.save().then(()=>{
                         // res.status(201).json({massage : "data enter succesfully"});
                     }).catch((err)=> res.status(500).json({error:"Failed to enter data"}));
@@ -392,7 +392,7 @@ router.post("/placeorder", (async (req, res)=>{
                         tradeBy: createdBy, isRealTrade: true, amount: (Number(quantity)*average_price), trade_time:trade_time
                     });
             
-                    console.log("mockTradeDetails", mockTradeDetailsUser);
+                    // console.log("mockTradeDetails", mockTradeDetailsUser);
                     mockTradeDetailsUser.save().then(()=>{
                         // res.status(201).json({massage : "data enter succesfully"});
                     }).catch((err)=> {
@@ -408,13 +408,13 @@ router.post("/placeorder", (async (req, res)=>{
                 
             }
         }).catch((err)=>{
-            console.log("i am receiving error", err);
+            // console.log("i am receiving error", err);
         })
 
     }).catch((err)=>{
-        console.log("error to getting order_id", err);
+        // console.log("error to getting order_id", err);
         // // console.log("error to getting config", err.config);
-        console.log("error to getting request",  err.response.data.message);
+        // console.log("error to getting request",  err.response.data.message);
         // console.log("error to getting data", err.data);
 
         res.status(422).json({error : err.response.data.message})

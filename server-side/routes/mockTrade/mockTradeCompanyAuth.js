@@ -31,7 +31,7 @@ router.post("/mocktradecompany", async (req, res)=>{
 
     if(!exchange || !symbol || !buyOrSell || !Quantity || !Product || !OrderType || !validity || !variety || !last_price || !algoName || !transactionChange || !instrumentChange || !exchangeChange || !lotMultipler || !productChange || !tradingAccount || !instrumentToken){
         console.log(Boolean(exchange)); console.log(Boolean(symbol)); console.log(Boolean(buyOrSell)); console.log(Boolean(Quantity)); console.log(Boolean(Product)); console.log(Boolean(OrderType)); console.log(Boolean(validity)); console.log(Boolean(variety)); console.log(Boolean(last_price)); console.log(Boolean(algoName)); console.log(Boolean(transactionChange)); console.log(Boolean(instrumentChange)); console.log(Boolean(exchangeChange)); console.log(Boolean(lotMultipler)); console.log(Boolean(productChange)); console.log(Boolean(tradingAccount));
-        console.log("data nhi h pura");
+        // console.log("data nhi h pura");
         return res.status(422).json({error : "please fill all the feilds..."})
     }
 
@@ -132,7 +132,7 @@ router.post("/mocktradecompany", async (req, res)=>{
             tradeBy: createdBy, isRealTrade: false, amount: (Number(realQuantity)*originalLastPrice), trade_time:trade_time
         });
 
-        console.log("mockTradeDetails comapny", mockTradeDetails);
+        // console.log("mockTradeDetails comapny", mockTradeDetails);
         mockTradeDetails.save().then(()=>{
             res.status(201).json({massage : "data enter succesfully"});
         }).catch((err)=> res.status(500).json({error:"Failed to enter data"}));
@@ -153,7 +153,7 @@ router.post("/mocktradecompany", async (req, res)=>{
             tradeBy: createdBy, amount: (Number(Quantity)*originalLastPrice), trade_time:trade_time
         });
 
-        console.log("mockTradeDetails", mockTradeDetailsUser);
+        // console.log("mockTradeDetails", mockTradeDetailsUser);
         mockTradeDetailsUser.save().then(()=>{
             // res.status(201).json({massage : "data enter succesfully"});
         }).catch((err)=> {
