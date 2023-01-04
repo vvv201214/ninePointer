@@ -110,6 +110,7 @@ export default function TradersPnlCompany({marketData, tradeData}) {
         for (let value of hash.values()){
             overallPnl.push(value);
         }
+        console.log("overallpnl arr", overallPnl)
         let liveDetailsArr = [];
         overallPnl.map((elem)=>{
             tradeData.map((element)=>{

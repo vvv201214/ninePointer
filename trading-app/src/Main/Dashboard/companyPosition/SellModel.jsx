@@ -390,6 +390,7 @@ export default function SellModel({marketData, uIdProps, Render, isCompany, symb
             })
         });
         const dataResp = await res.json();
+        console.log("dataResp", dataResp)
         if (dataResp.status === 422 || dataResp.error || !dataResp) {
             window.alert(dataResp.error);
             console.log("Failed to Trade");

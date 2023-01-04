@@ -413,9 +413,11 @@ router.post("/placeorder", (async (req, res)=>{
 
     }).catch((err)=>{
         console.log("error to getting order_id", err);
-        console.log("error to getting config", err.config);
-        console.log("error to getting request",  err.request.data);
-        console.log("error to getting data", err.data);
+        // // console.log("error to getting config", err.config);
+        console.log("error to getting request",  err.response.data.message);
+        // console.log("error to getting data", err.data);
+
+        res.status(422).json({error : err.response.data.message})
     })
 
     // res.status(201).json({massage : responseMsg})

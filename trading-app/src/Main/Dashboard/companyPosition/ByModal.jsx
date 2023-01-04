@@ -340,7 +340,6 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany, symbo
             // }
             tradingAlgo(uId, Details.last_price);
         } else {
-            //console.log(userPermissionAlgo , !isCompany)
             companyTrade.realBuyOrSell = "BUY";
             companyTrade.realSymbol = Details.symbol
             companyTrade.realInstrument = Details.instrument
@@ -361,11 +360,8 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany, symbo
                 productChange: "no algo",
                 tradingAccount: "no algo"
             }
-            // if(!isCompany){
-            //     mockTradeUser("no");
-            // }
+
             mockTradeCompany(fakeAlgo, "no");
-            // must keep inside both if and else
             setModal(!modal);
         } 
 
@@ -401,6 +397,7 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany, symbo
             })
         });
         const dataResp = await res.json();
+        console.log("dataResp", dataResp)
         if (dataResp.status === 422 || dataResp.error || !dataResp) {
             console.log(dataResp.error)
             window.alert(dataResp.error);
