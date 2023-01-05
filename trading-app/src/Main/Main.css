@@ -1,3 +1,4 @@
+
 .main_new{
     /* display: flex;
     flex-direction: row;  */
@@ -19,7 +20,7 @@
 .sidebar_new{
     /* flex: 0.14; */
     /* border: 5px solid purple; */
-    min-width: 0%;
+    min-width: 0;
     max-width: 20vw;
 }
 
