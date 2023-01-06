@@ -10,7 +10,7 @@ router.get("/companylivetradedatatodaywithemail/:email", (req, res)=>{
     let date = new Date();
     let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
     console.log(todayDate);
-    LiveCompanyTradeData.find({order_timestamp: {$regex: todayDate}, userId: {$regex: email}}).sort({trade_time: -1})
+    LiveCompanyTradeData.find({order_timestamp: {$regex: todayDate}, userId: {$regex: email}, status: "COMPLETE"}).sort({trade_time: -1})
     .then((data)=>{
         return res.status(200).send(data);
     })
@@ -24,7 +24,7 @@ router.get("/readlivetradecompanyDate", (req, res)=>{
     let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
     const {email} = req.params
     console.log(todayDate)
-    LiveCompanyTradeData.find({order_timestamp: {$regex: todayDate}}).sort({trade_time: -1})
+    LiveCompanyTradeData.find({order_timestamp: {$regex: todayDate}, status: "COMPLETE"}).sort({trade_time: -1})
     .then((data)=>{
         return res.status(200).send(data);
     })
@@ -82,7 +82,7 @@ router.get("/updatelivetradedataamount", async(req, res)=>{
 })
 
 router.get("/readliveTradecompany", (req, res)=>{
-    LiveCompanyTradeData.find((err, data)=>{
+    LiveCompanyTradeData.find({status: "COMPLETE"}, (err, data)=>{
         if(err){
             return res.status(500).send(err);
         }else{
@@ -129,7 +129,7 @@ router.get("/readliveTradecompany/:id", (req, res)=>{
 
 router.get("/readliveTradecompanyemail/:email", (req, res)=>{
     const {email} = req.params
-    LiveCompanyTradeData.find({userId: email}).sort({trade_time: -1})
+    LiveCompanyTradeData.find({userId: email, status: "COMPLETE"}).sort({trade_time: -1})
     .then((data)=>{
         return res.status(200).send(data);
     })
@@ -143,7 +143,7 @@ router.get("/readliveTradecompanyDate", (req, res)=>{
     let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
     const {email} = req.params
     console.log(todayDate)
-    LiveCompanyTradeData.find({order_timestamp: {$regex: todayDate}}).sort({trade_time: -1})
+    LiveCompanyTradeData.find({order_timestamp: {$regex: todayDate}, status: "COMPLETE"}).sort({trade_time: -1})
     .then((data)=>{
         return res.status(200).send(data);
     })
@@ -154,7 +154,7 @@ router.get("/readliveTradecompanyDate", (req, res)=>{
 
 router.get("/readliveTradecompanypariculardate/:date", (req, res)=>{
     const {date} = req.params
-    LiveCompanyTradeData.find({order_timestamp: {$regex: date}})
+    LiveCompanyTradeData.find({order_timestamp: {$regex: date}, status: "COMPLETE"})
     .then((data)=>{
         return res.status(200).send(data);
     })
@@ -190,7 +190,7 @@ router.get("/readliveTradecompanytodaydatapagination/:skip/:limit", (req, res)=>
 
 router.get("/readliveTradecompanypariculardatewithemail/:date/:email", (req, res)=>{
     const {date, email} = req.params
-    LiveCompanyTradeData.find({order_timestamp: {$regex: date}, userId: email})
+    LiveCompanyTradeData.find({order_timestamp: {$regex: date}, userId: email, status: "COMPLETE"})
     .then((data)=>{
         return res.status(200).send(data);
     })
@@ -204,7 +204,7 @@ router.get("/readliveTradecompanyDate/:email", (req, res)=>{
     let date = new Date();
     let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
     console.log(todayDate);
-    LiveCompanyTradeData.find({order_timestamp: {$regex: todayDate}, userId: {$regex: email}}).sort({trade_time:-1})
+    LiveCompanyTradeData.find({order_timestamp: {$regex: todayDate}, userId: {$regex: email}, status: "COMPLETE"}).sort({trade_time:-1})
     .then((data)=>{
         return res.status(200).send(data);
     })
@@ -220,7 +220,7 @@ router.get("/readliveTradecompanyThisMonth", (req, res)=>{
     let monthStart = `${String(01).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
     console.log(todayDate)
     // LiveCompanyTradeData.find({order_timestamp: {$regex: todayDate}})
-    LiveCompanyTradeData.find({trade_time: {$gte:monthStart,$lt: todayDate}})
+    LiveCompanyTradeData.find({trade_time: {$gte:monthStart,$lt: todayDate}, status: "COMPLETE"})
     .then((data)=>{
         return res.status(200).send(data);
     })
@@ -252,7 +252,7 @@ router.get("/readliveTradecompanyThisWeek/:email", (req, res)=>{
     //console.log(String(weekStartDay).slice(0,10));
     let weekStartDate = `${(weekStartDay.getFullYear())}-${String(weekStartDay.getMonth() + 1).padStart(2, '0')}-${String(weekStartDay.getDate()).padStart(2, '0')}`
 
-    LiveCompanyTradeData.find({trade_time: {$gte:weekStartDate,$lt:nextDate}, userId:email})
+    LiveCompanyTradeData.find({trade_time: {$gte:weekStartDate,$lt:nextDate}, userId:email, status: "COMPLETE"})
     .then((data)=>{
         return res.status(200).send(data);
     })
@@ -276,7 +276,7 @@ router.get("/readliveTradecompanyThisMonth/:email", (req, res)=>{
     console.log(nextDay);
 
     let monthStart = `${(date.getFullYear())}-${String(date.getMonth() + 1).padStart(2, '0')}-01`
-    LiveCompanyTradeData.find({trade_time: {$gte:monthStart,$lt: nextDay}, userId: {$regex: email}})
+    LiveCompanyTradeData.find({trade_time: {$gte:monthStart,$lt: nextDay}, userId: {$regex: email}, status: "COMPLETE"})
     .then((data)=>{
         return res.status(200).send(data);
     })
@@ -301,7 +301,7 @@ router.get("/readliveTradecompanyThisYear/:email", (req, res)=>{
     let yearStart = `${(date.getFullYear())}-01-01`
     console.log(yearStart);
     console.log(email);
-    LiveCompanyTradeData.find({trade_time: {$gte:yearStart,$lt:nextDay}, userId:email})
+    LiveCompanyTradeData.find({trade_time: {$gte:yearStart,$lt:nextDay}, userId:email, status: "COMPLETE"})
     .then((data)=>{
         return res.status(200).send(data);
     })
