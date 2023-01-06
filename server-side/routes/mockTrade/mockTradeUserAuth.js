@@ -50,7 +50,7 @@ router.post("/mocktradeuser", async (req, res)=>{
 })
 
 router.get("/readmocktradeuser", (req, res)=>{
-    MockTradeDetails.find((err, data)=>{
+    MockTradeDetails.find({status: "COMPLETE"}, (err, data)=>{
         if(err){
             return res.status(500).send(err);
         }else{
@@ -73,7 +73,7 @@ router.get("/readmocktradeuser/:id", (req, res)=>{
 
 router.get("/readmocktradeuseremail/:email", (req, res)=>{
     const {email} = req.params
-    MockTradeDetails.find({userId: email}).sort({trade_time: -1})
+    MockTradeDetails.find({userId: email, status: "COMPLETE"}).sort({trade_time: -1})
     .then((data)=>{
         return res.status(200).send(data);
     })
@@ -87,7 +87,7 @@ router.get("/readmocktradeusercountTodaybyemail/:email", (req, res)=>{
     let date = new Date();
     let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
 
-    MockTradeDetails.count({order_timestamp: {$regex: todayDate}, userId: email},(err, data)=>{
+    MockTradeDetails.count({order_timestamp: {$regex: todayDate}, userId: email, status: "COMPLETE"},(err, data)=>{
         if(err){
             return res.status(500).send(err);
         }else{
@@ -123,7 +123,7 @@ router.get("/readmocktradeuserDate/:email", (req, res)=>{
     let date = new Date();
     let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
     console.log(todayDate);
-    MockTradeDetails.find({order_timestamp: {$regex: todayDate}, userId: {$regex: email}}).sort({trade_time: -1})
+    MockTradeDetails.find({order_timestamp: {$regex: todayDate}, userId: {$regex: email}, status: "COMPLETE"}).sort({trade_time: -1})
     .then((data)=>{
         return res.status(200).send(data);
     })
@@ -150,7 +150,7 @@ router.get("/readmocktradeuserDate", (req, res)=>{
     let date = new Date();
     let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
     const {email} = req.params
-    MockTradeDetails.find({order_timestamp: {$regex: todayDate}}).sort({trade_time: -1})
+    MockTradeDetails.find({order_timestamp: {$regex: todayDate}, status: "COMPLETE"}).sort({trade_time: -1})
     .then((data)=>{
         return res.status(200).send(data);
     })
@@ -196,7 +196,7 @@ router.get("/readmocktradeuserpagination/:skip/:limit", (req, res)=>{
 
 router.get("/readmocktradeuserpariculardatewithemail/:date/:email", (req, res)=>{
     const {date, email} = req.params
-    MockTradeDetails.find({order_timestamp: {$regex: date}, userId: email})
+    MockTradeDetails.find({order_timestamp: {$regex: date}, userId: email, status: "COMPLETE"})
     .then((data)=>{
         return res.status(200).send(data);
     })
@@ -207,7 +207,7 @@ router.get("/readmocktradeuserpariculardatewithemail/:date/:email", (req, res)=>
 
 router.get("/readmocktradeuserpariculardate/:date", (req, res)=>{
     const {date} = req.params
-    MockTradeDetails.find({order_timestamp: {$regex: date}})
+    MockTradeDetails.find({order_timestamp: {$regex: date}, status: "COMPLETE"})
     .then((data)=>{
         return res.status(200).send(data);
     })
@@ -239,7 +239,7 @@ router.get("/readmocktradeuserThisWeek/:email", (req, res)=>{
     //console.log(String(weekStartDay).slice(0,10));
     let weekStartDate = `${(weekStartDay.getFullYear())}-${String(weekStartDay.getMonth() + 1).padStart(2, '0')}-${String(weekStartDay.getDate()).padStart(2, '0')}`
 
-    MockTradeDetails.find({trade_time: {$gte:weekStartDate,$lt:nextDate}, userId:email})
+    MockTradeDetails.find({trade_time: {$gte:weekStartDate,$lt:nextDate}, userId:email, status: "COMPLETE"})
     .then((data)=>{
         return res.status(200).send(data);
     })
@@ -263,7 +263,7 @@ router.get("/readmocktradeuserThisMonth/:email", (req, res)=>{
     console.log(nextDay);
 
     let monthStart = `${(date.getFullYear())}-${String(date.getMonth() + 1).padStart(2, '0')}-01`
-    MockTradeDetails.find({trade_time: {$gte:monthStart,$lt: nextDay}, userId: {$regex: email}})
+    MockTradeDetails.find({trade_time: {$gte:monthStart,$lt: nextDay}, userId: {$regex: email}, status: "COMPLETE"})
     .then((data)=>{
         return res.status(200).send(data);
     })
@@ -288,7 +288,7 @@ router.get("/readmocktradeuserThisYear/:email", (req, res)=>{
     let yearStart = `${(date.getFullYear())}-01-01`
     console.log(yearStart);
     console.log(email);
-    MockTradeDetails.find({trade_time: {$gte:yearStart,$lt:nextDay}, userId:email})
+    MockTradeDetails.find({trade_time: {$gte:yearStart,$lt:nextDay}, userId:email, status: "COMPLETE"})
     .then((data)=>{
         return res.status(200).send(data);
     })

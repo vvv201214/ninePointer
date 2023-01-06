@@ -404,6 +404,9 @@ export default function SellModel({marketData, uIdProps, Render, isCompany, symb
             } else if(dataResp.massage === "REJECTED"){
                 console.log(dataResp);
                 window.alert("Trade is rejected due to insufficient fund");
+            } else if(dataResp.massage === "AMO REQ RECEIVED"){
+                console.log(dataResp);
+                window.alert("AMO Request Recieved");
             }
 
             console.log("entry succesfull");

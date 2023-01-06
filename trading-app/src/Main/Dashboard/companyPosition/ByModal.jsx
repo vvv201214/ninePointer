@@ -411,10 +411,13 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany, symbo
         } else {
             if(dataResp.massage === "COMPLETE"){
                 console.log(dataResp);
-                window.alert("Trade succesfull completed");
+                window.alert("Trade Succesfull Completed");
             } else if(dataResp.massage === "REJECTED"){
                 console.log(dataResp);
-                window.alert("Trade is rejected due to insufficient fund");
+                window.alert("Trade is Rejected due to Insufficient Fund");
+            } else if(dataResp.massage === "AMO REQ RECEIVED"){
+                console.log(dataResp);
+                window.alert("AMO Request Recieved");
             }
         }
     }

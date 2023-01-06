@@ -198,4 +198,3 @@ function TraderPositionTable({ socket }) {
     )
 }
 export default TraderPositionTable;
-
