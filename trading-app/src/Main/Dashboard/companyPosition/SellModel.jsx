@@ -369,6 +369,9 @@ export default function SellModel({marketData, uIdProps, Render, isCompany, symb
     }
     console.log(Details)
     async function sendOrderReq(algoBox, realTrade) {
+        let date = new Date();
+        let createdOn = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}:${String(date.getMilliseconds()).padStart(2, '0')}`
+
         const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, instrumentToken } = Details;
         const { algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount } = algoBox;
         const { realBuyOrSell, realSymbol, realQuantity, realInstrument, realBrokerage, realAmount, real_last_price } = companyTrade;
@@ -472,6 +475,9 @@ export default function SellModel({marketData, uIdProps, Render, isCompany, symb
         //     // window.alert("Market is closed now");
         //     return;
         // }
+        let date = new Date();
+        let createdOn = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}:${String(date.getMilliseconds()).padStart(2, '0')}`
+
         // console.log("compny side", exchange, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount, realBuyOrSell, realSymbol, realQuantity, real_last_price);
         const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, instrumentToken } = Details;
         const { algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount } = algoBox;

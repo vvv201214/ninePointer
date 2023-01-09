@@ -237,7 +237,7 @@ function CompanyPositionTable({ socket }) {
                         </div>
                         </div>
                         </div>
-                      \
+                      
                         
                         {/* <span className="grid2_span">Running PNL-Company</span>
                         <div className="grid_2">

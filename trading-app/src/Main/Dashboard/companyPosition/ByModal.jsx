@@ -11,11 +11,10 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany, symbo
     const { reRender, setReRender } = Render;
     const getDetails = useContext(userContext);
     let uId = uniqid();
-    let date = new Date();
-    let createdOn = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}`
     let createdBy = getDetails.userDetails.name;
     let userId = getDetails.userDetails.email;
     let tradeBy = isCompany ? "company" : getDetails.userDetails.name;
+    let date = new Date();
     let dummyOrderId = `${date.getFullYear()-2000}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}${Math.floor(100000000 + Math.random() * 900000000)}`
     let perticularInstrumentData = "";
     let perticularMarketData = 0;
@@ -379,6 +378,9 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany, symbo
     }
 
     async function sendOrderReq(algoBox, realTrade) {
+        let date = new Date();
+        let createdOn = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}:${String(date.getMilliseconds()).padStart(2, '0')}`
+    
         const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, instrumentToken } = Details;
         const { algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount } = algoBox;
         const { realBuyOrSell, realSymbol, realQuantity, realInstrument, realBrokerage, realAmount, real_last_price } = companyTrade;
@@ -438,40 +440,40 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany, symbo
         return finalCharge ;
     }
 
-    async function mockTradeUser(realTrade){ // have to add some feild according to auth
-        // let currentTime = `${date.getHours()}:${date.getMinutes()}`
-        // if(currentTime > "15:30" && currentTime < "9:15"){
-        //     window.alert("Market is closed now");
-        //     return;
-        // }
-        // //console.log(exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, createdBy, userId, createdOn, uId,
-        //     realTrade, dummyOrderId);
-        const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, instrumentToken } = Details;
-        // const {algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount} = algoBox
-        //console.log("instrumentToken", instrumentToken)
-        const res = await fetch(`${baseUrl}api/v1/mocktradeuser`, {
-            method: "POST",
-            headers: {
-                "content-type": "application/json"
-            },
-            body: JSON.stringify({
-                exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, createdBy, userId, createdOn, uId,
-                isRealTrade:realTrade, order_id:dummyOrderId, instrumentToken
-                // , algoBox: {algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount}
-            })
-        });
-        const dataResp = await res.json();
-        //console.log(dataResp);
-        if (dataResp.status === 422 || dataResp.error || !dataResp) {
-            window.alert(dataResp.error);
-            //console.log("Failed to Trade");
-        } else {
-            //console.log(dataResp);
-            window.alert("Trade succesfull");
-            //console.log("entry succesfull");
-        }
-        // reRender ? setReRender(false) : setReRender(true)
-    }
+    // async function mockTradeUser(realTrade){ // have to add some feild according to auth
+    //     // let currentTime = `${date.getHours()}:${date.getMinutes()}`
+    //     // if(currentTime > "15:30" && currentTime < "9:15"){
+    //     //     window.alert("Market is closed now");
+    //     //     return;
+    //     // }
+    //     // //console.log(exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, createdBy, userId, createdOn, uId,
+    //     //     realTrade, dummyOrderId);
+    //     const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, instrumentToken } = Details;
+    //     // const {algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount} = algoBox
+    //     //console.log("instrumentToken", instrumentToken)
+    //     const res = await fetch(`${baseUrl}api/v1/mocktradeuser`, {
+    //         method: "POST",
+    //         headers: {
+    //             "content-type": "application/json"
+    //         },
+    //         body: JSON.stringify({
+    //             exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, createdBy, userId, createdOn, uId,
+    //             isRealTrade:realTrade, order_id:dummyOrderId, instrumentToken
+    //             // , algoBox: {algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount}
+    //         })
+    //     });
+    //     const dataResp = await res.json();
+    //     //console.log(dataResp);
+    //     if (dataResp.status === 422 || dataResp.error || !dataResp) {
+    //         window.alert(dataResp.error);
+    //         //console.log("Failed to Trade");
+    //     } else {
+    //         //console.log(dataResp);
+    //         window.alert("Trade succesfull");
+    //         //console.log("entry succesfull");
+    //     }
+    //     // reRender ? setReRender(false) : setReRender(true)
+    // }
 
     async function mockTradeCompany(algoBox, realTrade){
         //console.log(Details);
@@ -482,6 +484,10 @@ export default function ByModal({ marketData, uIdProps, Render, isCompany, symbo
         //     // window.alert("Market is closed now");
         //     return;
         // }
+        
+        let date = new Date();
+        let createdOn = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}:${String(date.getMilliseconds()).padStart(2, '0')}`
+    
         // //console.log("compny side", exchange, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount, realBuyOrSell, realSymbol, realQuantity, real_last_price);
         const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, instrumentToken } = Details;
         const { algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount } = algoBox;

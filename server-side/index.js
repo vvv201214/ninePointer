@@ -24,7 +24,7 @@ io.on("connection", (socket) => {
   socket.on('hi', async (data) => {
     // eventEmitOnError = data;
     getKiteCred.getAccess().then(async (data)=>{
-      console.log(data);
+      // console.log(data);
 
       let tokens = await fetchData(data.getApiKey, data.getAccessToken);
       // console.log('tokens index', tokens);

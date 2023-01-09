@@ -17,17 +17,11 @@ router.post("/mocktradecompany", async (req, res)=>{
     const {algoName, transactionChange, instrumentChange
         , exchangeChange, lotMultipler, productChange, tradingAccount} = algoBox
 
+
         const brokerageDetailBuy = await BrokerageDetail.find({transaction:"BUY"});
         const brokerageDetailSell = await BrokerageDetail.find({transaction:"SELL"});
 
-        // let livetradeData;
-        // if(realTrade){
-        //     livetradeData = await LiveTradeDetails.find({uId : uId});
-        // }
 
-        // let checkingLive = await LiveTradeDetails.find();
-        // console.log(uId);
-        // console.log("checkingLive", checkingLive);
 
     if(!exchange || !symbol || !buyOrSell || !Quantity || !Product || !OrderType || !validity || !variety || !last_price || !algoName || !transactionChange || !instrumentChange || !exchangeChange || !lotMultipler || !productChange || !tradingAccount || !instrumentToken){
         console.log(Boolean(exchange)); console.log(Boolean(symbol)); console.log(Boolean(buyOrSell)); console.log(Boolean(Quantity)); console.log(Boolean(Product)); console.log(Boolean(OrderType)); console.log(Boolean(validity)); console.log(Boolean(variety)); console.log(Boolean(last_price)); console.log(Boolean(algoName)); console.log(Boolean(transactionChange)); console.log(Boolean(instrumentChange)); console.log(Boolean(exchangeChange)); console.log(Boolean(lotMultipler)); console.log(Boolean(productChange)); console.log(Boolean(tradingAccount));
@@ -51,7 +45,7 @@ router.post("/mocktradecompany", async (req, res)=>{
         let liveData = await axios.get(`${baseUrl}api/v1/getliveprice`)
         
         for(let elem of liveData.data){
-            console.log(elem)
+            // console.log(elem)
             if(elem.instrument_token == instrumentToken){
                 newTimeStamp = elem.timestamp;
                 originalLastPrice = elem.last_price;
@@ -123,16 +117,27 @@ router.post("/mocktradecompany", async (req, res)=>{
             return res.status(422).json({error : "date already exist..."})
         }
 
+        const tempDate = new Date();
+        let temp_order_save_time = `${String(tempDate.getDate()).padStart(2, '0')}-${String(tempDate.getMonth() + 1).padStart(2, '0')}-${(tempDate.getFullYear())} ${String(tempDate.getHours()).padStart(2, '0')}:${String(tempDate.getMinutes()).padStart(2, '0')}:${String(tempDate.getSeconds()).padStart(2, '0')}:${String(tempDate.getMilliseconds()).padStart(2, '0')}`
+        function addMinutes(date, hours) {
+          date.setMinutes(date.getMinutes() + hours);
+          return date;
+         }
+        const date = new Date(temp_order_save_time);
+        const newDate = addMinutes(date, 330);
+        const order_save_time = (`${String(newDate.getDate()).padStart(2, '0')}-${String(newDate.getMonth() + 1).padStart(2, '0')}-${(newDate.getFullYear())} ${String(newDate.getHours()).padStart(2, '0')}:${String(newDate.getMinutes()).padStart(2, '0')}:${String(newDate.getSeconds()).padStart(2, '0')}:${String(newDate.getMilliseconds()).padStart(2, '0')}`);
+ 
         const mockTradeDetails = new MockTradeDetails({
             status:"COMPLETE", uId, createdBy, average_price: originalLastPrice, Quantity: realQuantity, 
             Product, buyOrSell:realBuyOrSell, order_timestamp: newTimeStamp,
             variety, validity, exchange, order_type: OrderType, symbol, placed_by: "ninepointer", userId,
                 algoBox:{algoName, transactionChange, instrumentChange, exchangeChange, 
             lotMultipler, productChange, tradingAccount}, order_id, instrumentToken, brokerage: brokerageCompany,
-            tradeBy: createdBy, isRealTrade: false, amount: (Number(realQuantity)*originalLastPrice), trade_time:trade_time
+            tradeBy: createdBy, isRealTrade: false, amount: (Number(realQuantity)*originalLastPrice), trade_time:trade_time,
+            order_req_time: createdOn, order_save_time: order_save_time
         });
 
-        // console.log("mockTradeDetails comapny", mockTradeDetails);
+        console.log("mockTradeDetails comapny", mockTradeDetails);
         mockTradeDetails.save().then(()=>{
             res.status(201).json({massage : "data enter succesfully"});
         }).catch((err)=> res.status(500).json({error:"Failed to enter data"}));
@@ -145,15 +150,25 @@ router.post("/mocktradecompany", async (req, res)=>{
             console.log("data already");
             return res.status(422).json({error : "date already exist..."})
         }
-
+        const tempDate = new Date();
+        let temp_order_save_time = `${String(tempDate.getDate()).padStart(2, '0')}-${String(tempDate.getMonth() + 1).padStart(2, '0')}-${(tempDate.getFullYear())} ${String(tempDate.getHours()).padStart(2, '0')}:${String(tempDate.getMinutes()).padStart(2, '0')}:${String(tempDate.getSeconds()).padStart(2, '0')}:${String(tempDate.getMilliseconds()).padStart(2, '0')}`
+        function addMinutes(date, hours) {
+          date.setMinutes(date.getMinutes() + hours);
+          return date;
+         }
+        const date = new Date(temp_order_save_time);
+        const newDate = addMinutes(date, 330);
+        const order_save_time = (`${String(newDate.getDate()).padStart(2, '0')}-${String(newDate.getMonth() + 1).padStart(2, '0')}-${(newDate.getFullYear())} ${String(newDate.getHours()).padStart(2, '0')}:${String(newDate.getMinutes()).padStart(2, '0')}:${String(newDate.getSeconds()).padStart(2, '0')}:${String(newDate.getMilliseconds()).padStart(2, '0')}`);
+ 
         const mockTradeDetailsUser = new MockTradeDetailsUser({
             status:"COMPLETE", uId, createdBy, average_price: originalLastPrice, Quantity, Product, buyOrSell, order_timestamp: newTimeStamp,
             variety, validity, exchange, order_type: OrderType, symbol, placed_by: "ninepointer", userId,
             isRealTrade: false, order_id, instrumentToken, brokerage: brokerageUser, 
-            tradeBy: createdBy, amount: (Number(Quantity)*originalLastPrice), trade_time:trade_time
+            tradeBy: createdBy, amount: (Number(Quantity)*originalLastPrice), trade_time:trade_time,
+            order_req_time: createdOn, order_save_time: order_save_time
         });
 
-        // console.log("mockTradeDetails", mockTradeDetailsUser);
+        console.log("mockTradeDetails", mockTradeDetailsUser);
         mockTradeDetailsUser.save().then(()=>{
             // res.status(201).json({massage : "data enter succesfully"});
         }).catch((err)=> {
@@ -223,7 +238,7 @@ router.get("/readmocktradecompanyemail/:email", (req, res)=>{
 
 router.get("/readmocktradecompanyDate", (req, res)=>{
     let date = new Date();
-    let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
+    let todayDate = `${String(date.getDate()).padStart(2, '0')-1}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
     const {email} = req.params
     console.log(todayDate)
     MockTradeDetails.find({order_timestamp: {$regex: todayDate}, status: "COMPLETE"}).sort({trade_time: -1})
@@ -285,7 +300,7 @@ router.get("/readmocktradecompanypariculardatewithemail/:date/:email", (req, res
 router.get("/readmocktradecompanyDate/:email", (req, res)=>{
     const {email} = req.params
     let date = new Date();
-    let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
+    let todayDate = `${String(date.getDate()).padStart(2, '0')-1}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
     console.log(todayDate);
     MockTradeDetails.find({order_timestamp: {$regex: todayDate}, userId: {$regex: email}, status: "COMPLETE"}).sort({trade_time:-1})
     .then((data)=>{

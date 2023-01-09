@@ -44,7 +44,7 @@ const fetchData = async (getApiKey, getAccessToken) => {
       arr.push(res.data.data[instrument].instrument_token);
     }
 
-    console.log("arr in fetch token", arr);
+    // console.log("arr in fetch token", arr);
     return arr;
 
   } catch (err){
