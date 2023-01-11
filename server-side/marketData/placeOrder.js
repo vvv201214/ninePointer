@@ -142,7 +142,7 @@ router.post("/placeorder", (async (req, res)=>{
                    order_timestamp, variety, validity, exchange, exchange_timestamp, order_type, price, filled_quantity, 
                    pending_quantity, cancelled_quantity, guid, market_protection, disclosed_quantity, tradingsymbol, placed_by,     
                    status_message, status_message_raw} = orderData
-        
+         
             if(!status_message){
                 status_message = "null"
             }

@@ -33,7 +33,7 @@ function CompanyPositionTable({ socket }) {
                 // let data = (res.data).filter((elem) => {
                 //     return elem.order_timestamp.includes(todayDate) && elem.status === "COMPLETE";
                 // })
-                console.log("data", res.data)
+                //console.log("data", res.data)
                 setData(res.data);
             }).catch((err) => {
                 return new Error(err);
@@ -44,7 +44,7 @@ function CompanyPositionTable({ socket }) {
                 // let data = (res.data).filter((elem) => {
                 //     return elem.order_timestamp.includes(todayDate) && elem.status === "COMPLETE";
                 // })
-                console.log("data", res.data)
+                //console.log("data", res.data)
                 setLiveData(res.data);
             }).catch((err) => {
                 return new Error(err);
@@ -52,7 +52,7 @@ function CompanyPositionTable({ socket }) {
 
         axios.get(`${baseUrl}api/v1/getliveprice`)
             .then((res) => {
-                console.log("live price data", res)
+                //console.log("live price data", res)
                 setMarketData(res.data);
                 // setDetails.setMarketData(data);
             }).catch((err) => {
@@ -69,24 +69,24 @@ function CompanyPositionTable({ socket }) {
 
                 return new Error(err);
             })
-        console.log("hii");
+        //console.log("hii");
 
         socket.on("tick", (data) => {
-            console.log("this is live market data", data);
+            //console.log("this is live market data", data);
             setMarketData(data);
             // setDetails.setMarketData(data);
         })
 
 
-        console.log(marketData);
-        console.log(tradeData);
+        //console.log(marketData);
+        //console.log(tradeData);
         // reRender ? setReRender(false) : setReRender(true)
         // setReRender(true);
     }, [getDetails])
-    console.log(marketData);
+    //console.log(marketData);
     useEffect(() => {
         return () => {
-            console.log('closing');
+            //console.log('closing');
             socket.close();
         }
     }, [])
@@ -192,7 +192,7 @@ function CompanyPositionTable({ socket }) {
                                             :
                                             <td className="grid2_td">₹{(updatedMarketData[0]?.last_price).toFixed(2)}</td>}
 
-                                            {console.log(updatedMarketData[0], updatedMarketData[0]?.change)}
+                                            {//console.log(updatedMarketData[0], updatedMarketData[0]?.change)}
                                             {(updatedMarketData[0]?.change === undefined) ?
                                                 <td className="grid2_td">{(Math.abs((updatedMarketData[0]?.last_price - updatedMarketData[0]?.average_price) / updatedMarketData[0]?.average_price)).toFixed(2)}%</td>
                                                 :

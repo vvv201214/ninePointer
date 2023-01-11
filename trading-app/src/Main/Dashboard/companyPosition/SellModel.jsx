@@ -46,10 +46,10 @@ export default function SellModel({marketData, uIdProps, Render, isCompany, symb
     const [selected, setSelected] = useState("NRML");
     Details.Product = selected;
     const radioHandler = (e) => {
-        console.log(e.target.value);
+        //console.log(e.target.value);
         setSelected(e.target.value);
         Details.Product = e.target.value
-        console.log(Details.Product);
+        //console.log(Details.Product);
     }
 
     const [marketselected, setMarketselected] = useState("MARKET");
@@ -92,13 +92,13 @@ export default function SellModel({marketData, uIdProps, Render, isCompany, symb
     }
     
     const toggleModal = () => {
-        console.log("in toggle",modal)
+        //console.log("in toggle",modal)
         if(!modal){
-            console.log("in modal")
+            //console.log("in modal")
             axios.get(`${baseUrl}api/v1/readpermission`)
             .then((res) => {
                 let perticularUser = (res.data).filter((elem) => {
-                    //console.log(elem.userId, userId);
+                    ////console.log(elem.userId, userId);
                     return elem.userId === userId;
                 })
                 setUserPermission(perticularUser);
@@ -118,7 +118,7 @@ export default function SellModel({marketData, uIdProps, Render, isCompany, symb
 
 
         setModal(!modal);
-        console.log(modal)
+        //console.log(modal)
     };
 
     if (modal) {
@@ -132,7 +132,7 @@ export default function SellModel({marketData, uIdProps, Render, isCompany, symb
         // axios.get(`${baseUrl}api/v1/readpermission`)
         //     .then((res) => {
         //         let perticularUser = (res.data).filter((elem) => {
-        //             console.log(elem.userId, userId);
+        //             //console.log(elem.userId, userId);
         //             return elem.userId === userId;
         //         })
         //         setUserPermission(perticularUser);
@@ -199,9 +199,9 @@ export default function SellModel({marketData, uIdProps, Render, isCompany, symb
                 // window.alert("Server Down");
                 return new Error(err);
             })
-        console.log("hii");
+        //console.log("hii");
 
-        console.log(tradeData);
+        //console.log(tradeData);
         setTradeData([...tradeData])
     },[getDetails])
 
@@ -217,7 +217,7 @@ export default function SellModel({marketData, uIdProps, Render, isCompany, symb
         })
     })
 
-    console.log(userPermission, tradingAlgoArr);
+    //console.log(userPermission, tradingAlgoArr);
     const userPermissionAlgo = [];
     for (let elem of tradingAlgoArr) {
         for (let subElem of userPermission) {
@@ -227,7 +227,7 @@ export default function SellModel({marketData, uIdProps, Render, isCompany, symb
         }
     }
 
-    console.log(userPermissionAlgo); //its an array do everything according it
+    //console.log(userPermissionAlgo); //its an array do everything according it
 
 
     function FormHandler(e) {
@@ -236,7 +236,7 @@ export default function SellModel({marketData, uIdProps, Render, isCompany, symb
 
     let tradeEnable ;
     userPermission.map((elem)=>{
-        console.log(elem)
+        //console.log(elem)
         if(elem.isTradeEnable){
             tradeEnable = true;
         }
@@ -251,7 +251,7 @@ export default function SellModel({marketData, uIdProps, Render, isCompany, symb
             }else{
                 companyTrade.realBuyOrSell = "SELL"
             }
-            console.log("exchange", tradeData);
+            //console.log("exchange", tradeData);
 
             companyTrade.realSymbol = Details.symbol
             companyTrade.realInstrument = Details.instrument
@@ -305,7 +305,7 @@ export default function SellModel({marketData, uIdProps, Render, isCompany, symb
             Details.variety = "amo"
         }
 
-        console.log(tradeData)
+        //console.log(tradeData)
         let getSomeData = tradeData.filter((elem) => {
             return elem.uId === uIdProps;
         })
@@ -367,7 +367,7 @@ export default function SellModel({marketData, uIdProps, Render, isCompany, symb
             reRender ? setReRender(false) : setReRender(true)
         }, 1000);
     }
-    console.log(Details)
+    //console.log(Details)
     async function sendOrderReq(algoBox, realTrade) {
         let date = new Date();
         let createdOn = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}:${String(date.getMilliseconds()).padStart(2, '0')}`
@@ -396,10 +396,10 @@ export default function SellModel({marketData, uIdProps, Render, isCompany, symb
             })
         });
         const dataResp = await res.json();
-        console.log("dataResp", dataResp)
+        //console.log("dataResp", dataResp)
         if (dataResp.status === 422 || dataResp.error || !dataResp) {
             window.alert(dataResp.error);
-            console.log("Failed to Trade");
+            //console.log("Failed to Trade");
         } else {
             if(dataResp.massage === "COMPLETE"){
                 console.log(dataResp);
@@ -410,9 +410,12 @@ export default function SellModel({marketData, uIdProps, Render, isCompany, symb
             } else if(dataResp.massage === "AMO REQ RECEIVED"){
                 console.log(dataResp);
                 window.alert("AMO Request Recieved");
+            }  else{
+                console.log("this is dataResp", dataResp)
+                window.alert("on order placing nothing happen");
             }
 
-            console.log("entry succesfull");
+            //console.log("entry succesfull");
         }
     }
 
@@ -420,7 +423,7 @@ export default function SellModel({marketData, uIdProps, Render, isCompany, symb
         let buyBrokerage = brokerageData.filter((elem) => {
             return elem.transaction === "SELL"
         })
-        console.log(buyBrokerage);
+        //console.log(buyBrokerage);
         let brokerage = Number(buyBrokerage[0].brokerageCharge);
         // let totalAmount = Number(Details.last_price) * Number(quantity);
         let exchangeCharge = totalAmount * (Number(buyBrokerage[0].exchangeCharge) / 100);
@@ -454,14 +457,14 @@ export default function SellModel({marketData, uIdProps, Render, isCompany, symb
             })
         });
         const dataResp = await res.json();
-        console.log(dataResp);
+        //console.log(dataResp);
         if (dataResp.status === 422 || dataResp.error || !dataResp) {
             window.alert(dataResp.error);
-            console.log("Failed to Trade");
+            //console.log("Failed to Trade");
         } else {
-            console.log(dataResp);
+            //console.log(dataResp);
             window.alert("Trade succesfull");
-            console.log("entry succesfull");
+            //console.log("entry succesfull");
         }
 
     }
@@ -469,16 +472,16 @@ export default function SellModel({marketData, uIdProps, Render, isCompany, symb
     async function mockTradeCompany(algoBox, realTrade){
         
         // let currentTime = `${date.getHours()}:${date.getMinutes()}`
-        // console.log("currentTime", currentTime);
+        // //console.log("currentTime", currentTime);
         // if(currentTime > "15:30" || currentTime < "9:15"){
-        //     console.log("current if")
+        //     //console.log("current if")
         //     // window.alert("Market is closed now");
         //     return;
         // }
         let date = new Date();
         let createdOn = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}:${String(date.getMilliseconds()).padStart(2, '0')}`
 
-        // console.log("compny side", exchange, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount, realBuyOrSell, realSymbol, realQuantity, real_last_price);
+        // //console.log("compny side", exchange, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount, realBuyOrSell, realSymbol, realQuantity, real_last_price);
         const { exchange, symbol, buyOrSell, Quantity, Price, Product, OrderType, TriggerPrice, stopLoss, validity, variety, last_price, instrumentToken } = Details;
         const { algoName, transactionChange, instrumentChange, exchangeChange, lotMultipler, productChange, tradingAccount } = algoBox;
         const { realBuyOrSell, realSymbol, realQuantity, realInstrument, realBrokerage, realAmount, real_last_price } = companyTrade;
@@ -497,12 +500,12 @@ export default function SellModel({marketData, uIdProps, Render, isCompany, symb
         });
         const dataResp = await res.json();
         if (dataResp.status === 422 || dataResp.error || !dataResp) {
-            console.log(dataResp.error);
+            //console.log(dataResp.error);
             window.alert(dataResp.error);
         } else {
-            console.log(dataResp);
+            //console.log(dataResp);
             window.alert("Trade succesfull");
-            //console.log("entry succesfull");
+            ////console.log("entry succesfull");
         }
         
     }
