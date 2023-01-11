@@ -24,7 +24,7 @@ io.on("connection", (socket) => {
   socket.on('hi', async (data) => {
     // eventEmitOnError = data;
     getKiteCred.getAccess().then(async (data)=>{
-      console.log(data);
+      // console.log(data);
 
       let tokens = await fetchData(data.getApiKey, data.getAccessToken);
       // console.log('tokens index', tokens);
@@ -51,7 +51,7 @@ let newCors = process.env.NODE_ENV === "production" ? "http://3.110.187.5/" : "h
 app.use(cors({
   credentials:true,
 
-  origin: "http://3.110.187.5/"
+  origin: "http://3.7.187.183/"
   // origin: newCors
 
 }));

@@ -210,4 +210,112 @@ export default function OverallPnl({marketData, tradeData, data}) {
 }
 
 
+// useEffect(()=>{
+
+//     console.log(data);
+//     let AvgPriceHash = new Map();
+//     avgPriceArr.push(data[0])
+//     for(let i = 0; i < data.length; i++){
+//         if(avgPriceArr[avgPriceArr.length-1].symbol !== data[i].symbol){
+//             avgPriceArr.push(data[i]);
+//             break;
+//         }
+//     }
+//     setAvgPrice(avgPriceArr)
+//     console.log("avgPriceArr", avgPriceArr);
+    
+
+//     let hash = new Map();
+//     let hashForProduct = new Map();
+
+//     for(let i = data.length-1; i >= 0 ; i--){ // && hashForProduct.has(data[i].Product)
+//         if(hash.has(data[i].symbol + " " + data[i].Product)){
+//             let obj = hash.get(data[i].symbol + " " + data[i].Product);
+//             if(data[i].buyOrSell === "BUY"){
+//                 if(obj.totalBuy === undefined || obj.totalBuyLot === undefined){
+//                     obj.totalBuy = Number(data[i].average_price) * (Number(data[i].Quantity))
+//                     obj.totalBuyLot = (Number(data[i].Quantity))
+//                 } else{
+//                     obj.totalBuy = obj.totalBuy + Number(data[i].average_price) * (Number(data[i].Quantity))
+//                     obj.totalBuyLot = obj.totalBuyLot + (Number(data[i].Quantity)) 
+//                 }
+
+
+//                 console.log("obj.totalBuy", obj.totalBuy, "totalBuyLot", obj.totalBuyLot)
+//             } if(data[i].buyOrSell === "SELL"){
+//                 if( obj.totalSell === undefined || obj.totalSellLot === undefined){
+
+//                     obj.totalSell = Number(data[i].average_price) * (Number(data[i].Quantity))
+//                     obj.totalSellLot = (Number(data[i].Quantity)) 
+//                 } else{
+
+//                     obj.totalSell = obj.totalSell + Number(data[i].average_price) * (Number(data[i].Quantity))
+//                     obj.totalSellLot = obj.totalSellLot + (Number(data[i].Quantity)) 
+//                 }
+
+//                 console.log("obj.totalSell", obj.totalSell, "totalSellLot", obj.totalSellLot)
+//             }
+//         }  else{
+//             if(data[i].buyOrSell === "BUY"){
+//                 hash.set(data[i].symbol + " " + data[i].Product, {
+//                     totalBuy : Number(data[i].average_price) * (Number(data[i].Quantity)),
+//                     totalBuyLot : (Number(data[i].Quantity)) ,
+//                     totalSell: 0,
+//                     totalSellLot: 0,
+//                     symbol: data[i].symbol,
+//                     Product: data[i].Product
+//                 });
+//                 // hashForProduct.set(data[i].Product);
+
+//             }if(data[i].buyOrSell === "SELL"){
+//                 hash.set(data[i].symbol + " " + data[i].Product, {
+//                     totalSell : Number(data[i].average_price) * (Number(data[i].Quantity)),
+//                     totalSellLot : (Number(data[i].Quantity)) ,
+//                     totalBuy : 0,
+//                     totalBuyLot: 0,
+//                     symbol: data[i].symbol,
+//                     Product: data[i].Product
+//                 });
+//                 // hashForProduct.set(data[i].Product);
+                
+//             }
+//         }
+//     }
+//     console.log(hash);
+
+    
+//     for (let value of hash.values()){
+//         overallPnl.push(value);
+//     }
+
+    
+//     overallPnl.map((elem)=>{
+//         console.log("52");
+//         tradeData.map((element)=>{
+//             console.log("53");
+//             if(element.symbol === elem.symbol){
+//                 console.log("line 54");
+//                 marketData.map((subElem)=>{
+//                     if(subElem !== undefined && subElem.instrument_token === element.instrumentToken){
+//                         console.log(subElem);
+//                         liveDetailsArr.push(subElem)
+//                     }
+//                 })
+//             }
+//         })
+//     })
+
+
+//     setOverallPnlArr(overallPnl);
+//     console.log("details array", overallPnl);
+
+//     setLiveDetail(liveDetailsArr);
+
+//     console.log(liveDetailsArr);
+
+//     // reRender ? setReRender(false) : setReRender(true)
+
+// }, [marketData, data])
+
+
 

@@ -121,7 +121,7 @@ router.get("/readmocktradeuserpnl/:email/:status", (req, res)=>{
 router.get("/readmocktradeuserDate/:email", (req, res)=>{
     const {email} = req.params
     let date = new Date();
-    let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
+    let todayDate = `${String(date.getDate()).padStart(2, '0')-1}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
     console.log(todayDate);
     MockTradeDetails.find({order_timestamp: {$regex: todayDate}, userId: {$regex: email}, status: "COMPLETE"}).sort({trade_time: -1})
     .then((data)=>{
@@ -148,7 +148,7 @@ router.get("/readmocktradeusertodaydatapagination/:email/:skip/:limit", (req, re
 
 router.get("/readmocktradeuserDate", (req, res)=>{
     let date = new Date();
-    let todayDate = `${String(date.getDate()).padStart(2, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
+    let todayDate = `${String(date.getDate()).padStart(2, '0')-1}-${String(date.getMonth() + 1).padStart(2, '0')}-${(date.getFullYear())}`
     const {email} = req.params
     MockTradeDetails.find({order_timestamp: {$regex: todayDate}, status: "COMPLETE"}).sort({trade_time: -1})
     .then((data)=>{

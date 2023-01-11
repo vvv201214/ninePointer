@@ -37,7 +37,7 @@ function TraderPositionTable({ socket }) {
 
         axios.get(`${baseUrl}api/v1/getliveprice`)
             .then((res) => {
-                console.log("live price data", res)
+                //console.log("live price data", res)
                 setMarketData(res.data)
             }).catch((err)=>{
                 
@@ -55,30 +55,30 @@ function TraderPositionTable({ socket }) {
                 
                 return new Error(err);
             })
-        console.log("hii");
+        //console.log("hii");
 
         // axios.get(`${baseUrl}api/v1/ws`)
         // .then((res)=>{
-        //     console.log("vijay", (res.data)[0].last_price);
+        //     //console.log("vijay", (res.data)[0].last_price);
         // }).catch((err)=>{
         //     window.alert("Server Down");
         //     return new Error(err);
         // })
         
         socket.on("tick",(data)=>{
-            console.log("this is live market data", data);
+            //console.log("this is live market data", data);
             setMarketData(data);
             // setDetails.setMarketData(data);
         })
         
-        console.log(marketData);
-        console.log(tradeData);
+        //console.log(marketData);
+        //console.log(tradeData);
        
     },[getDetails, reRender])
 
     useEffect(()=>{
         return ()=>{
-            console.log('closing');
+            //console.log('closing');
             socket.close();
         }
     },[])
@@ -117,7 +117,6 @@ function TraderPositionTable({ socket }) {
                                             <td className="grid2_td">₹{(updatedMarketData[0]?.last_price)}</td>
                                             :
                                             <td className="grid2_td">₹{(updatedMarketData[0]?.last_price).toFixed(2)}</td>}
-                                            {console.log(updatedMarketData[0], updatedMarketData[0]?.change)}
                                             {(updatedMarketData[0]?.change === undefined) ? 
                                             <td className="grid2_td">{(Math.abs((updatedMarketData[0]?.last_price-updatedMarketData[0]?.average_price)/updatedMarketData[0]?.average_price)).toFixed(2)}%</td>
                                             :
